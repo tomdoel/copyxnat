@@ -1,0 +1,5 @@
+source/copyxnat.rst
+source/copyxnat.*.rst
+source/modules.rst
+source/versioneer.rst
+/build
