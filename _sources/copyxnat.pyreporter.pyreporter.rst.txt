@@ -1,0 +1,7 @@
+copyxnat.pyreporter.pyreporter module
+=====================================
+
+.. automodule:: copyxnat.pyreporter.pyreporter
+   :members:
+   :undoc-members:
+   :show-inheritance:

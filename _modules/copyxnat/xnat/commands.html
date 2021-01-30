@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat.commands &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.commands</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.xnat.commands</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;Commands defining actions that can be performed with copyxnat&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatProject</span>
+
+
+<div class="viewcode-block" id="commands"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.commands">[docs]</a><span class="k">def</span> <span class="nf">commands</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return a dictionary containing factories for all commands&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;export&#39;</span><span class="p">:</span> <span class="n">export_command</span><span class="p">,</span>
+            <span class="s1">&#39;show&#39;</span><span class="p">:</span> <span class="n">show_command</span><span class="p">,</span>
+            <span class="s1">&#39;copy&#39;</span><span class="p">:</span> <span class="n">copy_command</span><span class="p">,</span>
+            <span class="s1">&#39;check_datatypes&#39;</span><span class="p">:</span> <span class="n">check_datatypes_command</span><span class="p">,</span>
+            <span class="s1">&#39;count_scans&#39;</span><span class="p">:</span> <span class="n">count_command</span>
+            <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command">[docs]</a><span class="k">class</span> <span class="nc">Command</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Wraps a command function and its input variables&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">outputs_function</span><span class="p">,</span> <span class="n">reset_function</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs_function</span> <span class="o">=</span> <span class="n">outputs_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_function</span> <span class="o">=</span> <span class="n">reset_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span></div>
+
+
+<div class="viewcode-block" id="command_factory"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.command_factory">[docs]</a><span class="k">def</span> <span class="nf">command_factory</span><span class="p">(</span><span class="n">command_string</span><span class="p">,</span> <span class="n">dst_xnat</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">,</span>
+                    <span class="n">initial_result</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dst_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Factory for creating a Command wrapper&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">output_result</span><span class="p">,</span> <span class="n">output_tostring</span>
+        <span class="n">command_return</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span>
+                                 <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+                                 <span class="n">outputs</span><span class="o">=</span><span class="n">output_result</span><span class="p">,</span>
+                                 <span class="n">from_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">)</span>
+        <span class="n">output_result</span> <span class="o">=</span> <span class="n">command_return</span><span class="o">.</span><span class="n">outputs</span>
+        <span class="k">if</span> <span class="n">command_return</span><span class="o">.</span><span class="n">tostring</span><span class="p">:</span>
+            <span class="n">output_tostring</span> <span class="o">=</span> <span class="n">command_return</span><span class="o">.</span><span class="n">tostring</span>
+        <span class="k">return</span> <span class="n">command_return</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">():</span>
+        <span class="k">nonlocal</span> <span class="n">output_result</span>
+        <span class="n">output_result</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">get_outputs</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="n">output_result</span><span class="p">,</span> <span class="s1">&#39;tostring&#39;</span><span class="p">:</span> <span class="n">output_tostring</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">result_tostring</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Output from </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_string</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">command</span> <span class="o">=</span> <span class="n">commands</span><span class="p">()[</span><span class="n">command_string</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;dst_xnat&#39;</span><span class="p">:</span> <span class="n">dst_xnat</span><span class="p">,</span>
+        <span class="s1">&#39;dst_project&#39;</span><span class="p">:</span> <span class="n">dst_project</span><span class="p">,</span>
+        <span class="s1">&#39;fix_scan_types&#39;</span><span class="p">:</span> <span class="n">fix_scan_types</span><span class="p">,</span>
+        <span class="s1">&#39;reporter&#39;</span><span class="p">:</span> <span class="n">reporter</span>
+    <span class="p">}</span>
+    <span class="n">output_result</span> <span class="o">=</span> <span class="n">initial_result</span>
+    <span class="n">output_tostring</span> <span class="o">=</span> <span class="n">result_tostring</span>
+
+    <span class="k">return</span> <span class="n">Command</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="n">run_command</span><span class="p">,</span>
+                   <span class="n">reset_function</span><span class="o">=</span><span class="n">reset</span><span class="p">,</span>
+                   <span class="n">outputs_function</span><span class="o">=</span><span class="n">get_outputs</span><span class="p">,</span>
+                   <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CommandReturn"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.CommandReturn">[docs]</a><span class="k">class</span> <span class="nc">CommandReturn</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for return values for a command function call&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tostring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_children</span> <span class="o">=</span> <span class="n">to_children</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recurse</span> <span class="o">=</span> <span class="n">recurse</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tostring</span> <span class="o">=</span> <span class="n">tostring</span></div>
+
+
+<div class="viewcode-block" id="export_command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.export_command">[docs]</a><span class="k">def</span> <span class="nf">export_command</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="sd">&quot;&quot;&quot;Command which exports XNAT project data onto local disk&quot;&quot;&quot;</span>
+    <span class="n">return_value</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">return_value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.show_command">[docs]</a><span class="k">def</span> <span class="nf">show_command</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="sd">&quot;&quot;&quot;Command which displays contents of XNAT projects&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copy_command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.copy_command">[docs]</a><span class="k">def</span> <span class="nf">copy_command</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
+
+    <span class="c1"># Override the project name</span>
+    <span class="n">dst_name</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;dst_project&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> \
+        <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">copied_item</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">duplicate</span><span class="p">(</span>
+        <span class="n">destination_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
+        <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;fix_scan_types&#39;</span><span class="p">],</span>
+        <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">,</span>
+        <span class="n">dry_run</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;reporter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dry_run</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">copied_item</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_datatypes_command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.check_datatypes_command">[docs]</a><span class="k">def</span> <span class="nf">check_datatypes_command</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Command which checks if destination server has all the</span>
+<span class="sd">    scan datatypes that are present on the source server</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># On first run, set up the outputs</span>
+    <span class="k">if</span> <span class="n">outputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">:</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;dst_xnat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">datatypes</span><span class="p">(),</span>
+            <span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="p">}</span>
+
+    <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
+        <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">]:</span>
+            <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;reporter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s1">&#39;Session datatype </span><span class="si">{}</span><span class="s1"> needs to be added to &#39;</span>
+                <span class="s1">&#39;destination server. &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;reporter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span><span class="s1">&#39;OK: session datatype </span><span class="si">{}</span><span class="s1"> is on &#39;</span>
+                                 <span class="s1">&#39;destination server.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">datatype</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;reporter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
+            <span class="s1">&#39;Known datatype for </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>  <span class="c1"># pylint: disable=protected-access</span>
+                                                 <span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                                                 <span class="n">xnat_item</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">item_id</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>  <span class="c1"># pylint: disable=protected-access</span>
+                                    <span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                                    <span class="n">xnat_item</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+
+        <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;reporter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Empty datatype for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item_id</span><span class="p">))</span>
+        <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">tostring</span><span class="o">=</span><span class="n">check_datatypes_tostring</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_datatypes_tostring"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.check_datatypes_tostring">[docs]</a><span class="k">def</span> <span class="nf">check_datatypes_tostring</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coverts check-datatypes output to human readable form&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="count_command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.count_command">[docs]</a><span class="k">def</span> <span class="nf">count_command</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="sd">&quot;&quot;&quot;Command which counts scans in a project&quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialise output</span>
+    <span class="k">if</span> <span class="n">outputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;num_scans&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">):</span>
+        <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;num_scans&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;num_scans&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">recurse</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">recurse</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="n">recurse</span><span class="p">,</span> <span class="n">tostring</span><span class="o">=</span><span class="n">count_tostring</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="count_tostring"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.count_tostring">[docs]</a><span class="k">def</span> <span class="nf">count_tostring</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coverts count output to human readable form&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;Number of scans: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;num_scans&#39;</span><span class="p">])</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.commands</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

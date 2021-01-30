@@ -1,0 +1,19 @@
+copyxnat.xnat\_backend package
+==============================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.xnat_backend.pyxnat_server
+   copyxnat.xnat_backend.server_factory
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.xnat_backend
+   :members:
+   :undoc-members:
+   :show-inheritance:

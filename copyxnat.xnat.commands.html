@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat.commands module &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="copyxnat.xnat.copy_cache module" href="copyxnat.xnat.copy_cache.html" />
+    <link rel="prev" title="copyxnat.xnat package" href="copyxnat.xnat.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.copy_cache.html" title="copyxnat.xnat.copy_cache module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.html" title="copyxnat.xnat package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat.html" accesskey="U">copyxnat.xnat package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.commands module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-copyxnat.xnat.commands">
+<span id="copyxnat-xnat-commands-module"></span><h1>copyxnat.xnat.commands module<a class="headerlink" href="#module-copyxnat.xnat.commands" title="Permalink to this headline">¶</a></h1>
+<p>Commands defining actions that can be performed with copyxnat</p>
+<dl class="py class">
+<dt id="copyxnat.xnat.commands.Command">
+<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">Command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">function</span></em>, <em class="sig-param"><span class="n">outputs_function</span></em>, <em class="sig-param"><span class="n">reset_function</span></em>, <em class="sig-param"><span class="n">inputs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#Command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.Command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wraps a command function and its input variables</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="copyxnat.xnat.commands.CommandReturn">
+<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">CommandReturn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outputs</span></em>, <em class="sig-param"><span class="n">to_children</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">recurse</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">tostring</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#CommandReturn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.CommandReturn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for return values for a command function call</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.check_datatypes_command">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">check_datatypes_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">inputs</span></em>, <em class="sig-param"><span class="n">outputs</span></em>, <em class="sig-param"><span class="n">from_parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#check_datatypes_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.check_datatypes_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command which checks if destination server has all the
+scan datatypes that are present on the source server</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.check_datatypes_tostring">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">check_datatypes_tostring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#check_datatypes_tostring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.check_datatypes_tostring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coverts check-datatypes output to human readable form</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.command_factory">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">command_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command_string</span></em>, <em class="sig-param"><span class="n">dst_xnat</span></em>, <em class="sig-param"><span class="n">reporter</span></em>, <em class="sig-param"><span class="n">fix_scan_types</span></em>, <em class="sig-param"><span class="n">initial_result</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dst_project</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#command_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.command_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory for creating a Command wrapper</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.commands">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/copyxnat/xnat/commands.html#commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing factories for all commands</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.copy_command">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">copy_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">inputs</span></em>, <em class="sig-param"><span class="n">outputs</span></em>, <em class="sig-param"><span class="n">from_parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#copy_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.copy_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command which copies XNAT projects between servers</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.count_command">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">count_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">inputs</span></em>, <em class="sig-param"><span class="n">outputs</span></em>, <em class="sig-param"><span class="n">from_parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#count_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.count_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command which counts scans in a project</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.count_tostring">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">count_tostring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#count_tostring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.count_tostring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coverts count output to human readable form</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.export_command">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">export_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">inputs</span></em>, <em class="sig-param"><span class="n">outputs</span></em>, <em class="sig-param"><span class="n">from_parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#export_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.export_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command which exports XNAT project data onto local disk</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.xnat.commands.show_command">
+<code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">show_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">inputs</span></em>, <em class="sig-param"><span class="n">outputs</span></em>, <em class="sig-param"><span class="n">from_parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#show_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.show_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command which displays contents of XNAT projects</p>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/project-icon.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyxnat.xnat.html"
+                        title="previous chapter">copyxnat.xnat package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyxnat.xnat.copy_cache.html"
+                        title="next chapter">copyxnat.xnat.copy_cache module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/copyxnat.xnat.commands.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.copy_cache.html" title="copyxnat.xnat.copy_cache module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.html" title="copyxnat.xnat package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat.html" >copyxnat.xnat package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.commands module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

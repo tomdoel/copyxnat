@@ -1,0 +1,19 @@
+copyxnat.utils package
+======================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.utils.versioneer_version
+   copyxnat.utils.versioning
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

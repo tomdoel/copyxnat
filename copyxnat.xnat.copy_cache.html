@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat.copy_cache module &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="copyxnat.xnat.run_command module" href="copyxnat.xnat.run_command.html" />
+    <link rel="prev" title="copyxnat.xnat.commands module" href="copyxnat.xnat.commands.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.run_command.html" title="copyxnat.xnat.run_command module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.commands.html" title="copyxnat.xnat.commands module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat.html" accesskey="U">copyxnat.xnat package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.copy_cache module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-copyxnat.xnat.copy_cache">
+<span id="copyxnat-xnat-copy-cache-module"></span><h1>copyxnat.xnat.copy_cache module<a class="headerlink" href="#module-copyxnat.xnat.copy_cache" title="Permalink to this headline">¶</a></h1>
+<p>Abstraction of disk cache used to store XNAT files</p>
+<dl class="py class">
+<dt id="copyxnat.xnat.copy_cache.CacheBox">
+<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.copy_cache.</code><code class="sig-name descname">CacheBox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CacheBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CacheBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Controls caches on disk</p>
+<dl class="py method">
+<dt id="copyxnat.xnat.copy_cache.CacheBox.new_cache">
+<code class="sig-name descname">new_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CacheBox.new_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CacheBox.new_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new cache within the main cache</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="copyxnat.xnat.copy_cache.CopyCache">
+<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.copy_cache.</code><code class="sig-name descname">CopyCache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache_type</span></em>, <em class="sig-param"><span class="n">root_path</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent_rel_path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">read_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_level</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">base_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstraction of disk cache used to store XNAT files</p>
+<dl class="py method">
+<dt id="copyxnat.xnat.copy_cache.CopyCache.full_path">
+<code class="sig-name descname">full_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.full_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.full_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return absolute path to this cache</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.copy_cache.CopyCache.sub_cache">
+<code class="sig-name descname">sub_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache_type</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.sub_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.sub_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a child cache representing some level of the XNAT hierarchy
+&#64;param cache_type: The type of XNAT item
+&#64;param name: label for this cache
+&#64;return:a new <a class="reference internal" href="#copyxnat.xnat.copy_cache.CopyCache" title="copyxnat.xnat.copy_cache.CopyCache"><code class="xref py py-class docutils literal notranslate"><span class="pre">CopyCache</span></code></a> for this XNAT level</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.copy_cache.CopyCache.write_file">
+<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write to file to this cache</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.copy_cache.CopyCache.write_xml">
+<code class="sig-name descname">write_xml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_root</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.write_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.write_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write XML to a file in this cache</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/project-icon.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyxnat.xnat.commands.html"
+                        title="previous chapter">copyxnat.xnat.commands module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyxnat.xnat.run_command.html"
+                        title="next chapter">copyxnat.xnat.run_command module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/copyxnat.xnat.copy_cache.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.run_command.html" title="copyxnat.xnat.run_command module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat.commands.html" title="copyxnat.xnat.commands module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat.html" >copyxnat.xnat package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.copy_cache module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

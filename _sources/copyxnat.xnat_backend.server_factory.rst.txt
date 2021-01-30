@@ -1,0 +1,7 @@
+copyxnat.xnat\_backend.server\_factory module
+=============================================
+
+.. automodule:: copyxnat.xnat_backend.server_factory
+   :members:
+   :undoc-members:
+   :show-inheritance:

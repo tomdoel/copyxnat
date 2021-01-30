@@ -1,0 +1,18 @@
+copyxnat.pyreporter package
+===========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.pyreporter.pyreporter
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.pyreporter
+   :members:
+   :undoc-members:
+   :show-inheritance:

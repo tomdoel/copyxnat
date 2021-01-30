@@ -1,0 +1,9 @@
+copyxnat
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat
+   copyxnat
+   versioneer

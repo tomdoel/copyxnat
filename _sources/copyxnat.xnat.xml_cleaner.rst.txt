@@ -1,0 +1,7 @@
+copyxnat.xnat.xml\_cleaner module
+=================================
+
+.. automodule:: copyxnat.xnat.xml_cleaner
+   :members:
+   :undoc-members:
+   :show-inheritance:

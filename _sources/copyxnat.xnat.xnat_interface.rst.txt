@@ -1,0 +1,7 @@
+copyxnat.xnat.xnat\_interface module
+====================================
+
+.. automodule:: copyxnat.xnat.xnat_interface
+   :members:
+   :undoc-members:
+   :show-inheritance:

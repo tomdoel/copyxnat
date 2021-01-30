@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat.run_command &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.run_command</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.xnat.run_command</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;API for running the specified command on XNAT servers&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">copyxnat.pyreporter.pyreporter</span> <span class="kn">import</span> <span class="n">PyReporter</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">command_factory</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.copy_cache</span> <span class="kn">import</span> <span class="n">CacheBox</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat_backend.server_factory</span> <span class="kn">import</span> <span class="n">ServerFactory</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatServer</span><span class="p">,</span> <span class="n">XnatServerParams</span>
+
+
+<div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command_string</span><span class="p">,</span> <span class="n">src_host</span><span class="p">,</span> <span class="n">src_user</span><span class="p">,</span> <span class="n">src_pw</span><span class="p">,</span> <span class="n">dst_host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">dst_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dst_pw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">insecure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span> <span class="n">reporter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Runs the command on the specified XNAT servers</span>
+
+<span class="sd">    @param command_string: name of the command as defined in commands.py</span>
+<span class="sd">    @param src_host: hostname of XNAT server containing source data</span>
+<span class="sd">    @param src_user: username on source XNAT server</span>
+<span class="sd">    @param src_pw:  password on source XNAT server</span>
+<span class="sd">    @param dst_host: hostname of XNAT destination server</span>
+<span class="sd">    @param dst_user: username on destination XNAT server</span>
+<span class="sd">    @param dst_pw: password on destination XNAT server</span>
+<span class="sd">    @param project_filter: array of project names to process or None to process</span>
+<span class="sd">    all projects visible on the server. If a project name needs to be different</span>
+<span class="sd">    on the source and destination servers, the string should be of the form</span>
+<span class="sd">    src_project_name:dst_project_name</span>
+<span class="sd">    @param verbose: set to True for verbose output for debugging</span>
+<span class="sd">    @param insecure: set to True if using server with self-signed certificates</span>
+<span class="sd">    @param dry_run: set to True to request that write operations are not made</span>
+<span class="sd">    on the destination server, to allow testing. Note that some changes may</span>
+<span class="sd">    still take place</span>
+<span class="sd">    @param backend: the Python library used to interact with the XNAT</span>
+<span class="sd">    servers. Defaults to `pyxnat`</span>
+<span class="sd">    @param reporter: PyReporter object for user input/output and logging</span>
+<span class="sd">    @param fix_scan_types: Set to True to fix incorrect scan types when copying</span>
+<span class="sd">    @param cache_dir: Directory where downloaded or cached files will be stored</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reporter</span><span class="p">:</span>
+        <span class="n">reporter</span> <span class="o">=</span> <span class="n">PyReporter</span><span class="p">(</span><span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="n">cache_box</span> <span class="o">=</span> <span class="n">CacheBox</span><span class="p">(</span><span class="n">root_path</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">command_string</span> <span class="o">==</span> <span class="s1">&#39;export&#39;</span><span class="p">:</span>
+        <span class="n">cache_type</span> <span class="o">=</span> <span class="s1">&#39;downloads&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cache_type</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
+
+    <span class="n">base_cache</span> <span class="o">=</span> <span class="n">cache_box</span><span class="o">.</span><span class="n">new_cache</span><span class="p">(</span><span class="n">cache_type</span><span class="o">=</span><span class="n">cache_type</span><span class="p">)</span>
+
+    <span class="n">factory</span> <span class="o">=</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+    <span class="n">src_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">src_host</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">src_user</span><span class="p">,</span> <span class="n">pwd</span><span class="o">=</span><span class="n">src_pw</span><span class="p">,</span>
+                                  <span class="n">insecure</span><span class="o">=</span><span class="n">insecure</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">src_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
+                          <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span> <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dst_host</span><span class="p">:</span>
+        <span class="n">dst_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">dst_host</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">dst_user</span><span class="p">,</span> <span class="n">pwd</span><span class="o">=</span><span class="n">dst_pw</span><span class="p">,</span>
+                                      <span class="n">insecure</span><span class="o">=</span><span class="n">insecure</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
+                              <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span> <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dst_xnat</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Running </span><span class="si">{}</span><span class="s1"> command&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_string</span><span class="p">))</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command_on_servers</span><span class="p">(</span><span class="n">command_string</span><span class="o">=</span><span class="n">command_string</span><span class="p">,</span>
+                                    <span class="n">src_xnat_server</span><span class="o">=</span><span class="n">src_xnat</span><span class="p">,</span>
+                                    <span class="n">dst_xnat_server</span><span class="o">=</span><span class="n">dst_xnat</span><span class="p">,</span>
+                                    <span class="n">project_filter</span><span class="o">=</span><span class="n">project_filter</span><span class="p">,</span>
+                                    <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
+                                    <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span>
+                                    <span class="p">)</span>
+
+    <span class="n">src_xnat</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dst_host</span><span class="p">:</span>
+        <span class="n">dst_xnat</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">src_xnat</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
+    <span class="n">reporter</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s1">&#39;Output files are in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="resolve_projects"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.resolve_projects">[docs]</a><span class="k">def</span> <span class="nf">resolve_projects</span><span class="p">(</span><span class="n">single_project_filter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return source and destination project names from a src:dst string&quot;&quot;&quot;</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="n">single_project_filter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">src_project</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dst_project</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">src_project</span>
+    <span class="k">return</span> <span class="n">src_project</span><span class="p">,</span> <span class="n">dst_project</span></div>
+
+
+<div class="viewcode-block" id="run_command_on_servers"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.run_command_on_servers">[docs]</a><span class="k">def</span> <span class="nf">run_command_on_servers</span><span class="p">(</span><span class="n">command_string</span><span class="p">,</span> <span class="n">src_xnat_server</span><span class="p">,</span> <span class="n">dst_xnat_server</span><span class="p">,</span>
+                           <span class="n">reporter</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the specified command on the specified XnatServer objects</span>
+
+<span class="sd">    @param command_string: name of the command as defined in commands.py</span>
+<span class="sd">    @param src_xnat_server: Source XnatServer</span>
+<span class="sd">    @param dst_xnat_server: Destination XnatServer, if required for this command</span>
+<span class="sd">    @param reporter: PyReporter object for user input/output and logging</span>
+<span class="sd">    @param project_filter: array of project names to process or None to process</span>
+<span class="sd">    all projects visible on the server. If a project name needs to be different</span>
+<span class="sd">    on the source and destination servers, the string should be of the form</span>
+<span class="sd">    src_project_name:dst_project_name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">count_command</span> <span class="o">=</span> <span class="n">command_factory</span><span class="p">(</span><span class="n">command_string</span><span class="o">=</span><span class="s1">&#39;count_scans&#39;</span><span class="p">,</span>
+                                    <span class="n">dst_xnat</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="p">,</span>
+                                    <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                    <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
+
+    <span class="n">server_projects</span> <span class="o">=</span> <span class="n">src_xnat_server</span><span class="o">.</span><span class="n">project_list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">server_projects</span><span class="p">:</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No visible projects found on the server&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Allow project_filter to be a single string</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project_filter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">project_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">project_filter</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">project_filter</span><span class="p">:</span>
+        <span class="c1"># If project filter specified then we process specified projects</span>
+        <span class="n">projects_to_process</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">project_filter</span><span class="p">:</span>
+            <span class="n">src_project</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">resolve_projects</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">src_project</span> <span class="ow">in</span> <span class="n">server_projects</span><span class="p">:</span>
+                <span class="n">projects_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Skipping project </span><span class="si">{}</span><span class="s2">: not found on server&quot;</span><span class="o">.</span>
+                                 <span class="nb">format</span><span class="p">(</span><span class="n">src_project</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If no project filter specified then we process all visible projects</span>
+        <span class="n">projects_to_process</span> <span class="o">=</span> <span class="n">server_projects</span>
+
+    <span class="n">global_results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">projects_to_process</span><span class="p">:</span>
+        <span class="n">src_project</span><span class="p">,</span> <span class="n">dst_project</span> <span class="o">=</span> <span class="n">resolve_projects</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">command_factory</span><span class="p">(</span><span class="n">command_string</span><span class="o">=</span><span class="n">command_string</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                  <span class="n">dst_xnat</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="p">,</span>
+                                  <span class="n">dst_project</span><span class="o">=</span><span class="n">dst_project</span><span class="p">,</span>
+                                  <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
+                                  <span class="n">initial_result</span><span class="o">=</span><span class="n">global_results</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">],</span>
+                                  <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
+
+        <span class="n">server_project</span> <span class="o">=</span> <span class="n">src_xnat_server</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">src_project</span><span class="p">)</span>
+
+        <span class="c1"># Compute number of scans in project</span>
+        <span class="n">count_command</span><span class="o">.</span><span class="n">reset_function</span><span class="p">()</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">start_progress</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Counting Scans for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server_project</span><span class="o">.</span><span class="n">label</span><span class="p">),</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">server_project</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span>
+            <span class="n">function</span><span class="o">=</span><span class="n">count_command</span><span class="o">.</span><span class="n">function</span><span class="p">,</span>
+            <span class="n">from_parent</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="p">,</span>
+            <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">complete_progress</span><span class="p">()</span>
+        <span class="n">num_scans</span> <span class="o">=</span> <span class="n">count_command</span><span class="o">.</span><span class="n">outputs_function</span><span class="p">()[</span><span class="s1">&#39;result&#39;</span><span class="p">][</span><span class="s1">&#39;num_scans&#39;</span><span class="p">]</span>
+
+        <span class="n">reporter</span><span class="o">.</span><span class="n">start_progress</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> scans for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_string</span><span class="p">,</span> <span class="n">num_scans</span><span class="p">,</span>
+                                                <span class="n">server_project</span><span class="o">.</span><span class="n">label</span><span class="p">),</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="n">num_scans</span><span class="p">)</span>
+        <span class="n">server_project</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span>
+            <span class="n">function</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">function</span><span class="p">,</span>
+            <span class="n">from_parent</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="p">,</span>
+            <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">complete_progress</span><span class="p">()</span>
+
+        <span class="c1"># Retrieve results from project run to pass to next run</span>
+        <span class="n">global_results</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">outputs_function</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">global_results</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.run_command</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

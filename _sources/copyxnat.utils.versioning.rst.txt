@@ -1,0 +1,7 @@
+copyxnat.utils.versioning module
+================================
+
+.. automodule:: copyxnat.utils.versioning
+   :members:
+   :undoc-members:
+   :show-inheritance:

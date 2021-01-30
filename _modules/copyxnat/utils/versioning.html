@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.utils.versioning &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.versioning</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.utils.versioning</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utility files for constructing a version string</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">VERSION_TAG_REGEX</span> <span class="o">=</span> <span class="s1">&#39;^v[0-9.]+(dev)?$&#39;</span>
+
+<span class="c1"># Could be pip install from repository, leading to local version identifiers</span>
+<span class="n">PIP_VERSION_REGEX</span> <span class="o">=</span> \
+    <span class="sa">r</span><span class="s1">&#39;^[0-9.]+(dev)?(\+[0-9]+\.g[A-Fa-f0-9]+(?:.dirty|.broken)?)?$&#39;</span>
+
+
+<span class="n">VERSION_TAG_GLOB</span> <span class="o">=</span> <span class="s1">&#39;v[0-9]*&#39;</span>  <span class="c1"># Don&#39;t confuse with regex; matches v+digit+...</span>
+<span class="n">HASH_REGEX</span> <span class="o">=</span> <span class="s1">&#39;^g[A-Fa-f0-9]+$&#39;</span>  <span class="c1"># git describe prefixes hash with &#39;g&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_get_module_path</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return the path to this module&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="get_version_string"><a class="viewcode-back" href="../../../copyxnat.utils.versioning.html#copyxnat.utils.versioning.get_version_string">[docs]</a><span class="k">def</span> <span class="nf">get_version_string</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a user-visible string describing the name and product version</span>
+
+<span class="sd">    This is a safe function that will never throw an exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">version_string</span> <span class="o">=</span> <span class="n">get_version</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">version_string</span><span class="p">:</span>
+        <span class="n">version_string</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+
+    <span class="k">return</span> <span class="s2">&quot;copyxnat version &quot;</span> <span class="o">+</span> <span class="n">version_string</span></div>
+
+
+<div class="viewcode-block" id="version_from_pip"><a class="viewcode-back" href="../../../copyxnat.utils.versioning.html#copyxnat.utils.versioning.version_from_pip">[docs]</a><span class="k">def</span> <span class="nf">version_from_pip</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return a version string based on the git repo, conforming to PEP440&quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">pkg_resources</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="n">version_string</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;copyxnat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+        <span class="k">if</span> <span class="n">_check_pip_version</span><span class="p">(</span><span class="n">version_string</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">version_string</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">except</span><span class="p">:</span>  <span class="c1"># pylint: disable=bare-except</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="version_from_versioneer"><a class="viewcode-back" href="../../../copyxnat.utils.versioning.html#copyxnat.utils.versioning.version_from_versioneer">[docs]</a><span class="k">def</span> <span class="nf">version_from_versioneer</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return a version string based on the git repo, conforming to PEP440&quot;&quot;&quot;</span>
+
+    <span class="c1"># Attempt to get the version string from the git repository</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.versioneer_version</span> <span class="kn">import</span> <span class="n">get_versions</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="n">version_info</span> <span class="o">=</span> <span class="n">get_versions</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">version_info</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">version_info</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">except</span><span class="p">:</span>  <span class="c1"># pylint: disable=bare-except</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="k">def</span> <span class="nf">_check_pip_version</span><span class="p">(</span><span class="n">version_string</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">PIP_VERSION_REGEX</span><span class="p">,</span> <span class="n">version_string</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="get_version"><a class="viewcode-back" href="../../../copyxnat.utils.versioning.html#copyxnat.utils.versioning.get_version">[docs]</a><span class="k">def</span> <span class="nf">get_version</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a user-visible string describing the product version</span>
+
+<span class="sd">    This is a safe function that will never throw an exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">version_string</span> <span class="o">=</span> <span class="n">version_from_versioneer</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">version_string</span><span class="p">:</span>
+        <span class="n">version_string</span> <span class="o">=</span> <span class="n">version_from_pip</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">version_string</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.versioning</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

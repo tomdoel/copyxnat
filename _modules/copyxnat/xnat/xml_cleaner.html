@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat.xml_cleaner &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.xml_cleaner</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.xnat.xml_cleaner</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;Remove and remap XML tags for xml transfer between XNAT servers&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">xml.etree.cElementTree</span> <span class="kn">import</span> <span class="n">register_namespace</span><span class="p">,</span> <span class="n">XML</span>
+
+
+<div class="viewcode-block" id="XmlCleaner"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner">[docs]</a><span class="k">class</span> <span class="nc">XmlCleaner</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove and remap XML tags for xml transfer between XNAT servers&quot;&quot;&quot;</span>
+
+    <span class="n">ICR_SUBJECT_ID_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://icr.ac.uk/icr}subjectID&#39;</span>
+    <span class="n">XNAT_IMAGE_SESSION_ID</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}image_session_ID&#39;</span>
+    <span class="n">XNAT_SUBJECT_ID</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}subject_ID&#39;</span>
+    <span class="n">XNAT_OUT_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}out&#39;</span>
+    <span class="n">XNAT_EXPERIMENTS_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}experiments&#39;</span>
+    <span class="n">XNAT_SCANS_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}scans&#39;</span>
+    <span class="n">XNAT_RESOURCES_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}resources&#39;</span>
+    <span class="n">XNAT_ASSESSORS_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}assessors&#39;</span>
+    <span class="n">XNAT_PREARCHIVE_PATH_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}prearchivePath&#39;</span>
+    <span class="n">XNAT_SHARING_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}sharing&#39;</span>
+    <span class="n">XNAT_FILE_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}file&#39;</span>
+    <span class="n">XNAT_MODALITY_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}modality&#39;</span>
+
+    <span class="n">XNAT_IMAGE_SCAN_DATA_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageScanData&#39;</span>
+    <span class="n">XNAT_MR_SCAN</span> <span class="o">=</span> <span class="s1">&#39;xnat:MRScan&#39;</span>
+    <span class="n">XNAT_CT_SCAN</span> <span class="o">=</span> <span class="s1">&#39;xnat:CTScan&#39;</span>
+    <span class="n">XNAT_OTHER_SCAN</span> <span class="o">=</span> <span class="s1">&#39;xnat:OtherDicomScan&#39;</span>
+
+    <span class="n">XNAT_PROJECT_ID_ATTR</span> <span class="o">=</span> <span class="s1">&#39;XNAT_PROJECT_ID_ATTR&#39;</span>
+    <span class="n">XNAT_SUBJECT_ID_ATTR</span> <span class="o">=</span> <span class="s1">&#39;XNAT_SUBJECT_ID_ATTR&#39;</span>
+    <span class="n">XNAT_SESSION_ID_ATTR</span> <span class="o">=</span> <span class="s1">&#39;XNAT_SESSION_ID_ATTR&#39;</span>
+    <span class="n">XNAT_SCAN_ID_ATTR</span> <span class="o">=</span> <span class="s1">&#39;XNAT_SCAN_ID_ATTR&#39;</span>
+    <span class="n">XNAT_ASSESSOR_LABEL_ATTR</span> <span class="o">=</span> <span class="s1">&#39;XNAT_ASSESSOR_LABEL_ATTR&#39;</span>
+    <span class="n">XNAT_ASSESSOR_PROJECT_ATTR</span> <span class="o">=</span> <span class="s1">&#39;XNAT_ASSESSOR_PROJECT_ATTR&#39;</span>
+
+    <span class="n">TAGS_TO_REMAP</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">ICR_SUBJECT_ID_TAG</span><span class="p">:</span> <span class="n">XNAT_SUBJECT_ID_ATTR</span><span class="p">,</span>
+        <span class="n">XNAT_SUBJECT_ID</span><span class="p">:</span> <span class="n">XNAT_SUBJECT_ID_ATTR</span><span class="p">,</span>
+        <span class="n">XNAT_IMAGE_SESSION_ID</span><span class="p">:</span> <span class="n">XNAT_SESSION_ID_ATTR</span>
+    <span class="p">}</span>
+
+    <span class="n">TAGS_TO_DELETE</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">XNAT_OUT_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_EXPERIMENTS_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_SCANS_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_RESOURCES_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_ASSESSORS_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_PREARCHIVE_PATH_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_SHARING_TAG</span><span class="p">,</span>
+        <span class="n">XNAT_FILE_TAG</span>
+    <span class="p">}</span>
+
+    <span class="n">MODALITY_TO_SCAN</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;MR&#39;</span><span class="p">:</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}MRScan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CT&#39;</span><span class="p">:</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}CTScan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;US&#39;</span><span class="p">:</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}USScan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PT&#39;</span><span class="p">:</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}PETScan&#39;</span>
+    <span class="p">}</span>
+
+    <span class="n">NAMESPACES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;xnat&#39;</span><span class="p">:</span> <span class="s1">&#39;http://nrg.wustl.edu/xnat&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;prov&#39;</span><span class="p">:</span> <span class="s1">&#39;http://www.nbirn.net/prov&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;xdat&#39;</span><span class="p">:</span> <span class="s1">&#39;http://nrg.wustl.edu/xdat&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;xs&#39;</span><span class="p">:</span> <span class="s1">&#39;http://www.w3.org/2001/XMLSchema&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;proc&#39;</span><span class="p">:</span> <span class="s1">&#39;http://nrg.wustl.edu/proc&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fs&#39;</span><span class="p">:</span> <span class="s1">&#39;http://nrg.wustl.edu/fs&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;icr&#39;</span><span class="p">:</span> <span class="s1">&#39;http://icr.ac.uk/icr&#39;</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span> <span class="o">=</span> <span class="n">reporter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag_values</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="XmlCleaner.xml_from_string"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.xml_from_string">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">xml_from_string</span><span class="p">(</span><span class="n">xml_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert XML string to ElementTree with XNAT namespaces&quot;&quot;&quot;</span>
+
+        <span class="n">root</span> <span class="o">=</span> <span class="n">XML</span><span class="p">(</span><span class="n">xml_string</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">namespace</span> <span class="ow">in</span> <span class="n">XmlCleaner</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">register_namespace</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">root</span></div>
+
+<div class="viewcode-block" id="XmlCleaner.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">attr_to_tag_map</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove or XML remap tags that change between XNAT servers</span>
+
+<span class="sd">        @param xml_root: ElementTree root of the XML to remap</span>
+<span class="sd">        @param attr_to_tag_map: dict of attribute names in the root element to</span>
+<span class="sd">        the identifiers in the stored tag mapping identifiers</span>
+<span class="sd">        @return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Delete all attributes that change on dest server</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attr_to_tag_map</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">fix_scan_types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">XNAT_IMAGE_SCAN_DATA_TAG</span><span class="p">:</span>
+                <span class="n">new_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">XNAT_OTHER_SCAN</span>
+                <span class="n">modalities</span> <span class="o">=</span> <span class="p">[</span><span class="n">mod</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span>
+                              <span class="n">xml_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">XNAT_MODALITY_TAG</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">)]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">modalities</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">new_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODALITY_TO_SCAN</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">modalities</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">XNAT_OTHER_SCAN</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Modifying scan type </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">XNAT_IMAGE_SCAN_DATA_TAG</span><span class="p">,</span> <span class="n">new_tag</span><span class="p">))</span>
+                <span class="n">xml_root</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">new_tag</span>
+
+        <span class="c1"># Remove tags to delete</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TAGS_TO_DELETE</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">):</span>
+                <span class="n">xml_root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+        <span class="c1"># Remap all tags that change on dest server</span>
+        <span class="c1"># for tag, values in self.tag_values.items():</span>
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">tag_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TAGS_TO_REMAP</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">):</span>
+                <span class="n">tag_remap_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_values</span><span class="p">[</span><span class="n">tag_id</span><span class="p">]</span>
+                <span class="n">src_value</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">if</span> <span class="n">src_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tag_remap_dict</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Tag </span><span class="si">{}</span><span class="s1">: no new value for </span><span class="si">{}</span><span class="s1"> found&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                                                   <span class="n">tag</span><span class="p">,</span>
+                                                                   <span class="n">src_value</span><span class="p">))</span>
+
+                <span class="n">dst_value</span> <span class="o">=</span> <span class="n">tag_remap_dict</span><span class="p">[</span><span class="n">src_value</span><span class="p">]</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">dst_value</span>
+
+        <span class="k">return</span> <span class="n">xml_root</span></div>
+
+<div class="viewcode-block" id="XmlCleaner.add_tag_remaps"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.add_tag_remaps">[docs]</a>    <span class="k">def</span> <span class="nf">add_tag_remaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_xml_root</span><span class="p">,</span> <span class="n">dst_xml_root</span><span class="p">,</span> <span class="n">attr_to_tag_map</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the remapping dictionary to add add before and after values</span>
+<span class="sd">        for the tags in the map</span>
+<span class="sd">        @param src_xml_root:</span>
+<span class="sd">        @param dst_xml_root:</span>
+<span class="sd">        @param attr_to_tag_map:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">global_attr_name</span> <span class="ow">in</span> <span class="n">attr_to_tag_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">src_xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                <span class="n">attr_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">global_attr_name</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">src_value</span> <span class="o">=</span> <span class="n">src_xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+                <span class="n">dst_value</span> <span class="o">=</span> <span class="n">dst_xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+                <span class="n">attr_dict</span><span class="p">[</span><span class="n">src_value</span><span class="p">]</span> <span class="o">=</span> <span class="n">dst_value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tag_values</span><span class="p">[</span><span class="n">global_attr_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr_dict</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.xml_cleaner</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

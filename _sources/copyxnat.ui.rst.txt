@@ -1,0 +1,18 @@
+copyxnat.ui package
+===================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.ui.copyxnat_command_line
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.ui
+   :members:
+   :undoc-members:
+   :show-inheritance:
