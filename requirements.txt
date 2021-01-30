@@ -1,0 +1,8 @@
+# This file lists the python packages that your software depends on.
+# It is used by pip to manage software dependencies. It is not to be
+# confused with the software requirements, which are listed in
+# doc/requirements.rst
+pyxnat~=1.4
+
+configparser~=5.0.1
+urllib3~=1.26.2
