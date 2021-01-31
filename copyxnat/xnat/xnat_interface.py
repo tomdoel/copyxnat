@@ -298,12 +298,12 @@ class XnatProject(XnatParentItem):
                     for subject in self.interface.subjects()]
         return subjects
 
-    def clean(self, cleaned_xml_root, fix_scan_types, destination_parent,
+    def clean(self, xml_root, fix_scan_types, destination_parent,
               label):
         disallowed = self.interface.get_disallowed_project_ids(
-            parent_pyxnatitem=destination_parent, label=label)
+            server=destination_parent, label=label)
         cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
-            xml_root=cleaned_xml_root,
+            xml_root=xml_root,
             disallowed_ids=disallowed["secondary_ids"],
             disallowed_names=disallowed["names"]
         )
