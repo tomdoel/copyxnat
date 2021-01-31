@@ -36,7 +36,6 @@ CopyXnat is released under the MIT License. Please see the `license file`_ for d
 .. _`Documentation`: https://tomdoel.github.io/copyxnat/
 .. _`Source code`: https://github.com/tomdoel/copyxnat
 .. _`PyPi`: https://pypi.org/project/copyxnat
-.. _`Docker`: https://hub.docker.com/r/tomdoel/copyxnat
-.. _`Versioneer`: https://github.com/python-versioneer/python-versioneer
+.. _`Docker Hub`: https://hub.docker.com/r/tomdoel/copyxnat
 .. _`license file`: https://github.com/tomdoel/copyxnat/blob/master/LICENSE
 
