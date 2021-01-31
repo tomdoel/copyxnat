@@ -19,7 +19,7 @@ def main(args=None):
     parser.add_argument(
         "--version",
         action='version',
-        version='copyxnat version ' + friendly_version_string
+        version=friendly_version_string
     )
 
     subparsers = parser.add_subparsers(dest='command')
