@@ -4,8 +4,7 @@
    contain the root `toctree` directive.
 
 
-.. include:: ../../README.rst
-
+.. mdinclude:: ../../README.md
 
 API reference
 ^^^^^^^^^^^^^
