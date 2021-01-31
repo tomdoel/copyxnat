@@ -21,6 +21,9 @@ class XmlCleaner:
     XNAT_SHARING_TAG = '{http://nrg.wustl.edu/xnat}sharing'
     XNAT_FILE_TAG = '{http://nrg.wustl.edu/xnat}file'
     XNAT_MODALITY_TAG = '{http://nrg.wustl.edu/xnat}modality'
+    XNAT_PROJECT_NAME_TAG = '{http://nrg.wustl.edu/xnat}name'
+
+    ATTR_SECONDARY_PROJECT_ID = 'secondary_ID'
 
     XNAT_IMAGE_SCAN_DATA_TAG = '{http://nrg.wustl.edu/xnat}imageScanData'
     XNAT_MR_SCAN = 'xnat:MRScan'
@@ -81,13 +84,46 @@ class XmlCleaner:
             register_namespace(prefix, namespace)
         return root
 
+    def make_project_names_unique(self, xml_root, disallowed_names,
+                                  disallowed_ids):
+        """
+        Update project XML tags and attributes to ensure unique values
+
+        @param xml_root: ElementTree root of the XML to remap
+        @param disallowed_names: names already in use by other projects
+        @param disallowed_ids: secondary IDs already in use by other projects
+        """
+
+        # Get current values of secondary ID and name
+        secondary_id = xml_root.attrib[self.ATTR_SECONDARY_PROJECT_ID]
+        name = xml_root.find(self.XNAT_PROJECT_NAME_TAG, self.NAMESPACES).text
+
+        # Find new values that are not already present on the server, by adding
+        # a " copy x" to the name and ID string. We keep the index x the
+        # same for both to avoid confusion
+        new_id = secondary_id
+        new_name = name
+        index = 0
+        while new_id in disallowed_ids or new_name in disallowed_names:
+            index += 1
+            new_id = secondary_id + ' copy {}'.format(index)
+            new_name = name + ' copy {}'.format(index)
+
+        # Update the XML values
+        xml_root.attrib[self.ATTR_SECONDARY_PROJECT_ID] = new_id
+        for child in xml_root.findall(self.XNAT_PROJECT_NAME_TAG,
+                                      self.NAMESPACES):
+            child.text = new_name
+        return xml_root
+
     def clean(self, xml_root, attr_to_tag_map, fix_scan_types):
         """
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
         @param attr_to_tag_map: dict of attribute names in the root element to
-        the identifiers in the stored tag mapping identifiers
+        @param xnat_type: Enumeration describing the type of XNAT item
+        @param fix_scan_types: set to True to correct ambiguous scan types
         @return:
         """
         # Delete all attributes that change on dest server

@@ -116,8 +116,9 @@ class XnatItem(XnatBase):
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
 
-        :dst_label: label for destination object, or None to use source label
         :destination_parent: parent XnatItem under which to make the duplicate
+        :fix_scan_types: If True then ambiguous scan types will be corrected
+        :dst_label: label for destination object, or None to use source label
         :return: a new XnatItem corresponding to the duplicate item
         """
 
@@ -232,15 +233,16 @@ class XnatParentItem(XnatItem):
         # Make sure we make a copy, as we need to preserve the original
         cleaned_xml_root = self.get_xml()
 
-        cleaned_xml_root = self.xml_cleaner.clean(
-            xml_root=cleaned_xml_root,
-            attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
-            fix_scan_types=fix_scan_types)
+        label = dst_label or self.label
+
+        cleaned_xml_root = self.clean(xml_root=cleaned_xml_root,
+                                      fix_scan_types=fix_scan_types,
+                                      destination_parent=destination_parent,
+                                      label=label)
 
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
 
-        label = dst_label or self.label
         output = self.get_or_create_child(
             parent=destination_parent,
             label=label,
@@ -257,6 +259,22 @@ class XnatParentItem(XnatItem):
                                         final_xml_root,
                                         self._remap_attrs)  # pylint: disable=no-member
         return output
+
+    def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
+        """
+        Modify XML values for items copied between XNAT projects, to allow
+        for changes in unique identifiers.
+
+        :xml_root: parent XML node for the xml contents to be modified
+        :fix_scan_types: if True then ambiguous scan types will be corrected
+        :destination_parent: parent XnatItem under which to make the duplicate
+        :label: label for destination object
+        :return: the modified xml_root
+        """
+        return self.xml_cleaner.clean(
+            xml_root=xml_root,
+            attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
+            fix_scan_types=fix_scan_types)
 
     def export(self):
         src_xml_root = self.get_xml()
@@ -279,6 +297,21 @@ class XnatProject(XnatParentItem):
                                 xml_cleaner=self.xml_cleaner)
                     for subject in self.interface.subjects()]
         return subjects
+
+    def clean(self, cleaned_xml_root, fix_scan_types, destination_parent,
+              label):
+        disallowed = self.interface.get_disallowed_project_ids(
+            parent_pyxnatitem=destination_parent, label=label)
+        cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
+            xml_root=cleaned_xml_root,
+            disallowed_ids=disallowed["secondary_ids"],
+            disallowed_names=disallowed["names"]
+        )
+
+        return self.xml_cleaner.clean(
+            xml_root=cleaned_xml_root,
+            attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
+            fix_scan_types=fix_scan_types)
 
 
 class XnatSubject(XnatParentItem):
