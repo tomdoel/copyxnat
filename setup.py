@@ -6,20 +6,22 @@ Setup for copyxnat
 from setuptools import setup, find_packages
 import versioneer
 from copyxnat.utils.versioning import get_version
+from os import path
 
 version_git = get_version()
 
 # Get the long description
-with open('README.rst') as f:
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='copyxnat',
     version=version_git,
     cmdclass=versioneer.get_cmdclass(),
-    description='copyxnat is a python utility for copying XNAT projects from one XNAT server to another',
+    description='CopyXnat is a python utility for copying XNAT projects from one XNAT server to another',
     long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
     url='https://github.com/tomdoel/copyxnat',
     author='Tom Doel',
     license='MIT License',
