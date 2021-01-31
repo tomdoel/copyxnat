@@ -170,6 +170,27 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatProject.get_disallowed_project_ids">
+<em class="property">static </em><code class="sig-name descname">get_disallowed_project_ids</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">server</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatProject.get_disallowed_project_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.get_disallowed_project_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return arrays of project names and secondary IDs that cannot be used
+for the destination project because they are already in use by other
+projects on this server. If the project already exists then the name
+and ID it is currently using are allowed (ie they will not be included
+in the disallowed lists).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server</strong> – the XnatServer from which to get the disallowed IDs</p></li>
+<li><p><strong>label</strong> – the label of the project which</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatProject.subjects">
 <code class="sig-name descname">subjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatProject.subjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.subjects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return array of PyXnatSubject wrappers for this project</p>

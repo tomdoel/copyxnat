@@ -61,6 +61,9 @@
     <span class="n">XNAT_SHARING_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}sharing&#39;</span>
     <span class="n">XNAT_FILE_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}file&#39;</span>
     <span class="n">XNAT_MODALITY_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}modality&#39;</span>
+    <span class="n">XNAT_PROJECT_NAME_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}name&#39;</span>
+
+    <span class="n">ATTR_SECONDARY_PROJECT_ID</span> <span class="o">=</span> <span class="s1">&#39;secondary_ID&#39;</span>
 
     <span class="n">XNAT_IMAGE_SCAN_DATA_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageScanData&#39;</span>
     <span class="n">XNAT_MR_SCAN</span> <span class="o">=</span> <span class="s1">&#39;xnat:MRScan&#39;</span>
@@ -121,13 +124,46 @@
             <span class="n">register_namespace</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">root</span></div>
 
+<div class="viewcode-block" id="XmlCleaner.make_project_names_unique"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.make_project_names_unique">[docs]</a>    <span class="k">def</span> <span class="nf">make_project_names_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">disallowed_names</span><span class="p">,</span>
+                                  <span class="n">disallowed_ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update project XML tags and attributes to ensure unique values</span>
+
+<span class="sd">        @param xml_root: ElementTree root of the XML to remap</span>
+<span class="sd">        @param disallowed_names: names already in use by other projects</span>
+<span class="sd">        @param disallowed_ids: secondary IDs already in use by other projects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get current values of secondary ID and name</span>
+        <span class="n">secondary_id</span> <span class="o">=</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ATTR_SECONDARY_PROJECT_ID</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">XNAT_PROJECT_NAME_TAG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="c1"># Find new values that are not already present on the server, by adding</span>
+        <span class="c1"># a &quot; copy x&quot; to the name and ID string. We keep the index x the</span>
+        <span class="c1"># same for both to avoid confusion</span>
+        <span class="n">new_id</span> <span class="o">=</span> <span class="n">secondary_id</span>
+        <span class="n">new_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">new_id</span> <span class="ow">in</span> <span class="n">disallowed_ids</span> <span class="ow">or</span> <span class="n">new_name</span> <span class="ow">in</span> <span class="n">disallowed_names</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">new_id</span> <span class="o">=</span> <span class="n">secondary_id</span> <span class="o">+</span> <span class="s1">&#39; copy </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">new_name</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39; copy </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="c1"># Update the XML values</span>
+        <span class="n">xml_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ATTR_SECONDARY_PROJECT_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_id</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">XNAT_PROJECT_NAME_TAG</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">):</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">new_name</span>
+        <span class="k">return</span> <span class="n">xml_root</span></div>
+
 <div class="viewcode-block" id="XmlCleaner.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">attr_to_tag_map</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove or XML remap tags that change between XNAT servers</span>
 
 <span class="sd">        @param xml_root: ElementTree root of the XML to remap</span>
 <span class="sd">        @param attr_to_tag_map: dict of attribute names in the root element to</span>
-<span class="sd">        the identifiers in the stored tag mapping identifiers</span>
+<span class="sd">        @param xnat_type: Enumeration describing the type of XNAT item</span>
+<span class="sd">        @param fix_scan_types: set to True to correct ambiguous scan types</span>
 <span class="sd">        @return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Delete all attributes that change on dest server</span>

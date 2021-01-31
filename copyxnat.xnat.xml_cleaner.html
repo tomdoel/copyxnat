@@ -56,6 +56,11 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Remove and remap XML tags for xml transfer between XNAT servers</p>
 <dl class="py attribute">
+<dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.ATTR_SECONDARY_PROJECT_ID">
+<code class="sig-name descname">ATTR_SECONDARY_PROJECT_ID</code><em class="property"> = 'secondary_ID'</em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.ATTR_SECONDARY_PROJECT_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.ICR_SUBJECT_ID_TAG">
 <code class="sig-name descname">ICR_SUBJECT_ID_TAG</code><em class="property"> = '{http://icr.ac.uk/icr}subjectID'</em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.ICR_SUBJECT_ID_TAG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -151,6 +156,11 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.XNAT_PROJECT_NAME_TAG">
+<code class="sig-name descname">XNAT_PROJECT_NAME_TAG</code><em class="property"> = '{http://nrg.wustl.edu/xnat}name'</em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.XNAT_PROJECT_NAME_TAG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.XNAT_RESOURCES_TAG">
 <code class="sig-name descname">XNAT_RESOURCES_TAG</code><em class="property"> = '{http://nrg.wustl.edu/xnat}resources'</em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.XNAT_RESOURCES_TAG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -201,8 +211,18 @@ for the tags in the map
 <dd><p>Remove or XML remap tags that change between XNAT servers</p>
 <p>&#64;param xml_root: ElementTree root of the XML to remap
 &#64;param attr_to_tag_map: dict of attribute names in the root element to
-the identifiers in the stored tag mapping identifiers
+&#64;param xnat_type: Enumeration describing the type of XNAT item
+&#64;param fix_scan_types: set to True to correct ambiguous scan types
 &#64;return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.make_project_names_unique">
+<code class="sig-name descname">make_project_names_unique</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_root</span></em>, <em class="sig-param"><span class="n">disallowed_names</span></em>, <em class="sig-param"><span class="n">disallowed_ids</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xml_cleaner.html#XmlCleaner.make_project_names_unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.make_project_names_unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update project XML tags and attributes to ensure unique values</p>
+<p>&#64;param xml_root: ElementTree root of the XML to remap
+&#64;param disallowed_names: names already in use by other projects
+&#64;param disallowed_ids: secondary IDs already in use by other projects</p>
 </dd></dl>
 
 <dl class="py method">

@@ -167,6 +167,31 @@
 <div class="viewcode-block" id="PyXnatProject"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject">[docs]</a><span class="k">class</span> <span class="nc">PyXnatProject</span><span class="p">(</span><span class="n">PyXnatItemWithResources</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper around a pyxnat project interface&quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="PyXnatProject.get_disallowed_project_ids"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.get_disallowed_project_ids">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_disallowed_project_ids</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return arrays of project names and secondary IDs that cannot be used</span>
+<span class="sd">        for the destination project because they are already in use by other</span>
+<span class="sd">        projects on this server. If the project already exists then the name</span>
+<span class="sd">        and ID it is currently using are allowed (ie they will not be included</span>
+<span class="sd">        in the disallowed lists).</span>
+
+<span class="sd">        :param server: the XnatServer from which to get the disallowed IDs</span>
+<span class="sd">        :param label: the label of the project which</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">project_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">project</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]:</span> <span class="n">project</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span>
+            <span class="n">server</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">_get_json</span><span class="p">(</span><span class="s1">&#39;/REST/projects&#39;</span><span class="p">)}</span>  <span class="c1"># pylint: disable=protected-access</span>
+
+        <span class="n">disallowed_secondary_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">disallowed_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pr_id</span><span class="p">,</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">project_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pr_id</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+                <span class="n">disallowed_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                <span class="n">disallowed_secondary_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;names&quot;</span><span class="p">:</span> <span class="n">disallowed_names</span><span class="p">,</span>
+                <span class="s2">&quot;secondary_ids&quot;</span><span class="p">:</span> <span class="n">disallowed_secondary_ids</span><span class="p">}</span></div>
+
 <div class="viewcode-block" id="PyXnatProject.create"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_pyxnatitem</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>

@@ -112,14 +112,17 @@
 <dd><p>Make a copy of this item on a different server, if it doesn’t already
 exist, and return an XnatItem interface to the duplicate item.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Destination_parent</dt>
+<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+</dd>
+<dt class="field-even">Fix_scan_types</dt>
+<dd class="field-even"><p>If True then ambiguous scan types will be corrected</p>
+</dd>
 <dt class="field-odd">Dst_label</dt>
 <dd class="field-odd"><p>label for destination object, or None to use source label</p>
 </dd>
-<dt class="field-even">Destination_parent</dt>
-<dd class="field-even"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a new XnatItem corresponding to the duplicate item</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new XnatItem corresponding to the duplicate item</p>
 </dd>
 </dl>
 </dd></dl>
@@ -173,19 +176,46 @@ it doesn’t already exist</p>
 <p>Base class for item in the XNAT data hierarchy which can contain
 resources and child items</p>
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatParentItem.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_root</span></em>, <em class="sig-param"><span class="n">fix_scan_types</span></em>, <em class="sig-param"><span class="n">destination_parent</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatParentItem.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatParentItem.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify XML values for items copied between XNAT projects, to allow
+for changes in unique identifiers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Xml_root</dt>
+<dd class="field-odd"><p>parent XML node for the xml contents to be modified</p>
+</dd>
+<dt class="field-even">Fix_scan_types</dt>
+<dd class="field-even"><p>if True then ambiguous scan types will be corrected</p>
+</dd>
+<dt class="field-odd">Destination_parent</dt>
+<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+</dd>
+<dt class="field-even">Label</dt>
+<dd class="field-even"><p>label for destination object</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the modified xml_root</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatParentItem.duplicate">
 <code class="sig-name descname">duplicate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination_parent</span></em>, <em class="sig-param"><span class="n">fix_scan_types</span></em>, <em class="sig-param"><span class="n">dst_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dry_run</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatParentItem.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatParentItem.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a copy of this item on a different server, if it doesn’t already
 exist, and return an XnatItem interface to the duplicate item.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Destination_parent</dt>
+<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+</dd>
+<dt class="field-even">Fix_scan_types</dt>
+<dd class="field-even"><p>If True then ambiguous scan types will be corrected</p>
+</dd>
 <dt class="field-odd">Dst_label</dt>
 <dd class="field-odd"><p>label for destination object, or None to use source label</p>
 </dd>
-<dt class="field-even">Destination_parent</dt>
-<dd class="field-even"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a new XnatItem corresponding to the duplicate item</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new XnatItem corresponding to the duplicate item</p>
 </dd>
 </dl>
 </dd></dl>
@@ -234,6 +264,30 @@ exist, and return an XnatItem interface to the duplicate item.</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat.xnat_interface.XnatParentItem" title="copyxnat.xnat.xnat_interface.XnatParentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.xnat_interface.XnatParentItem</span></code></a></p>
 <p>Wrapper for access to an XNAT project</p>
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatProject.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_root</span></em>, <em class="sig-param"><span class="n">fix_scan_types</span></em>, <em class="sig-param"><span class="n">destination_parent</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatProject.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatProject.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify XML values for items copied between XNAT projects, to allow
+for changes in unique identifiers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Xml_root</dt>
+<dd class="field-odd"><p>parent XML node for the xml contents to be modified</p>
+</dd>
+<dt class="field-even">Fix_scan_types</dt>
+<dd class="field-even"><p>if True then ambiguous scan types will be corrected</p>
+</dd>
+<dt class="field-odd">Destination_parent</dt>
+<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+</dd>
+<dt class="field-even">Label</dt>
+<dd class="field-even"><p>label for destination object</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the modified xml_root</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatProject.get_child_items">
 <code class="sig-name descname">get_child_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatProject.get_child_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatProject.get_child_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return non-resource child XnatItems of this object</p>
@@ -265,14 +319,17 @@ exist, and return an XnatItem interface to the duplicate item.</p>
 <dd><p>Make a copy of this item on a different server, if it doesn’t already
 exist, and return an XnatItem interface to the duplicate item.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Destination_parent</dt>
+<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+</dd>
+<dt class="field-even">Fix_scan_types</dt>
+<dd class="field-even"><p>If True then ambiguous scan types will be corrected</p>
+</dd>
 <dt class="field-odd">Dst_label</dt>
 <dd class="field-odd"><p>label for destination object, or None to use source label</p>
 </dd>
-<dt class="field-even">Destination_parent</dt>
-<dd class="field-even"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a new XnatItem corresponding to the duplicate item</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new XnatItem corresponding to the duplicate item</p>
 </dd>
 </dl>
 </dd></dl>
