@@ -37,7 +37,55 @@ prompted.
     docker run -it tomdoel/copyxnat --help
 ```
 
-### Running from your own code
+## Example use cases
+
+### Show project contents
+
+- #### Print a list of projects, subjects etc on an XNAT server
+
+    ```
+    copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" show
+    ```
+
+### Download projects
+
+- #### Download XNAT projects onto your computer
+
+    ```
+    copyxnat --src_host "https://YOUR-SERVER-URL" --src_user "YOUR-USER-NAME" --project "PROJECT1,PROJECT2" export
+    ```
+
+- #### Download all projects you have access to onto your computer
+
+    ```
+    copyxnat --src_host "https://YOUR-SERVER-URL" --src_user "YOUR-XNAT-USER-NAME" export
+    ```
+
+### Copy projects from one XNAT server to another 
+
+- #### Duplicate a project on a destination server
+
+    ```
+    copyxnat --src_host "https://SOURCE-SERVER-URL" --src_user "XNAT-USER-SOURCE" --project "PROJECT-NAME" copy --dst_host "https://DEST-SERVER-URL" --dst_user "XNAT-USER-DEST"
+    ```
+
+- #### Duplicate a project and rename
+
+    ```
+    copyxnat --src_host "https://SOURCE-SERVER-URL" --src_user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst_host "https://DEST-SERVER-URL" --dst_user "XNAT-USER-DEST"
+    ```
+
+- #### Duplicate a project on the same server (with a new name)
+
+    ```
+    copyxnat --src_host "https://SERVER-URL" --src_user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst_host "https://SERVER-URL" --dst_user "XNAT-USER-DEST"
+    ```
+
+
+
+## Using CopyXnat in your own code
+
+### Importing via pip
 
 You can import and run the module with `pip` and then import from your code
 
