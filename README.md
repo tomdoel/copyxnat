@@ -39,7 +39,7 @@ prompted.
 
 ### Running from your own code
 
-You can import and run The recommended approach is to install the module with `pip` and then import from your code
+You can import and run the module with `pip` and then import from your code
 
 ```
     from copyxnat.xnat.run_command import run_command
