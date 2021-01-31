@@ -59,7 +59,7 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s1">&#39;version&#39;</span><span class="p">,</span>
-        <span class="n">version</span><span class="o">=</span><span class="s1">&#39;copyxnat version &#39;</span> <span class="o">+</span> <span class="n">friendly_version_string</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">friendly_version_string</span>
     <span class="p">)</span>
 
     <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
