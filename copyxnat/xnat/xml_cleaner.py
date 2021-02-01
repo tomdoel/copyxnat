@@ -20,17 +20,6 @@ class XnatType(Enum):
 class XmlCleaner:
     """Remove and remap XML tags for xml transfer between XNAT servers"""
 
-    ICR_SUBJECT_ID_TAG = '{http://icr.ac.uk/icr}subjectID'
-    XNAT_IMAGE_SESSION_ID = '{http://nrg.wustl.edu/xnat}image_session_ID'
-    XNAT_SUBJECT_ID = '{http://nrg.wustl.edu/xnat}subject_ID'
-    XNAT_OUT_TAG = '{http://nrg.wustl.edu/xnat}out'
-    XNAT_EXPERIMENTS_TAG = '{http://nrg.wustl.edu/xnat}experiments'
-    XNAT_SCANS_TAG = '{http://nrg.wustl.edu/xnat}scans'
-    XNAT_RESOURCES_TAG = '{http://nrg.wustl.edu/xnat}resources'
-    XNAT_ASSESSORS_TAG = '{http://nrg.wustl.edu/xnat}assessors'
-    XNAT_PREARCHIVE_PATH_TAG = '{http://nrg.wustl.edu/xnat}prearchivePath'
-    XNAT_SHARING_TAG = '{http://nrg.wustl.edu/xnat}sharing'
-    XNAT_FILE_TAG = '{http://nrg.wustl.edu/xnat}file'
     XNAT_MODALITY_TAG = '{http://nrg.wustl.edu/xnat}modality'
     XNAT_PROJECT_NAME_TAG = '{http://nrg.wustl.edu/xnat}name'
 
@@ -49,9 +38,9 @@ class XmlCleaner:
     XNAT_ASSESSOR_PROJECT_ATTR = 'XNAT_ASSESSOR_PROJECT_ATTR'
 
     TAGS_TO_REMAP = {
-        ICR_SUBJECT_ID_TAG: XNAT_SUBJECT_ID_ATTR,
-        XNAT_SUBJECT_ID: XNAT_SUBJECT_ID_ATTR,
-        XNAT_IMAGE_SESSION_ID: XNAT_SESSION_ID_ATTR
+        '{http://icr.ac.uk/icr}subjectID': XNAT_SUBJECT_ID_ATTR,
+        '{http://nrg.wustl.edu/xnat}subject_ID': XNAT_SUBJECT_ID_ATTR,
+        '{http://nrg.wustl.edu/xnat}image_session_ID': XNAT_SESSION_ID_ATTR
     }
 
     ATTRS_TO_REMAP = {
@@ -84,14 +73,14 @@ class XmlCleaner:
         return self.ATTRS_TO_REMAP[xnat_type]
 
     TAGS_TO_DELETE = {
-        XNAT_OUT_TAG,
-        XNAT_EXPERIMENTS_TAG,
-        XNAT_SCANS_TAG,
-        XNAT_RESOURCES_TAG,
-        XNAT_ASSESSORS_TAG,
-        XNAT_PREARCHIVE_PATH_TAG,
-        XNAT_SHARING_TAG,
-        XNAT_FILE_TAG
+        '{http://nrg.wustl.edu/xnat}out',
+        '{http://nrg.wustl.edu/xnat}experiments',
+        '{http://nrg.wustl.edu/xnat}scans',
+        '{http://nrg.wustl.edu/xnat}resources',
+        '{http://nrg.wustl.edu/xnat}assessors',
+        '{http://nrg.wustl.edu/xnat}prearchivePath',
+        '{http://nrg.wustl.edu/xnat}sharing',
+        '{http://nrg.wustl.edu/xnat}file'
     }
 
     MODALITY_TO_SCAN = {
