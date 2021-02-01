@@ -34,7 +34,7 @@ Note that interactive mode (`-it`) is generally required in order to enter serve
 prompted. 
 
 ```
-    docker run -it tomdoel/copyxnat --help
+    docker run --rm -it tomdoel/copyxnat --help
 ```
 
 ## Example use cases
