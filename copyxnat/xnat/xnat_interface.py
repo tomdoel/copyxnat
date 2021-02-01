@@ -255,9 +255,10 @@ class XnatParentItem(XnatItem):
         self.cache.write_xml(final_xml_root,
                                   self._xml_filename + '.new.xml')  # pylint: disable=no-member
 
-        self.xml_cleaner.add_tag_remaps(src_xml_root,
-                                        final_xml_root,
-                                        self._remap_attrs)  # pylint: disable=no-member
+        self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
+                                        dst_xml_root=final_xml_root,
+                                        xnat_type=self._xml_id,  # pylint: disable=no-member
+                                        )
         return output
 
     def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
@@ -273,7 +274,6 @@ class XnatParentItem(XnatItem):
         """
         return self.xml_cleaner.clean(
             xml_root=xml_root,
-            attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
             xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
@@ -289,7 +289,6 @@ class XnatProject(XnatParentItem):
     _xml_filename = 'metadata_project.xml'
     _cache_subdir_name = 'projects'
     _xml_id = XnatType.project
-    _remap_attrs = {'ID': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
     def get_child_items(self):
         subjects = [XnatSubject(parent_cache=self.cache,
@@ -312,7 +311,6 @@ class XnatProject(XnatParentItem):
 
         return self.xml_cleaner.clean(
             xml_root=cleaned_xml_root,
-            attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
             xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
@@ -324,8 +322,6 @@ class XnatSubject(XnatParentItem):
     _xml_filename = 'metadata_subject.xml'
     _cache_subdir_name = 'subjects'
     _xml_id = XnatType.subject
-    _remap_attrs = {'ID': XmlCleaner.XNAT_SUBJECT_ID_ATTR,
-                    'project': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
     def get_child_items(self):
         experiments = [XnatExperiment(parent_cache=self.cache,
@@ -344,8 +340,6 @@ class XnatExperiment(XnatParentItem):
     _xml_filename = 'metadata_session.xml'
     _cache_subdir_name = 'experiments'
     _xml_id = XnatType.experiment
-    _remap_attrs = {'ID': XmlCleaner.XNAT_SESSION_ID_ATTR,
-                    'project': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
     def get_child_items(self) -> list:
         scans = [XnatScan(parent_cache=self.cache,
@@ -380,8 +374,6 @@ class XnatScan(XnatParentItem):
     _xml_filename = 'metadata_scan.xml'
     _cache_subdir_name = 'scans'
     _xml_id = XnatType.scan
-    _remap_attrs = {'ID': XmlCleaner.XNAT_SCAN_ID_ATTR,
-                    'project': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
     def get_child_items(self):
         return []
@@ -394,8 +386,6 @@ class XnatAssessor(XnatParentItem):
     _cache_subdir_name = 'assessors'
     _xml_filename = 'metadata_assessor.xml'
     _xml_id = XnatType.assessor
-    _remap_attrs = {'label': XmlCleaner.XNAT_ASSESSOR_LABEL_ATTR,
-                    'project': XmlCleaner.XNAT_ASSESSOR_PROJECT_ATTR}
 
     def get_child_items(self):
         return []
@@ -408,7 +398,6 @@ class XnatReconstruction(XnatParentItem):
     _cache_subdir_name = 'reconstructions'
     _xml_filename = 'metadata_reconstruction.xml'
     _xml_id = XnatType.reconstruction
-    _remap_attrs = {}
 
     def get_child_items(self):
         return []
