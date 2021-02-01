@@ -28,40 +28,41 @@ class XmlCleaner:
     XNAT_IMAGE_SCAN_DATA_TAG = '{http://nrg.wustl.edu/xnat}imageScanData'
     XNAT_OTHER_SCAN = 'xnat:OtherDicomScan'
 
-    XNAT_PROJECT_ID_ATTR = 'XNAT_PROJECT_ID_ATTR'
-    XNAT_SUBJECT_ID_ATTR = 'XNAT_SUBJECT_ID_ATTR'
-    XNAT_SESSION_ID_ATTR = 'XNAT_SESSION_ID_ATTR'
-    XNAT_SCAN_ID_ATTR = 'XNAT_SCAN_ID_ATTR'
-    XNAT_ASSESSOR_LABEL_ATTR = 'XNAT_ASSESSOR_LABEL_ATTR'
+    # Index names for the maps which store the before->after values
+    PROJECT_ID_MAP = 'PROJECT_ID_MAP'
+    SUBJECT_ID_MAP = 'SUBJECT_ID_MAP'
+    SESSION_ID_MAP = 'SESSION_ID_MAP'
+    SCAN_ID_MAP = 'SCAN_ID_MAP'
+    ASSESSOR_LABEL_MAP = 'ASSESSOR_LABEL_MAP'
     XNAT_ASSESSOR_PROJECT_ATTR = 'XNAT_ASSESSOR_PROJECT_ATTR'
 
     TAGS_TO_REMAP = {
-        '{http://icr.ac.uk/icr}subjectID': XNAT_SUBJECT_ID_ATTR,
-        '{http://nrg.wustl.edu/xnat}subject_ID': XNAT_SUBJECT_ID_ATTR,
-        '{http://nrg.wustl.edu/xnat}image_session_ID': XNAT_SESSION_ID_ATTR,
-        '{http://nrg.wustl.edu/xnat}imageSession_ID': XNAT_SESSION_ID_ATTR,
-        '{http://nrg.wustl.edu/xnat}session_id': XNAT_SESSION_ID_ATTR
+        '{http://icr.ac.uk/icr}subjectID': SUBJECT_ID_MAP,
+        '{http://nrg.wustl.edu/xnat}subject_ID': SUBJECT_ID_MAP,
+        '{http://nrg.wustl.edu/xnat}image_session_ID': SESSION_ID_MAP,
+        '{http://nrg.wustl.edu/xnat}imageSession_ID': SESSION_ID_MAP,
+        '{http://nrg.wustl.edu/xnat}session_id': SESSION_ID_MAP
     }
 
     ATTRS_TO_REMAP = {
         XnatType.project: {
-            'ID': XNAT_PROJECT_ID_ATTR
+            'ID': PROJECT_ID_MAP
         },
         XnatType.subject: {
-            'ID': XNAT_SUBJECT_ID_ATTR,
-            'project': XNAT_PROJECT_ID_ATTR
+            'ID': SUBJECT_ID_MAP,
+            'project': PROJECT_ID_MAP
         },
         XnatType.experiment: {
-            'ID': XNAT_SESSION_ID_ATTR,
-            'project': XNAT_PROJECT_ID_ATTR
+            'ID': SESSION_ID_MAP,
+            'project': PROJECT_ID_MAP
         },
         XnatType.scan: {
-            'ID': XNAT_SCAN_ID_ATTR,
-            'project': XNAT_PROJECT_ID_ATTR
+            'ID': SCAN_ID_MAP,
+            'project': PROJECT_ID_MAP
         },
         XnatType.assessor: {
-            'label': XNAT_ASSESSOR_LABEL_ATTR,
-            'project': XNAT_ASSESSOR_PROJECT_ATTR
+            'label': ASSESSOR_LABEL_MAP,
+            'project': PROJECT_ID_MAP
         },
         XnatType.reconstruction: {
         },  # May require ID. May need scan remaped to scan ID
