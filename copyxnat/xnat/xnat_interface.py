@@ -7,7 +7,7 @@ import abc
 
 import urllib3
 
-from copyxnat.xnat.xml_cleaner import XmlCleaner
+from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 
 
 class XnatBase(abc.ABC):
@@ -274,6 +274,7 @@ class XnatParentItem(XnatItem):
         return self.xml_cleaner.clean(
             xml_root=xml_root,
             attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
+            xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
     def export(self):
@@ -287,6 +288,7 @@ class XnatProject(XnatParentItem):
     _name = 'Project'
     _xml_filename = 'metadata_project.xml'
     _cache_subdir_name = 'projects'
+    _xml_id = XnatType.project
     _remap_attrs = {'ID': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
     def get_child_items(self):
@@ -311,6 +313,7 @@ class XnatProject(XnatParentItem):
         return self.xml_cleaner.clean(
             xml_root=cleaned_xml_root,
             attr_to_tag_map=self._remap_attrs,  # pylint: disable=no-member
+            xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
 
@@ -320,6 +323,7 @@ class XnatSubject(XnatParentItem):
     _name = 'Subject'
     _xml_filename = 'metadata_subject.xml'
     _cache_subdir_name = 'subjects'
+    _xml_id = XnatType.subject
     _remap_attrs = {'ID': XmlCleaner.XNAT_SUBJECT_ID_ATTR,
                     'project': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
@@ -339,6 +343,7 @@ class XnatExperiment(XnatParentItem):
     _name = 'Experiment'
     _xml_filename = 'metadata_session.xml'
     _cache_subdir_name = 'experiments'
+    _xml_id = XnatType.experiment
     _remap_attrs = {'ID': XmlCleaner.XNAT_SESSION_ID_ATTR,
                     'project': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
@@ -374,6 +379,7 @@ class XnatScan(XnatParentItem):
     _name = 'Scan'
     _xml_filename = 'metadata_scan.xml'
     _cache_subdir_name = 'scans'
+    _xml_id = XnatType.scan
     _remap_attrs = {'ID': XmlCleaner.XNAT_SCAN_ID_ATTR,
                     'project': XmlCleaner.XNAT_PROJECT_ID_ATTR}
 
@@ -387,6 +393,7 @@ class XnatAssessor(XnatParentItem):
     _name = 'Assessor'
     _cache_subdir_name = 'assessors'
     _xml_filename = 'metadata_assessor.xml'
+    _xml_id = XnatType.assessor
     _remap_attrs = {'label': XmlCleaner.XNAT_ASSESSOR_LABEL_ATTR,
                     'project': XmlCleaner.XNAT_ASSESSOR_PROJECT_ATTR}
 
@@ -400,6 +407,7 @@ class XnatReconstruction(XnatParentItem):
     _name = 'Reconstruction'
     _cache_subdir_name = 'reconstructions'
     _xml_filename = 'metadata_reconstruction.xml'
+    _xml_id = XnatType.reconstruction
     _remap_attrs = {}
 
     def get_child_items(self):
@@ -410,6 +418,7 @@ class XnatResource(XnatItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'Resource'
+    _xml_id = XnatType.resource
     _cache_subdir_name = 'resources'
 
     def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
