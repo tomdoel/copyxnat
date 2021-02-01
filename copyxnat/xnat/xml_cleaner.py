@@ -40,7 +40,9 @@ class XmlCleaner:
     TAGS_TO_REMAP = {
         '{http://icr.ac.uk/icr}subjectID': XNAT_SUBJECT_ID_ATTR,
         '{http://nrg.wustl.edu/xnat}subject_ID': XNAT_SUBJECT_ID_ATTR,
-        '{http://nrg.wustl.edu/xnat}image_session_ID': XNAT_SESSION_ID_ATTR
+        '{http://nrg.wustl.edu/xnat}image_session_ID': XNAT_SESSION_ID_ATTR,
+        '{http://nrg.wustl.edu/xnat}imageSession_ID': XNAT_SESSION_ID_ATTR,
+        '{http://nrg.wustl.edu/xnat}session_id': XNAT_SESSION_ID_ATTR
     }
 
     ATTRS_TO_REMAP = {
