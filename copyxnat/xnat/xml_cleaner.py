@@ -3,7 +3,18 @@
 """Remove and remap XML tags for xml transfer between XNAT servers"""
 
 
+from enum import Enum
 from xml.etree.cElementTree import register_namespace, XML
+
+
+class XnatType(Enum):
+    project = 'project'
+    subject = 'subject'
+    experiment = 'experiment'
+    scan = 'scan'
+    assessor = 'assessor'
+    reconstruction = 'reconstruction'
+    resource = 'resource'
 
 
 class XmlCleaner:
@@ -42,6 +53,35 @@ class XmlCleaner:
         XNAT_SUBJECT_ID: XNAT_SUBJECT_ID_ATTR,
         XNAT_IMAGE_SESSION_ID: XNAT_SESSION_ID_ATTR
     }
+
+    ATTRS_TO_REMAP = {
+        XnatType.project: {
+            'ID': XNAT_PROJECT_ID_ATTR
+        },
+        XnatType.subject: {
+            'ID': XNAT_SUBJECT_ID_ATTR,
+            'project': XNAT_PROJECT_ID_ATTR
+        },
+        XnatType.experiment: {
+            'ID': XNAT_SESSION_ID_ATTR,
+            'project': XNAT_PROJECT_ID_ATTR
+        },
+        XnatType.scan: {
+            'ID': XNAT_SCAN_ID_ATTR,
+            'project': XNAT_PROJECT_ID_ATTR
+        },
+        XnatType.assessor: {
+            'label': XNAT_ASSESSOR_LABEL_ATTR,
+            'project': XNAT_ASSESSOR_PROJECT_ATTR
+        },
+        XnatType.reconstruction: {
+        },  # May require ID. May need scan remaped to scan ID
+        XnatType.resource: {
+        }
+    }
+
+    def get_tags_to_remap(self, xnat_type):
+        return self.ATTRS_TO_REMAP[xnat_type]
 
     TAGS_TO_DELETE = {
         XNAT_OUT_TAG,
@@ -116,7 +156,7 @@ class XmlCleaner:
             child.text = new_name
         return xml_root
 
-    def clean(self, xml_root, attr_to_tag_map, fix_scan_types):
+    def clean(self, xml_root, attr_to_tag_map, xnat_type, fix_scan_types):
         """
         Remove or XML remap tags that change between XNAT servers
 
@@ -126,6 +166,8 @@ class XmlCleaner:
         @param fix_scan_types: set to True to correct ambiguous scan types
         @return:
         """
+        attr_to_tag_map = self.get_tags_to_remap(xnat_type)
+
         # Delete all attributes that change on dest server
         for attr in attr_to_tag_map:
             if attr in xml_root.attrib:
