@@ -147,12 +147,11 @@ class XmlCleaner:
             child.text = new_name
         return xml_root
 
-    def clean(self, xml_root, attr_to_tag_map, xnat_type, fix_scan_types):
+    def clean(self, xml_root, xnat_type, fix_scan_types):
         """
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
-        @param attr_to_tag_map: dict of attribute names in the root element to
         @param xnat_type: Enumeration describing the type of XNAT item
         @param fix_scan_types: set to True to correct ambiguous scan types
         @return:
@@ -198,14 +197,15 @@ class XmlCleaner:
 
         return xml_root
 
-    def add_tag_remaps(self, src_xml_root, dst_xml_root, attr_to_tag_map):
+    def add_tag_remaps(self, src_xml_root, dst_xml_root, xnat_type):
         """
         Update the remapping dictionary to add add before and after values
         for the tags in the map
-        @param src_xml_root:
-        @param dst_xml_root:
-        @param attr_to_tag_map:
+        @param src_xml_root: the original XML
+        @param dst_xml_root: the XML after XNAT has assigned variables
+        @param xnat_type: Enumeration describing the type of XNAT item
         """
+        attr_to_tag_map = self.get_tags_to_remap(xnat_type)
         for attr, global_attr_name in attr_to_tag_map.items():
             if attr in src_xml_root.attrib:
                 attr_dict = self.tag_values.get(global_attr_name, {})
