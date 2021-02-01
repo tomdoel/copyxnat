@@ -33,8 +33,8 @@ class XmlCleaner:
     SUBJECT_ID_MAP = 'SUBJECT_ID_MAP'
     SESSION_ID_MAP = 'SESSION_ID_MAP'
     SCAN_ID_MAP = 'SCAN_ID_MAP'
-    ASSESSOR_LABEL_MAP = 'ASSESSOR_LABEL_MAP'
-    XNAT_ASSESSOR_PROJECT_ATTR = 'XNAT_ASSESSOR_PROJECT_ATTR'
+    ASSESSOR_ID_MAP = 'ASSESSOR_ID_MAP'
+    RECONSTRUCTION_ID_MAP = 'RECONSTRUCTION_ID_MAP'
 
     TAGS_TO_REMAP = {
         '{http://icr.ac.uk/icr}subjectID': SUBJECT_ID_MAP,
@@ -61,11 +61,13 @@ class XmlCleaner:
             'project': PROJECT_ID_MAP
         },
         XnatType.assessor: {
-            'label': ASSESSOR_LABEL_MAP,
+            'ID': ASSESSOR_ID_MAP,
             'project': PROJECT_ID_MAP
         },
         XnatType.reconstruction: {
-        },  # May require ID. May need scan remaped to scan ID
+            'ID': RECONSTRUCTION_ID_MAP,
+            'project': PROJECT_ID_MAP
+        },
         XnatType.resource: {
         }
     }
