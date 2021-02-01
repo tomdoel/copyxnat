@@ -8,6 +8,8 @@ from xml.etree.cElementTree import register_namespace, XML
 
 
 class XnatType(Enum):
+    """Describe the type of XNAT item so cleaning can be performed"""
+
     project = 'project'
     subject = 'subject'
     experiment = 'experiment'
@@ -41,7 +43,9 @@ class XmlCleaner:
         '{http://nrg.wustl.edu/xnat}subject_ID': SUBJECT_ID_MAP,
         '{http://nrg.wustl.edu/xnat}image_session_ID': SESSION_ID_MAP,
         '{http://nrg.wustl.edu/xnat}imageSession_ID': SESSION_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}session_id': SESSION_ID_MAP
+        '{http://nrg.wustl.edu/xnat}session_id': SESSION_ID_MAP,
+        '{http://nrg.wustl.edu/xnat}scanID': SCAN_ID_MAP,
+        '{http://nrg.wustl.edu/xnat}imageScan_ID': SCAN_ID_MAP
     }
 
     ATTRS_TO_REMAP = {
@@ -73,6 +77,7 @@ class XmlCleaner:
     }
 
     def get_tags_to_remap(self, xnat_type):
+        """Return a map of attribute mappings for this xnat item type"""
         return self.ATTRS_TO_REMAP[xnat_type]
 
     TAGS_TO_DELETE = {
