@@ -26,8 +26,6 @@ class XmlCleaner:
     ATTR_SECONDARY_PROJECT_ID = 'secondary_ID'
 
     XNAT_IMAGE_SCAN_DATA_TAG = '{http://nrg.wustl.edu/xnat}imageScanData'
-    XNAT_MR_SCAN = 'xnat:MRScan'
-    XNAT_CT_SCAN = 'xnat:CTScan'
     XNAT_OTHER_SCAN = 'xnat:OtherDicomScan'
 
     XNAT_PROJECT_ID_ATTR = 'XNAT_PROJECT_ID_ATTR'
