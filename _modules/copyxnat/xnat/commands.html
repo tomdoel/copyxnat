@@ -48,6 +48,7 @@
 
 
 <div class="viewcode-block" id="find_command"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.find_command">[docs]</a><span class="k">def</span> <span class="nf">find_command</span><span class="p">(</span><span class="n">command_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return Command with matching command line string&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span> <span class="o">==</span> <span class="n">command_string</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">command</span>
