@@ -55,8 +55,6 @@ jobs:
           wheel_path=$(ls dist/*.whl)
           mkdir -p "docker/packages"
           cp "${wheel_path}" "docker/packages"
-          pip install ${wheel_path}
-          copyxnat --help
 
       - name: Publish to Docker
         uses: elgohr/Publish-Docker-Github-Action@master
