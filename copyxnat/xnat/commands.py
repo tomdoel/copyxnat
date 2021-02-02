@@ -8,6 +8,7 @@ from copyxnat.xnat.xnat_interface import XnatExperiment, XnatProject
 
 
 def find_command(command_string):
+    """Return Command with matching command line string"""
     for command in commands():
         if command.COMMAND_LINE == command_string:
             return command
