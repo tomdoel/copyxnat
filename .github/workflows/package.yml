@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -53,4 +57,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
           dockerfile: docker/Dockerfile
-          tags: "latest"
+          tags: "latest, ${{steps.tag.outputs.tag}}"
