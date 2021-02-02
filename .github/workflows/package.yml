@@ -53,3 +53,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
           dockerfile: docker/Dockerfile
+          tags: "latest"
