@@ -44,8 +44,8 @@ class PyXnatServer(object):
     def num_experiments(self, project):
         """Return number of experiments in this project"""
         return len(
-            self.fetch_interface()._get_json('/REST/projects/{}/experiments'.
-                format(project)))  # pylint: disable=protected-access
+            self.fetch_interface()._get_json('/REST/projects/{}/experiments'.  # pylint: disable=protected-access
+                format(project)))
 
 
 class PyXnatItem(abc.ABC):
