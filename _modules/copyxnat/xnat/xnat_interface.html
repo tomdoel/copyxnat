@@ -143,7 +143,11 @@
 
 <div class="viewcode-block" id="XnatServer.logout"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disconnect from this server&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="XnatServer.num_experiments"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.num_experiments">[docs]</a>    <span class="k">def</span> <span class="nf">num_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return number of experiments in this project&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">num_experiments</span><span class="p">(</span><span class="n">project</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="XnatItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem">[docs]</a><span class="k">class</span> <span class="nc">XnatItem</span><span class="p">(</span><span class="n">XnatBase</span><span class="p">):</span>
@@ -165,7 +169,7 @@
 <div class="viewcode-block" id="XnatItem.run_recursive"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.run_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">run_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run the function on this item and all its children&quot;&quot;&quot;</span>
         <span class="n">next_output</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
             <span class="n">reporter</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">next_output</span><span class="o">.</span><span class="n">recurse</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
