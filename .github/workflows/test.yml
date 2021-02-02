@@ -29,11 +29,7 @@ jobs:
           python -m pytest -v -s ./tests/
 
   test-package:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-        python-ver: [3.9]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
