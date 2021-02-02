@@ -51,7 +51,7 @@ def run_command(command, src_host, src_user, src_pw, dst_host=None,
                                   insecure=insecure, read_only=True)
     src_xnat = XnatServer(factory=factory, params=src_params,
                           base_cache=base_cache, reporter=reporter)
-    if dst_host:
+    if dst_host and command.USE_DST_SERVER:
         dst_params = XnatServerParams(host=dst_host, user=dst_user, pwd=dst_pw,
                                       insecure=insecure, read_only=False)
         dst_xnat = XnatServer(factory=factory, params=dst_params,
@@ -70,7 +70,7 @@ def run_command(command, src_host, src_user, src_pw, dst_host=None,
                                     )
 
     src_xnat.logout()
-    if dst_host:
+    if dst_host and command.USE_DST_SERVER:
         dst_xnat.logout()
 
     output_path = src_xnat.cache.full_path()
