@@ -17,11 +17,40 @@ def commands() -> dict:
 
 class Command:
     """Wraps a command function and its input variables"""
-    def __init__(self, function, outputs_function, reset_function, inputs):
-        self.function = function
-        self.outputs_function = outputs_function
-        self.reset_function = reset_function
-        self.inputs = inputs
+    def __init__(self, command, command_inputs, initial_result=None):
+        self.command = command
+        self.function = self.run_command
+        self.command_fn = command.run
+        self.outputs_function = self.get_outputs
+        self.reset_function = self.reset
+        self.initial_result = initial_result
+        self.output_result = initial_result
+        self.output_tostring = self.result_tostring
+        self.inputs = {
+            'dst_xnat': command_inputs.dst_xnat,
+            'dst_project': command_inputs.dst_project,
+            'fix_scan_types': command_inputs.fix_scan_types,
+            'reporter': command_inputs.reporter
+        }
+
+    def run_command(self, xnat_item, from_parent):
+        command_return = self.command_fn(xnat_item=xnat_item,
+                                         inputs=self.inputs,
+                                         outputs=self.output_result,
+                                         from_parent=from_parent)
+        self.output_result = command_return.outputs
+        if command_return.tostring:
+            self.output_tostring = command_return.tostring
+        return command_return
+
+    def get_outputs(self):
+        return {'result': self.output_result, 'tostring': self.output_tostring}
+
+    def reset(self):
+        self.output_result = None
+
+    def result_tostring(self, result):
+        return "Output from {}: {}".format(self.command.NAME, result)
 
 
 class CommandInputs:
@@ -30,46 +59,6 @@ class CommandInputs:
         self.fix_scan_types = fix_scan_types
         self.reporter = reporter
         self.dst_xnat = dst_xnat
-
-
-def command_factory(command, command_inputs, initial_result=None):
-    """Factory for creating a Command wrapper"""
-
-    def run_command(xnat_item, from_parent):
-        nonlocal inputs, output_result, output_tostring
-        command_return = command_fn(xnat_item=xnat_item,
-                                    inputs=inputs,
-                                    outputs=output_result,
-                                    from_parent=from_parent)
-        output_result = command_return.outputs
-        if command_return.tostring:
-            output_tostring = command_return.tostring
-        return command_return
-
-    def reset():
-        nonlocal output_result
-        output_result = None
-
-    def get_outputs():
-        return {'result': output_result, 'tostring': output_tostring}
-
-    def result_tostring(result):
-        return "Output from {}: {}".format(command.NAME, result)
-
-    command_fn = command.run
-    inputs = {
-        'dst_xnat': command_inputs.dst_xnat,
-        'dst_project': command_inputs.dst_project,
-        'fix_scan_types': command_inputs.fix_scan_types,
-        'reporter': command_inputs.reporter
-    }
-    output_result = initial_result
-    output_tostring = result_tostring
-
-    return Command(function=run_command,
-                   reset_function=reset,
-                   outputs_function=get_outputs,
-                   inputs=inputs)
 
 
 class CommandBase(abc.ABC):
