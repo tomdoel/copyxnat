@@ -24,8 +24,15 @@ class Command:
         self.inputs = inputs
 
 
-def command_factory(command, dst_xnat, reporter, fix_scan_types,
-                    initial_result=None, dst_project=None):
+class CommandInputs:
+    def __init__(self, dst_xnat, reporter, fix_scan_types, dst_project=None):
+        self.dst_project = dst_project
+        self.fix_scan_types = fix_scan_types
+        self.reporter = reporter
+        self.dst_xnat = dst_xnat
+
+
+def command_factory(command, command_inputs, initial_result=None):
     """Factory for creating a Command wrapper"""
 
     def run_command(xnat_item, from_parent):
@@ -51,10 +58,10 @@ def command_factory(command, dst_xnat, reporter, fix_scan_types,
 
     command_fn = command.run
     inputs = {
-        'dst_xnat': dst_xnat,
-        'dst_project': dst_project,
-        'fix_scan_types': fix_scan_types,
-        'reporter': reporter
+        'dst_xnat': command_inputs.dst_xnat,
+        'dst_project': command_inputs.dst_project,
+        'fix_scan_types': command_inputs.fix_scan_types,
+        'reporter': command_inputs.reporter
     }
     output_result = initial_result
     output_tostring = result_tostring
