@@ -132,8 +132,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                                        dst_project=dst_project,
                                        fix_scan_types=fix_scan_types,
                                        reporter=reporter)
-        command_w = Command(command=command,
-                            command_inputs=command_inputs,
+        command_w = command(command_inputs=command_inputs,
                             initial_result=global_results['result'])
 
         server_project = src_xnat_server.project(src_project)
@@ -145,12 +144,12 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                                                    server_project.label),
             max_iter=num_sessions)
         server_project.run_recursive(
-            function=command_w.function,
+            function=command_w.run_command,
             from_parent=dst_xnat_server,
             reporter=reporter)
         reporter.complete_progress()
 
         # Retrieve results from project run to pass to next run
-        global_results = command_w.outputs_function()
+        global_results = command_w.get_outputs()
 
     return global_results
