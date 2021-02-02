@@ -1,6 +1,8 @@
 FROM python:3.9-slim
 
-RUN pip install copyxnat
+ADD /packages /packages
+
+RUN pip install --find-packages "/packages/*.whl"
 
 ENTRYPOINT ["copyxnat"]
 
