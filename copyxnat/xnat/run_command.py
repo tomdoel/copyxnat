@@ -10,13 +10,13 @@ from copyxnat.xnat_backend.server_factory import ServerFactory
 from copyxnat.xnat.xnat_interface import XnatServer, XnatServerParams
 
 
-def run_command(command_string, src_host, src_user, src_pw, dst_host=None,
+def run_command(command, src_host, src_user, src_pw, dst_host=None,
                 dst_user=None, dst_pw=None, project_filter=None, verbose=False,
                 insecure=False, dry_run=False, backend='pyxnat', reporter=None,
                 cache_dir=None, fix_scan_types=False):
     """Runs the command on the specified XNAT servers
 
-    @param command_string: name of the command as defined in commands.py
+    @param command: the command class to run
     @param src_host: hostname of XNAT server containing source data
     @param src_user: username on source XNAT server
     @param src_pw:  password on source XNAT server
@@ -42,10 +42,7 @@ def run_command(command_string, src_host, src_user, src_pw, dst_host=None,
         reporter = PyReporter(dry_run=dry_run, verbose=verbose)
 
     cache_box = CacheBox(root_path=cache_dir)
-    if command_string == 'export':
-        cache_type = 'downloads'
-    else:
-        cache_type = 'cache'
+    cache_type = command.CACHE_TYPE
 
     base_cache = cache_box.new_cache(cache_type=cache_type)
 
@@ -62,9 +59,9 @@ def run_command(command_string, src_host, src_user, src_pw, dst_host=None,
     else:
         dst_xnat = None
 
-    reporter.info('Running {} command'.format(command_string))
+    reporter.info('Running {} command'.format(command.NAME))
 
-    result = run_command_on_servers(command_string=command_string,
+    result = run_command_on_servers(command=command,
                                     src_xnat_server=src_xnat,
                                     dst_xnat_server=dst_xnat,
                                     project_filter=project_filter,
@@ -89,12 +86,12 @@ def resolve_projects(single_project_filter):
     return src_project, dst_project
 
 
-def run_command_on_servers(command_string, src_xnat_server, dst_xnat_server,
+def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                            reporter, fix_scan_types=False, project_filter=None):
     """
     Runs the specified command on the specified XnatServer objects
 
-    @param command_string: name of the command as defined in commands.py
+    @param command: command class
     @param src_xnat_server: Source XnatServer
     @param dst_xnat_server: Destination XnatServer, if required for this command
     @param reporter: PyReporter object for user input/output and logging
@@ -131,12 +128,12 @@ def run_command_on_servers(command_string, src_xnat_server, dst_xnat_server,
 
     for project in projects_to_process:
         src_project, dst_project = resolve_projects(project)
-        command = command_factory(command_string=command_string.lower(),
-                                  dst_xnat=dst_xnat_server,
-                                  dst_project=dst_project,
-                                  fix_scan_types=fix_scan_types,
-                                  initial_result=global_results['result'],
-                                  reporter=reporter)
+        command_w = command_factory(command=command,
+                                    dst_xnat=dst_xnat_server,
+                                    dst_project=dst_project,
+                                    fix_scan_types=fix_scan_types,
+                                    initial_result=global_results['result'],
+                                    reporter=reporter)
 
         server_project = src_xnat_server.project(src_project)
         num_sessions = src_xnat_server.num_experiments(src_project)
@@ -147,12 +144,12 @@ def run_command_on_servers(command_string, src_xnat_server, dst_xnat_server,
                                                    server_project.label),
             max_iter=num_sessions)
         server_project.run_recursive(
-            function=command.function,
+            function=command_w.function,
             from_parent=dst_xnat_server,
             reporter=reporter)
         reporter.complete_progress()
 
         # Retrieve results from project run to pass to next run
-        global_results = command.outputs_function()
+        global_results = command_w.outputs_function()
 
     return global_results
