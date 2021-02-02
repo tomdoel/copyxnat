@@ -4,10 +4,10 @@
 
 
 from copyxnat.pyreporter.pyreporter import PyReporter
-from copyxnat.xnat.commands import CommandInputs, Command
+from copyxnat.xnat.commands import CommandInputs
 from copyxnat.xnat.copy_cache import CacheBox
 from copyxnat.xnat_backend.server_factory import ServerFactory
-from copyxnat.xnat.xnat_interface import XnatServer, XnatServerParams
+from copyxnat.xnat.xnat_interface import XnatServer
 
 
 def run_command(command, src_params, dst_params=None, project_filter=None,

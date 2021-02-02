@@ -8,7 +8,7 @@ from getpass import getpass
 from copyxnat.xnat.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
 from copyxnat.xnat import commands
-from xnat.xnat_interface import XnatServerParams
+from copyxnat.xnat.xnat_interface import XnatServerParams
 
 
 def main(args=None):
@@ -26,21 +26,8 @@ def main(args=None):
 
     subparsers = parser.add_subparsers(dest='command')
 
-    # Arguments for the export command
-    subparsers.add_parser('export', help='Export XNAT projects to disk')
-
-    # Arguments for the show command
-    subparsers.add_parser('show', help='Show information about XNAT projects')
-
-    # Arguments for the copy command
-    copy_parser = subparsers.add_parser('copy', help='Show information about '
-                                                     'XNAT projects')
-
-    # Arguments for the check_datatypes command
-    check_datatypes = subparsers.add_parser(
-        'check_datatypes',
-        help='Check if experiment data types on source XNAT are present on '
-             'destination')
+    for command in commands.commands():
+        subparsers.add_parser(command.COMMAND_LINE, help=command.HELP)
 
     # Arguments common to all commands
     parser.add_argument("-y", "--dry_run",
@@ -75,41 +62,36 @@ def main(args=None):
                         help="File path here local cache files are to be stored"
                         )
 
-    for sub_parser in [copy_parser, check_datatypes]:
-        sub_parser.add_argument("-d", "--dst_host",
-                                help="Host name of the destionation XNAT "
-                                     "server"
-                                )
+    for command in commands.commands():
+        if command.USE_DST_SERVER:
+            command_key = command.COMMAND_LINE
+            sub_parser = subparsers.choices[command_key]
+            sub_parser.add_argument("-d", "--dst_host",
+                                    help="Host name of the destination XNAT "
+                                         "server"
+                                    )
 
-        sub_parser.add_argument("-w", "--dst_user",
-                                help="User name for accessing the destination "
-                                     "XNAT server"
-                                )
+            sub_parser.add_argument("-w", "--dst_user",
+                                    help="User name for accessing the "
+                                         "destination XNAT server"
+                                    )
 
-        sub_parser.add_argument("-f", "--fix-scan-types",
-                                action="store_true",
-                                help="Fix undefined scan types on the copy",
-                                )
+            sub_parser.add_argument("-f", "--fix-scan-types",
+                                    action="store_true",
+                                    help="Fix undefined scan types on the copy",
+                                    )
 
     args = parser.parse_args(args)
+
+    command = commands.find_command(args.command)
 
     src_pw = getpass("Please enter the password for {}@{}:".
                      format(args.src_user, args.src_host))
 
-    dst_host = args.dst_host if 'dst_host' in args else None
-    dst_user = args.dst_user if 'dst_user' in args else None
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
-
-    if dst_host:
-        dst_pw = getpass("Please enter the password for {}@{}:".
-                         format(args.dst_user, args.dst_host))
-    else:
-        dst_pw = None
 
     project_list = args.project.split(',') if 'project' in args and \
                                               args.project else None
-
-    command = commands.commands()[args.command]
 
     src_params = XnatServerParams(host=args.src_host,
                                   user=args.src_user,
@@ -117,9 +99,15 @@ def main(args=None):
                                   insecure=args.insecure,
                                   read_only=True)
 
-    if dst_host:
-        dst_params = XnatServerParams(host=args.dst_host,
-                                      user=args.dst_user,
+    if command.USE_DST_SERVER:
+        dst_host = args.dst_host if 'dst_host' in args else None
+        dst_user = args.dst_user if 'dst_user' in args else None
+
+        dst_pw = getpass("Please enter the password for {}@{}:".
+                         format(args.dst_user, args.dst_host))
+
+        dst_params = XnatServerParams(host=dst_host,
+                                      user=dst_user,
                                       pwd=dst_pw,
                                       insecure=args.insecure,
                                       read_only=False)
