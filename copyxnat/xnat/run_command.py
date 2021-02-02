@@ -10,25 +10,19 @@ from copyxnat.xnat_backend.server_factory import ServerFactory
 from copyxnat.xnat.xnat_interface import XnatServer, XnatServerParams
 
 
-def run_command(command, src_host, src_user, src_pw, dst_host=None,
-                dst_user=None, dst_pw=None, project_filter=None, verbose=False,
-                insecure=False, dry_run=False, backend='pyxnat', reporter=None,
-                cache_dir=None, fix_scan_types=False):
+def run_command(command, src_params, dst_params=None, project_filter=None,
+                verbose=False, dry_run=False, backend='pyxnat',
+                reporter=None, cache_dir=None, fix_scan_types=False):
     """Runs the command on the specified XNAT servers
 
     @param command: the command class to run
-    @param src_host: hostname of XNAT server containing source data
-    @param src_user: username on source XNAT server
-    @param src_pw:  password on source XNAT server
-    @param dst_host: hostname of XNAT destination server
-    @param dst_user: username on destination XNAT server
-    @param dst_pw: password on destination XNAT server
+    @param src_params: XnatServerParams for source server
+    @param dst_params: XnatServerParams for destination server
     @param project_filter: array of project names to process or None to process
     all projects visible on the server. If a project name needs to be different
     on the source and destination servers, the string should be of the form
     src_project_name:dst_project_name
     @param verbose: set to True for verbose output for debugging
-    @param insecure: set to True if using server with self-signed certificates
     @param dry_run: set to True to request that write operations are not made
     on the destination server, to allow testing. Note that some changes may
     still take place
@@ -47,13 +41,9 @@ def run_command(command, src_host, src_user, src_pw, dst_host=None,
     base_cache = cache_box.new_cache(cache_type=cache_type)
 
     factory = ServerFactory(backend)
-    src_params = XnatServerParams(host=src_host, user=src_user, pwd=src_pw,
-                                  insecure=insecure, read_only=True)
     src_xnat = XnatServer(factory=factory, params=src_params,
                           base_cache=base_cache, reporter=reporter)
-    if dst_host and command.USE_DST_SERVER:
-        dst_params = XnatServerParams(host=dst_host, user=dst_user, pwd=dst_pw,
-                                      insecure=insecure, read_only=False)
+    if dst_params and command.USE_DST_SERVER:
         dst_xnat = XnatServer(factory=factory, params=dst_params,
                               base_cache=base_cache, reporter=reporter)
     else:
@@ -70,7 +60,7 @@ def run_command(command, src_host, src_user, src_pw, dst_host=None,
                                     )
 
     src_xnat.logout()
-    if dst_host and command.USE_DST_SERVER:
+    if dst_params and command.USE_DST_SERVER:
         dst_xnat.logout()
 
     output_path = src_xnat.cache.full_path()
