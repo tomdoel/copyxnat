@@ -36,10 +36,6 @@ jobs:
         python-ver: [3.9]
 
     steps:
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-
       - name: Check out code
         uses: actions/checkout@v2
 
