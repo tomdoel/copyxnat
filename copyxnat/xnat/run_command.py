@@ -114,16 +114,15 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         # If no project filter specified then we process all visible projects
         projects_to_process = server_projects
 
-    global_results = {'result': None}
+    global_results = {}
 
     for project in projects_to_process:
         src_project, dst_project = resolve_projects(project)
-        command_inputs = CommandInputs(dst_xnat=dst_xnat_server,
-                                       dst_project=dst_project,
-                                       fix_scan_types=fix_scan_types,
-                                       reporter=reporter)
-        command_w = command(command_inputs=command_inputs,
-                            initial_result=global_results['result'])
+        inputs = CommandInputs(dst_xnat=dst_xnat_server,
+                               dst_project=dst_project,
+                               fix_scan_types=fix_scan_types,
+                               reporter=reporter)
+        project_command = command(inputs=inputs, scope=project)
 
         server_project = src_xnat_server.project(src_project)
         num_sessions = src_xnat_server.num_experiments(src_project)
@@ -134,12 +133,16 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                                                    server_project.label),
             max_iter=num_sessions)
         server_project.run_recursive(
-            function=command_w.run,
+            function=project_command.run,
             from_parent=dst_xnat_server,
             reporter=reporter)
         reporter.complete_progress()
 
-        # Retrieve results from project run to pass to next run
-        global_results = command_w.get_outputs()
+        # Output results for current project
+        project_results = project_command.outputs
+        project_command.print_results()
+
+        # Aggregate results across all projects
+        global_results[project] = project_results
 
     return global_results
