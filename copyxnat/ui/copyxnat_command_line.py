@@ -7,6 +7,7 @@ from getpass import getpass
 
 from copyxnat.xnat.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
+from xnat import commands
 
 
 def main(args=None):
@@ -107,7 +108,8 @@ def main(args=None):
     project_list = args.project.split(',') if 'project' in args and \
                                               args.project else None
 
-    result = run_command(command_string=args.command,
+    command = commands.commands()[args.command]
+    result = run_command(command=command,
                          src_host=args.src_host,
                          src_user=args.src_user,
                          src_pw=src_pw,
