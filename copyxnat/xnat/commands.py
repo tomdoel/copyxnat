@@ -7,17 +7,25 @@ import os
 from copyxnat.xnat.xnat_interface import XnatExperiment, XnatProject
 
 
-def commands() -> dict:
-    """Return a dictionary containing factories for all commands"""
-    return {'export': ExportCommand,
-            'show': ShowCommand,
-            'copy': CopyCommand,
-            'check_datatypes': CheckDatatypesCommand,
-            }
+def find_command(command_string):
+    for command in commands():
+        if command.COMMAND_LINE == command_string:
+            return command
+    raise ValueError('Command not found')
+
+
+def commands():
+    """Return array of available commands"""
+    return [ExportCommand,
+            ShowCommand,
+            CopyCommand,
+            CheckDatatypesCommand
+            ]
 
 
 class Command:
     """Wraps a command function and its input variables"""
+
     def __init__(self, inputs, scope, initial_result=None):
         self.scope = scope
         self.outputs = initial_result
@@ -28,11 +36,13 @@ class Command:
         """Function that will be run on each item in the XNAT server"""
 
     def print_results(self):
-        print("Result of running {} on {}:".format(self.NAME, self.scope))
+        """Output results to user"""
+        print("Result of running {} on {}:".format(self.NAME, self.scope))  ## pylint:disable=no-member
         print(self.outputs)
 
 
 class CommandInputs:
+    """Wrap global input variables for a command"""
     def __init__(self, dst_xnat, reporter, fix_scan_types, dst_project=None):
         self.dst_project = dst_project
         self.fix_scan_types = fix_scan_types
@@ -42,29 +52,34 @@ class CommandInputs:
 
 class CommandReturn:
     """Class for return values for a command function call"""
+
     def __init__(self, to_children=None, recurse=True):
         self.to_children = to_children
         self.recurse = recurse
 
 
 class ExportCommand(Command):
+    """Command which exports XNAT project data onto local disk"""
     NAME = 'Download'
+    COMMAND_LINE = 'export'
     USE_DST_SERVER = False
     CACHE_TYPE = 'downloads'
+    HELP = 'Export XNAT projects to disk'
 
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
-        """Command which exports XNAT project data onto local disk"""
         return_value = xnat_item.export()
         return CommandReturn(to_children=return_value)
 
 
 class ShowCommand(Command):
+    """Command which displays contents of XNAT projects"""
     NAME = 'Show'
+    COMMAND_LINE = 'show'
     USE_DST_SERVER = False
     CACHE_TYPE = 'cache'
+    HELP = 'Show information about XNAT projects'
 
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
-        """Command which displays contents of XNAT projects"""
         if self.outputs is None:
             self.outputs = ''
         self.outputs += xnat_item.user_visible_info() + os.linesep
@@ -73,16 +88,18 @@ class ShowCommand(Command):
 
 
 class CopyCommand(Command):
+    """Command which copies XNAT projects between servers"""
     NAME = 'Copy'
+    COMMAND_LINE = 'copy'
     USE_DST_SERVER = True
     CACHE_TYPE = 'cache'
+    HELP = 'Copy projects between server, or duplicate on same server'
 
     def run(self, xnat_item, from_parent):
-        """Command which copies XNAT projects between servers"""
 
         # Override the project name
-        dst_name = self.inputs.dst_project if isinstance(xnat_item, XnatProject) \
-            else None
+        dst_name = self.inputs.dst_project if \
+            isinstance(xnat_item, XnatProject) else None
 
         copied_item = xnat_item.duplicate(
             destination_parent=from_parent,
@@ -93,15 +110,18 @@ class CopyCommand(Command):
 
 
 class CheckDatatypesCommand(Command):
+    """
+    Command which checks if destination server has all the
+    scan datatypes that are present on the source server
+    """
     NAME = 'Check Datatypes'
+    COMMAND_LINE = 'check_datatypes'
     USE_DST_SERVER = True
     CACHE_TYPE = 'cache'
+    HELP = 'Check if session data types on source XNAT are present on ' \
+           'destination'
 
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
-        """
-        Command which checks if destination server has all the
-        scan datatypes that are present on the source server
-        """
 
         # On first run, set up the outputs
         if self.outputs is None:
@@ -123,8 +143,9 @@ class CheckDatatypesCommand(Command):
                     'destination server. '.format(datatype))
 
             else:
-                self.inputs.reporter.verbose_log('OK: session datatype {} is on '
-                                     'destination server.'.format(datatype))
+                self.inputs.reporter.verbose_log(
+                    'OK: session datatype {} is on destination server.'.
+                        format(datatype))
         if datatype:
             self.inputs.reporter.verbose_log(
                 'Known datatype for {} {} {}'.format(xnat_item._name,  # pylint: disable=protected-access
