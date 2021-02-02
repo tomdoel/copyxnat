@@ -60,7 +60,8 @@ class PyReporter(object):
         """
         if self._iter_num is not None and self._max_iter is not None:
             width = 50
-            num_bars = int(width*self._iter_num//(max(1, self._max_iter)))
+            num_bars = int(width*self._iter_num//self._max_iter) if \
+                self._max_iter >= 1 else width
             bar_str = '█'*num_bars + '-'*(width - num_bars)
             progress_text = '\r{} |{}| {:3d}/{} done'.format(self._message,
                                                              bar_str,
