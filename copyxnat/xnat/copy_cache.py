@@ -30,12 +30,13 @@ class CopyCache(object):
         self.root_path = root_path
         if name is None:
             name_i = 1
-            rel_path = os.path.join(parent_rel_path, cache_type, str(name_i))
+            name = str(name_i)
+            rel_path = os.path.join(parent_rel_path, cache_type, name)
             full_path = os.path.join(self.root_path, rel_path)
             while os.path.exists(full_path):
                 name_i += 1
-                rel_path = os.path.join(parent_rel_path, cache_type,
-                                        str(name_i))
+                name = str(name_i)
+                rel_path = os.path.join(parent_rel_path, cache_type, name)
                 full_path = os.path.join(self.root_path, rel_path)
         else:
             rel_path = os.path.join(parent_rel_path, cache_type, name)
