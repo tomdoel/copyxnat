@@ -3,7 +3,7 @@
 """Commands defining actions that can be performed with copyxnat"""
 import abc
 
-from copyxnat.xnat.xnat_interface import XnatExperiment, XnatScan, XnatProject
+from copyxnat.xnat.xnat_interface import XnatExperiment, XnatProject
 
 
 def commands() -> dict:

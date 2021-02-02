@@ -7,7 +7,7 @@ from getpass import getpass
 
 from copyxnat.xnat.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
-from xnat import commands
+from copyxnat.xnat import commands
 
 
 def main(args=None):
