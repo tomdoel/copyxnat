@@ -4,7 +4,7 @@
 
 
 from copyxnat.pyreporter.pyreporter import PyReporter
-from copyxnat.xnat.commands import command_factory
+from copyxnat.xnat.commands import command_factory, CommandInputs
 from copyxnat.xnat.copy_cache import CacheBox
 from copyxnat.xnat_backend.server_factory import ServerFactory
 from copyxnat.xnat.xnat_interface import XnatServer, XnatServerParams
@@ -128,12 +128,13 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
 
     for project in projects_to_process:
         src_project, dst_project = resolve_projects(project)
+        command_inputs = CommandInputs(dst_xnat=dst_xnat_server,
+                                       dst_project=dst_project,
+                                       fix_scan_types=fix_scan_types,
+                                       reporter=reporter)
         command_w = command_factory(command=command,
-                                    dst_xnat=dst_xnat_server,
-                                    dst_project=dst_project,
-                                    fix_scan_types=fix_scan_types,
-                                    initial_result=global_results['result'],
-                                    reporter=reporter)
+                                    command_inputs=command_inputs,
+                                    initial_result=global_results['result'])
 
         server_project = src_xnat_server.project(src_project)
         num_sessions = src_xnat_server.num_experiments(src_project)
