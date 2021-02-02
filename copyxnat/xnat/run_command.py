@@ -103,10 +103,6 @@ def run_command_on_servers(command_string, src_xnat_server, dst_xnat_server,
     on the source and destination servers, the string should be of the form
     src_project_name:dst_project_name
     """
-    count_command = command_factory(command_string='count_scans',
-                                    dst_xnat=dst_xnat_server,
-                                    fix_scan_types=False,
-                                    reporter=reporter)
 
     server_projects = src_xnat_server.project_list()
     if not server_projects:
@@ -143,23 +139,13 @@ def run_command_on_servers(command_string, src_xnat_server, dst_xnat_server,
                                   reporter=reporter)
 
         server_project = src_xnat_server.project(src_project)
-
-        # Compute number of scans in project
-        count_command.reset_function()
-        reporter.start_progress(
-            message='Counting Scans for {}'.format(server_project.label),
-            max_iter=None)
-        server_project.run_recursive(
-            function=count_command.function,
-            from_parent=dst_xnat_server,
-            reporter=reporter)
-        reporter.complete_progress()
-        num_scans = count_command.outputs_function()['result']['num_scans']
+        num_sessions = src_xnat_server.num_experiments(src_project)
 
         reporter.start_progress(
-            message='{} {} scans for {}'.format(command_string, num_scans,
-                                                server_project.label),
-            max_iter=num_scans)
+            message='{} {} sessions for {}'.format(command.NAME,
+                                                   num_sessions,
+                                                   server_project.label),
+            max_iter=num_sessions)
         server_project.run_recursive(
             function=command.function,
             from_parent=dst_xnat_server,

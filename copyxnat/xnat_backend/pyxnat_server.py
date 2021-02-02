@@ -41,6 +41,12 @@ class PyXnatServer(object):
         """Disconnect from server"""
         self._interface.close_jsession()
 
+    def num_experiments(self, project):
+        """Return number of experiments in this project"""
+        return len(
+            self.fetch_interface()._get_json('/REST/projects/{}/experiments'.
+                format(project)))  # pylint: disable=protected-access
+
 
 class PyXnatItem(abc.ABC):
     """Abstraction of wrappers around pyXnat interfaces"""
