@@ -17,12 +17,7 @@ def commands() -> dict:
 
 class Command:
     """Wraps a command function and its input variables"""
-    def __init__(self, command, command_inputs, initial_result=None):
-        self.command = command
-        self.function = self.run_command
-        self.command_fn = command.run
-        self.outputs_function = self.get_outputs
-        self.reset_function = self.reset
+    def __init__(self, command_inputs, initial_result=None):
         self.initial_result = initial_result
         self.output_result = initial_result
         self.output_tostring = self.result_tostring
@@ -33,11 +28,16 @@ class Command:
             'reporter': command_inputs.reporter
         }
 
+    @staticmethod
+    @abc.abstractmethod
+    def run(xnat_item, inputs, outputs, from_parent):
+        """Function that will be run on each item in the XNAT server"""
+
     def run_command(self, xnat_item, from_parent):
-        command_return = self.command_fn(xnat_item=xnat_item,
-                                         inputs=self.inputs,
-                                         outputs=self.output_result,
-                                         from_parent=from_parent)
+        command_return = self.run(xnat_item=xnat_item,
+                                  inputs=self.inputs,
+                                  outputs=self.output_result,
+                                  from_parent=from_parent)
         self.output_result = command_return.outputs
         if command_return.tostring:
             self.output_tostring = command_return.tostring
@@ -50,7 +50,7 @@ class Command:
         self.output_result = None
 
     def result_tostring(self, result):
-        return "Output from {}: {}".format(self.command.NAME, result)
+        return "Output from {}: {}".format(self.NAME, result)
 
 
 class CommandInputs:
@@ -59,13 +59,6 @@ class CommandInputs:
         self.fix_scan_types = fix_scan_types
         self.reporter = reporter
         self.dst_xnat = dst_xnat
-
-
-class CommandBase(abc.ABC):
-    @staticmethod
-    @abc.abstractmethod
-    def run(xnat_item, inputs, outputs, from_parent):
-        """Function that will be run on each item in the XNAT server"""
 
 
 class CommandReturn:
@@ -77,9 +70,9 @@ class CommandReturn:
         self.tostring = tostring
 
 
-class ExportCommand(CommandBase):
+class ExportCommand(Command):
     NAME = 'Download'
-    USE_DST_SERVER = True
+    USE_DST_SERVER = False
     CACHE_TYPE = 'downloads'
 
     @staticmethod
@@ -89,7 +82,7 @@ class ExportCommand(CommandBase):
         return CommandReturn(outputs=outputs, to_children=return_value)
 
 
-class ShowCommand(CommandBase):
+class ShowCommand(Command):
     NAME = 'Show'
     USE_DST_SERVER = False
     CACHE_TYPE = 'cache'
@@ -101,7 +94,7 @@ class ShowCommand(CommandBase):
         return CommandReturn(outputs=outputs)
 
 
-class CopyCommand(CommandBase):
+class CopyCommand(Command):
     NAME = 'Copy'
     USE_DST_SERVER = True
     CACHE_TYPE = 'cache'
@@ -122,7 +115,7 @@ class CopyCommand(CommandBase):
         return CommandReturn(outputs, to_children=copied_item)
 
 
-class CheckDatatypesCommand(CommandBase):
+class CheckDatatypesCommand(Command):
     NAME = 'Check Datatypes'
     USE_DST_SERVER = True
     CACHE_TYPE = 'cache'
