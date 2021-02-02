@@ -105,6 +105,10 @@ class XnatServer(XnatBase):
         """Disconnect from this server"""
         self.interface.logout()
 
+    def num_experiments(self, project):
+        """Return number of experiments in this project"""
+        return self.interface.num_experiments(project)
+
 
 class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy"""
@@ -125,7 +129,7 @@ class XnatItem(XnatBase):
     def run_recursive(self, function, from_parent, reporter):
         """Run the function on this item and all its children"""
         next_output = function(self, from_parent)
-        if isinstance(self, XnatScan):
+        if isinstance(self, XnatExperiment):
             reporter.next_progress()
         if next_output.recurse:
             for child in self.get_children():
