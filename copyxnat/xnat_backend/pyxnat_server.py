@@ -39,7 +39,7 @@ class PyXnatServer(object):
 
     def logout(self):
         """Disconnect from server"""
-        self._interface.disconnect()
+        self._interface.close_jsession()
 
 
 class PyXnatItem(abc.ABC):
