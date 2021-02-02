@@ -56,5 +56,5 @@ jobs:
           name: tomdoel/copyxnat
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-          dockerfile: docker/Dockerfile
+          dockerfile: Dockerfile
           tags: "latest, ${{steps.tag.outputs.tag}}"
