@@ -8,6 +8,7 @@ from getpass import getpass
 from copyxnat.xnat.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
 from copyxnat.xnat import commands
+from xnat.xnat_interface import XnatServerParams
 
 
 def main(args=None):
@@ -109,16 +110,27 @@ def main(args=None):
                                               args.project else None
 
     command = commands.commands()[args.command]
+
+    src_params = XnatServerParams(host=args.src_host,
+                                  user=args.src_user,
+                                  pwd=src_pw,
+                                  insecure=args.insecure,
+                                  read_only=True)
+
+    if dst_host:
+        dst_params = XnatServerParams(host=args.dst_host,
+                                      user=args.dst_user,
+                                      pwd=dst_pw,
+                                      insecure=args.insecure,
+                                      read_only=False)
+    else:
+        dst_params = None
+
     result = run_command(command=command,
-                         src_host=args.src_host,
-                         src_user=args.src_user,
-                         src_pw=src_pw,
+                         src_params=src_params,
+                         dst_params=dst_params,
                          project_filter=project_list,
-                         dst_host=dst_host,
-                         dst_user=dst_user,
-                         dst_pw=dst_pw,
                          verbose=args.verbose,
-                         insecure=args.insecure,
                          fix_scan_types=fix_scan_types,
                          dry_run=args.dry_run
                          )
