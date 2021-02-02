@@ -147,6 +147,10 @@ class CheckDatatypesCommand(Command):
                 self.inputs.reporter.verbose_log(
                     'OK: session datatype {} is on destination server.'.
                         format(datatype))
+            recurse = False
+        else:
+            recurse = True
+
         if datatype:
             self.inputs.reporter.verbose_log(
                 'Known datatype for {} {} {}'.format(xnat_item._name,  # pylint: disable=protected-access
@@ -162,7 +166,7 @@ class CheckDatatypesCommand(Command):
                 item_id))
             self.outputs['ids_with_empty_datatypes'].add(item_id)
 
-        return CommandReturn()
+        return CommandReturn(recurse=recurse)
 
     def print_results(self):
         missing = self.outputs['missing_session_datatypes']
