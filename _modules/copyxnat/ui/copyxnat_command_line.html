@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.ui.copyxnat_command_line &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.ui.copyxnat_command_line</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.ui.copyxnat_command_line</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;Command line processing&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.run_command</span> <span class="kn">import</span> <span class="n">run_command</span>
+<span class="kn">from</span> <span class="nn">copyxnat.utils.versioning</span> <span class="kn">import</span> <span class="n">get_version_string</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat</span> <span class="kn">import</span> <span class="n">commands</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatServerParams</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../copyxnat.ui.copyxnat_command_line.html#copyxnat.ui.copyxnat_command_line.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Entry point for copyxnat application&quot;&quot;&quot;</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span>
+
+    <span class="n">version_string</span> <span class="o">=</span> <span class="n">get_version_string</span><span class="p">()</span>
+    <span class="n">friendly_version_string</span> <span class="o">=</span> <span class="n">version_string</span> <span class="k">if</span> <span class="n">version_string</span> <span class="k">else</span> <span class="s1">&#39;unknown&#39;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;version&#39;</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">friendly_version_string</span>
+    <span class="p">)</span>
+
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
+        <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
+
+    <span class="c1"># Arguments common to all commands</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--dry_run&quot;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the destination&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="s2">&quot;--insecure&quot;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not enforce strict SSL certificate checks&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show verbose output&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--src_host&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the XNAT server containing the data&quot;</span>
+                        <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--src_user&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;User name for accessing XNAT server containing &quot;</span>
+                             <span class="s2">&quot;the data&quot;</span>
+                        <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--project&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of project containing the data&quot;</span>
+                        <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--cache_dir&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
+                        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
+            <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
+            <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="n">command_key</span><span class="p">]</span>
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst_host&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the destination XNAT &quot;</span>
+                                         <span class="s2">&quot;server&quot;</span>
+                                    <span class="p">)</span>
+
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst_user&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;User name for accessing the &quot;</span>
+                                         <span class="s2">&quot;destination XNAT server&quot;</span>
+                                    <span class="p">)</span>
+
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--fix-scan-types&quot;</span><span class="p">,</span>
+                                    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Fix undefined scan types on the copy&quot;</span><span class="p">,</span>
+                                    <span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">command</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">find_command</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">command</span><span class="p">)</span>
+
+    <span class="n">src_pw</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Please enter the password for </span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span>
+                     <span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">src_host</span><span class="p">))</span>
+
+    <span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="k">if</span> <span class="s1">&#39;fix_scan_types&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="n">project_list</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> \
+                                              <span class="n">args</span><span class="o">.</span><span class="n">project</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">src_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">src_host</span><span class="p">,</span>
+                                  <span class="n">user</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span>
+                                  <span class="n">pwd</span><span class="o">=</span><span class="n">src_pw</span><span class="p">,</span>
+                                  <span class="n">insecure</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">insecure</span><span class="p">,</span>
+                                  <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
+        <span class="n">dst_host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_host</span> <span class="k">if</span> <span class="s1">&#39;dst_host&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">dst_user</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_user</span> <span class="k">if</span> <span class="s1">&#39;dst_user&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">dst_pw</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Please enter the password for </span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span>
+                         <span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dst_user</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_host</span><span class="p">))</span>
+
+        <span class="n">dst_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">dst_host</span><span class="p">,</span>
+                                      <span class="n">user</span><span class="o">=</span><span class="n">dst_user</span><span class="p">,</span>
+                                      <span class="n">pwd</span><span class="o">=</span><span class="n">dst_pw</span><span class="p">,</span>
+                                      <span class="n">insecure</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">insecure</span><span class="p">,</span>
+                                      <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dst_params</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
+                         <span class="n">src_params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
+                         <span class="n">dst_params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
+                         <span class="n">project_filter</span><span class="o">=</span><span class="n">project_list</span><span class="p">,</span>
+                         <span class="n">verbose</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+                         <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
+                         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span>
+                         <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.ui.copyxnat_command_line</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
