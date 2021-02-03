@@ -10,6 +10,17 @@ import urllib3
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 
 
+class XnatServerParams:
+    """Encapsulates parameters used to access an XNAT server"""
+
+    def __init__(self, host, user, pwd, insecure=False, read_only=False):
+        self.read_only = read_only
+        self.pwd = pwd
+        self.user = user
+        self.host = host
+        self.insecure = insecure
+
+
 class XnatBase(abc.ABC):
     """Base class for an item in the XNAT data hierarchy"""
 
@@ -30,9 +41,14 @@ class XnatBase(abc.ABC):
         level = self.cache.cache_level
         return '  '*level + '--{}- label:{}'.format(self._name, self.label)  # pylint: disable=no-member
 
-    @abc.abstractmethod
     def get_children(self) -> list:
         """Return XNAT child objects of this XNAT object"""
+        children = []
+
+        # Iterate through XnatItem classes that are child types of this class
+        for child_class in self._child_types:  # pylint: disable=no-member
+            children = children + self.get_children_of_type(child_class)
+        return children
 
     def get_children_of_type(self, class_type) -> list:
         """
@@ -46,76 +62,6 @@ class XnatBase(abc.ABC):
                            read_only=self.read_only,
                            xml_cleaner=self.xml_cleaner)
                 for item in get_method()]
-
-
-class XnatServerParams:
-    """Encapsulates parameters used to access an XNAT server"""
-
-    def __init__(self, host, user, pwd, insecure=False, read_only=False):
-        self.read_only = read_only
-        self.pwd = pwd
-        self.user = user
-        self.host = host
-        self.insecure = insecure
-
-
-class XnatServer(XnatBase):
-    """Access an XNAT server"""
-
-    _name = 'Server'
-    _cache_subdir_name = 'servers'
-
-    def __init__(self,
-                 factory,
-                 params,
-                 base_cache,
-                 reporter
-                 ):
-
-        if params.insecure:
-            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-        interface = factory.create(params=params)
-
-        label = params.host.replace('https://', '').replace('http://', '')
-        self._projects = None
-        super().__init__(parent_cache=base_cache,
-                         interface=interface,
-                         label=label,
-                         read_only=params.read_only,
-                         xml_cleaner=XmlCleaner(reporter=reporter))
-
-    def datatypes(self):
-        """Return all the session datatypes in use on this server"""
-        return self.interface.datatypes()
-
-    def get_children(self) -> list:
-        return self.get_projects()
-
-    def project_list(self):
-        """Return array of project ids"""
-        return self.interface.project_list()
-
-    def project(self, label):
-        """Return XnatProject for this project id"""
-        return XnatProject(parent_cache=self.cache,
-                           interface=self.interface.project(label),
-                           label=label,
-                           read_only=self.read_only,
-                           xml_cleaner=self.xml_cleaner)
-
-    def get_projects(self):
-        """Return all projects in this server accessible to this user"""
-        projects = self.get_children_of_type(XnatProject)
-        return projects
-
-    def logout(self):
-        """Disconnect from this server"""
-        self.interface.logout()
-
-    def num_experiments(self, project):
-        """Return number of experiments in this project"""
-        return self.interface.num_experiments(project)
 
 
 class XnatItem(XnatBase):
@@ -198,36 +144,6 @@ class XnatParentItem(XnatItem):
                          read_only=read_only,
                          xml_cleaner=xml_cleaner)
 
-    @abc.abstractmethod
-    def get_children(self) -> list:
-        """
-        Return all child XnatItems of this object (resources and non-resources)
-        """
-
-    def get_resources(self):
-        """
-        Return resource child XnatItems of this object
-        Only valid for certain item types
-        """
-
-        return self.get_children_of_type(XnatResource)
-
-    def get_in_resources(self):
-        """
-        Return in_resource child XnatItems of this object.
-        Only valid for certain item types
-        """
-
-        return self.get_children_of_type(XnatInResource)
-
-    def get_out_resources(self):
-        """
-        Return out_resource child XnatItems of this object
-        Only valid for certain item types
-        """
-
-        return self.get_children_of_type(XnatOutResource)
-
     def get_xml_string(self):
         """Get an XML string representation of this item"""
         if self._xml is None:
@@ -297,125 +213,8 @@ class XnatParentItem(XnatItem):
         return self.cache.write_xml(src_xml_root, self._xml_filename)  # pylint: disable=no-member
 
 
-class XnatProject(XnatParentItem):
-    """Wrapper for access to an XNAT project"""
-
-    _name = 'Project'
-    _xml_filename = 'metadata_project.xml'
-    _cache_subdir_name = 'projects'
-    _xml_id = XnatType.project
-    interface_method = 'projects'
-
-    def get_children(self) -> list:
-        return self.get_subjects() + self.get_resources()
-
-    def get_subjects(self):
-        return self.get_children_of_type(XnatSubject)
-
-    def clean(self, xml_root, fix_scan_types, destination_parent,
-              label):
-        disallowed = self.interface.get_disallowed_project_ids(
-            server=destination_parent, label=label)
-        cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
-            xml_root=xml_root,
-            disallowed_ids=disallowed["secondary_ids"],
-            disallowed_names=disallowed["names"]
-        )
-
-        return self.xml_cleaner.clean(
-            xml_root=cleaned_xml_root,
-            xnat_type=self._xml_id,  # pylint: disable=no-member
-            fix_scan_types=fix_scan_types)
-
-
-class XnatSubject(XnatParentItem):
-    """Wrapper for access to an XNAT subject"""
-
-    _name = 'Subject'
-    _xml_filename = 'metadata_subject.xml'
-    _cache_subdir_name = 'subjects'
-    _xml_id = XnatType.subject
-    interface_method = 'subjects'
-
-    def get_children(self) -> list:
-        return self.get_experiments() + self.get_resources()
-
-    def get_experiments(self):
-        return self.get_children_of_type(XnatExperiment)
-
-
-class XnatExperiment(XnatParentItem):
-    """Wrapper for access to an XNAT experiment"""
-
-    _name = 'Experiment'
-    _xml_filename = 'metadata_session.xml'
-    _cache_subdir_name = 'experiments'
-    _xml_id = XnatType.experiment
-    interface_method = 'get_experiments'
-
-    def get_children(self) -> list:
-        return self.get_scans() + \
-               self.get_assessors() + \
-               self.get_reconstructions() + \
-               self.get_resources()
-
-    def get_scans(self):
-        return self.get_children_of_type(XnatScan)
-
-    def get_assessors(self):
-        return self.get_children_of_type(XnatAssessor)
-
-    def get_reconstructions(self):
-        return self.get_children_of_type(XnatReconstruction)
-
-
-class XnatScan(XnatParentItem):
-    """Wrapper for access to an XNAT scan"""
-
-    _name = 'Scan'
-    _xml_filename = 'metadata_scan.xml'
-    _cache_subdir_name = 'scans'
-    _xml_id = XnatType.scan
-    interface_method = 'get_scans'
-
-    def get_children(self) -> list:
-        return self.get_resources()
-
-
-class XnatAssessor(XnatParentItem):
-    """Wrapper for access to an XNAT assessor"""
-
-    _name = 'Assessor'
-    _cache_subdir_name = 'assessors'
-    _xml_filename = 'metadata_assessor.xml'
-    _xml_id = XnatType.assessor
-    interface_method = 'get_assessors'
-
-    def get_children(self) -> list:
-        return self.get_resources() + \
-               self.get_in_resources() + \
-               self.get_out_resources()
-
-
-class XnatReconstruction(XnatParentItem):
-    """Wrapper for access to an XNAT assessor"""
-
-    _name = 'Reconstruction'
-    _cache_subdir_name = 'reconstructions'
-    _xml_filename = 'metadata_reconstruction.xml'
-    _xml_id = XnatType.reconstruction
-    interface_method = 'get_reconstructions'
-
-    def get_children(self) -> list:
-        return self.get_in_resources() + \
-               self.get_out_resources()
-
-
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
-
-    def get_children(self) -> list:
-        return []
 
     def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
                   dry_run=False):
@@ -437,6 +236,7 @@ class XnatResource(XnatFileContainerItem):
     _xml_id = XnatType.resource
     _cache_subdir_name = 'resources'
     interface_method = 'resources'
+    _child_types = []
 
 
 class XnatInResource(XnatFileContainerItem):
@@ -446,6 +246,7 @@ class XnatInResource(XnatFileContainerItem):
     _xml_id = XnatType.in_resource
     _cache_subdir_name = 'in_resources'
     interface_method = 'in_resources'
+    _child_types = []
 
 
 class XnatOutResource(XnatFileContainerItem):
@@ -455,3 +256,137 @@ class XnatOutResource(XnatFileContainerItem):
     _xml_id = XnatType.out_resource
     _cache_subdir_name = 'out_resources'
     interface_method = 'out_resources'
+    _child_types = []
+
+
+class XnatReconstruction(XnatParentItem):
+    """Wrapper for access to an XNAT assessor"""
+
+    _name = 'Reconstruction'
+    _cache_subdir_name = 'reconstructions'
+    _xml_filename = 'metadata_reconstruction.xml'
+    _xml_id = XnatType.reconstruction
+    interface_method = 'get_reconstructions'
+    _child_types = [XnatInResource, XnatOutResource]
+
+
+class XnatAssessor(XnatParentItem):
+    """Wrapper for access to an XNAT assessor"""
+
+    _name = 'Assessor'
+    _cache_subdir_name = 'assessors'
+    _xml_filename = 'metadata_assessor.xml'
+    _xml_id = XnatType.assessor
+    interface_method = 'get_assessors'
+    _child_types = [XnatResource, XnatInResource, XnatOutResource]
+
+
+class XnatScan(XnatParentItem):
+    """Wrapper for access to an XNAT scan"""
+
+    _name = 'Scan'
+    _xml_filename = 'metadata_scan.xml'
+    _cache_subdir_name = 'scans'
+    _xml_id = XnatType.scan
+    interface_method = 'get_scans'
+    _child_types = [XnatResource]
+
+
+class XnatExperiment(XnatParentItem):
+    """Wrapper for access to an XNAT experiment"""
+
+    _name = 'Experiment'
+    _xml_filename = 'metadata_session.xml'
+    _cache_subdir_name = 'experiments'
+    _xml_id = XnatType.experiment
+    interface_method = 'get_experiments'
+    _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
+
+
+class XnatSubject(XnatParentItem):
+    """Wrapper for access to an XNAT subject"""
+
+    _name = 'Subject'
+    _xml_filename = 'metadata_subject.xml'
+    _cache_subdir_name = 'subjects'
+    _xml_id = XnatType.subject
+    interface_method = 'subjects'
+    _child_types = [XnatExperiment, XnatResource]
+
+
+class XnatProject(XnatParentItem):
+    """Wrapper for access to an XNAT project"""
+
+    _name = 'Project'
+    _xml_filename = 'metadata_project.xml'
+    _cache_subdir_name = 'projects'
+    _xml_id = XnatType.project
+    interface_method = 'projects'
+    _child_types = [XnatSubject, XnatResource]
+
+    def clean(self, xml_root, fix_scan_types, destination_parent,
+              label):
+        disallowed = self.interface.get_disallowed_project_ids(
+            server=destination_parent, label=label)
+        cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
+            xml_root=xml_root,
+            disallowed_ids=disallowed["secondary_ids"],
+            disallowed_names=disallowed["names"]
+        )
+
+        return self.xml_cleaner.clean(
+            xml_root=cleaned_xml_root,
+            xnat_type=self._xml_id,  # pylint: disable=no-member
+            fix_scan_types=fix_scan_types)
+
+
+class XnatServer(XnatBase):
+    """Access an XNAT server"""
+
+    _name = 'Server'
+    _cache_subdir_name = 'servers'
+    _child_types = [XnatProject]
+
+    def __init__(self,
+                 factory,
+                 params,
+                 base_cache,
+                 reporter
+                 ):
+
+        if params.insecure:
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+        interface = factory.create(params=params)
+
+        label = params.host.replace('https://', '').replace('http://', '')
+        self._projects = None
+        super().__init__(parent_cache=base_cache,
+                         interface=interface,
+                         label=label,
+                         read_only=params.read_only,
+                         xml_cleaner=XmlCleaner(reporter=reporter))
+
+    def datatypes(self):
+        """Return all the session datatypes in use on this server"""
+        return self.interface.datatypes()
+
+    def project_list(self):
+        """Return array of project ids"""
+        return self.interface.project_list()
+
+    def project(self, label):
+        """Return XnatProject for this project id"""
+        return XnatProject(parent_cache=self.cache,
+                           interface=self.interface.project(label),
+                           label=label,
+                           read_only=self.read_only,
+                           xml_cleaner=self.xml_cleaner)
+
+    def logout(self):
+        """Disconnect from this server"""
+        self.interface.logout()
+
+    def num_experiments(self, project):
+        """Return number of experiments in this project"""
+        return self.interface.num_experiments(project)
