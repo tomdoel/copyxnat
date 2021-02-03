@@ -1,0 +1,22 @@
+copyxnat.commands package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.commands.check_datatypes_command
+   copyxnat.commands.copy_command
+   copyxnat.commands.export_command
+   copyxnat.commands.find_commands
+   copyxnat.commands.show_command
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.commands
+   :members:
+   :undoc-members:
+   :show-inheritance:

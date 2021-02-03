@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>copyxnat.pyreporter package &#8212; CopyXnat  documentation</title>
+    <title>copyxnat.commands.find_commands module &#8212; CopyXnat  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -16,8 +16,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="copyxnat.pyreporter.pyreporter module" href="copyxnat.pyreporter.pyreporter.html" />
-    <link rel="prev" title="copyxnat.commands.show_command module" href="copyxnat.commands.show_command.html" /> 
+    <link rel="next" title="copyxnat.commands.show_command module" href="copyxnat.commands.show_command.html" />
+    <link rel="prev" title="copyxnat.commands.export_command module" href="copyxnat.commands.export_command.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,15 +29,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.pyreporter.pyreporter.html" title="copyxnat.pyreporter.pyreporter module"
+          <a href="copyxnat.commands.show_command.html" title="copyxnat.commands.show_command module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.commands.show_command.html" title="copyxnat.commands.show_command module"
+          <a href="copyxnat.commands.export_command.html" title="copyxnat.commands.export_command module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="copyxnat.html" accesskey="U">copyxnat package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.pyreporter package</a></li> 
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.commands.html" accesskey="U">copyxnat.commands package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.find_commands module</a></li> 
       </ul>
     </div>  
 
@@ -46,20 +47,21 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="copyxnat-pyreporter-package">
-<h1>copyxnat.pyreporter package<a class="headerlink" href="#copyxnat-pyreporter-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="copyxnat.pyreporter.pyreporter.html">copyxnat.pyreporter.pyreporter module</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="module-copyxnat.pyreporter">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-copyxnat.pyreporter" title="Permalink to this headline">¶</a></h2>
-<p>PyReporter</p>
-</div>
+  <div class="section" id="module-copyxnat.commands.find_commands">
+<span id="copyxnat-commands-find-commands-module"></span><h1>copyxnat.commands.find_commands module<a class="headerlink" href="#module-copyxnat.commands.find_commands" title="Permalink to this headline">¶</a></h1>
+<p>Commands defining actions that can be performed with copyxnat</p>
+<dl class="py function">
+<dt id="copyxnat.commands.find_commands.commands">
+<code class="sig-prename descclassname">copyxnat.commands.find_commands.</code><code class="sig-name descname">commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/find_commands.html#commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.commands.find_commands.commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of available commands</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="copyxnat.commands.find_commands.find_command">
+<code class="sig-prename descclassname">copyxnat.commands.find_commands.</code><code class="sig-name descname">find_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/find_commands.html#find_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.commands.find_commands.find_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Command with matching command line string</p>
+</dd></dl>
+
 </div>
 
 
@@ -72,25 +74,16 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/project-icon.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">copyxnat.pyreporter package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-copyxnat.pyreporter">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
-  <p class="topless"><a href="copyxnat.commands.show_command.html"
-                        title="previous chapter">copyxnat.commands.show_command module</a></p>
+  <p class="topless"><a href="copyxnat.commands.export_command.html"
+                        title="previous chapter">copyxnat.commands.export_command module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="copyxnat.pyreporter.pyreporter.html"
-                        title="next chapter">copyxnat.pyreporter.pyreporter module</a></p>
+  <p class="topless"><a href="copyxnat.commands.show_command.html"
+                        title="next chapter">copyxnat.commands.show_command module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/copyxnat.pyreporter.rst.txt"
+      <li><a href="_sources/copyxnat.commands.find_commands.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -118,15 +111,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.pyreporter.pyreporter.html" title="copyxnat.pyreporter.pyreporter module"
+          <a href="copyxnat.commands.show_command.html" title="copyxnat.commands.show_command module"
              >next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.commands.show_command.html" title="copyxnat.commands.show_command module"
+          <a href="copyxnat.commands.export_command.html" title="copyxnat.commands.export_command module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.pyreporter package</a></li> 
+          <li class="nav-item nav-item-3"><a href="copyxnat.commands.html" >copyxnat.commands package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.find_commands module</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,0 +1,7 @@
+copyxnat.commands.show\_command module
+======================================
+
+.. automodule:: copyxnat.commands.show_command
+   :members:
+   :undoc-members:
+   :show-inheritance:

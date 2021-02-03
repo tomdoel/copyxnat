@@ -1,0 +1,7 @@
+copyxnat.commands.check\_datatypes\_command module
+==================================================
+
+.. automodule:: copyxnat.commands.check_datatypes_command
+   :members:
+   :undoc-members:
+   :show-inheritance:
