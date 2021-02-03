@@ -17,6 +17,8 @@ class XnatType(Enum):
     assessor = 'assessor'
     reconstruction = 'reconstruction'
     resource = 'resource'
+    in_resource = 'in_resource'
+    out_resource = 'out_resource'
 
 
 class XmlCleaner:
@@ -73,6 +75,10 @@ class XmlCleaner:
             'project': PROJECT_ID_MAP
         },
         XnatType.resource: {
+        },
+        XnatType.in_resource: {
+        },
+        XnatType.out_resource: {
         }
     }
 
