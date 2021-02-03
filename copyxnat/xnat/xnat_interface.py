@@ -34,6 +34,17 @@ class XnatBase(abc.ABC):
     def get_children(self) -> list:
         """Return XNAT child objects of this XNAT object"""
 
+    def get_children_of_type(self, class_type, get_method) -> list:
+        """
+        Return child XnatItems of this item of a particular type
+        """
+        return [class_type(parent_cache=self.cache,
+                           interface=item,
+                           label=item.label(),
+                           read_only=self.read_only,
+                           xml_cleaner=self.xml_cleaner)
+                for item in get_method()]
+
 
 class XnatServerParams:
     """Encapsulates parameters used to access an XNAT server"""
@@ -93,12 +104,8 @@ class XnatServer(XnatBase):
 
     def get_projects(self):
         """Return all projects in this server accessible to this user"""
-        projects = [XnatProject(parent_cache=self.cache,
-                                interface=project,
-                                label=project.label(),
-                                read_only=self.read_only,
-                                xml_cleaner=self.xml_cleaner)
-                    for project in self.interface.projects()]
+        projects = self.get_children_of_type(XnatProject,
+                                             self.interface.projects)
         return projects
 
     def logout(self):
@@ -191,31 +198,36 @@ class XnatParentItem(XnatItem):
                          xml_cleaner=xml_cleaner)
 
     @abc.abstractmethod
-    def get_child_items(self) -> list:
-        """
-        Return non-resource child XnatItems of this object
-        """
-
     def get_children(self) -> list:
         """
         Return all child XnatItems of this object (resources and non-resources)
         """
 
-        if self._children is None:
-            self._children = self.get_child_items() + self.get_resources()
-        return self._children
-
     def get_resources(self):
         """
         Return resource child XnatItems of this object
+        Only valid for certain item types
         """
 
-        return [XnatResource(parent_cache=self.cache,
-                             interface=resource,
-                             label=resource.label(),
-                             read_only=self.read_only,
-                             xml_cleaner=self.xml_cleaner
-                             ) for resource in self.interface.resources()]
+        return self.get_children_of_type(XnatResource, self.interface.resources)
+
+    def get_in_resources(self):
+        """
+        Return in_resource child XnatItems of this object.
+        Only valid for certain item types
+        """
+
+        return self.get_children_of_type(XnatInResource,
+                                         self.interface.in_resources)
+
+    def get_out_resources(self):
+        """
+        Return out_resource child XnatItems of this object
+        Only valid for certain item types
+        """
+
+        return self.get_children_of_type(XnatOutResource,
+                                         self.interface.out_resources)
 
     def get_xml_string(self):
         """Get an XML string representation of this item"""
@@ -294,14 +306,11 @@ class XnatProject(XnatParentItem):
     _cache_subdir_name = 'projects'
     _xml_id = XnatType.project
 
-    def get_child_items(self):
-        subjects = [XnatSubject(parent_cache=self.cache,
-                                interface=subject,
-                                label=subject.label(),
-                                read_only=self.read_only,
-                                xml_cleaner=self.xml_cleaner)
-                    for subject in self.interface.subjects()]
-        return subjects
+    def get_children(self) -> list:
+        return self.get_subjects() + self.get_resources()
+
+    def get_subjects(self):
+        return self.get_children_of_type(XnatSubject, self.interface.subjects)
 
     def clean(self, xml_root, fix_scan_types, destination_parent,
               label):
@@ -327,14 +336,12 @@ class XnatSubject(XnatParentItem):
     _cache_subdir_name = 'subjects'
     _xml_id = XnatType.subject
 
-    def get_child_items(self):
-        experiments = [XnatExperiment(parent_cache=self.cache,
-                                      interface=experiment,
-                                      label=experiment.label(),
-                                      read_only=self.read_only,
-                                      xml_cleaner=self.xml_cleaner)
-                       for experiment in self.interface.get_experiments()]
-        return experiments
+    def get_children(self) -> list:
+        return self.get_experiments() + self.get_resources()
+
+    def get_experiments(self):
+        return self.get_children_of_type(XnatExperiment,
+                                         self.interface.get_experiments)
 
 
 class XnatExperiment(XnatParentItem):
@@ -345,30 +352,22 @@ class XnatExperiment(XnatParentItem):
     _cache_subdir_name = 'experiments'
     _xml_id = XnatType.experiment
 
-    def get_child_items(self) -> list:
-        scans = [XnatScan(parent_cache=self.cache,
-                          interface=scan,
-                          label=scan.label(),
-                          read_only=self.read_only,
-                          xml_cleaner=self.xml_cleaner)
-                 for scan in self.interface.get_scans()]
+    def get_children(self) -> list:
+        return self.get_scans() + \
+               self.get_assessors() + \
+               self.get_reconstructions() + \
+               self.get_resources()
 
-        assessors = [XnatAssessor(parent_cache=self.cache,
-                                  interface=assessor,
-                                  label=assessor.label(),
-                                  read_only=self.read_only,
-                                  xml_cleaner=self.xml_cleaner)
-                     for assessor in self.interface.get_assessors()]
+    def get_scans(self):
+        return self.get_children_of_type(XnatScan, self.interface.get_scans)
 
-        reconstructions = [XnatReconstruction(parent_cache=self.cache,
-                                              interface=reconstruction,
-                                              label=reconstruction.label(),
-                                              read_only=self.read_only,
-                                              xml_cleaner=self.xml_cleaner)
-                           for reconstruction
-                           in self.interface.get_reconstructions()]
+    def get_assessors(self):
+        return self.get_children_of_type(XnatAssessor,
+                                         self.interface.get_assessors)
 
-        return scans + assessors + reconstructions
+    def get_reconstructions(self):
+        return self.get_children_of_type(XnatReconstruction,
+                                         self.interface.get_reconstructions)
 
 
 class XnatScan(XnatParentItem):
@@ -379,8 +378,8 @@ class XnatScan(XnatParentItem):
     _cache_subdir_name = 'scans'
     _xml_id = XnatType.scan
 
-    def get_child_items(self):
-        return []
+    def get_children(self) -> list:
+        return self.get_resources()
 
 
 class XnatAssessor(XnatParentItem):
@@ -391,8 +390,10 @@ class XnatAssessor(XnatParentItem):
     _xml_filename = 'metadata_assessor.xml'
     _xml_id = XnatType.assessor
 
-    def get_child_items(self):
-        return []
+    def get_children(self) -> list:
+        return self.get_resources() + \
+               self.get_in_resources() + \
+               self.get_out_resources()
 
 
 class XnatReconstruction(XnatParentItem):
@@ -403,8 +404,9 @@ class XnatReconstruction(XnatParentItem):
     _xml_filename = 'metadata_reconstruction.xml'
     _xml_id = XnatType.reconstruction
 
-    def get_child_items(self):
-        return []
+    def get_children(self) -> list:
+        return self.get_in_resources() + \
+               self.get_out_resources()
 
 
 class XnatFileContainerItem(XnatItem):
