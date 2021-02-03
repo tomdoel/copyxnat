@@ -266,7 +266,7 @@ class XnatReconstruction(XnatParentItem):
     _cache_subdir_name = 'reconstructions'
     _xml_filename = 'metadata_reconstruction.xml'
     _xml_id = XnatType.reconstruction
-    interface_method = 'get_reconstructions'
+    interface_method = 'reconstructions'
     _child_types = [XnatInResource, XnatOutResource]
 
 
@@ -277,7 +277,7 @@ class XnatAssessor(XnatParentItem):
     _cache_subdir_name = 'assessors'
     _xml_filename = 'metadata_assessor.xml'
     _xml_id = XnatType.assessor
-    interface_method = 'get_assessors'
+    interface_method = 'assessors'
     _child_types = [XnatResource, XnatInResource, XnatOutResource]
 
 
@@ -288,7 +288,7 @@ class XnatScan(XnatParentItem):
     _xml_filename = 'metadata_scan.xml'
     _cache_subdir_name = 'scans'
     _xml_id = XnatType.scan
-    interface_method = 'get_scans'
+    interface_method = 'scans'
     _child_types = [XnatResource]
 
 
@@ -299,7 +299,7 @@ class XnatExperiment(XnatParentItem):
     _xml_filename = 'metadata_session.xml'
     _cache_subdir_name = 'experiments'
     _xml_id = XnatType.experiment
-    interface_method = 'get_experiments'
+    interface_method = 'experiments'
     _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
 
 

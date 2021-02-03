@@ -202,7 +202,7 @@ class PyXnatSubject(PyXnatItemWithResources):
         return cls(
             interface=parent_pyxnatitem.fetch_interface().subject(label))
 
-    def get_experiments(self):
+    def experiments(self):
         """Return array of PyXnatExperiment wrappers for this subject"""
         return [PyXnatExperiment(expmt) for expmt in
                 self.fetch_interface().experiments().fetchall('obj')]
@@ -216,17 +216,17 @@ class PyXnatExperiment(PyXnatItemWithResources):
         return cls(
             interface=parent_pyxnatitem.fetch_interface().experiment(label))
 
-    def get_scans(self):
+    def scans(self):
         """Return array of PyXnatScan wrappers for this experiment"""
         return [PyXnatScan(scan)
                 for scan in self.fetch_interface().scans().fetchall('obj')]
 
-    def get_assessors(self):
+    def assessors(self):
         """Return array of PyXnatAssessor wrappers for this experiment"""
         return [PyXnatAssessor(assessor) for assessor in
                 self.fetch_interface().assessors().fetchall('obj')]
 
-    def get_reconstructions(self):
+    def reconstructions(self):
         """Return array of PyXnatReconstruction wrappers for this experiment"""
         return [PyXnatReconstruction(reconstruction) for reconstruction in
                 self.fetch_interface().reconstructions().fetchall('obj')]
