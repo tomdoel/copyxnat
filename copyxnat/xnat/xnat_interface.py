@@ -58,7 +58,7 @@ class XnatBase(abc.ABC):
 
         return [class_type(parent_cache=self.cache,
                            interface=item,
-                           label=item.label(),
+                           label=item.fetch_interface().label(),
                            read_only=self.read_only,
                            xml_cleaner=self.xml_cleaner)
                 for item in get_method()]
