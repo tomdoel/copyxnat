@@ -5,9 +5,10 @@
 import argparse
 from getpass import getpass
 
+from copyxnat.commands.find_commands import find_command
+from copyxnat.commands import find_commands
 from copyxnat.xnat.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
-from copyxnat.xnat import commands
 from copyxnat.xnat.xnat_interface import XnatServerParams
 
 
@@ -26,7 +27,7 @@ def main(args=None):
 
     subparsers = parser.add_subparsers(dest='command')
 
-    for command in commands.commands():
+    for command in find_commands.commands():
         subparsers.add_parser(command.COMMAND_LINE, help=command.HELP)
 
     # Arguments common to all commands
@@ -62,7 +63,7 @@ def main(args=None):
                         help="File path here local cache files are to be stored"
                         )
 
-    for command in commands.commands():
+    for command in find_commands.commands():
         if command.USE_DST_SERVER:
             command_key = command.COMMAND_LINE
             sub_parser = subparsers.choices[command_key]
@@ -83,7 +84,7 @@ def main(args=None):
 
     args = parser.parse_args(args)
 
-    command = commands.find_command(args.command)
+    command = find_command(args.command)
 
     src_pw = getpass("Please enter the password for {}@{}:".
                      format(args.src_user, args.src_host))
