@@ -27,7 +27,10 @@ class XnatBase(abc.ABC):
     def __init__(self, parent_cache, interface, label, read_only, xml_cleaner,
                  reporter):
         self.interface = interface
-        self.label = label
+        if not label:
+            reporter.warning("An empty label was found for a {} type".
+                             format(self._name))  # pylint: disable=no-member
+        self.label = label or "unknown"
         self.cache = parent_cache.sub_cache(self._cache_subdir_name, label)  # pylint: disable=no-member
         self.read_only = read_only
         self.full_name = self.cache.full_name
