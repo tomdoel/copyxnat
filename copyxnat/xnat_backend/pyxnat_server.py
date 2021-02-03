@@ -96,8 +96,20 @@ class PyXnatItemWithResources(PyXnatItem):
                 for resource in
                 self.fetch_interface().resources().fetchall('obj')]
 
+    def in_resources(self):
+        """Return item's in resources as an array of PyXnatResource wrappers"""
+        return [PyXnatInResource(in_resource)
+                for in_resource in
+                    self.fetch_interface().in_resources().fetchall('obj')]
 
-class PyXnatResource(PyXnatItem):
+    def out_resources(self):
+        """Return item's out resources as an array of PyXnatResource wrappers"""
+        return [PyXnatOutResource(out_resource)
+                for out_resource in
+                    self.fetch_interface().out_resources().fetchall('obj')]
+
+
+class PyXnatResourceBase(PyXnatItem):
     """Wrapper around a pyxnat resource interface"""
 
     @classmethod
@@ -128,6 +140,18 @@ class PyXnatResource(PyXnatItem):
             return None
 
         return self.fetch_interface().get(save_dir, extract=False)
+
+
+class PyXnatResource(PyXnatResourceBase):
+    """Wrapper around a pyxnat resource interface"""
+
+
+class PyXnatInResource(PyXnatResourceBase):
+    """Wrapper around a pyxnat in resource interface"""
+
+
+class PyXnatOutResource(PyXnatResourceBase):
+    """Wrapper around a pyxnat out resource interface"""
 
 
 class PyXnatProject(PyXnatItemWithResources):
