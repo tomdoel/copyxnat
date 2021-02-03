@@ -135,20 +135,9 @@ class XnatParentItem(XnatItem):
     resources and child items
     """
 
-    def __init__(self, parent_cache, interface, label, read_only, xml_cleaner):
-        self._children = None
-        self._xml = None
-        super().__init__(parent_cache=parent_cache,
-                         interface=interface,
-                         label=label,
-                         read_only=read_only,
-                         xml_cleaner=xml_cleaner)
-
     def get_xml_string(self):
         """Get an XML string representation of this item"""
-        if self._xml is None:
-            self._xml = self.interface.get_xml_string()
-        return self._xml
+        return self.interface.get_xml_string()
 
     def get_xml(self):
         """Get an XML representation of this item"""
