@@ -14,11 +14,13 @@ class XnatServerParams:
     """Encapsulates parameters used to access an XNAT server"""
 
     def __init__(self, host, user, pwd, insecure=False, read_only=False):
-        self.read_only = read_only
-        self.pwd = pwd
-        self.user = user
+        if '://' not in host:
+            host = 'https://' + host
         self.host = host
+        self.user = user
+        self.pwd = pwd
         self.insecure = insecure
+        self.read_only = read_only
 
 
 class XnatBase(abc.ABC):
