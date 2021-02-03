@@ -407,12 +407,11 @@ class XnatReconstruction(XnatParentItem):
         return []
 
 
-class XnatResource(XnatItem):
-    """Wrapper for access to an XNAT resource"""
+class XnatFileContainerItem(XnatItem):
+    """Base wrapper for resource items"""
 
-    _name = 'Resource'
-    _xml_id = XnatType.resource
-    _cache_subdir_name = 'resources'
+    def get_children(self) -> list:
+        return []
 
     def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
                   dry_run=False):
@@ -426,5 +425,26 @@ class XnatResource(XnatItem):
     def export(self):
         return self.cache.write_file(self.interface)
 
-    def get_children(self) -> list:
-        return []
+
+class XnatResource(XnatFileContainerItem):
+    """Wrapper for access to an XNAT resource"""
+
+    _name = 'Resource'
+    _xml_id = XnatType.resource
+    _cache_subdir_name = 'resources'
+
+
+class XnatInResource(XnatFileContainerItem):
+    """Wrapper for access to an XNAT resource"""
+
+    _name = 'In_Resource'
+    _xml_id = XnatType.in_resource
+    _cache_subdir_name = 'in_resources'
+
+
+class XnatOutResource(XnatFileContainerItem):
+    """Wrapper for access to an XNAT resource"""
+
+    _name = 'Out_Resource'
+    _xml_id = XnatType.out_resource
+    _cache_subdir_name = 'out_resources'
