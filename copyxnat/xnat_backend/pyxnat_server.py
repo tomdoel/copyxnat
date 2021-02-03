@@ -52,7 +52,6 @@ class PyXnatItem(abc.ABC):
     """Abstraction of wrappers around pyXnat interfaces"""
     def __init__(self, interface):
         self._interface = interface
-        self._label = interface.label()
 
     def fetch_interface(self):
         """Return the pyxnat interface to this item"""
@@ -64,10 +63,6 @@ class PyXnatItem(abc.ABC):
         interface = self.fetch_interface()
         if not interface.exists():
             interface.create(xml=local_file, allowDataDeletion=False)
-
-    def label(self):
-        """Return the XNAT label of this item"""
-        return self._label
 
     def datatype(self):
         """Return the XNAT datatype of this item"""
