@@ -24,13 +24,15 @@ class XnatServerParams:
 class XnatBase(abc.ABC):
     """Base class for an item in the XNAT data hierarchy"""
 
-    def __init__(self, parent_cache, interface, label, read_only, xml_cleaner):
+    def __init__(self, parent_cache, interface, label, read_only, xml_cleaner,
+                 reporter):
         self.interface = interface
         self.label = label
         self.cache = parent_cache.sub_cache(self._cache_subdir_name, label)  # pylint: disable=no-member
         self.read_only = read_only
         self.full_name = self.cache.full_name
         self.xml_cleaner = xml_cleaner
+        self.reporter = reporter
 
     def fetch_interface(self):
         """Get the XNAT backend interface for this object"""
@@ -60,7 +62,8 @@ class XnatBase(abc.ABC):
                            interface=item,
                            label=item.fetch_interface().label(),
                            read_only=self.read_only,
-                           xml_cleaner=self.xml_cleaner)
+                           xml_cleaner=self.xml_cleaner,
+                           reporter=self.reporter)
                 for item in get_method()]
 
 
@@ -122,7 +125,8 @@ class XnatItem(XnatBase):
                    interface=interface,
                    label=label,
                    read_only=parent.read_only,
-                   xml_cleaner=parent.xml_cleaner)
+                   xml_cleaner=parent.xml_cleaner,
+                   reporter=self.reporter)
 
     @abc.abstractmethod
     def export(self) -> str:
@@ -354,7 +358,8 @@ class XnatServer(XnatBase):
                          interface=interface,
                          label=label,
                          read_only=params.read_only,
-                         xml_cleaner=XmlCleaner(reporter=reporter))
+                         xml_cleaner=XmlCleaner(reporter=reporter),
+                         reporter=reporter)
 
     def datatypes(self):
         """Return all the session datatypes in use on this server"""
@@ -370,7 +375,8 @@ class XnatServer(XnatBase):
                            interface=self.interface.project(label),
                            label=label,
                            read_only=self.read_only,
-                           xml_cleaner=self.xml_cleaner)
+                           xml_cleaner=self.xml_cleaner,
+                           reporter=self.reporter)
 
     def logout(self):
         """Disconnect from this server"""
