@@ -73,18 +73,16 @@ class CopyCache(object):
             cElementTree.ElementTree(xml_root).write(full_xml_path)
         return full_xml_path
 
-    def write_file(self, source):
+    def make_output_path(self):
         """Write to file to this cache"""
         full_path = self.full_path()
         if self._read_only:
-            print('Not writing file to {} due to read-only mode'.
+            print('Not making directory {} due to read-only mode'.
                   format(full_path))
-            file_path = full_path
         else:
             if not os.path.exists(full_path):
                 os.makedirs(full_path)
-            file_path = source.save_file(full_path)
-        return file_path
+        return full_path
 
     def full_path(self):
         """Return absolute path to this cache"""

@@ -216,7 +216,8 @@ class XnatFileContainerItem(XnatItem):
 
     def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
                   dry_run=False):
-        local_file = self.cache.write_file(self.interface)
+        folder_path = self.cache.make_output_path(self.interface)
+        local_file = self.interface.download_zip_file(folder_path)
         label = dst_label or self.label
         return self.get_or_create_child(parent=destination_parent,
                                         label=label,
@@ -224,7 +225,10 @@ class XnatFileContainerItem(XnatItem):
                                         dry_run=dry_run)
 
     def export(self):
-        return self.cache.write_file(self.interface)
+        folder_path = self.cache.make_output_path(self.interface)
+        return self.interface.download_zip_file(folder_path)
+
+
 
 
 class XnatResource(XnatFileContainerItem):
