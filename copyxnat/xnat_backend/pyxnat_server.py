@@ -172,7 +172,6 @@ class PyXnatFile(PyXnatItem):
     def create_on_server(self, local_file, create_params):
         interface = self.fetch_interface()
         if not interface.exists():
-            # interface.create()
             if local_file:
                 interface.put(local_file,
                               content=create_params["file_content"] or None,
