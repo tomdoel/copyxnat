@@ -212,7 +212,6 @@
 <div class="viewcode-block" id="PyXnatFile.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">):</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="c1"># interface.create()</span>
             <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
                 <span class="n">interface</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span>
                               <span class="n">content</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_content&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
