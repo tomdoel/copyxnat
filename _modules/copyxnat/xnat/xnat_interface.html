@@ -44,6 +44,7 @@
 
 
 <span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">urllib3</span>
 
@@ -198,9 +199,6 @@
                   <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">src_xml_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">()</span>
 
-        <span class="c1"># For debugging</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">write_xml</span><span class="p">(</span><span class="n">src_xml_root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xml_filename</span> <span class="o">+</span> <span class="s1">&#39;.original.xml&#39;</span><span class="p">)</span>  <span class="c1"># pylint: disable=no-member</span>
-
         <span class="c1"># Make sure we make a copy, as we need to preserve the original</span>
         <span class="n">cleaned_xml_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">()</span>
 
@@ -225,14 +223,13 @@
 
         <span class="n">final_xml_root</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">get_xml</span><span class="p">()</span>
 
-        <span class="c1"># For debugging</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">write_xml</span><span class="p">(</span><span class="n">final_xml_root</span><span class="p">,</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">_xml_filename</span> <span class="o">+</span> <span class="s1">&#39;.new.xml&#39;</span><span class="p">)</span>  <span class="c1"># pylint: disable=no-member</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">add_tag_remaps</span><span class="p">(</span><span class="n">src_xml_root</span><span class="o">=</span><span class="n">src_xml_root</span><span class="p">,</span>
                                         <span class="n">dst_xml_root</span><span class="o">=</span><span class="n">final_xml_root</span><span class="p">,</span>
                                         <span class="n">xnat_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">,</span>  <span class="c1"># pylint: disable=no-member</span>
                                         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">output</span></div>
 
 <div class="viewcode-block" id="XnatParentItem.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
@@ -269,11 +266,15 @@
             <span class="n">local_file</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">label</span> <span class="o">=</span> <span class="n">dst_label</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_or_create_child</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">destination_parent</span><span class="p">,</span>
-                                        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-                                        <span class="n">create_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                        <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
-                                        <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)</span></div>
+        <span class="n">copied_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_or_create_child</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">destination_parent</span><span class="p">,</span>
+                                               <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                                               <span class="n">create_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                               <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
+                                               <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">copied_item</span></div>
 
 <div class="viewcode-block" id="XnatFileContainerItem.export"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFileContainerItem.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">):</span>
         <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
@@ -301,11 +302,16 @@
         <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">file_attributes</span><span class="p">()</span>
         <span class="n">local_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">dst_label</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_or_create_child</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">destination_parent</span><span class="p">,</span>
-                                        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-                                        <span class="n">create_params</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
-                                        <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
-                                        <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)</span></div>
+        <span class="n">copied_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_or_create_child</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">destination_parent</span><span class="p">,</span>
+                                               <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                                               <span class="n">create_params</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+                                               <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
+                                               <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">copied_item</span></div>
 
 <div class="viewcode-block" id="XnatFile.export"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
