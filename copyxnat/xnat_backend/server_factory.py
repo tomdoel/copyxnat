@@ -14,10 +14,7 @@ class ServerFactory(object):
     def create(self, params):
         """
         Create an XNAT server backend object
-        @param server: host name of XNAT server
-        @param user: user name for XNAT server
-        @param password: password for XNAT server
-        @param insecure: True if server uses a self-signed certificate
+        @param params: XnatServerParams for the XNAT server
         @return: a server backend for communicating with XnatInterface
         """
         if self._backend.lower() == 'pyxnat':
