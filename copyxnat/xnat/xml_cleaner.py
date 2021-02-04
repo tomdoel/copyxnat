@@ -19,6 +19,7 @@ class XnatType(Enum):
     resource = 'resource'
     in_resource = 'in_resource'
     out_resource = 'out_resource'
+    file = 'file'
 
 
 class XmlCleaner:
@@ -79,6 +80,8 @@ class XmlCleaner:
         XnatType.in_resource: {
         },
         XnatType.out_resource: {
+        },
+        XnatType.file: {
         }
     }
 

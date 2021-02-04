@@ -63,6 +63,12 @@ def main(args=None):
                         help="File path here local cache files are to be stored"
                         )
 
+    parser.add_argument("-z", "--download_zips",
+                        action="store_true",
+                        help="Download each resource as a zip "
+                             "instead of individual files",
+                        )
+
     for command in find_commands.commands():
         if command.USE_DST_SERVER:
             command_key = command.COMMAND_LINE
@@ -90,6 +96,7 @@ def main(args=None):
                      format(args.src_user, args.src_host))
 
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
+    download_zips = args.download_zips if 'download_zips' in args else False
 
     project_list = args.project.split(',') if 'project' in args and \
                                               args.project else None
@@ -121,7 +128,8 @@ def main(args=None):
                          project_filter=project_list,
                          verbose=args.verbose,
                          fix_scan_types=fix_scan_types,
-                         dry_run=args.dry_run
+                         dry_run=args.dry_run,
+                         download_zips=download_zips
                          )
 
     print(result)
