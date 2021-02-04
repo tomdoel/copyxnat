@@ -51,26 +51,19 @@ class XnatBase(abc.ABC):
 
     def get_children(self) -> list:
         """Return XNAT child objects of this XNAT object"""
-        children = []
 
         # Iterate through XnatItem classes that are child types of this class
         for child_class in self._child_types:  # pylint: disable=no-member
-            children = children + self.get_children_of_type(child_class)
-        return children
 
-    def get_children_of_type(self, class_type) -> list:
-        """
-        Return child XnatItems of this item of a particular type
-        """
-        get_method = getattr(self.interface, class_type.interface_method)
-
-        return [class_type(parent_cache=self.cache,
-                           interface=item,
-                           label=item.fetch_interface().label(),
-                           read_only=self.read_only,
-                           xml_cleaner=self.xml_cleaner,
-                           reporter=self.reporter)
-                for item in get_method()]
+            # Call the defined PyXnatItem method to get the interfaces, and
+            # wrap each in an XnatItem
+            for item in getattr(self.interface, child_class.interface_method)():
+                yield child_class(parent_cache=self.cache,
+                                  interface=item,
+                                  label=item.fetch_interface().label(),
+                                  read_only=self.read_only,
+                                  xml_cleaner=self.xml_cleaner,
+                                  reporter=self.reporter)
 
 
 class XnatItem(XnatBase):
