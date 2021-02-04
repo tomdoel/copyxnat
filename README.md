@@ -5,7 +5,7 @@
 [![package](https://github.com/tomdoel/copyxnat/workflows/package/badge.svg)](https://pypi.org/project/copyxnat)
 ![license](https://img.shields.io/badge/License-MIT-bridgegren.svg)
 [![PyPI version](https://badge.fury.io/py/copyxnat.svg)](https://badge.fury.io/py/copyxnat)
-[![DockerHub pulls](https://img.shields.io/docker/pulls/tomdoel/copyxnat.svg)](https://img.shields.io/docker/pulls/tomdoel/copyxnat)
+[![DockerHub pulls](https://img.shields.io/docker/pulls/tomdoel/copyxnat.svg)](https://hub.docker.com/r/tomdoel/copyxnat)
 
 
 
@@ -95,8 +95,9 @@ You can import and run the module with `pip` and then import from your code
 
 ```
     from copyxnat.xnat.run_command import run_command
-    
-    result = run_command(command_string=`show`,
+    from copyxnat.commands.show_command import ShowCommand
+
+    result = run_command(command=ShowCommand,
                          src_host=src_host,
                          src_user=src_user,
                          src_pw=src_pw,
