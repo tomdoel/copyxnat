@@ -65,11 +65,9 @@ class CopyCache(object):
 
     def write_xml(self, xml_root, filename):
         """Write XML to a file in this cache"""
-        full_path = self.full_path()
+        full_path = self.make_output_path()
         full_xml_path = os.path.join(full_path, filename)
         if not self._read_only:
-            if not os.path.exists(full_path):
-                os.makedirs(full_path)
             cElementTree.ElementTree(xml_root).write(full_xml_path)
         return full_xml_path
 
