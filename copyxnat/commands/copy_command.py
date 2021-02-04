@@ -23,7 +23,7 @@ class CopyCommand(Command):
 
         copied_item = xnat_item.duplicate(
             destination_parent=from_parent,
-            fix_scan_types=self.inputs.fix_scan_types,
+            app_settings=self.inputs.app_settings,
             dst_label=dst_name,
             dry_run=self.inputs.reporter.dry_run)
         return CommandReturn(to_children=copied_item)
