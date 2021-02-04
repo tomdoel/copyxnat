@@ -126,8 +126,8 @@ class PyXnatResourceBase(PyXnatItem):
             else:
                 print("Resource appears to be empty: no files to add")
 
-    def save_file(self, save_dir):
-        """Get file from server and save to disk"""
+    def download_zip_file(self, save_dir):
+        """Get zip file from server and save to disk"""
 
         # Omit the save command if there are no files
         files = self.fetch_interface().files().fetchall('obj')
