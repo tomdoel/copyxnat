@@ -3,12 +3,9 @@
 ![test](https://github.com/tomdoel/copyxnat/workflows/test/badge.svg)
 [![docs](https://github.com/tomdoel/copyxnat/workflows/docs/badge.svg)](https://tomdoel.github.io/copyxnat/)
 [![package](https://github.com/tomdoel/copyxnat/workflows/package/badge.svg)](https://pypi.org/project/copyxnat)
-![license](https://img.shields.io/badge/License-MIT-bridgegren.svg)
-[![PyPI version](https://badge.fury.io/py/copyxnat.svg)](https://badge.fury.io/py/copyxnat)
-[![DockerHub pulls](https://img.shields.io/docker/pulls/tomdoel/copyxnat.svg)](https://hub.docker.com/r/tomdoel/copyxnat)
-
-
-
+[![license](https://img.shields.io/github/license/tomdoel/copyxnat)](https://github.com/tomdoel/copyxnat/blob/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/copyxnat)](https://pypi.org/project/copyxnat/)
+[![DockerHub](https://img.shields.io/docker/v/tomdoel/copyxnat?sort=semver&label=docker)](https://hub.docker.com/r/tomdoel/copyxnat)
 
 A utility for downloading or copying projects between XNAT servers.
 
