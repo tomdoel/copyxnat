@@ -22,11 +22,21 @@ class Command:
         print(self.outputs)
 
 
+class AppSettings:
+    """Wrap global settings for this utility"""
+
+    def __init__(self, fix_scan_types=False, download_zips=False,
+                 dry_run=False):
+        self.dry_run = dry_run
+        self.download_zips = download_zips
+        self.fix_scan_types = fix_scan_types
+
+
 class CommandInputs:
     """Wrap global input variables for a command"""
-    def __init__(self, dst_xnat, reporter, fix_scan_types, dst_project=None):
+    def __init__(self, dst_xnat, reporter, app_settings, dst_project=None):
         self.dst_project = dst_project
-        self.fix_scan_types = fix_scan_types
+        self.app_settings = app_settings
         self.reporter = reporter
         self.dst_xnat = dst_xnat
 

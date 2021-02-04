@@ -76,14 +76,13 @@ class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy"""
 
     @abc.abstractmethod
-    def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
+    def duplicate(self, destination_parent, app_settings, dst_label=None,
                   dry_run=False):
         """
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
 
         :destination_parent: parent XnatItem under which to make the duplicate
-        :fix_scan_types: If True then ambiguous scan types will be corrected
         :dst_label: label for destination object, or None to use source label
         :return: a new XnatItem corresponding to the duplicate item
         """
@@ -121,7 +120,7 @@ class XnatItem(XnatBase):
                                           label=label)
         if dry_run:
 
-            print('DRY RUN: did not create create {} {} with file {}'.
+            print('DRY RUN: did not create {} {} with file {}'.
                   format(cls._name, label, local_file))  # pylint: disable=protected-access, no-member
         else:
             interface.create_on_server(local_file=local_file)
@@ -134,7 +133,7 @@ class XnatItem(XnatBase):
                    reporter=self.reporter)
 
     @abc.abstractmethod
-    def export(self) -> str:
+    def export(self, app_settings) -> str:
         """Save this item to the cache"""
 
 
@@ -152,7 +151,7 @@ class XnatParentItem(XnatItem):
         """Get an XML representation of this item"""
         return XmlCleaner.xml_from_string(self.get_xml_string())
 
-    def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
+    def duplicate(self, destination_parent, app_settings, dst_label=None,
                   dry_run=False):
         src_xml_root = self.get_xml()
 
@@ -164,10 +163,12 @@ class XnatParentItem(XnatItem):
 
         label = dst_label or self.label
 
-        cleaned_xml_root = self.clean(xml_root=cleaned_xml_root,
-                                      fix_scan_types=fix_scan_types,
-                                      destination_parent=destination_parent,
-                                      label=label)
+        cleaned_xml_root = self.clean(
+            xml_root=cleaned_xml_root,
+            fix_scan_types=app_settings.fix_scan_types,
+            destination_parent=destination_parent,
+            label=label
+        )
 
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
@@ -206,7 +207,7 @@ class XnatParentItem(XnatItem):
             xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
-    def export(self):
+    def export(self, app_settings):
         src_xml_root = self.get_xml()
         return self.cache.write_xml(src_xml_root, self._xml_filename)  # pylint: disable=no-member
 
@@ -214,7 +215,7 @@ class XnatParentItem(XnatItem):
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
-    def duplicate(self, destination_parent, fix_scan_types, dst_label=None,
+    def duplicate(self, destination_parent, app_settings, dst_label=None,
                   dry_run=False):
         folder_path = self.cache.make_output_path(self.interface)
         local_file = self.interface.download_zip_file(folder_path)
@@ -224,9 +225,9 @@ class XnatFileContainerItem(XnatItem):
                                         local_file=local_file,
                                         dry_run=dry_run)
 
-    def export(self):
-        folder_path = self.cache.make_output_path(self.interface)
         return self.interface.download_zip_file(folder_path)
+    def export(self, app_settings):
+        folder_path = self.cache.make_output_path()
 
 
 

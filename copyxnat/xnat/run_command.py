@@ -4,7 +4,7 @@
 
 
 from copyxnat.pyreporter.pyreporter import PyReporter
-from copyxnat.xnat.commands import CommandInputs
+from copyxnat.xnat.commands import CommandInputs, AppSettings
 from copyxnat.xnat.copy_cache import CacheBox
 from copyxnat.xnat_backend.server_factory import ServerFactory
 from copyxnat.xnat.xnat_interface import XnatServer
@@ -35,17 +35,27 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     if not reporter:
         reporter = PyReporter(dry_run=dry_run, verbose=verbose)
 
+    app_settings = AppSettings(fix_scan_types=fix_scan_types,
+                               download_zips=download_zips,
+                               dry_run=dry_run)
+
     cache_box = CacheBox(root_path=cache_dir)
     cache_type = command.CACHE_TYPE
 
     base_cache = cache_box.new_cache(cache_type=cache_type)
 
     factory = ServerFactory(backend)
-    src_xnat = XnatServer(factory=factory, params=src_params,
-                          base_cache=base_cache, reporter=reporter)
+
+    src_xnat = XnatServer(factory=factory,
+                          params=src_params,
+                          base_cache=base_cache,
+                          reporter=reporter)
+
     if dst_params and command.USE_DST_SERVER:
-        dst_xnat = XnatServer(factory=factory, params=dst_params,
-                              base_cache=base_cache, reporter=reporter)
+        dst_xnat = XnatServer(factory=factory,
+                              params=dst_params,
+                              base_cache=base_cache,
+                              reporter=reporter)
     else:
         dst_xnat = None
 
@@ -55,7 +65,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
                                     src_xnat_server=src_xnat,
                                     dst_xnat_server=dst_xnat,
                                     project_filter=project_filter,
-                                    fix_scan_types=fix_scan_types,
+                                    app_settings=app_settings,
                                     reporter=reporter
                                     )
 
@@ -77,7 +87,7 @@ def resolve_projects(single_project_filter):
 
 
 def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
-                           reporter, fix_scan_types=False, project_filter=None):
+                           reporter, app_settings, project_filter=None):
     """
     Runs the specified command on the specified XnatServer objects
 
@@ -85,6 +95,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
     @param src_xnat_server: Source XnatServer
     @param dst_xnat_server: Destination XnatServer, if required for this command
     @param reporter: PyReporter object for user input/output and logging
+    @param app_settings: holds global parameters
     @param project_filter: array of project names to process or None to process
     all projects visible on the server. If a project name needs to be different
     on the source and destination servers, the string should be of the form
@@ -120,7 +131,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         src_project, dst_project = resolve_projects(project)
         inputs = CommandInputs(dst_xnat=dst_xnat_server,
                                dst_project=dst_project,
-                               fix_scan_types=fix_scan_types,
+                               app_settings=app_settings,
                                reporter=reporter)
         project_command = command(inputs=inputs, scope=project)
 
