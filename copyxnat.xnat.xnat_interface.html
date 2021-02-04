@@ -80,12 +80,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatBase.get_children_of_type">
-<code class="sig-name descname">get_children_of_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">class_type</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.get_children_of_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.get_children_of_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return child XnatItems of this item of a particular type</p>
-</dd></dl>
-
-<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatBase.user_visible_info">
 <code class="sig-name descname">user_visible_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.user_visible_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.user_visible_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>String representation of this object that can be shown to user</p>
@@ -190,6 +184,12 @@ exist, and return an XnatItem interface to the duplicate item.</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat.xnat_interface.XnatBase" title="copyxnat.xnat.xnat_interface.XnatBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.xnat_interface.XnatBase</span></code></a></p>
 <p>Base class for data-level item in the XNAT data hierarchy</p>
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatItem.create_on_server">
+<code class="sig-name descname">create_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">create_params</span></em>, <em class="sig-param"><span class="n">local_file</span></em>, <em class="sig-param"><span class="n">dry_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.create_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.create_on_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on the XNAT server if it does not already exist</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.duplicate">
 <em class="property">abstract </em><code class="sig-name descname">duplicate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination_parent</span></em>, <em class="sig-param"><span class="n">app_settings</span></em>, <em class="sig-param"><span class="n">dst_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dry_run</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a copy of this item on a different server, if it doesn’t already
@@ -215,7 +215,7 @@ exist, and return an XnatItem interface to the duplicate item.</p>
 
 <dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.get_or_create_child">
-<code class="sig-name descname">get_or_create_child</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">create_params</span></em>, <em class="sig-param"><span class="n">local_file</span></em>, <em class="sig-param"><span class="n">dry_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.get_or_create_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.get_or_create_child" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_or_create_child</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.get_or_create_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.get_or_create_child" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an XNAT item under the specified parent if it does not already
 exist, and return an XnatItem wrapper that can be used to access this
 item.</p>
