@@ -92,8 +92,7 @@ class XnatItem(XnatBase):
                                     next_output.to_children,
                                     reporter)
 
-    def get_or_create_child(self, parent, label, create_params, local_file,
-                            dry_run):
+    def get_or_create_child(self, parent, label):
         """
         Create an XNAT item under the specified parent if it does not already
         exist, and return an XnatItem wrapper that can be used to access this
@@ -114,14 +113,6 @@ class XnatItem(XnatBase):
         cls = self.__class__
         interface = self.interface.create(parent_pyxnatitem=parent.interface,
                                           label=label)
-        if dry_run:
-
-            print('DRY RUN: did not create {} {} with file {}'.
-                  format(cls._name, label, local_file))  # pylint: disable=protected-access, no-member
-        else:
-            interface.create_on_server(local_file=local_file,
-                                       create_params=create_params,
-                                       reporter=self.reporter)
 
         return cls(parent_cache=parent.cache,
                    interface=interface,
@@ -129,6 +120,16 @@ class XnatItem(XnatBase):
                    read_only=parent.read_only,
                    xml_cleaner=parent.xml_cleaner,
                    reporter=self.reporter)
+
+    def create_on_server(self, create_params, local_file, dry_run):
+        """Create this item on the XNAT server if it does not already exist"""
+        if dry_run:
+            print('DRY RUN: did not create {} {} with file {}'.
+                  format(self._name, self.label, local_file))  # pylint: disable=protected-access, no-member
+        else:
+            self.interface.create_on_server(local_file=local_file,
+                                            create_params=create_params,
+                                            reporter=self.reporter)
 
     @abc.abstractmethod
     def export(self, app_settings) -> str:
@@ -165,15 +166,15 @@ class XnatParentItem(XnatItem):
             label=label
         )
 
+        output = self.get_or_create_child(
+            parent=destination_parent, label=label)
+
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
 
-        output = self.get_or_create_child(
-            parent=destination_parent,
-            label=label,
-            create_params=None,
-            local_file=local_file,
-            dry_run=dry_run)
+        output.create_on_server(create_params=None,
+                                local_file=local_file,
+                                dry_run=dry_run)
 
         final_xml_root = output.get_xml()
 
@@ -221,10 +222,11 @@ class XnatFileContainerItem(XnatItem):
 
         label = dst_label or self.label
         copied_item = self.get_or_create_child(parent=destination_parent,
-                                               label=label,
-                                               create_params=None,
-                                               local_file=local_file,
-                                               dry_run=dry_run)
+                                               label=label)
+        copied_item.create_on_server(create_params=None,
+                                     local_file=local_file,
+                                     dry_run=dry_run)
+
         if local_file:
             os.remove(local_file)
 
@@ -252,18 +254,21 @@ class XnatFile(XnatItem):
         if app_settings.download_zips:
             return None
 
+        label = dst_label or self.label
         folder_path = self.cache.make_output_path()
         attributes = self.interface.file_attributes()
-        local_file = self.interface.download_file(folder_path)
-        label = dst_label or self.label
         copied_item = self.get_or_create_child(parent=destination_parent,
-                                               label=label,
-                                               create_params=attributes,
-                                               local_file=local_file,
-                                               dry_run=dry_run)
-
-        if local_file:
-            os.remove(local_file)
+                                               label=label)
+        if copied_item.interface.exists():
+            self.reporter.verbose_log(
+                'Skipping {}: item already exists on server'.format(label))
+        else:
+            local_file = self.interface.download_file(folder_path)
+            copied_item.create_on_server(create_params=attributes,
+                                         local_file=local_file,
+                                         dry_run=dry_run)
+            if local_file:
+                os.remove(local_file)
 
         return copied_item
 
