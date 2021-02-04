@@ -124,7 +124,7 @@ class PyXnatResourceBase(PyXnatItem):
             if local_file:
                 interface.put_zip(zip_location=local_file, extract=True)
             else:
-                print("Resource appears to be empty: no files to add")
+                print("Resource is empty or zip download is disabled")
 
     def download_zip_file(self, save_dir):
         """Get zip file from server and save to disk"""

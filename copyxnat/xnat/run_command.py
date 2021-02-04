@@ -35,6 +35,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     if not reporter:
         reporter = PyReporter(dry_run=dry_run, verbose=verbose)
 
+    download_zips = True
+
     app_settings = AppSettings(fix_scan_types=fix_scan_types,
                                download_zips=download_zips,
                                dry_run=dry_run)
