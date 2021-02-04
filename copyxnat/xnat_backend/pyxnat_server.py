@@ -74,6 +74,10 @@ class PyXnatItem(abc.ABC):
         """Return XML representation of this XNAT item"""
         return self.fetch_interface().get()
 
+    def exists(self):
+        """Return True if the item already exists on the server"""
+        return self.fetch_interface().exists()
+
 
 class PyXnatItemWithResources(PyXnatItem):
     """Wrapper around a pyxnat interface that can contain resources"""
