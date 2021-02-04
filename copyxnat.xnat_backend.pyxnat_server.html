@@ -99,6 +99,39 @@
 </dd></dl>
 
 <dl class="py class">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile">
+<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat_backend.pyxnat_server.</code><code class="sig-name descname">PyXnatFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interface</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItem</span></code></a></p>
+<p>Wrapper around a pyxnat file interface</p>
+<dl class="py method">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create">
+<em class="property">classmethod </em><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent_pyxnatitem</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new file wrapper
+&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
+&#64;param label: XNAT label of the item being created</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server">
+<code class="sig-name descname">create_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_file</span></em>, <em class="sig-param"><span class="n">create_params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile.create_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on the XNAT server if it does not already exist</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.download_file">
+<code class="sig-name descname">download_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">save_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file from server and save to disk</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.file_attributes">
+<code class="sig-name descname">file_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile.file_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.file_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file from server and save to disk</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatInResource">
 <em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat_backend.pyxnat_server.</code><code class="sig-name descname">PyXnatInResource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interface</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatInResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase" title="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase</span></code></a></p>
@@ -112,7 +145,7 @@
 <p>Abstraction of wrappers around pyXnat interfaces</p>
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create_on_server">
-<code class="sig-name descname">create_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItem.create_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create_on_server" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_file</span></em>, <em class="sig-param"><span class="n">create_params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItem.create_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create_on_server" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create this item on the XNAT server if it does not already exist</p>
 </dd></dl>
 
@@ -255,14 +288,20 @@ in the disallowed lists).</p>
 
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server">
-<code class="sig-name descname">create_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.create_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_file</span></em>, <em class="sig-param"><span class="n">create_params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.create_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create this item on the XNAT server if it does not already exist</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.save_file">
-<code class="sig-name descname">save_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">save_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.save_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.save_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get file from server and save to disk</p>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.download_zip_file">
+<code class="sig-name descname">download_zip_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">save_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.download_zip_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.download_zip_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get zip file from server and save to disk</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.files">
+<code class="sig-name descname">files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return item’s files as an array of PyXnatFile wrappers</p>
 </dd></dl>
 
 </dd></dl>

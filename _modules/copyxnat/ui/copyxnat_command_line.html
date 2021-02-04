@@ -103,6 +103,12 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
                         <span class="p">)</span>
 
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-z&quot;</span><span class="p">,</span> <span class="s2">&quot;--download_zips&quot;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Download each resource as a zip &quot;</span>
+                             <span class="s2">&quot;instead of individual files&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
             <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
@@ -130,6 +136,7 @@
                      <span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">src_host</span><span class="p">))</span>
 
     <span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="k">if</span> <span class="s1">&#39;fix_scan_types&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="n">download_zips</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">download_zips</span> <span class="k">if</span> <span class="s1">&#39;download_zips&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
 
     <span class="n">project_list</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> \
                                               <span class="n">args</span><span class="o">.</span><span class="n">project</span> <span class="k">else</span> <span class="kc">None</span>
@@ -161,7 +168,8 @@
                          <span class="n">project_filter</span><span class="o">=</span><span class="n">project_list</span><span class="p">,</span>
                          <span class="n">verbose</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
                          <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
-                         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span>
+                         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
+                         <span class="n">download_zips</span><span class="o">=</span><span class="n">download_zips</span>
                          <span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>

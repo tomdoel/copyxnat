@@ -105,26 +105,22 @@
 
 <div class="viewcode-block" id="CopyCache.write_xml"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.write_xml">[docs]</a>    <span class="k">def</span> <span class="nf">write_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write XML to a file in this cache&quot;&quot;&quot;</span>
-        <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
         <span class="n">full_xml_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
             <span class="n">cElementTree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">xml_root</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">full_xml_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_xml_path</span></div>
 
-<div class="viewcode-block" id="CopyCache.write_file"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.write_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+<div class="viewcode-block" id="CopyCache.make_output_path"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.make_output_path">[docs]</a>    <span class="k">def</span> <span class="nf">make_output_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write to file to this cache&quot;&quot;&quot;</span>
         <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not writing file to </span><span class="si">{}</span><span class="s1"> due to read-only mode&#39;</span><span class="o">.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not making directory </span><span class="si">{}</span><span class="s1"> due to read-only mode&#39;</span><span class="o">.</span>
                   <span class="nb">format</span><span class="p">(</span><span class="n">full_path</span><span class="p">))</span>
-            <span class="n">file_path</span> <span class="o">=</span> <span class="n">full_path</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
-            <span class="n">file_path</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">save_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">file_path</span></div>
+        <span class="k">return</span> <span class="n">full_path</span></div>
 
 <div class="viewcode-block" id="CopyCache.full_path"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.full_path">[docs]</a>    <span class="k">def</span> <span class="nf">full_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return absolute path to this cache&quot;&quot;&quot;</span>

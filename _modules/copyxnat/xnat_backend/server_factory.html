@@ -54,10 +54,7 @@
 <div class="viewcode-block" id="ServerFactory.create"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.server_factory.html#copyxnat.xnat_backend.server_factory.ServerFactory.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create an XNAT server backend object</span>
-<span class="sd">        @param server: host name of XNAT server</span>
-<span class="sd">        @param user: user name for XNAT server</span>
-<span class="sd">        @param password: password for XNAT server</span>
-<span class="sd">        @param insecure: True if server uses a self-signed certificate</span>
+<span class="sd">        @param params: XnatServerParams for the XNAT server</span>
 <span class="sd">        @return: a server backend for communicating with XnatInterface</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pyxnat&#39;</span><span class="p">:</span>
