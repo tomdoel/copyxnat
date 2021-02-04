@@ -98,7 +98,8 @@ class XnatItem(XnatBase):
                                     next_output.to_children,
                                     reporter)
 
-    def get_or_create_child(self, parent, label, local_file, dry_run):
+    def get_or_create_child(self, parent, label, create_params, local_file,
+                            dry_run):
         """
         Create an XNAT item under the specified parent if it does not already
         exist, and return an XnatItem wrapper that can be used to access this
@@ -107,6 +108,7 @@ class XnatItem(XnatBase):
         :parent: The XnatItem under which the child will be created if it does
             not already exist
         :label: The identifier used to find or create the child item
+        :create_params: Additional parameters needed to create child item
         :local_file: path to a local file containing the resource or XML data
             that should be used to create this object on the server if
             it doesn't already exist
@@ -123,7 +125,8 @@ class XnatItem(XnatBase):
             print('DRY RUN: did not create {} {} with file {}'.
                   format(cls._name, label, local_file))  # pylint: disable=protected-access, no-member
         else:
-            interface.create_on_server(local_file=local_file)
+            interface.create_on_server(local_file=local_file,
+                                       create_params=create_params)
 
         return cls(parent_cache=parent.cache,
                    interface=interface,
@@ -176,6 +179,7 @@ class XnatParentItem(XnatItem):
         output = self.get_or_create_child(
             parent=destination_parent,
             label=label,
+            create_params=None,
             local_file=local_file,
             dry_run=dry_run)
 
@@ -227,18 +231,48 @@ class XnatFileContainerItem(XnatItem):
         label = dst_label or self.label
         return self.get_or_create_child(parent=destination_parent,
                                         label=label,
+                                        create_params=None,
                                         local_file=local_file,
                                         dry_run=dry_run)
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
-        if app_settings.download_zips:
-            return self.interface.download_zip_file(folder_path)
-        else:
+        if not app_settings.download_zips:
             return folder_path
 
+        return self.interface.download_zip_file(folder_path)
 
 
+class XnatFile(XnatItem):
+    """Base wrapper for file items"""
+
+    _name = 'File'
+    _xml_id = XnatType.file
+    _cache_subdir_name = 'files'
+    interface_method = 'files'
+    _child_types = []
+
+    def duplicate(self, destination_parent, app_settings, dst_label=None,
+                  dry_run=False):
+        if app_settings.download_zips:
+            return None
+
+        folder_path = self.cache.make_output_path()
+        attributes = self.interface.file_attributes()
+        local_file = self.interface.download_file(folder_path)
+        label = dst_label or self.label
+        return self.get_or_create_child(parent=destination_parent,
+                                        label=label,
+                                        create_params=attributes,
+                                        local_file=local_file,
+                                        dry_run=dry_run)
+
+    def export(self, app_settings):
+        if app_settings.download_zips:
+            return None
+
+        folder_path = self.cache.make_output_path()
+        return self.interface.download_file(folder_path)
 
 
 class XnatResource(XnatFileContainerItem):
@@ -248,7 +282,7 @@ class XnatResource(XnatFileContainerItem):
     _xml_id = XnatType.resource
     _cache_subdir_name = 'resources'
     interface_method = 'resources'
-    _child_types = []
+    _child_types = [XnatFile]
 
 
 class XnatInResource(XnatFileContainerItem):
@@ -258,7 +292,7 @@ class XnatInResource(XnatFileContainerItem):
     _xml_id = XnatType.in_resource
     _cache_subdir_name = 'in_resources'
     interface_method = 'in_resources'
-    _child_types = []
+    _child_types = [XnatFile]
 
 
 class XnatOutResource(XnatFileContainerItem):
@@ -268,7 +302,7 @@ class XnatOutResource(XnatFileContainerItem):
     _xml_id = XnatType.out_resource
     _cache_subdir_name = 'out_resources'
     interface_method = 'out_resources'
-    _child_types = []
+    _child_types = [XnatFile]
 
 
 class XnatReconstruction(XnatParentItem):

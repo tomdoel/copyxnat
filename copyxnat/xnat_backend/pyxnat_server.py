@@ -3,6 +3,7 @@
 """Wrappers for communicating between copyxnat items and pyXNAT backend items"""
 
 import abc
+import os
 
 from pyxnat import Interface, Inspector
 
@@ -57,7 +58,7 @@ class PyXnatItem(abc.ABC):
         """Return the pyxnat interface to this item"""
         return self._interface
 
-    def create_on_server(self, local_file):
+    def create_on_server(self, local_file, create_params):  # pylint: disable=unused-argument
         """Create this item on the XNAT server if it does not already exist"""
 
         interface = self.fetch_interface()
@@ -117,7 +118,7 @@ class PyXnatResourceBase(PyXnatItem):
         return cls(
             interface=parent_pyxnatitem.fetch_interface().resource(label))
 
-    def create_on_server(self, local_file):
+    def create_on_server(self, local_file, create_params):
         interface = self.fetch_interface()
         if not interface.exists():
             interface.create()
@@ -136,6 +137,12 @@ class PyXnatResourceBase(PyXnatItem):
 
         return self.fetch_interface().get(save_dir, extract=False)
 
+    def files(self):
+        """Return item's files as an array of PyXnatFile wrappers"""
+        return [PyXnatFile(file)
+                for file in
+                self.fetch_interface().files().fetchall('obj')]
+
 
 class PyXnatResource(PyXnatResourceBase):
     """Wrapper around a pyxnat resource interface"""
@@ -147,6 +154,51 @@ class PyXnatInResource(PyXnatResourceBase):
 
 class PyXnatOutResource(PyXnatResourceBase):
     """Wrapper around a pyxnat out resource interface"""
+
+
+class PyXnatFile(PyXnatItem):
+    """Wrapper around a pyxnat file interface"""
+
+    @classmethod
+    def create(cls, parent_pyxnatitem, label):
+        """
+        Create a new file wrapper
+        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
+        @param label: XNAT label of the item being created
+        """
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().file(label))
+
+    def create_on_server(self, local_file, create_params):
+        interface = self.fetch_interface()
+        if not interface.exists():
+            # interface.create()
+            if local_file:
+                interface.put(local_file,
+                              content=create_params["file_content"] or None,
+                              format=create_params["file_format"] or None,
+                              tags=create_params["file_tags"] or None
+                              )
+            else:
+                print("Resource is empty or zip download is disabled")
+
+    def download_file(self, save_dir):
+        """Get file from server and save to disk"""
+
+        label = self.fetch_interface().label()
+        if not label:
+            raise ValueError('No file label!')
+        file_path = os.path.join(save_dir, label)
+        self.fetch_interface().get(file_path)
+        return file_path
+
+    def file_attributes(self):
+        """Get file from server and save to disk"""
+
+        attrs = self.fetch_interface().attributes()
+        return {'file_content': attrs.get('file_content'),
+                'file_format': attrs.get('file_format'),
+                'file_tags': attrs.get('file_tags')}
 
 
 class PyXnatProject(PyXnatItemWithResources):
