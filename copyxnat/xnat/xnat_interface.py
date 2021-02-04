@@ -4,6 +4,7 @@
 
 
 import abc
+import os
 
 import urllib3
 
@@ -158,9 +159,6 @@ class XnatParentItem(XnatItem):
                   dry_run=False):
         src_xml_root = self.get_xml()
 
-        # For debugging
-        self.cache.write_xml(src_xml_root, self._xml_filename + '.original.xml')  # pylint: disable=no-member
-
         # Make sure we make a copy, as we need to preserve the original
         cleaned_xml_root = self.get_xml()
 
@@ -185,14 +183,13 @@ class XnatParentItem(XnatItem):
 
         final_xml_root = output.get_xml()
 
-        # For debugging
-        self.cache.write_xml(final_xml_root,
-                                  self._xml_filename + '.new.xml')  # pylint: disable=no-member
-
         self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
                                         dst_xml_root=final_xml_root,
                                         xnat_type=self._xml_id,  # pylint: disable=no-member
                                         )
+        if local_file:
+            os.remove(local_file)
+
         return output
 
     def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
@@ -229,11 +226,15 @@ class XnatFileContainerItem(XnatItem):
             local_file = None
 
         label = dst_label or self.label
-        return self.get_or_create_child(parent=destination_parent,
-                                        label=label,
-                                        create_params=None,
-                                        local_file=local_file,
-                                        dry_run=dry_run)
+        copied_item = self.get_or_create_child(parent=destination_parent,
+                                               label=label,
+                                               create_params=None,
+                                               local_file=local_file,
+                                               dry_run=dry_run)
+        if local_file:
+            os.remove(local_file)
+
+        return copied_item
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
@@ -261,11 +262,16 @@ class XnatFile(XnatItem):
         attributes = self.interface.file_attributes()
         local_file = self.interface.download_file(folder_path)
         label = dst_label or self.label
-        return self.get_or_create_child(parent=destination_parent,
-                                        label=label,
-                                        create_params=attributes,
-                                        local_file=local_file,
-                                        dry_run=dry_run)
+        copied_item = self.get_or_create_child(parent=destination_parent,
+                                               label=label,
+                                               create_params=attributes,
+                                               local_file=local_file,
+                                               dry_run=dry_run)
+
+        if local_file:
+            os.remove(local_file)
+
+        return copied_item
 
     def export(self, app_settings):
         if app_settings.download_zips:
