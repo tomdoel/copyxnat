@@ -96,6 +96,7 @@ def main(args=None):
                      format(args.src_user, args.src_host))
 
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
+    verbose = args.verbose if 'verbose' in args else False
     download_zips = args.download_zips if 'download_zips' in args else False
 
     project_list = args.project.split(',') if 'project' in args and \
@@ -126,10 +127,11 @@ def main(args=None):
                          src_params=src_params,
                          dst_params=dst_params,
                          project_filter=project_list,
-                         verbose=args.verbose,
+                         verbose=verbose,
                          fix_scan_types=fix_scan_types,
                          dry_run=args.dry_run,
                          download_zips=download_zips
                          )
 
-    print(result)
+    if verbose:
+        print(result)

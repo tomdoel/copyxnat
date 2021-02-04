@@ -63,7 +63,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     else:
         dst_xnat = None
 
-    reporter.info('Running {} command'.format(command.NAME))
+    reporter.verbose_log('Running {} command'.format(command.NAME))
 
     result = run_command_on_servers(command=command,
                                     src_xnat_server=src_xnat,
@@ -78,7 +78,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         dst_xnat.logout()
 
     output_path = src_xnat.cache.full_path()
-    reporter.message('Output files are in {}'.format(output_path))
+    reporter.verbose_log('Output files are in {}'.format(output_path))
     return result
 
 
@@ -143,9 +143,8 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         num_sessions = src_xnat_server.num_experiments(src_project)
 
         reporter.start_progress(
-            message='{} {} sessions for {}'.format(command.NAME,
-                                                   num_sessions,
-                                                   server_project.label),
+            message="{:>20}: {:>3} sessions to {} ".format(
+                server_project.label, num_sessions, command.VERB),
             max_iter=num_sessions)
         server_project.run_recursive(
             function=project_command.run,

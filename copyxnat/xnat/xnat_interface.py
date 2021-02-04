@@ -47,7 +47,7 @@ class XnatBase(abc.ABC):
     def user_visible_info(self):
         """String representation of this object that can be shown to user"""
         level = self.cache.cache_level
-        return '  '*level + '--{}- label:{}'.format(self._name, self.label)  # pylint: disable=no-member
+        return '  '*level + '-({}) {}'.format(self._name, self.label)  # pylint: disable=no-member
 
     def get_children(self) -> list:
         """Return XNAT child objects of this XNAT object"""
@@ -127,7 +127,8 @@ class XnatItem(XnatBase):
                   format(cls._name, label, local_file))  # pylint: disable=protected-access, no-member
         else:
             interface.create_on_server(local_file=local_file,
-                                       create_params=create_params)
+                                       create_params=create_params,
+                                       reporter=self.reporter)
 
         return cls(parent_cache=parent.cache,
                    interface=interface,

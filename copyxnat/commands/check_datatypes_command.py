@@ -15,6 +15,7 @@ class CheckDatatypesCommand(Command):
     scan datatypes that are present on the source server
     """
     NAME = 'Check Datatypes'
+    VERB = 'check'
     COMMAND_LINE = 'check_datatypes'
     USE_DST_SERVER = True
     CACHE_TYPE = 'cache'
