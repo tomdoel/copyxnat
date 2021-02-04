@@ -9,6 +9,7 @@ class ExportCommand(Command):
     """Command which exports XNAT project data onto local disk"""
 
     NAME = 'Download'
+    VERB = 'download'
     COMMAND_LINE = 'export'
     USE_DST_SERVER = False
     CACHE_TYPE = 'downloads'

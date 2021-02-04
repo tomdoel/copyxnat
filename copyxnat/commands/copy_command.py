@@ -10,6 +10,7 @@ class CopyCommand(Command):
     """Command which copies XNAT projects between servers"""
 
     NAME = 'Copy'
+    VERB = 'copy'
     COMMAND_LINE = 'copy'
     USE_DST_SERVER = True
     CACHE_TYPE = 'cache'

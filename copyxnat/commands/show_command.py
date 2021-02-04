@@ -10,6 +10,7 @@ class ShowCommand(Command):
     """Command which displays contents of XNAT projects"""
 
     NAME = 'Show'
+    VERB = 'examine'
     COMMAND_LINE = 'show'
     USE_DST_SERVER = False
     CACHE_TYPE = 'cache'
@@ -19,4 +20,10 @@ class ShowCommand(Command):
         if self.outputs is None:
             self.outputs = ''
         self.outputs += xnat_item.user_visible_info() + os.linesep
+        self.inputs.reporter.output(xnat_item.user_visible_info())
         return CommandReturn()
+
+    def print_results(self):
+        """Output results to user"""
+        print("Contents of {}:".format(self.scope))  ## pylint:disable=no-member
+        print(self.outputs)

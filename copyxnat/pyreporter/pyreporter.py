@@ -26,6 +26,10 @@ class PyReporter(object):
         """A message to the user"""
         self._output(prefix='', message=message)
 
+    def output(self, message):
+        """A message to the user"""
+        self._output(prefix=None, message=message)
+
     def warning(self, message):
         """Warning message to report to end user"""
         self._output(prefix=self._WARN_PREFIX, message=message)
@@ -41,7 +45,9 @@ class PyReporter(object):
 
     def _output(self, prefix, message):
         for handler in self._handlers:
-            handler(prefix + self._SEPARATOR + message)
+            combined_prefix = prefix + self._SEPARATOR if prefix is not None \
+                else ''
+            handler(combined_prefix + message)
 
     def start_progress(self, message, max_iter):
         """
@@ -80,9 +86,10 @@ class PyReporter(object):
         """
         self._iter_num = self._max_iter
         self.next_progress()
-        print()
+        print('\r', end='\x1b[1K\r')
         self._message = None
 
     @staticmethod
     def _print_handler(message):
-        print(message)
+        print('\r' + message, end='\x1b[1K\r')
+        print()
