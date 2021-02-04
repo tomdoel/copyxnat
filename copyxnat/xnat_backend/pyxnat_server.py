@@ -90,19 +90,19 @@ class PyXnatItemWithResources(PyXnatItem):
         """Return item's resources as an array of PyXnatResource wrappers"""
         return [PyXnatResource(resource)
                 for resource in
-                self.fetch_interface().resources().fetchall('obj')]
+                self.fetch_interface().resources()]
 
     def in_resources(self):
         """Return item's in resources as an array of PyXnatResource wrappers"""
         return [PyXnatInResource(in_resource)
                 for in_resource in
-                    self.fetch_interface().in_resources().fetchall('obj')]
+                    self.fetch_interface().in_resources()]
 
     def out_resources(self):
         """Return item's out resources as an array of PyXnatResource wrappers"""
         return [PyXnatOutResource(out_resource)
                 for out_resource in
-                    self.fetch_interface().out_resources().fetchall('obj')]
+                    self.fetch_interface().out_resources()]
 
 
 class PyXnatResourceBase(PyXnatItem):
@@ -239,7 +239,7 @@ class PyXnatProject(PyXnatItemWithResources):
     def subjects(self):
         """Return array of PyXnatSubject wrappers for this project"""
         return [PyXnatSubject(subject) for subject in
-                self.fetch_interface().subjects().fetchall('obj')]
+                self.fetch_interface().subjects()]
 
 
 class PyXnatSubject(PyXnatItemWithResources):
@@ -253,7 +253,7 @@ class PyXnatSubject(PyXnatItemWithResources):
     def experiments(self):
         """Return array of PyXnatExperiment wrappers for this subject"""
         return [PyXnatExperiment(expmt) for expmt in
-                self.fetch_interface().experiments().fetchall('obj')]
+                self.fetch_interface().experiments()]
 
 
 class PyXnatExperiment(PyXnatItemWithResources):
@@ -267,17 +267,17 @@ class PyXnatExperiment(PyXnatItemWithResources):
     def scans(self):
         """Return array of PyXnatScan wrappers for this experiment"""
         return [PyXnatScan(scan)
-                for scan in self.fetch_interface().scans().fetchall('obj')]
+                for scan in self.fetch_interface().scans()]
 
     def assessors(self):
         """Return array of PyXnatAssessor wrappers for this experiment"""
         return [PyXnatAssessor(assessor) for assessor in
-                self.fetch_interface().assessors().fetchall('obj')]
+                self.fetch_interface().assessors()]
 
     def reconstructions(self):
         """Return array of PyXnatReconstruction wrappers for this experiment"""
         return [PyXnatReconstruction(reconstruction) for reconstruction in
-                self.fetch_interface().reconstructions().fetchall('obj')]
+                self.fetch_interface().reconstructions()]
 
 
 class PyXnatScan(PyXnatItemWithResources):
