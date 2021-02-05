@@ -128,7 +128,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">duplicate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duplicate</span><span class="p">(</span><span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="p">,</span>
                                    <span class="n">dry_run</span><span class="p">)</span>
-        <span class="n">duplicate</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">duplicate</span><span class="p">:</span>
+            <span class="n">duplicate</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">duplicate</span></div>
 
 <div class="viewcode-block" id="XnatItem.duplicate"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.duplicate">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
