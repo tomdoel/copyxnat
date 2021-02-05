@@ -88,7 +88,8 @@ class XnatItem(XnatBase):
         """
         duplicate = self.duplicate(destination_parent, app_settings, dst_label,
                                    dry_run)
-        duplicate.post_create()
+        if duplicate:
+            duplicate.post_create()
         return duplicate
 
     @abc.abstractmethod
