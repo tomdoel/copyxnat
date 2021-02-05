@@ -28,7 +28,8 @@ class XnatBase(abc.ABC):
     """Base class for an item in the XNAT data hierarchy"""
 
     def __init__(self, parent_cache, interface, label, read_only, xml_cleaner,
-                 reporter):
+                 reporter, parent):
+        self.parent = parent
         self.interface = interface
         if not label:
             reporter.warning("An empty label was found for a {} type".
@@ -63,7 +64,8 @@ class XnatBase(abc.ABC):
                                   label=item.fetch_interface().label(),
                                   read_only=self.read_only,
                                   xml_cleaner=self.xml_cleaner,
-                                  reporter=self.reporter)
+                                  reporter=self.reporter,
+                                  parent=self)
 
 
 class XnatItem(XnatBase):
@@ -123,7 +125,8 @@ class XnatItem(XnatBase):
                    label=label,
                    read_only=parent.read_only,
                    xml_cleaner=parent.xml_cleaner,
-                   reporter=self.reporter)
+                   reporter=self.reporter,
+                   parent=parent)
 
     def create_on_server(self, create_params, local_file, dry_run):
         """Create this item on the XNAT server if it does not already exist"""
@@ -422,7 +425,8 @@ class XnatServer(XnatBase):
                          label=label,
                          read_only=params.read_only,
                          xml_cleaner=XmlCleaner(reporter=reporter),
-                         reporter=reporter)
+                         reporter=reporter,
+                         parent=None)
 
     def datatypes(self):
         """Return all the session datatypes in use on this server"""
@@ -439,7 +443,8 @@ class XnatServer(XnatBase):
                            label=label,
                            read_only=self.read_only,
                            xml_cleaner=self.xml_cleaner,
-                           reporter=self.reporter)
+                           reporter=self.reporter,
+                           parent=self)
 
     def logout(self):
         """Disconnect from this server"""
