@@ -1,0 +1,7 @@
+copyxnat.commands.ohif\_command module
+======================================
+
+.. automodule:: copyxnat.commands.ohif_command
+   :members:
+   :undoc-members:
+   :show-inheritance:

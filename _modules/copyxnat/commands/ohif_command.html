@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>copyxnat.commands.find_commands &#8212; CopyXnat  documentation</title>
+    <title>copyxnat.commands.ohif_command &#8212; CopyXnat  documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     
@@ -28,7 +28,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.find_commands</a></li> 
+        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.ohif_command</a></li> 
       </ul>
     </div>  
 
@@ -37,33 +37,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for copyxnat.commands.find_commands</h1><div class="highlight"><pre>
+  <h1>Source code for copyxnat.commands.ohif_command</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding=utf-8</span>
 
-<span class="sd">&quot;&quot;&quot;Commands defining actions that can be performed with copyxnat&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">copyxnat.commands.check_datatypes_command</span> <span class="kn">import</span> <span class="n">CheckDatatypesCommand</span>
-<span class="kn">from</span> <span class="nn">copyxnat.commands.copy_command</span> <span class="kn">import</span> <span class="n">CopyCommand</span>
-<span class="kn">from</span> <span class="nn">copyxnat.commands.export_command</span> <span class="kn">import</span> <span class="n">ExportCommand</span>
-<span class="kn">from</span> <span class="nn">copyxnat.commands.show_command</span> <span class="kn">import</span> <span class="n">ShowCommand</span>
-<span class="kn">from</span> <span class="nn">copyxnat.commands.ohif_command</span> <span class="kn">import</span> <span class="n">OhifCommand</span>
+<span class="sd">&quot;&quot;&quot;Command which exports XNAT project data onto local disk&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandReturn</span>
 
 
-<div class="viewcode-block" id="find_command"><a class="viewcode-back" href="../../../copyxnat.commands.find_commands.html#copyxnat.commands.find_commands.find_command">[docs]</a><span class="k">def</span> <span class="nf">find_command</span><span class="p">(</span><span class="n">command_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return Command with matching command line string&quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span> <span class="o">==</span> <span class="n">command_string</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">command</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Command not found&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="OhifCommand"><a class="viewcode-back" href="../../../copyxnat.commands.ohif_command.html#copyxnat.commands.ohif_command.OhifCommand">[docs]</a><span class="k">class</span> <span class="nc">OhifCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Command which exports XNAT project data onto local disk&quot;&quot;&quot;</span>
 
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;Ohif&#39;</span>
+    <span class="n">VERB</span> <span class="o">=</span> <span class="s1">&#39;reset&#39;</span>
+    <span class="n">COMMAND_LINE</span> <span class="o">=</span> <span class="s1">&#39;ohif&#39;</span>
+    <span class="n">USE_DST_SERVER</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
+    <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Reset the OHIF viewer session data so it will find all images&#39;</span>
 
-<div class="viewcode-block" id="commands"><a class="viewcode-back" href="../../../copyxnat.commands.find_commands.html#copyxnat.commands.find_commands.commands">[docs]</a><span class="k">def</span> <span class="nf">commands</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Return array of available commands&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">ExportCommand</span><span class="p">,</span>
-            <span class="n">ShowCommand</span><span class="p">,</span>
-            <span class="n">CopyCommand</span><span class="p">,</span>
-            <span class="n">CheckDatatypesCommand</span><span class="p">,</span>
-            <span class="n">OhifCommand</span>
-            <span class="p">]</span></div>
+<div class="viewcode-block" id="OhifCommand.run"><a class="viewcode-back" href="../../../copyxnat.commands.ohif_command.html#copyxnat.commands.ohif_command.OhifCommand.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="n">xnat_item</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">()</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -100,7 +94,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.find_commands</a></li> 
+        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.ohif_command</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

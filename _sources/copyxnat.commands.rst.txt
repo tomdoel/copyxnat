@@ -11,6 +11,7 @@ Submodules
    copyxnat.commands.copy_command
    copyxnat.commands.export_command
    copyxnat.commands.find_commands
+   copyxnat.commands.ohif_command
    copyxnat.commands.show_command
 
 Module contents
