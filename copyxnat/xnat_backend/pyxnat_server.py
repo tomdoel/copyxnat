@@ -142,9 +142,8 @@ class PyXnatResourceBase(PyXnatItem):
 
     def files(self):
         """Return item's files as an array of PyXnatFile wrappers"""
-        return [PyXnatFile(file)
-                for file in
-                self.fetch_interface().files().fetchall('obj')]
+        for file in self.fetch_interface().files():
+            yield PyXnatFile(interface=file)
 
 
 class PyXnatResource(PyXnatResourceBase):
