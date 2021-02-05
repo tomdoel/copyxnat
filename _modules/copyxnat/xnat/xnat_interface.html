@@ -213,7 +213,10 @@
 
 <div class="viewcode-block" id="XnatItem.ohif_present"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.ohif_present">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_present</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if the OHIF viewer plugin is installed&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="XnatItem.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send a catalog refresh request&quot;&quot;&quot;</span></div></div>
 
 
 <div class="viewcode-block" id="XnatParentItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem">[docs]</a><span class="k">class</span> <span class="nc">XnatParentItem</span><span class="p">(</span><span class="n">XnatItem</span><span class="p">):</span>
@@ -445,10 +448,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;data/services/refresh/catalog?options=populateStats%2Cappend%2Cdelete%2Cchecksum&amp;resource=/archive/projects/</span><span class="si">{}</span><span class="s1">/subjects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;data/services/refresh/catalog?&#39;</span> \
+              <span class="s1">&#39;options=populateStats%2Cappend%2Cdelete%2Cchecksum&amp;&#39;</span> \
+              <span class="s1">&#39;resource=/archive/projects/</span><span class="si">{}</span><span class="s1">/subjects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
 
 
