@@ -22,7 +22,7 @@ class CopyCommand(Command):
         dst_name = self.inputs.dst_project if \
             isinstance(xnat_item, XnatProject) else None
 
-        copied_item = xnat_item.duplicate(
+        copied_item = xnat_item.copy(
             destination_parent=from_parent,
             app_settings=self.inputs.app_settings,
             dst_label=dst_name,
