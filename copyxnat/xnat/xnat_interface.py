@@ -40,6 +40,10 @@ class XnatBase(abc.ABC):
         self.full_name = self.cache.full_name
         self.xml_cleaner = xml_cleaner
         self.reporter = reporter
+        self.label_map = {self._xml_id: label}  # pylint: disable=no-member
+        if parent:
+            for tag, label in parent.label_map.items():
+                self.label_map[tag] = label
 
     def fetch_interface(self):
         """Get the XNAT backend interface for this object"""
