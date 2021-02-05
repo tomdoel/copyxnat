@@ -175,6 +175,9 @@ class XnatItem(XnatBase):
         """Return True if the OHIF viewer plugin is installed"""
         return self.parent.ohif_present()
 
+    def rebuild_catalog(self):
+        """Send a catalog refresh request"""
+
 
 class XnatParentItem(XnatItem):
     """
@@ -405,10 +408,12 @@ class XnatExperiment(XnatParentItem):
             self.request(uri, 'POST', warn_on_fail=True)
 
     def rebuild_catalog(self):
-        uri = 'data/services/refresh/catalog?options=populateStats%2Cappend%2Cdelete%2Cchecksum&resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
-            self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
-            self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
-            self.interface.get_id())
+        uri = 'data/services/refresh/catalog?' \
+              'options=populateStats%2Cappend%2Cdelete%2Cchecksum&' \
+              'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
+                self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
+                self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
+                self.interface.get_id())
         self.request(uri, 'POST', warn_on_fail=True)
 
 
