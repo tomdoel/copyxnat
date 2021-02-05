@@ -165,6 +165,9 @@ class XnatItem(XnatBase):
     def export(self, app_settings) -> str:
         """Save this item to the cache"""
 
+    def ohif_generate_session(self):
+        """Trigger regeneration of OHIF session data"""
+        pass
 
     def request(self, uri, method, warn_on_fail=True):
         """Execute a REST call on the server"""
@@ -391,6 +394,16 @@ class XnatExperiment(XnatParentItem):
     _xml_id = XnatType.experiment
     interface_method = 'experiments'
     _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
+
+    def post_create(self, app_settings):
+        self.ohif_generate_session(app_settings)
+
+    def ohif_generate_session(self):
+        if self.ohif_present():
+            uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
+                self.label_map[XnatProject._xml_id],
+                self.interface.id())
+            self.request(uri, 'POST', warn_on_fail=True)
 
 
 class XnatSubject(XnatParentItem):

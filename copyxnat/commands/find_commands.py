@@ -5,6 +5,7 @@ from copyxnat.commands.check_datatypes_command import CheckDatatypesCommand
 from copyxnat.commands.copy_command import CopyCommand
 from copyxnat.commands.export_command import ExportCommand
 from copyxnat.commands.show_command import ShowCommand
+from copyxnat.commands.ohif_command import OhifCommand
 
 
 def find_command(command_string):
@@ -20,5 +21,6 @@ def commands():
     return [ExportCommand,
             ShowCommand,
             CopyCommand,
-            CheckDatatypesCommand
+            CheckDatatypesCommand,
+            OhifCommand
             ]
