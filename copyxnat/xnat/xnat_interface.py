@@ -170,6 +170,11 @@ class XnatItem(XnatBase):
         """Execute a REST call on the server"""
         return self.parent.request(uri, method, warn_on_fail)
 
+    def ohif_present(self):
+        """Return True if the OHIF viewer plugin is installed"""
+        return self.parent.ohif_present()
+
+
 class XnatParentItem(XnatItem):
     """
     Base class for item in the XNAT data hierarchy which can contain
@@ -445,6 +450,8 @@ class XnatServer(XnatBase):
 
         interface = factory.create(params=params)
 
+        self.ohif = None
+
         label = params.host.replace('https://', '').replace('http://', '')
         self._projects = None
         super().__init__(parent_cache=base_cache,
@@ -488,3 +495,12 @@ class XnatServer(XnatBase):
                                       reporter=self.reporter,
                                       warn_on_fail=warn_on_fail)
 
+    def ohif_present(self):
+        """Return True if the OHIF viewer plugin is installed"""
+
+        if self.ohif is None:
+            self.ohif = self.request(
+                uri='xapi/plugins/ohifViewerPlugin',
+                method='GET',
+                warn_on_fail=False)
+        return self.ohif
