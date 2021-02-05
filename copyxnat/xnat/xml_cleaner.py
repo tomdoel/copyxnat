@@ -10,6 +10,7 @@ from xml.etree.cElementTree import register_namespace, XML
 class XnatType(Enum):
     """Describe the type of XNAT item so cleaning can be performed"""
 
+    server = 'server'
     project = 'project'
     subject = 'subject'
     experiment = 'experiment'
