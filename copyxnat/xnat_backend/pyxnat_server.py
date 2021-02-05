@@ -29,7 +29,7 @@ class PyXnatServer(object):
     def projects(self):
         """Return array of PyXnatProject projects"""
         for label in self.project_list():
-            yield self.project(interface=label)
+            yield self.project(label=label)
 
     def project(self, label):
         """Return PyXnatProject project"""
@@ -54,8 +54,9 @@ class PyXnatServer(object):
         try:
             self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
             return True
-        except Exception as e:
-            message = 'Failure executing {} call {}: {}'.format(method, uri, e)
+        except Exception as exc:  # pylint: disable=broad-except
+            message = 'Failure executing {} call {}: {}'.\
+                format(method, uri, exc)
             if warn_on_fail:
                 reporter.warning(message)
             else:
@@ -91,7 +92,7 @@ class PyXnatItem(abc.ABC):
         """Return True if the item already exists on the server"""
         return self.fetch_interface().exists()
 
-    def id(self):
+    def get_id(self):
         """Return the XNAT ID of this item"""
         return self.fetch_interface().id()
 

@@ -42,8 +42,8 @@ class XnatBase(abc.ABC):
         self.reporter = reporter
         self.label_map = {self._xml_id: label}  # pylint: disable=no-member
         if parent:
-            for tag, label in parent.label_map.items():
-                self.label_map[tag] = label
+            for item_tag, item_label in parent.label_map.items():
+                self.label_map[item_tag] = item_label
 
     def fetch_interface(self):
         """Get the XNAT backend interface for this object"""
@@ -102,9 +102,8 @@ class XnatItem(XnatBase):
         :return: a new XnatItem corresponding to the duplicate item
         """
 
-    def post_create(self, app_settings):
+    def post_create(self):
         """Post-processing after item creation"""
-        pass
 
     def run_recursive(self, function, from_parent, reporter):
         """Run the function on this item and all its children"""
@@ -167,7 +166,6 @@ class XnatItem(XnatBase):
 
     def ohif_generate_session(self):
         """Trigger regeneration of OHIF session data"""
-        pass
 
     def request(self, uri, method, warn_on_fail=True):
         """Execute a REST call on the server"""
@@ -395,14 +393,14 @@ class XnatExperiment(XnatParentItem):
     interface_method = 'experiments'
     _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
 
-    def post_create(self, app_settings):
-        self.ohif_generate_session(app_settings)
+    def post_create(self):
+        self.ohif_generate_session()
 
     def ohif_generate_session(self):
         if self.ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
-                self.label_map[XnatProject._xml_id],
-                self.interface.id())
+                self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
+                self.interface.get_id())
             self.request(uri, 'POST', warn_on_fail=True)
 
 
