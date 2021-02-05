@@ -29,7 +29,7 @@ class PyXnatServer(object):
     def projects(self):
         """Return array of PyXnatProject projects"""
         for label in self.project_list():
-            yield self.project(label)
+            yield self.project(interface=label)
 
     def project(self, label):
         """Return PyXnatProject project"""
@@ -94,17 +94,17 @@ class PyXnatItemWithResources(PyXnatItem):
     def resources(self):
         """Return item's resources as an array of PyXnatResource wrappers"""
         for resource in self.fetch_interface().resources():
-            yield PyXnatResource(resource)
+            yield PyXnatResource(interface=resource)
 
     def in_resources(self):
         """Return item's in resources as an array of PyXnatResource wrappers"""
         for in_resource in self.fetch_interface().in_resources():
-            yield PyXnatInResource(in_resource)
+            yield PyXnatInResource(interface=in_resource)
 
     def out_resources(self):
         """Return item's out resources as an array of PyXnatResource wrappers"""
         for out_resource in self.fetch_interface().out_resources():
-            yield PyXnatOutResource(out_resource)
+            yield PyXnatOutResource(interface=out_resource)
 
 
 class PyXnatResourceBase(PyXnatItem):
@@ -169,8 +169,7 @@ class PyXnatFile(PyXnatItem):
         @param parent_pyxnatitem: parent PyXnatItem of the item to be created
         @param label: XNAT label of the item being created
         """
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().file(label))
+        return cls(interface=parent_pyxnatitem.fetch_interface().file(label))
 
     def create_on_server(self, local_file, create_params, reporter):
         interface = self.fetch_interface()
@@ -241,7 +240,7 @@ class PyXnatProject(PyXnatItemWithResources):
     def subjects(self):
         """Return array of PyXnatSubject wrappers for this project"""
         for subject in self.fetch_interface().subjects():
-            yield PyXnatSubject(subject)
+            yield PyXnatSubject(interface=subject)
 
 
 class PyXnatSubject(PyXnatItemWithResources):
@@ -255,7 +254,7 @@ class PyXnatSubject(PyXnatItemWithResources):
     def experiments(self):
         """Return array of PyXnatExperiment wrappers for this subject"""
         for experiment in self.fetch_interface().experiments():
-            yield PyXnatExperiment(experiment)
+            yield PyXnatExperiment(interface=experiment)
 
 
 class PyXnatExperiment(PyXnatItemWithResources):
@@ -269,17 +268,17 @@ class PyXnatExperiment(PyXnatItemWithResources):
     def scans(self):
         """Return array of PyXnatScan wrappers for this experiment"""
         for scan in self.fetch_interface().scans():
-            yield PyXnatScan(scan)
+            yield PyXnatScan(interface=scan)
 
     def assessors(self):
         """Return array of PyXnatAssessor wrappers for this experiment"""
         for assessor in self.fetch_interface().assessors():
-            yield PyXnatAssessor(assessor)
+            yield PyXnatAssessor(interface=assessor)
 
     def reconstructions(self):
         """Return array of PyXnatReconstruction wrappers for this experiment"""
         for reconstruction in self.fetch_interface().reconstructions():
-            yield PyXnatReconstruction(reconstruction)
+            yield PyXnatReconstruction(interface=reconstruction)
 
 
 class PyXnatScan(PyXnatItemWithResources):
