@@ -401,6 +401,7 @@ class XnatServer(XnatBase):
     _name = 'Server'
     _cache_subdir_name = 'servers'
     _child_types = [XnatProject]
+    _xml_id = XnatType.server
 
     def __init__(self,
                  factory,
