@@ -84,6 +84,10 @@ class XnatItem(XnatBase):
     def run_recursive(self, function, from_parent, reporter):
         """Run the function on this item and all its children"""
         next_output = function(self, from_parent)
+        if isinstance(self, XnatProject):
+            reporter.output('- Project {}'.format(self.label))
+        if isinstance(self, XnatSubject):
+            reporter.output('  - Subject {}'.format(self.label))
         if isinstance(self, XnatExperiment):
             reporter.next_progress()
         if next_output.recurse:
