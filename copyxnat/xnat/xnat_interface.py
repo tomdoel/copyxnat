@@ -75,9 +75,24 @@ class XnatBase(abc.ABC):
 class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy"""
 
+    def copy(self, destination_parent, app_settings, dst_label=None,
+             dry_run=False):
+        """
+        Make a copy of this item on a different server, if it doesn't already
+        exist, and return an XnatItem interface to the duplicate item.
+
+        :destination_parent: parent XnatItem under which to make the duplicate
+        :app_settings: global settings
+        :dst_label: label for destination object, or None to use source label
+        :return: a new XnatItem corresponding to the duplicate item
+        """
+        duplicate = self.duplicate(destination_parent, app_settings, dst_label,
+                                   dry_run)
+        duplicate.post_create(app_settings)
+        return duplicate
+
     @abc.abstractmethod
-    def duplicate(self, destination_parent, app_settings, dst_label=None,
-                  dry_run=False):
+    def duplicate(self, destination_parent, app_settings, dst_label, dry_run):
         """
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
@@ -86,6 +101,10 @@ class XnatItem(XnatBase):
         :dst_label: label for destination object, or None to use source label
         :return: a new XnatItem corresponding to the duplicate item
         """
+
+    def post_create(self, app_settings):
+        """Post-processing after item creation"""
+        pass
 
     def run_recursive(self, function, from_parent, reporter):
         """Run the function on this item and all its children"""
