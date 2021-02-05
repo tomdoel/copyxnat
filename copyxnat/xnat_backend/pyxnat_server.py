@@ -26,7 +26,6 @@ class PyXnatServer(object):
         return [project['ID'] for project in
                 self.fetch_interface()._get_json('/REST/projects')]  # pylint: disable=protected-access
 
-
     def projects(self):
         """Return array of PyXnatProject projects"""
         for label in self.project_list():
