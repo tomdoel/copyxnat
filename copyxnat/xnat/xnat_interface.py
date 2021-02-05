@@ -166,6 +166,10 @@ class XnatItem(XnatBase):
         """Save this item to the cache"""
 
 
+    def request(self, uri, method, warn_on_fail=True):
+        """Execute a REST call on the server"""
+        return self.parent.request(uri, method, warn_on_fail)
+
 class XnatParentItem(XnatItem):
     """
     Base class for item in the XNAT data hierarchy which can contain
@@ -476,3 +480,11 @@ class XnatServer(XnatBase):
     def num_experiments(self, project):
         """Return number of experiments in this project"""
         return self.interface.num_experiments(project)
+
+    def request(self, uri, method, warn_on_fail=True):
+        """Execute a REST call on the server"""
+        return self.interface.request(uri=uri,
+                                      method=method,
+                                      reporter=self.reporter,
+                                      warn_on_fail=warn_on_fail)
+
