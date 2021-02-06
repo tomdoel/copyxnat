@@ -25,7 +25,7 @@ class CheckDatatypesCommand(Command):
     def __init__(self, inputs, scope):
         super().__init__(inputs, scope)
         self.outputs = {
-            'datatypes_on_dest': self.inputs.dst_xnat.datatypes(),
+            'datatypes_on_dest': inputs.dst_xnat.datatypes(),
             'missing_session_datatypes': set(),
             'ids_with_empty_datatypes': set(),
             'required_experiment_datatypes': set()
