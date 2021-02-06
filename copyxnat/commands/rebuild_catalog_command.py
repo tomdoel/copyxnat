@@ -4,7 +4,6 @@
 Command which rebuilds the catalog for sessions of specified projects
 """
 
-from copyxnat.xnat.xnat_interface import XnatExperiment, XnatScan, XnatAssessor
 from copyxnat.xnat.commands import Command, CommandReturn
 
 
