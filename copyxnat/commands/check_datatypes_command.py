@@ -22,16 +22,16 @@ class CheckDatatypesCommand(Command):
     HELP = 'Check if session data types on source XNAT are present on ' \
            'destination'
 
-    def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def __init__(self, inputs, scope):
+        super().__init__(inputs, scope)
+        self.outputs = {
+            'datatypes_on_dest': self.inputs.dst_xnat.datatypes(),
+            'missing_session_datatypes': set(),
+            'ids_with_empty_datatypes': set(),
+            'required_experiment_datatypes': set()
+        }
 
-        # On first run, set up the outputs
-        if self.outputs is None:
-            self.outputs = {
-                'datatypes_on_dest': self.inputs.dst_xnat.datatypes(),
-                'missing_session_datatypes': set(),
-                'ids_with_empty_datatypes': set(),
-                'required_experiment_datatypes': set()
-            }
+    def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
 
         datatype = xnat_item.interface.datatype()
         if isinstance(xnat_item, XnatExperiment):

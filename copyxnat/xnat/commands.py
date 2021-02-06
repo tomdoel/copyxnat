@@ -7,10 +7,10 @@ import abc
 class Command:
     """Wraps a command function and its input variables"""
 
-    def __init__(self, inputs, scope, initial_result=None):
+    def __init__(self, inputs, scope):
         self.scope = scope
-        self.outputs = initial_result
         self.inputs = inputs
+        self.outputs = None
 
     @abc.abstractmethod
     def run(self, xnat_item, from_parent):

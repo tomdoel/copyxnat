@@ -16,9 +16,11 @@ class ShowCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Show information about XNAT projects'
 
+    def __init__(self, inputs, scope):
+        super().__init__(inputs, scope)
+        self.outputs = ''
+
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
-        if self.outputs is None:
-            self.outputs = ''
         self.outputs += xnat_item.user_visible_info() + os.linesep
         self.inputs.reporter.output(xnat_item.user_visible_info())
         return CommandReturn()
