@@ -375,6 +375,15 @@ class XnatAssessor(XnatParentItem):
     interface_method = 'assessors'
     _child_types = [XnatResource, XnatInResource, XnatOutResource]
 
+    def rebuild_catalog(self):
+        uri = 'data/services/refresh/catalog?' \
+              'options=populateStats%2Cappend%2Cdelete%2Cchecksum&' \
+              'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
+                self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
+                self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
+                self.interface.get_id())
+        self.request(uri, 'POST', warn_on_fail=True)
+
 
 class XnatScan(XnatParentItem):
     """Wrapper for access to an XNAT scan"""
