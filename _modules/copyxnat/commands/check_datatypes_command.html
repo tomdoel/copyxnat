@@ -45,7 +45,7 @@
 <span class="sd">scan datatypes that are present on the source server</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatExperiment</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatAssessor</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandReturn</span>
 
 
@@ -56,25 +56,35 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;Check Datatypes&#39;</span>
     <span class="n">VERB</span> <span class="o">=</span> <span class="s1">&#39;check&#39;</span>
-    <span class="n">COMMAND_LINE</span> <span class="o">=</span> <span class="s1">&#39;check_datatypes&#39;</span>
+    <span class="n">COMMAND_LINE</span> <span class="o">=</span> <span class="s1">&#39;check-datatypes&#39;</span>
     <span class="n">USE_DST_SERVER</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Check if session data types on source XNAT are present on &#39;</span> \
            <span class="s1">&#39;destination&#39;</span>
 
+    <span class="n">SUPPLEMENTAL_DATATYPE_INFO</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;proc:genProcData&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;This datatype is part of the DAX plugin &#39;</span>
+            <span class="s1">&#39;(https://github.com/VUIIS/dax)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;icr:roiCollectionData&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;This datatype is part of the XNAT-OHIF Viewer Plugin &#39;</span>
+            <span class="s1">&#39;(https://bitbucket.org/icrimaginginformatics/&#39;</span>
+            <span class="s1">&#39;ohif-viewer-xnat-plugin)&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">:</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">(),</span>
+            <span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="p">}</span>
+
 <div class="viewcode-block" id="CheckDatatypesCommand.run"><a class="viewcode-back" href="../../../copyxnat.commands.check_datatypes_command.html#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
 
-        <span class="c1"># On first run, set up the outputs</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">(),</span>
-                <span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
-                <span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
-                <span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="p">}</span>
-
         <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="p">(</span><span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatAssessor</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">]:</span>
@@ -87,9 +97,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
                     <span class="s1">&#39;OK: session datatype </span><span class="si">{}</span><span class="s1"> is on destination server.&#39;</span><span class="o">.</span>
                         <span class="nb">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
-            <span class="n">recurse</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">recurse</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="n">datatype</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
@@ -106,25 +113,31 @@
                 <span class="n">item_id</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item_id</span><span class="p">)</span>
 
+        <span class="n">recurse</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">recurse</span><span class="o">=</span><span class="n">recurse</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CheckDatatypesCommand.print_results"><a class="viewcode-back" href="../../../copyxnat.commands.check_datatypes_command.html#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">empty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">empty</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: items with undefined datatype on source server:&quot;</span><span class="o">.</span>
+                  <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">empty</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+
         <span class="n">missing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: These datatypes need to be added to destination&quot;</span>
                   <span class="s2">&quot; server:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">[</span><span class="n">datatype</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: All datatypes present on destination server&quot;</span><span class="o">.</span>
-                  <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
+                  <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span></div></div>
 
-        <span class="n">empty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">empty</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: items with undefined datatype on source server:&quot;</span><span class="o">.</span>
-                  <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">empty</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

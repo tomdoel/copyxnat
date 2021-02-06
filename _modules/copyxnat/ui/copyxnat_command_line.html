@@ -86,11 +86,11 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show verbose output&quot;</span><span class="p">,</span>
                         <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--src_host&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--src-host&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the XNAT server containing the data&quot;</span>
                         <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--src_user&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--src-user&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;User name for accessing XNAT server containing &quot;</span>
                              <span class="s2">&quot;the data&quot;</span>
                         <span class="p">)</span>
@@ -99,11 +99,11 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of project containing the data&quot;</span>
                         <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--cache_dir&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--cache-dir&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
                         <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-z&quot;</span><span class="p">,</span> <span class="s2">&quot;--download_zips&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-z&quot;</span><span class="p">,</span> <span class="s2">&quot;--download-zips&quot;</span><span class="p">,</span> <span class="c1">## dash instead of underscore?</span>
                         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Download each resource as a zip &quot;</span>
                              <span class="s2">&quot;instead of individual files&quot;</span><span class="p">,</span>
@@ -113,12 +113,12 @@
         <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
             <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
             <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="n">command_key</span><span class="p">]</span>
-            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst_host&quot;</span><span class="p">,</span>
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst-host&quot;</span><span class="p">,</span>
                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the destination XNAT &quot;</span>
                                          <span class="s2">&quot;server&quot;</span>
                                     <span class="p">)</span>
 
-            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst_user&quot;</span><span class="p">,</span>
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst-user&quot;</span><span class="p">,</span>
                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;User name for accessing the &quot;</span>
                                          <span class="s2">&quot;destination XNAT server&quot;</span>
                                     <span class="p">)</span>
