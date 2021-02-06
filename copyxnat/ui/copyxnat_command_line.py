@@ -46,11 +46,11 @@ def main(args=None):
                         help="Show verbose output",
                         )
 
-    parser.add_argument("-s", "--src_host", required=True,
+    parser.add_argument("-s", "--src-host", required=True,
                         help="Host name of the XNAT server containing the data"
                         )
 
-    parser.add_argument("-u", "--src_user", required=True,
+    parser.add_argument("-u", "--src-user", required=True,
                         help="User name for accessing XNAT server containing "
                              "the data"
                         )
@@ -59,11 +59,11 @@ def main(args=None):
                         help="Name of project containing the data"
                         )
 
-    parser.add_argument("-c", "--cache_dir",
+    parser.add_argument("-c", "--cache-dir",
                         help="File path here local cache files are to be stored"
                         )
 
-    parser.add_argument("-z", "--download_zips",
+    parser.add_argument("-z", "--download-zips", ## dash instead of underscore?
                         action="store_true",
                         help="Download each resource as a zip "
                              "instead of individual files",
@@ -73,12 +73,12 @@ def main(args=None):
         if command.USE_DST_SERVER:
             command_key = command.COMMAND_LINE
             sub_parser = subparsers.choices[command_key]
-            sub_parser.add_argument("-d", "--dst_host",
+            sub_parser.add_argument("-d", "--dst-host",
                                     help="Host name of the destination XNAT "
                                          "server"
                                     )
 
-            sub_parser.add_argument("-w", "--dst_user",
+            sub_parser.add_argument("-w", "--dst-user",
                                     help="User name for accessing the "
                                          "destination XNAT server"
                                     )

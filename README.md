@@ -53,13 +53,13 @@ prompted.
 - #### Download XNAT projects onto your computer
 
     ```
-    copyxnat --src_host "https://YOUR-SERVER-URL" --src_user "YOUR-USER-NAME" --project "PROJECT1,PROJECT2" export
+    copyxnat --src_host "https://YOUR-SERVER-URL" --src-user "YOUR-USER-NAME" --project "PROJECT1,PROJECT2" export
     ```
 
 - #### Download all projects you have access to onto your computer
 
     ```
-    copyxnat --src_host "https://YOUR-SERVER-URL" --src_user "YOUR-XNAT-USER-NAME" export
+    copyxnat --src_host "https://YOUR-SERVER-URL" --src-user "YOUR-XNAT-USER-NAME" export
     ```
 
 ### Copy projects from one XNAT server to another 
@@ -67,19 +67,19 @@ prompted.
 - #### Duplicate a project on a destination server
 
     ```
-    copyxnat --src_host "https://SOURCE-SERVER-URL" --src_user "XNAT-USER-SOURCE" --project "PROJECT-NAME" copy --dst_host "https://DEST-SERVER-URL" --dst_user "XNAT-USER-DEST"
+    copyxnat --src_host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE" --project "PROJECT-NAME" copy --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 - #### Duplicate a project and rename
 
     ```
-    copyxnat --src_host "https://SOURCE-SERVER-URL" --src_user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst_host "https://DEST-SERVER-URL" --dst_user "XNAT-USER-DEST"
+    copyxnat --src_host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 - #### Duplicate a project on the same server (with a new name)
 
     ```
-    copyxnat --src_host "https://SERVER-URL" --src_user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst_host "https://SERVER-URL" --dst_user "XNAT-USER-DEST"
+    copyxnat --src_host "https://SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst-host "https://SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 
