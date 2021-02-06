@@ -22,6 +22,16 @@ class CheckDatatypesCommand(Command):
     HELP = 'Check if session data types on source XNAT are present on ' \
            'destination'
 
+    SUPPLEMENTAL_DATATYPE_INFO = {
+        'proc:genProcData':
+            'This datatype is part of the DAX plugin '
+            '(https://github.com/VUIIS/dax)',
+        'icr:roiCollectionData':
+            'This datatype is part of the XNAT-OHIF Viewer Plugin '
+            '(https://bitbucket.org/icrimaginginformatics/'
+            'ohif-viewer-xnat-plugin)',
+    }
+
     def __init__(self, inputs, scope):
         super().__init__(inputs, scope)
         self.outputs = {
@@ -68,19 +78,23 @@ class CheckDatatypesCommand(Command):
         return CommandReturn(recurse=recurse)
 
     def print_results(self):
-        missing = self.outputs['missing_session_datatypes']
-        if missing:
-            print("Project {}: These datatypes need to be added to destination"
-                  " server:".format(self.scope))
-            for datatype in missing:
-                print('- {}'.format(datatype))
-        else:
-            print("Project {}: All datatypes present on destination server".
-                  format(self.scope))
-
         empty = self.outputs['ids_with_empty_datatypes']
         if empty:
             print("Project {}: items with undefined datatype on source server:".
                   format(self.scope))
             for item in empty:
                 print('- {}'.format(item))
+
+        missing = self.outputs['missing_session_datatypes']
+        if missing:
+            print("Project {}: These datatypes need to be added to destination"
+                  " server:".format(self.scope))
+            for datatype in missing:
+                print('- {}'.format(datatype))
+                if datatype in self.SUPPLEMENTAL_DATATYPE_INFO:
+                    print('  - {}'.format(
+                        self.SUPPLEMENTAL_DATATYPE_INFO[datatype]))
+        else:
+            print("Project {}: All datatypes present on destination server".
+                  format(self.scope))
+
