@@ -109,17 +109,15 @@ class XnatItem(XnatBase):
     def run_recursive(self, function, from_parent, reporter):
         """Run the function on this item and all its children"""
         next_output = function(self, from_parent)
-        if isinstance(self, XnatProject):
-            reporter.output('- Project {}'.format(self.label))
-        if isinstance(self, XnatSubject):
-            reporter.output('  - Subject {}'.format(self.label))
-        if isinstance(self, XnatExperiment):
-            reporter.next_progress()
         if next_output.recurse:
             for child in self.get_children():
                 child.run_recursive(function,
                                     next_output.to_children,
                                     reporter)
+        self.progress_update(reporter=reporter)
+
+    def progress_update(self, reporter):
+        """Update the user about current progress"""
 
     def get_or_create_child(self, parent, label):
         """
@@ -425,6 +423,9 @@ class XnatExperiment(XnatParentItem):
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
                 self.interface.get_id())
         self.request(uri, 'POST', warn_on_fail=True)
+
+    def progress_update(self, reporter):
+        reporter.next_progress()
 
 
 class XnatSubject(XnatParentItem):
