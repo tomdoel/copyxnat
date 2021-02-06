@@ -149,17 +149,15 @@
 <div class="viewcode-block" id="XnatItem.run_recursive"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.run_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">run_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run the function on this item and all its children&quot;&quot;&quot;</span>
         <span class="n">next_output</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
-            <span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;- Project </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XnatSubject</span><span class="p">):</span>
-            <span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;  - Subject </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
-            <span class="n">reporter</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">next_output</span><span class="o">.</span><span class="n">recurse</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
                 <span class="n">child</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span><span class="n">function</span><span class="p">,</span>
                                     <span class="n">next_output</span><span class="o">.</span><span class="n">to_children</span><span class="p">,</span>
-                                    <span class="n">reporter</span><span class="p">)</span></div>
+                                    <span class="n">reporter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_update</span><span class="p">(</span><span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatItem.progress_update"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.progress_update">[docs]</a>    <span class="k">def</span> <span class="nf">progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the user about current progress&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="XnatItem.get_or_create_child"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.get_or_create_child">[docs]</a>    <span class="k">def</span> <span class="nf">get_or_create_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -413,7 +411,16 @@
     <span class="n">_xml_filename</span> <span class="o">=</span> <span class="s1">&#39;metadata_assessor.xml&#39;</span>
     <span class="n">_xml_id</span> <span class="o">=</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">assessor</span>
     <span class="n">interface_method</span> <span class="o">=</span> <span class="s1">&#39;assessors&#39;</span>
-    <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">]</span></div>
+    <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XnatAssessor.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatAssessor.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;data/services/refresh/catalog?&#39;</span> \
+              <span class="s1">&#39;options=populateStats%2Cappend%2Cdelete%2Cchecksum&amp;&#39;</span> \
+              <span class="s1">&#39;resource=/archive/projects/</span><span class="si">{}</span><span class="s1">/subjects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="XnatScan"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatScan">[docs]</a><span class="k">class</span> <span class="nc">XnatScan</span><span class="p">(</span><span class="n">XnatParentItem</span><span class="p">):</span>
@@ -455,7 +462,10 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatExperiment.progress_update"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.progress_update">[docs]</a>    <span class="k">def</span> <span class="nf">progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="XnatSubject"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatSubject">[docs]</a><span class="k">class</span> <span class="nc">XnatSubject</span><span class="p">(</span><span class="n">XnatParentItem</span><span class="p">):</span>

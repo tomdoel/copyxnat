@@ -64,11 +64,11 @@
 
     <span class="n">SUPPLEMENTAL_DATATYPE_INFO</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;proc:genProcData&#39;</span><span class="p">:</span>
-            <span class="s1">&#39;This datatype is part of the DAX plugin &#39;</span>
+            <span class="s1">&#39;This datatype can be added by installing the DAX plugin &#39;</span>
             <span class="s1">&#39;(https://github.com/VUIIS/dax)&#39;</span><span class="p">,</span>
         <span class="s1">&#39;icr:roiCollectionData&#39;</span><span class="p">:</span>
-            <span class="s1">&#39;This datatype is part of the XNAT-OHIF Viewer Plugin &#39;</span>
-            <span class="s1">&#39;(https://bitbucket.org/icrimaginginformatics/&#39;</span>
+            <span class="s1">&#39;This datatype can be added by installing the XNAT-OHIF Viewer &#39;</span>
+            <span class="s1">&#39;Plugin (https://bitbucket.org/icrimaginginformatics/&#39;</span>
             <span class="s1">&#39;ohif-viewer-xnat-plugin)&#39;</span><span class="p">,</span>
     <span class="p">}</span>
 
@@ -118,21 +118,23 @@
         <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">recurse</span><span class="o">=</span><span class="n">recurse</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CheckDatatypesCommand.print_results"><a class="viewcode-back" href="../../../copyxnat.commands.check_datatypes_command.html#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
         <span class="n">empty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">empty</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: items with undefined datatype on source server:&quot;</span><span class="o">.</span>
-                  <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Some items on the source server have an undefined &quot;</span>
+                  <span class="s2">&quot;datatype. This might indicate a problem with the source data&quot;</span>
+                  <span class="s2">&quot;or the source server datatype configuration:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">empty</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
 
         <span class="n">missing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: These datatypes need to be added to destination&quot;</span>
-                  <span class="s2">&quot; server:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Some session/assessor datatypes need to be added to &quot;</span>
+                  <span class="s2">&quot;destination server:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">[</span><span class="n">datatype</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: All datatypes present on destination server&quot;</span><span class="o">.</span>
