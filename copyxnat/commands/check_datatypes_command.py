@@ -5,7 +5,7 @@ Command which checks if destination server has all the
 scan datatypes that are present on the source server
 """
 
-from copyxnat.xnat.xnat_interface import XnatExperiment
+from copyxnat.xnat.xnat_interface import XnatExperiment, XnatScan, XnatAssessor
 from copyxnat.xnat.commands import Command, CommandReturn
 
 
@@ -34,7 +34,7 @@ class CheckDatatypesCommand(Command):
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
 
         datatype = xnat_item.interface.datatype()
-        if isinstance(xnat_item, XnatExperiment):
+        if isinstance(xnat_item, (XnatExperiment, XnatAssessor)):
             self.outputs['required_experiment_datatypes'].add(datatype)
 
             if datatype not in self.outputs['datatypes_on_dest']:
@@ -47,9 +47,6 @@ class CheckDatatypesCommand(Command):
                 self.inputs.reporter.verbose_log(
                     'OK: session datatype {} is on destination server.'.
                         format(datatype))
-            recurse = False
-        else:
-            recurse = True
 
         if datatype:
             self.inputs.reporter.verbose_log(
@@ -65,6 +62,8 @@ class CheckDatatypesCommand(Command):
             self.inputs.reporter.verbose_log('Empty datatype for {}'.format(
                 item_id))
             self.outputs['ids_with_empty_datatypes'].add(item_id)
+
+        recurse = not isinstance(xnat_item, XnatScan)
 
         return CommandReturn(recurse=recurse)
 
