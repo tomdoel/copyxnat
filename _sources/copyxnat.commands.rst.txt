@@ -12,6 +12,7 @@ Submodules
    copyxnat.commands.export_command
    copyxnat.commands.find_commands
    copyxnat.commands.ohif_command
+   copyxnat.commands.rebuild_catalog_command
    copyxnat.commands.show_command
 
 Module contents
