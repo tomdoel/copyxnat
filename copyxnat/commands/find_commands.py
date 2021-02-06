@@ -6,6 +6,7 @@ from copyxnat.commands.copy_command import CopyCommand
 from copyxnat.commands.export_command import ExportCommand
 from copyxnat.commands.show_command import ShowCommand
 from copyxnat.commands.ohif_command import OhifCommand
+from copyxnat.commands.rebuild_catalog_command import RebuildCatalogCommand
 
 
 def find_command(command_string):
@@ -22,5 +23,6 @@ def commands():
             ShowCommand,
             CopyCommand,
             CheckDatatypesCommand,
-            OhifCommand
+            OhifCommand,
+            RebuildCatalogCommand
             ]
