@@ -83,7 +83,7 @@ class CheckDatatypesCommand(Command):
         if empty:
             print(" - Some items on the source server have an undefined "
                   "datatype. This might indicate a problem with the source data"
-                  "or the source server datatype configuration:")
+                  " or the source server datatype configuration:")
             for item in empty:
                 print('   - {}'.format(item))
 
