@@ -97,4 +97,3 @@ class CheckDatatypesCommand(Command):
         else:
             print("Project {}: All datatypes present on destination server".
                   format(self.scope))
-
