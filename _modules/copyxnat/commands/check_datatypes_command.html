@@ -45,7 +45,8 @@
 <span class="sd">scan datatypes that are present on the source server</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatAssessor</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatScan</span><span class="p">,</span> \
+    <span class="n">XnatAssessor</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandReturn</span>
 
 
@@ -77,14 +78,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">:</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">(),</span>
             <span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="s1">&#39;missing_assessor_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
             <span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
-            <span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="s1">&#39;required_assessor_datatypes&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span>
         <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">,</span>
+                              <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">]</span>
 
 <div class="viewcode-block" id="CheckDatatypesCommand.run"><a class="viewcode-back" href="../../../copyxnat.commands.check_datatypes_command.html#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
 
         <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="p">(</span><span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatAssessor</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;required_experiment_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">]:</span>
@@ -96,6 +101,20 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
                     <span class="s1">&#39;OK: session datatype </span><span class="si">{}</span><span class="s1"> is on destination server.&#39;</span><span class="o">.</span>
+                        <span class="nb">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatAssessor</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;required_assessor_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;datatypes_on_dest&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_assessor_datatypes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
+                    <span class="s1">&#39;Assessor datatype </span><span class="si">{}</span><span class="s1"> needs to be added to &#39;</span>
+                    <span class="s1">&#39;destination server. &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
+                    <span class="s1">&#39;OK: assessor datatype </span><span class="si">{}</span><span class="s1"> is on destination server.&#39;</span><span class="o">.</span>
                         <span class="nb">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">datatype</span><span class="p">:</span>
@@ -127,18 +146,28 @@
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">empty</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
 
-        <span class="n">missing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Some session/assessor datatypes need to be added to &quot;</span>
-                  <span class="s2">&quot;destination server:&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="n">missing_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">missing_session</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Session datatypes need to be added to destination &quot;</span>
+                  <span class="s2">&quot;server:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing_session</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">[</span><span class="n">datatype</span><span class="p">]))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">: All datatypes present on destination server&quot;</span><span class="o">.</span>
-                  <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span></div></div>
+
+        <span class="n">missing_assessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_assessor_datatypes&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">missing_assessor</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Assessor datatypes need to be added to destination &quot;</span>
+                  <span class="s2">&quot;server:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing_assessor</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">[</span><span class="n">datatype</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">missing_session</span> <span class="ow">or</span> <span class="n">missing_assessor</span> <span class="ow">or</span> <span class="n">empty</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - OK&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
