@@ -5,7 +5,8 @@ Command which checks if destination server has all the
 scan datatypes that are present on the source server
 """
 
-from copyxnat.xnat.xnat_interface import XnatExperiment, XnatScan, XnatAssessor
+from copyxnat.xnat.xnat_interface import XnatExperiment, XnatScan, \
+    XnatAssessor, XnatResource, XnatFile, XnatInResource, XnatOutResource
 from copyxnat.xnat.commands import Command, CommandReturn
 
 
@@ -40,6 +41,8 @@ class CheckDatatypesCommand(Command):
             'ids_with_empty_datatypes': set(),
             'required_experiment_datatypes': set()
         }
+        self.ignore_filter = [XnatScan, XnatResource,
+                              XnatInResource, XnatOutResource, XnatFile]
 
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
 
