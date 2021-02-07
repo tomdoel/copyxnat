@@ -54,11 +54,15 @@ class XnatBase(abc.ABC):
         level = self.cache.cache_level
         return '  '*level + '-({}) {}'.format(self._name, self.label)  # pylint: disable=no-member
 
-    def get_children(self) -> list:
+    def get_children(self, ignore_filter) -> list:
         """Return XNAT child objects of this XNAT object"""
 
-        # Iterate through XnatItem classes that are child types of this class
-        for child_class in self._child_types:  # pylint: disable=no-member
+        # Iterate through XnatItem classes that are child types of this class,
+        # but filter out ones the Command has indicated to exclude
+        consider_types = [child for child in self._child_types if child not in  # pylint: disable=no-member
+                          ignore_filter]
+
+        for child_class in consider_types:
 
             # Call the defined PyXnatItem method to get the interfaces, and
             # wrap each in an XnatItem
@@ -106,13 +110,14 @@ class XnatItem(XnatBase):
     def post_create(self):
         """Post-processing after item creation"""
 
-    def run_recursive(self, function, from_parent, reporter):
+    def run_recursive(self, function, from_parent, ignore_filter, reporter):
         """Run the function on this item and all its children"""
         next_output = function(self, from_parent)
         if next_output.recurse:
-            for child in self.get_children():
+            for child in self.get_children(ignore_filter):
                 child.run_recursive(function,
                                     next_output.to_children,
+                                    ignore_filter,
                                     reporter)
         self.progress_update(reporter=reporter)
 

@@ -149,6 +149,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         server_project.run_recursive(
             function=project_command.run,
             from_parent=dst_xnat_server,
+            ignore_filter=project_command.ignore_filter,
             reporter=reporter)
         reporter.complete_progress()
 
