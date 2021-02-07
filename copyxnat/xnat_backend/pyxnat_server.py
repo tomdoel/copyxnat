@@ -5,7 +5,7 @@
 import abc
 import os
 
-from pyxnat import Interface, Inspector
+from pyxnat import Interface
 
 
 class PyXnatServer(object):
@@ -23,8 +23,7 @@ class PyXnatServer(object):
 
     def project_list(self):
         """Return array of project ids"""
-        return [project['ID'] for project in
-                self.fetch_interface()._get_json('/REST/projects')]  # pylint: disable=protected-access
+        return self.fetch_interface().inspect.project_values()
 
     def projects(self):
         """Return array of PyXnatProject projects"""
@@ -37,7 +36,7 @@ class PyXnatServer(object):
 
     def datatypes(self):
         """Return datatypes on this server"""
-        return Inspector(self.fetch_interface()).datatypes()
+        return self.fetch_interface().inspect.datatypes()
 
     def logout(self):
         """Disconnect from server"""
