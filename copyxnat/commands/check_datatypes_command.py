@@ -38,8 +38,10 @@ class CheckDatatypesCommand(Command):
         self.outputs = {
             'datatypes_on_dest': inputs.dst_xnat.datatypes(),
             'missing_session_datatypes': set(),
+            'missing_assessor_datatypes': set(),
             'ids_with_empty_datatypes': set(),
-            'required_experiment_datatypes': set()
+            'required_experiment_datatypes': set(),
+            'required_assessor_datatypes': set()
         }
         self.ignore_filter = [XnatScan, XnatResource,
                               XnatInResource, XnatOutResource, XnatFile]
@@ -47,7 +49,7 @@ class CheckDatatypesCommand(Command):
     def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
 
         datatype = xnat_item.interface.datatype()
-        if isinstance(xnat_item, (XnatExperiment, XnatAssessor)):
+        if isinstance(xnat_item, XnatExperiment):
             self.outputs['required_experiment_datatypes'].add(datatype)
 
             if datatype not in self.outputs['datatypes_on_dest']:
@@ -59,6 +61,20 @@ class CheckDatatypesCommand(Command):
             else:
                 self.inputs.reporter.verbose_log(
                     'OK: session datatype {} is on destination server.'.
+                        format(datatype))
+
+        if isinstance(xnat_item, XnatAssessor):
+            self.outputs['required_assessor_datatypes'].add(datatype)
+
+            if datatype not in self.outputs['datatypes_on_dest']:
+                self.outputs['missing_assessor_datatypes'].add(datatype)
+                self.inputs.reporter.verbose_log(
+                    'Assessor datatype {} needs to be added to '
+                    'destination server. '.format(datatype))
+
+            else:
+                self.inputs.reporter.verbose_log(
+                    'OK: assessor datatype {} is on destination server.'.
                         format(datatype))
 
         if datatype:
@@ -90,15 +106,25 @@ class CheckDatatypesCommand(Command):
             for item in empty:
                 print('   - {}'.format(item))
 
-        missing = self.outputs['missing_session_datatypes']
-        if missing:
-            print(" - Some session/assessor datatypes need to be added to "
-                  "destination server:")
-            for datatype in missing:
+        missing_session = self.outputs['missing_session_datatypes']
+        if missing_session:
+            print(" - Session datatypes need to be added to destination "
+                  "server:")
+            for datatype in missing_session:
                 print('   - {}'.format(datatype))
                 if datatype in self.SUPPLEMENTAL_DATATYPE_INFO:
                     print('    - {}'.format(
                         self.SUPPLEMENTAL_DATATYPE_INFO[datatype]))
-        else:
-            print("Project {}: All datatypes present on destination server".
-                  format(self.scope))
+
+        missing_assessor = self.outputs['missing_assessor_datatypes']
+        if missing_assessor:
+            print(" - Assessor datatypes need to be added to destination "
+                  "server:")
+            for datatype in missing_assessor:
+                print('   - {}'.format(datatype))
+                if datatype in self.SUPPLEMENTAL_DATATYPE_INFO:
+                    print('    - {}'.format(
+                        self.SUPPLEMENTAL_DATATYPE_INFO[datatype]))
+
+        if not (missing_session or missing_assessor or empty):
+            print(" - OK")
