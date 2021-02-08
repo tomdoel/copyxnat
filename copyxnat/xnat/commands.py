@@ -11,7 +11,7 @@ class Command:
         self.scope = scope
         self.inputs = inputs
         self.outputs = None
-        self.ignore_filter = None
+        self.ignore_filter = []
 
     @abc.abstractmethod
     def run(self, xnat_item, from_parent):
