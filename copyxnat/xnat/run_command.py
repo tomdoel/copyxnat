@@ -147,7 +147,8 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                 server_project.label, num_sessions, command.VERB),
             max_iter=num_sessions)
         server_project.run_recursive(
-            function=project_command.run,
+            function_pre=project_command.run_pre,
+            function_post=project_command.run_post,
             from_parent=dst_xnat_server,
             ignore_filter=project_command.ignore_filter,
             reporter=reporter)

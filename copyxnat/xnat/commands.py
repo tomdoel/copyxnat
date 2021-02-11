@@ -1,7 +1,6 @@
 # coding=utf-8
 
 """Commands defining actions that can be performed with copyxnat"""
-import abc
 
 
 class Command:
@@ -13,9 +12,26 @@ class Command:
         self.outputs = None
         self.ignore_filter = []
 
-    @abc.abstractmethod
-    def run(self, xnat_item, from_parent):
-        """Function that will be run on each item in the XNAT server"""
+    def run_pre(self, xnat_item, from_parent):
+        """
+        Function that will be run on each item in the XNAT server before
+        being run on its children
+
+        :xnat_item: The source server XnatItem to process
+        :from_parent: The value returned by this function when it was run on
+        this xnat_item's parent
+        """
+
+    def run_post(self, xnat_item, from_parent, from_pre):
+        """
+        Function that will be run on each item in the XNAT server after being
+        run on its children
+        :xnat_item: The source server XnatItem to process
+        :from_parent: The value returned by this function when it was run on
+        this xnat_item's parent
+        from_pre: The value returned by the run_pre command when it was run
+        on this xnat_item
+        """
 
     def print_results(self):
         """Output results to user"""
