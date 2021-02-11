@@ -16,7 +16,7 @@ class CopyCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Copy projects between server, or duplicate on same server'
 
-    def run(self, xnat_item, from_parent):
+    def run_pre(self, xnat_item, from_parent):
 
         # Override the project name
         dst_name = self.inputs.dst_project if \
@@ -28,3 +28,7 @@ class CopyCommand(Command):
             dst_label=dst_name,
             dry_run=self.inputs.reporter.dry_run)
         return CommandReturn(to_children=copied_item)
+
+    def run_post(self, xnat_item, from_parent, from_pre):
+        if from_pre:
+            from_pre.post_create()

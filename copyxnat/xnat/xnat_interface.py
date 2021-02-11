@@ -75,6 +75,9 @@ class XnatBase(abc.ABC):
                                   reporter=self.reporter,
                                   parent=self)
 
+    def post_create(self):
+        """Post-processing after item creation"""
+
 
 class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy"""
@@ -92,8 +95,6 @@ class XnatItem(XnatBase):
         """
         duplicate = self.duplicate(destination_parent, app_settings, dst_label,
                                    dry_run)
-        if duplicate:
-            duplicate.post_create()
         return duplicate
 
     @abc.abstractmethod
@@ -107,18 +108,18 @@ class XnatItem(XnatBase):
         :return: a new XnatItem corresponding to the duplicate item
         """
 
-    def post_create(self):
-        """Post-processing after item creation"""
-
-    def run_recursive(self, function, from_parent, ignore_filter, reporter):
+    def run_recursive(self, function_pre, function_post, from_parent,
+                      ignore_filter, reporter):
         """Run the function on this item and all its children"""
-        next_output = function(self, from_parent)
+        next_output = function_pre(self, from_parent)
         if next_output.recurse:
             for child in self.get_children(ignore_filter):
-                child.run_recursive(function,
+                child.run_recursive(function_pre,
+                                    function_post,
                                     next_output.to_children,
                                     ignore_filter,
                                     reporter)
+        function_post(self, from_parent, from_pre=next_output.to_children)
         self.progress_update(reporter=reporter)
 
     def progress_update(self, reporter):
@@ -181,6 +182,9 @@ class XnatItem(XnatBase):
 
     def rebuild_catalog(self):
         """Send a catalog refresh request"""
+
+    def post_create(self):
+        """Post-processing after item creation"""
 
 
 class XnatParentItem(XnatItem):

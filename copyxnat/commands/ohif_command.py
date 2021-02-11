@@ -15,6 +15,6 @@ class OhifCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Reset the OHIF viewer session data so it will find all images'
 
-    def run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def run_pre(self, xnat_item, from_parent):  # pylint: disable=unused-argument
         xnat_item.ohif_generate_session()
         return CommandReturn()
