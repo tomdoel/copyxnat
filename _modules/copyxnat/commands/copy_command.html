@@ -56,7 +56,7 @@
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Copy projects between server, or duplicate on same server&#39;</span>
 
-<div class="viewcode-block" id="CopyCommand.run"><a class="viewcode-back" href="../../../copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
+<div class="viewcode-block" id="CopyCommand.run_pre"><a class="viewcode-back" href="../../../copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand.run_pre">[docs]</a>    <span class="k">def</span> <span class="nf">run_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
         <span class="c1"># Override the project name</span>
         <span class="n">dst_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span> <span class="k">if</span> \
@@ -67,7 +67,11 @@
             <span class="n">app_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
             <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">,</span>
             <span class="n">dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">dry_run</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">to_children</span><span class="o">=</span><span class="n">copied_item</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">to_children</span><span class="o">=</span><span class="n">copied_item</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CopyCommand.run_post"><a class="viewcode-back" href="../../../copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand.run_post">[docs]</a>    <span class="k">def</span> <span class="nf">run_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">from_pre</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">from_pre</span><span class="p">:</span>
+            <span class="n">from_pre</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

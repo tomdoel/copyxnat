@@ -110,9 +110,10 @@
                         <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
+        <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
+        <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="n">command_key</span><span class="p">]</span>
+
         <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
-            <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
-            <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="n">command_key</span><span class="p">]</span>
             <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--dst-host&quot;</span><span class="p">,</span>
                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the destination XNAT &quot;</span>
                                          <span class="s2">&quot;server&quot;</span>

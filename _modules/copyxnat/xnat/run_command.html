@@ -187,7 +187,8 @@
                 <span class="n">server_project</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">num_sessions</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">VERB</span><span class="p">),</span>
             <span class="n">max_iter</span><span class="o">=</span><span class="n">num_sessions</span><span class="p">)</span>
         <span class="n">server_project</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span>
-            <span class="n">function</span><span class="o">=</span><span class="n">project_command</span><span class="o">.</span><span class="n">run</span><span class="p">,</span>
+            <span class="n">function_pre</span><span class="o">=</span><span class="n">project_command</span><span class="o">.</span><span class="n">run_pre</span><span class="p">,</span>
+            <span class="n">function_post</span><span class="o">=</span><span class="n">project_command</span><span class="o">.</span><span class="n">run_post</span><span class="p">,</span>
             <span class="n">from_parent</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="p">,</span>
             <span class="n">ignore_filter</span><span class="o">=</span><span class="n">project_command</span><span class="o">.</span><span class="n">ignore_filter</span><span class="p">,</span>
             <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>

@@ -86,6 +86,12 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.post_create">
+<code class="sig-name descname">post_create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.post_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.post_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post-processing after item creation</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatBase.user_visible_info">
 <code class="sig-name descname">user_visible_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.user_visible_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.user_visible_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>String representation of this object that can be shown to user</p>
@@ -333,7 +339,7 @@ it doesn’t already exist</p>
 
 <dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.run_recursive">
-<code class="sig-name descname">run_recursive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">function</span></em>, <em class="sig-param"><span class="n">from_parent</span></em>, <em class="sig-param"><span class="n">ignore_filter</span></em>, <em class="sig-param"><span class="n">reporter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.run_recursive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.run_recursive" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_recursive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">function_pre</span></em>, <em class="sig-param"><span class="n">function_post</span></em>, <em class="sig-param"><span class="n">from_parent</span></em>, <em class="sig-param"><span class="n">ignore_filter</span></em>, <em class="sig-param"><span class="n">reporter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.run_recursive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.run_recursive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the function on this item and all its children</p>
 </dd></dl>
 

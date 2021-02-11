@@ -55,7 +55,7 @@
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Reset the OHIF viewer session data so it will find all images&#39;</span>
 
-<div class="viewcode-block" id="OhifCommand.run"><a class="viewcode-back" href="../../../copyxnat.commands.ohif_command.html#copyxnat.commands.ohif_command.OhifCommand.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<div class="viewcode-block" id="OhifCommand.run_pre"><a class="viewcode-back" href="../../../copyxnat.commands.ohif_command.html#copyxnat.commands.ohif_command.OhifCommand.run_pre">[docs]</a>    <span class="k">def</span> <span class="nf">run_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="n">xnat_item</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">()</span></div></div>
 </pre></div>

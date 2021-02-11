@@ -113,7 +113,10 @@
                                   <span class="n">read_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_only</span><span class="p">,</span>
                                   <span class="n">xml_cleaner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">,</span>
                                   <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span>
-                                  <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div></div>
+                                  <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatBase.post_create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatBase.post_create">[docs]</a>    <span class="k">def</span> <span class="nf">post_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Post-processing after item creation&quot;&quot;&quot;</span></div></div>
 
 
 <div class="viewcode-block" id="XnatItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem">[docs]</a><span class="k">class</span> <span class="nc">XnatItem</span><span class="p">(</span><span class="n">XnatBase</span><span class="p">):</span>
@@ -132,8 +135,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">duplicate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duplicate</span><span class="p">(</span><span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="p">,</span>
                                    <span class="n">dry_run</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">duplicate</span><span class="p">:</span>
-            <span class="n">duplicate</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">duplicate</span></div>
 
 <div class="viewcode-block" id="XnatItem.duplicate"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.duplicate">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
@@ -147,18 +148,18 @@
 <span class="sd">        :return: a new XnatItem corresponding to the duplicate item</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="XnatItem.post_create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.post_create">[docs]</a>    <span class="k">def</span> <span class="nf">post_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Post-processing after item creation&quot;&quot;&quot;</span></div>
-
-<div class="viewcode-block" id="XnatItem.run_recursive"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.run_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">run_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">ignore_filter</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+<div class="viewcode-block" id="XnatItem.run_recursive"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.run_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">run_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function_pre</span><span class="p">,</span> <span class="n">function_post</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span>
+                      <span class="n">ignore_filter</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run the function on this item and all its children&quot;&quot;&quot;</span>
-        <span class="n">next_output</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">)</span>
+        <span class="n">next_output</span> <span class="o">=</span> <span class="n">function_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">next_output</span><span class="o">.</span><span class="n">recurse</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">ignore_filter</span><span class="p">):</span>
-                <span class="n">child</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span><span class="n">function</span><span class="p">,</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span><span class="n">function_pre</span><span class="p">,</span>
+                                    <span class="n">function_post</span><span class="p">,</span>
                                     <span class="n">next_output</span><span class="o">.</span><span class="n">to_children</span><span class="p">,</span>
                                     <span class="n">ignore_filter</span><span class="p">,</span>
                                     <span class="n">reporter</span><span class="p">)</span>
+        <span class="n">function_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">from_pre</span><span class="o">=</span><span class="n">next_output</span><span class="o">.</span><span class="n">to_children</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progress_update</span><span class="p">(</span><span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatItem.progress_update"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.progress_update">[docs]</a>    <span class="k">def</span> <span class="nf">progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
@@ -220,7 +221,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="XnatItem.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Send a catalog refresh request&quot;&quot;&quot;</span></div></div>
+        <span class="sd">&quot;&quot;&quot;Send a catalog refresh request&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="XnatItem.post_create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.post_create">[docs]</a>    <span class="k">def</span> <span class="nf">post_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Post-processing after item creation&quot;&quot;&quot;</span></div></div>
 
 
 <div class="viewcode-block" id="XnatParentItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem">[docs]</a><span class="k">class</span> <span class="nc">XnatParentItem</span><span class="p">(</span><span class="n">XnatItem</span><span class="p">):</span>
