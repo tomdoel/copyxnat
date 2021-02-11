@@ -75,9 +75,6 @@ class XnatBase(abc.ABC):
                                   reporter=self.reporter,
                                   parent=self)
 
-    def post_create(self):
-        """Post-processing after item creation"""
-
 
 class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy"""
@@ -415,7 +412,6 @@ class XnatExperiment(XnatParentItem):
 
     def post_create(self):
         self.ohif_generate_session()
-        self.rebuild_catalog()
 
     def ohif_generate_session(self):
         if self.ohif_present():
