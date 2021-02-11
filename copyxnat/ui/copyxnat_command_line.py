@@ -70,9 +70,10 @@ def main(args=None):
                         )
 
     for command in find_commands.commands():
+        command_key = command.COMMAND_LINE
+        sub_parser = subparsers.choices[command_key]
+
         if command.USE_DST_SERVER:
-            command_key = command.COMMAND_LINE
-            sub_parser = subparsers.choices[command_key]
             sub_parser.add_argument("-d", "--dst-host",
                                     help="Host name of the destination XNAT "
                                          "server"
