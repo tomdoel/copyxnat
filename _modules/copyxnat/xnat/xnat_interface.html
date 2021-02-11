@@ -113,10 +113,7 @@
                                   <span class="n">read_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_only</span><span class="p">,</span>
                                   <span class="n">xml_cleaner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">,</span>
                                   <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span>
-                                  <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="XnatBase.post_create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatBase.post_create">[docs]</a>    <span class="k">def</span> <span class="nf">post_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Post-processing after item creation&quot;&quot;&quot;</span></div></div>
+                                  <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="XnatItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem">[docs]</a><span class="k">class</span> <span class="nc">XnatItem</span><span class="p">(</span><span class="n">XnatBase</span><span class="p">):</span>
@@ -454,8 +451,7 @@
     <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatAssessor</span><span class="p">,</span> <span class="n">XnatReconstruction</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">]</span>
 
 <div class="viewcode-block" id="XnatExperiment.post_create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.post_create">[docs]</a>    <span class="k">def</span> <span class="nf">post_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_catalog</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.ohif_generate_session"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.ohif_generate_session">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_generate_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">():</span>
