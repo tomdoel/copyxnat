@@ -6,6 +6,7 @@
 import abc
 import os
 
+import pydicom
 import urllib3
 
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
@@ -298,6 +299,12 @@ class XnatFile(XnatItem):
                 'Skipping {}: item already exists on server'.format(label))
         else:
             local_file = self.interface.download_file(folder_path)
+            file_format = attributes['file_format']
+            if (not file_format) or (file_format.upper() == 'U'):
+                if pydicom.misc.is_dicom(local_file):
+                    self.reporter.message('Changing file type to DICOM')
+                    attributes['file_format'] = 'DICOM'
+
             copied_item.create_on_server(create_params=attributes,
                                          local_file=local_file,
                                          dry_run=dry_run)

@@ -53,6 +53,7 @@ setup(
         'pyxnat>=1.4',
         'configparser>=5.0.1',
         'urllib3>=1.26.2',
+        'pydicom==2.1.2'
     ],
 
     entry_points={
