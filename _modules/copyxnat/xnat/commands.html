@@ -85,18 +85,23 @@
 
 <div class="viewcode-block" id="Command.print_results"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Output results to user&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result of running </span><span class="si">{}</span><span class="s2"> on </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>  <span class="c1">## pylint:disable=no-member</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span>
+            <span class="s2">&quot;Result of running </span><span class="si">{}</span><span class="s2"> on </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">,</span>  <span class="c1">## pylint:disable=no-member</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="AppSettings"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.AppSettings">[docs]</a><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Wrap global settings for this utility&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download_zips</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">download_zips</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">dry_run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_zips</span> <span class="o">=</span> <span class="n">download_zips</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">fix_scan_types</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">fix_scan_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">ignore_datatype_errors</span></div>
 
 
 <div class="viewcode-block" id="CommandInputs"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.CommandInputs">[docs]</a><span class="k">class</span> <span class="nc">CommandInputs</span><span class="p">:</span>

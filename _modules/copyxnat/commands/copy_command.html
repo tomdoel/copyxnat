@@ -42,7 +42,7 @@
 
 <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatExperiment</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
@@ -53,8 +53,13 @@
     <span class="n">VERB</span> <span class="o">=</span> <span class="s1">&#39;copy&#39;</span>
     <span class="n">COMMAND_LINE</span> <span class="o">=</span> <span class="s1">&#39;copy&#39;</span>
     <span class="n">USE_DST_SERVER</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">MODIFY_DST_SERVER</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Copy projects between server, or duplicate on same server&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
@@ -62,13 +67,36 @@
         <span class="n">dst_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span> <span class="k">if</span> \
             <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
+        <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
+
+        <span class="n">missing_session_type</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">)</span> <span class="ow">and</span> \
+                               <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span>
+
+        <span class="k">if</span> <span class="n">missing_session_type</span><span class="p">:</span>
+            <span class="n">item_id</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ignore_datatype_errors</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">&#39;datatype </span><span class="si">{}</span><span class="s1"> is missing on the destination server but &#39;</span>
+                    <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> will be copied anyway because &#39;</span>
+                    <span class="s1">&#39;--ignore-datatype-errors was specified.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">datatype</span><span class="p">,</span> <span class="n">item_id</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">&#39;Did not copy </span><span class="si">{}</span><span class="s1"> because datatype </span><span class="si">{}</span><span class="s1"> needs to be added &#39;</span>
+                    <span class="s1">&#39;to the destination server. To force copying of the data  &#39;</span>
+                    <span class="s1">&#39;use --ignore-datatype-errors &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span> <span class="n">datatype</span><span class="p">))</span>
+                <span class="k">return</span>
+
         <span class="n">dst_copy</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
             <span class="n">destination_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
             <span class="n">app_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
             <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">,</span>
             <span class="n">dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">dry_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">dst_copy</span><span class="p">)</span>
-        <span class="n">dst_copy</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span></div>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">missing_session_type</span><span class="p">:</span>
+            <span class="n">dst_copy</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span></div>
 </pre></div>
 
             <div class="clearer"></div>
