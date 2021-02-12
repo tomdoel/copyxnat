@@ -105,19 +105,6 @@ class XnatItem(XnatBase):
         :return: a new XnatItem corresponding to the duplicate item
         """
 
-    def run_recursive(self, function_pre, function_post, from_parent,
-                      ignore_filter, reporter):
-        """Run the function on this item and all its children"""
-        next_output = function_pre(self, from_parent)
-        for child in self.get_children(ignore_filter):
-            child.run_recursive(function_pre,
-                                function_post,
-                                next_output.to_children,
-                                ignore_filter,
-                                reporter)
-        function_post(self, from_parent, from_pre=next_output.to_children)
-        self.progress_update(reporter=reporter)
-
     def progress_update(self, reporter):
         """Update the user about current progress"""
 

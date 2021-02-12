@@ -4,7 +4,7 @@
 Command which rebuilds the catalog for sessions of specified projects
 """
 
-from copyxnat.xnat.commands import Command, CommandReturn
+from copyxnat.xnat.commands import Command
 
 
 class RebuildCatalogCommand(Command):
@@ -17,6 +17,6 @@ class RebuildCatalogCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Request a rebuild of the XNAT catalog to fix data issues'
 
-    def run_pre(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
         xnat_item.rebuild_catalog()
-        return CommandReturn()
+        self._recurse(xnat_item=xnat_item)
