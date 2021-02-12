@@ -92,9 +92,7 @@ class CheckDatatypesCommand(Command):
                 item_id))
             self.outputs['ids_with_empty_datatypes'].add(item_id)
 
-        recurse = not isinstance(xnat_item, XnatScan)
-
-        return CommandReturn(recurse=recurse)
+        return CommandReturn()
 
     def print_results(self):
         print("Project {}:".format(self.scope))
