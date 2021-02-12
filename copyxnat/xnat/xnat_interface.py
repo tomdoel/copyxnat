@@ -313,6 +313,14 @@ class XnatFile(XnatItem):
         folder_path = self.cache.make_output_path()
         return self.interface.download_file(folder_path)
 
+    def user_visible_info(self):
+        base_string = super().user_visible_info()
+        attrs = self.interface.file_attributes()
+        attr_string = ' (content:{}, format:{}, tags:{})'.format(attrs.get('file_content'), attrs.get('file_format'),
+                                                                attrs.get('file_tags'))
+
+        return base_string + attr_string
+
 
 class XnatResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
