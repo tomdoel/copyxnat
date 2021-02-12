@@ -13,7 +13,7 @@ from copyxnat.xnat.xnat_interface import XnatServer
 def run_command(command, src_params, dst_params=None, project_filter=None,
                 verbose=False, dry_run=False, backend='pyxnat',
                 reporter=None, cache_dir=None, fix_scan_types=False,
-                download_zips=False):
+                download_zips=False, ignore_datatype_errors=False):
     """Runs the command on the specified XNAT servers
 
     @param command: the command class to run
@@ -31,6 +31,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
     @param fix_scan_types: Set to True to fix incorrect scan types when copying
+    @param ignore_datatype_errors: Set to True to copy files even if the
+    datatype is not present on the destination server
     @param download_zips: If True then resources will be uploaded and downloaded
     as zip files, which is faster but individual file attributes will not be
     set when copying between servers
@@ -39,9 +41,12 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     if not reporter:
         reporter = PyReporter(dry_run=dry_run, verbose=verbose)
 
-    app_settings = AppSettings(fix_scan_types=fix_scan_types,
-                               download_zips=download_zips,
-                               dry_run=dry_run)
+    app_settings = AppSettings(
+        fix_scan_types=fix_scan_types,
+        download_zips=download_zips,
+        ignore_datatype_errors=ignore_datatype_errors,
+        dry_run=dry_run
+    )
 
     cache_box = CacheBox(root_path=cache_dir)
     cache_type = command.CACHE_TYPE

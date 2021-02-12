@@ -63,7 +63,7 @@ def main(args=None):
                         help="File path here local cache files are to be stored"
                         )
 
-    parser.add_argument("-z", "--download-zips", ## dash instead of underscore?
+    parser.add_argument("-z", "--download-zips",
                         action="store_true",
                         help="Download each resource as a zip "
                              "instead of individual files",
@@ -89,6 +89,13 @@ def main(args=None):
                                     help="Fix undefined scan types on the copy",
                                     )
 
+        if command.MODIFY_DST_SERVER:
+            sub_parser.add_argument("-m", "--ignore-datatype-errors",
+                                    action="store_true",
+                                    help="Copy data to destination server even "
+                                         "if the datatype is not known"
+                                    )
+
     args = parser.parse_args(args)
 
     command = find_command(args.command)
@@ -99,6 +106,8 @@ def main(args=None):
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
     verbose = args.verbose if 'verbose' in args else False
     download_zips = args.download_zips if 'download_zips' in args else False
+    ignore_datatype_errors = args.ignore_datatype_errors if \
+        'ignore_datatype_errors' in args else False
 
     project_list = args.project.split(',') if 'project' in args and \
                                               args.project else None
@@ -131,7 +140,8 @@ def main(args=None):
                          verbose=verbose,
                          fix_scan_types=fix_scan_types,
                          dry_run=args.dry_run,
-                         download_zips=download_zips
+                         download_zips=download_zips,
+                         ignore_datatype_errors=ignore_datatype_errors
                          )
 
     if verbose:
