@@ -12,6 +12,7 @@ class ExportCommand(Command):
     VERB = 'download'
     COMMAND_LINE = 'export'
     USE_DST_SERVER = False
+    MODIFY_DST_SERVER = False
     CACHE_TYPE = 'downloads'
     HELP = 'Export XNAT projects to disk'
 

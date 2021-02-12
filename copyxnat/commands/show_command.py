@@ -13,6 +13,7 @@ class ShowCommand(Command):
     VERB = 'examine'
     COMMAND_LINE = 'show'
     USE_DST_SERVER = False
+    MODIFY_DST_SERVER = False
     CACHE_TYPE = 'cache'
     HELP = 'Show information about XNAT projects'
 

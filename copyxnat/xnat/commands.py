@@ -52,11 +52,15 @@ class Command:
 class AppSettings:
     """Wrap global settings for this utility"""
 
-    def __init__(self, fix_scan_types=False, download_zips=False,
-                 dry_run=False):
+    def __init__(self,
+                 fix_scan_types=False,
+                 download_zips=False,
+                 dry_run=False,
+                 ignore_datatype_errors=False):
         self.dry_run = dry_run
         self.download_zips = download_zips
         self.fix_scan_types = fix_scan_types
+        self.ignore_datatype_errors = ignore_datatype_errors
 
 
 class CommandInputs:
