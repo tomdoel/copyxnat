@@ -109,13 +109,12 @@ class XnatItem(XnatBase):
                       ignore_filter, reporter):
         """Run the function on this item and all its children"""
         next_output = function_pre(self, from_parent)
-        if next_output.recurse:
-            for child in self.get_children(ignore_filter):
-                child.run_recursive(function_pre,
-                                    function_post,
-                                    next_output.to_children,
-                                    ignore_filter,
-                                    reporter)
+        for child in self.get_children(ignore_filter):
+            child.run_recursive(function_pre,
+                                function_post,
+                                next_output.to_children,
+                                ignore_filter,
+                                reporter)
         function_post(self, from_parent, from_pre=next_output.to_children)
         self.progress_update(reporter=reporter)
 

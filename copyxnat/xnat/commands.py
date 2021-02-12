@@ -61,6 +61,5 @@ class CommandInputs:
 class CommandReturn:
     """Class for return values for a command function call"""
 
-    def __init__(self, to_children=None, recurse=True):
+    def __init__(self, to_children=None):
         self.to_children = to_children
-        self.recurse = recurse
