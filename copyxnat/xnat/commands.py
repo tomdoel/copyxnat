@@ -45,8 +45,9 @@ class Command:
 
     def print_results(self):
         """Output results to user"""
-        print("Result of running {} on {}:".format(self.NAME, self.scope))  ## pylint:disable=no-member
-        print(self.outputs)
+        self.inputs.reporter.verbose_log(
+            "Result of running {} on {}: {}".format(self.NAME, self.scope,
+                                                    self.outputs))  ## pylint:disable=no-member
 
 
 class AppSettings:
