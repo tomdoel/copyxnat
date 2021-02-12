@@ -3,6 +3,13 @@
 """Logging and user I/O"""
 
 
+class PyReporterCodes:
+    """ANSI sequences for terminal output operations"""
+    WARNING = '\33[93m'
+    END = '\33[0m'
+    CLEAR = '\33[K'
+
+
 class PyReporter(object):
     """Class for custom reporting actions"""
     _WARN_PREFIX = 'WARNING'
@@ -17,6 +24,7 @@ class PyReporter(object):
         self._iter_num = None
         self._max_iter = None
         self._message = None
+        self._last_progress_text = None
 
     def info(self, message):
         """Status message to show to end user"""
@@ -32,7 +40,8 @@ class PyReporter(object):
 
     def warning(self, message):
         """Warning message to report to end user"""
-        self._output(prefix=self._WARN_PREFIX, message=message)
+        self._output(prefix=self._WARN_PREFIX, message=message,
+                     colour=PyReporterCodes.WARNING)
 
     def log(self, message):
         """Message for logs but need not report to end user"""
@@ -43,11 +52,18 @@ class PyReporter(object):
         if self.verbose:
             self._output(prefix=self._VERBOSE_PREFIX, message=message)
 
-    def _output(self, prefix, message):
-        for handler in self._handlers:
-            combined_prefix = prefix + self._SEPARATOR if prefix is not None \
-                else ''
-            handler(combined_prefix + message)
+    def _output(self, prefix, message, colour=None):
+        combined_prefix = prefix + self._SEPARATOR if prefix is not None \
+            else ''
+        if colour:
+            colour_prefix = colour
+            colour_suffix = PyReporterCodes.END
+        else:
+            colour_prefix = ''
+            colour_suffix = ''
+
+        self._print_handler(colour_prefix + combined_prefix + message +
+                            colour_suffix)
 
     def start_progress(self, message, max_iter):
         """
@@ -78,7 +94,16 @@ class PyReporter(object):
         else:
             progress_text = self._message
 
-        print(progress_text, end='\r', flush=True)
+        print('\r' + progress_text, end='', flush=True)
+        self._print_progress(progress_text)
+
+    def _print_progress(self, progress_text):
+        self._last_progress_text = progress_text
+        self._reprint_progress()
+
+    def _reprint_progress(self):
+        if self._last_progress_text:
+            print(self._last_progress_text, end='\r', flush=True)
 
     def complete_progress(self):
         """
@@ -86,10 +111,10 @@ class PyReporter(object):
         """
         self._iter_num = self._max_iter
         self.next_progress()
-        print('\r', end='\x1b[1K\r')
-        self._message = None
-
-    @staticmethod
-    def _print_handler(message):
-        print('\r' + message, end='\x1b[1K\r')
         print()
+        self._message = None
+        self._last_progress_text = None
+
+    def _print_handler(self, message):
+        print(message + PyReporterCodes.CLEAR)
+        self._reprint_progress()
