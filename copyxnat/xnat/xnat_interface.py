@@ -316,8 +316,10 @@ class XnatFile(XnatItem):
     def user_visible_info(self):
         base_string = super().user_visible_info()
         attrs = self.interface.file_attributes()
-        attr_string = ' (content:{}, format:{}, tags:{})'.format(attrs.get('file_content'), attrs.get('file_format'),
-                                                                attrs.get('file_tags'))
+        attr_string = ' (content:{}, format:{}, tags:{})'.format(
+            attrs.get('file_content'),
+            attrs.get('file_format'),
+            attrs.get('file_tags'))
 
         return base_string + attr_string
 
