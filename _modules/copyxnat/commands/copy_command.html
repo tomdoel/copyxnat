@@ -43,7 +43,7 @@
 <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span>
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandReturn</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
 <div class="viewcode-block" id="CopyCommand"><a class="viewcode-back" href="../../../copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand">[docs]</a><span class="k">class</span> <span class="nc">CopyCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
@@ -56,22 +56,19 @@
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Copy projects between server, or duplicate on same server&#39;</span>
 
-<div class="viewcode-block" id="CopyCommand.run_pre"><a class="viewcode-back" href="../../../copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand.run_pre">[docs]</a>    <span class="k">def</span> <span class="nf">run_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
         <span class="c1"># Override the project name</span>
         <span class="n">dst_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span> <span class="k">if</span> \
             <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
-        <span class="n">copied_item</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+        <span class="n">dst_copy</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
             <span class="n">destination_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
             <span class="n">app_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
             <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">,</span>
             <span class="n">dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">dry_run</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">to_children</span><span class="o">=</span><span class="n">copied_item</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="CopyCommand.run_post"><a class="viewcode-back" href="../../../copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand.run_post">[docs]</a>    <span class="k">def</span> <span class="nf">run_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">from_pre</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">from_pre</span><span class="p">:</span>
-            <span class="n">from_pre</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">dst_copy</span><span class="p">)</span>
+        <span class="n">dst_copy</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span></div>
 </pre></div>
 
             <div class="clearer"></div>

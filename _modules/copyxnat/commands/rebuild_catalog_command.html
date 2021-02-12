@@ -44,7 +44,7 @@
 <span class="sd">Command which rebuilds the catalog for sessions of specified projects</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandReturn</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
 <div class="viewcode-block" id="RebuildCatalogCommand"><a class="viewcode-back" href="../../../copyxnat.commands.rebuild_catalog_command.html#copyxnat.commands.rebuild_catalog_command.RebuildCatalogCommand">[docs]</a><span class="k">class</span> <span class="nc">RebuildCatalogCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
@@ -57,9 +57,9 @@
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;cache&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Request a rebuild of the XNAT catalog to fix data issues&#39;</span>
 
-<div class="viewcode-block" id="RebuildCatalogCommand.run_pre"><a class="viewcode-back" href="../../../copyxnat.commands.rebuild_catalog_command.html#copyxnat.commands.rebuild_catalog_command.RebuildCatalogCommand.run_pre">[docs]</a>    <span class="k">def</span> <span class="nf">run_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="n">xnat_item</span><span class="o">.</span><span class="n">rebuild_catalog</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

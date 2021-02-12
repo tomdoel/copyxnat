@@ -69,22 +69,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.xnat.commands.Command.run_post">
-<code class="sig-name descname">run_post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">from_parent</span></em>, <em class="sig-param"><span class="n">from_pre</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#Command.run_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.Command.run_post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function that will be run on each item in the XNAT server after being
-run on its children
-:xnat_item: The source server XnatItem to process
-:from_parent: The value returned by this function when it was run on
-this xnat_item’s parent
-from_pre: The value returned by the run_pre command when it was run
-on this xnat_item</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.commands.Command.run_pre">
-<code class="sig-name descname">run_pre</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">from_parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#Command.run_pre"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.Command.run_pre" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function that will be run on each item in the XNAT server before
-being run on its children</p>
+<dt id="copyxnat.xnat.commands.Command.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xnat_item</span></em>, <em class="sig-param"><span class="n">from_parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#Command.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.Command.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run this command recursively on the xnat_item and its children</p>
 <dl class="field-list simple">
 <dt class="field-odd">Xnat_item</dt>
 <dd class="field-odd"><p>The source server XnatItem to process</p>
@@ -103,13 +90,6 @@ being run on its children</p>
 <em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">CommandInputs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dst_xnat</span></em>, <em class="sig-param"><span class="n">reporter</span></em>, <em class="sig-param"><span class="n">app_settings</span></em>, <em class="sig-param"><span class="n">dst_project</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#CommandInputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.CommandInputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Wrap global input variables for a command</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="copyxnat.xnat.commands.CommandReturn">
-<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.commands.</code><code class="sig-name descname">CommandReturn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_children</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">recurse</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/commands.html#CommandReturn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.commands.CommandReturn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class for return values for a command function call</p>
 </dd></dl>
 
 </div>

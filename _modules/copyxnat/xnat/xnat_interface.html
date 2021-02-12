@@ -145,20 +145,6 @@
 <span class="sd">        :return: a new XnatItem corresponding to the duplicate item</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="XnatItem.run_recursive"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.run_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">run_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function_pre</span><span class="p">,</span> <span class="n">function_post</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span>
-                      <span class="n">ignore_filter</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Run the function on this item and all its children&quot;&quot;&quot;</span>
-        <span class="n">next_output</span> <span class="o">=</span> <span class="n">function_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">next_output</span><span class="o">.</span><span class="n">recurse</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">ignore_filter</span><span class="p">):</span>
-                <span class="n">child</span><span class="o">.</span><span class="n">run_recursive</span><span class="p">(</span><span class="n">function_pre</span><span class="p">,</span>
-                                    <span class="n">function_post</span><span class="p">,</span>
-                                    <span class="n">next_output</span><span class="o">.</span><span class="n">to_children</span><span class="p">,</span>
-                                    <span class="n">ignore_filter</span><span class="p">,</span>
-                                    <span class="n">reporter</span><span class="p">)</span>
-        <span class="n">function_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">,</span> <span class="n">from_pre</span><span class="o">=</span><span class="n">next_output</span><span class="o">.</span><span class="n">to_children</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">progress_update</span><span class="p">(</span><span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="XnatItem.progress_update"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.progress_update">[docs]</a>    <span class="k">def</span> <span class="nf">progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the user about current progress&quot;&quot;&quot;</span></div>
 

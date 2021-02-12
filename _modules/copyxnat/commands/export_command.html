@@ -42,7 +42,7 @@
 
 <span class="sd">&quot;&quot;&quot;Command which exports XNAT project data onto local disk&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CommandReturn</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
 <div class="viewcode-block" id="ExportCommand"><a class="viewcode-back" href="../../../copyxnat.commands.export_command.html#copyxnat.commands.export_command.ExportCommand">[docs]</a><span class="k">class</span> <span class="nc">ExportCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
@@ -55,9 +55,9 @@
     <span class="n">CACHE_TYPE</span> <span class="o">=</span> <span class="s1">&#39;downloads&#39;</span>
     <span class="n">HELP</span> <span class="o">=</span> <span class="s1">&#39;Export XNAT projects to disk&#39;</span>
 
-<div class="viewcode-block" id="ExportCommand.run_pre"><a class="viewcode-back" href="../../../copyxnat.commands.export_command.html#copyxnat.commands.export_command.ExportCommand.run_pre">[docs]</a>    <span class="k">def</span> <span class="nf">run_pre</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
-        <span class="n">return_value</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">CommandReturn</span><span class="p">(</span><span class="n">to_children</span><span class="o">=</span><span class="n">return_value</span><span class="p">)</span></div></div>
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="n">xnat_item</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
