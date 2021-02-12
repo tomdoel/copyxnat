@@ -7,7 +7,7 @@ scan datatypes that are present on the source server
 
 from copyxnat.xnat.xnat_interface import XnatExperiment, XnatScan, \
     XnatAssessor, XnatResource, XnatFile, XnatInResource, XnatOutResource
-from copyxnat.xnat.commands import Command, CommandReturn
+from copyxnat.xnat.commands import Command
 
 
 class CheckDatatypesCommand(Command):
@@ -46,7 +46,7 @@ class CheckDatatypesCommand(Command):
         self.ignore_filter = [XnatScan, XnatResource,
                               XnatInResource, XnatOutResource, XnatFile]
 
-    def run_pre(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
 
         datatype = xnat_item.interface.datatype()
         if isinstance(xnat_item, XnatExperiment):
@@ -92,7 +92,7 @@ class CheckDatatypesCommand(Command):
                 item_id))
             self.outputs['ids_with_empty_datatypes'].add(item_id)
 
-        return CommandReturn()
+        self._recurse(xnat_item=xnat_item)
 
     def print_results(self):
         print("Project {}:".format(self.scope))

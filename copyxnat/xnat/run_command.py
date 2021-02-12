@@ -146,12 +146,9 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
             message="{:>20}: {:>3} sessions to {} ".format(
                 server_project.label, num_sessions, command.VERB),
             max_iter=num_sessions)
-        server_project.run_recursive(
-            function_pre=project_command.run_pre,
-            function_post=project_command.run_post,
-            from_parent=dst_xnat_server,
-            ignore_filter=project_command.ignore_filter,
-            reporter=reporter)
+
+        project_command.run(server_project, dst_xnat_server)
+
         reporter.complete_progress()
 
         # Output results for current project

@@ -3,7 +3,7 @@
 """Command which copies XNAT projects between servers"""
 
 from copyxnat.xnat.xnat_interface import XnatProject
-from copyxnat.xnat.commands import Command, CommandReturn
+from copyxnat.xnat.commands import Command
 
 
 class CopyCommand(Command):
@@ -16,19 +16,16 @@ class CopyCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Copy projects between server, or duplicate on same server'
 
-    def run_pre(self, xnat_item, from_parent):
+    def _run(self, xnat_item, from_parent):
 
         # Override the project name
         dst_name = self.inputs.dst_project if \
             isinstance(xnat_item, XnatProject) else None
 
-        copied_item = xnat_item.copy(
+        dst_copy = xnat_item.copy(
             destination_parent=from_parent,
             app_settings=self.inputs.app_settings,
             dst_label=dst_name,
             dry_run=self.inputs.reporter.dry_run)
-        return CommandReturn(to_children=copied_item)
-
-    def run_post(self, xnat_item, from_parent, from_pre):
-        if from_pre:
-            from_pre.post_create()
+        self._recurse(xnat_item=xnat_item, to_children=dst_copy)
+        dst_copy.post_create()

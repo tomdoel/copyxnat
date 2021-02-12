@@ -2,7 +2,7 @@
 
 """Command which exports XNAT project data onto local disk"""
 
-from copyxnat.xnat.commands import Command, CommandReturn
+from copyxnat.xnat.commands import Command
 
 
 class OhifCommand(Command):
@@ -15,6 +15,6 @@ class OhifCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Reset the OHIF viewer session data so it will find all images'
 
-    def run_pre(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
         xnat_item.ohif_generate_session()
-        return CommandReturn()
+        self._recurse(xnat_item=xnat_item)
