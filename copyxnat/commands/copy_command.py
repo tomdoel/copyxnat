@@ -55,5 +55,5 @@ class CopyCommand(Command):
             dry_run=self.inputs.reporter.dry_run)
         self._recurse(xnat_item=xnat_item, to_children=dst_copy)
 
-        if not missing_session_type:
+        if dst_copy and not missing_session_type:
             dst_copy.post_create()
