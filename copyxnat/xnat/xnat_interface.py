@@ -98,8 +98,7 @@ class XnatItem(XnatBase):
                              format(cls._name, label, parent.full_name))  # pylint: disable=no-member
         return cls(interface=interface, label=label, parent=parent)
 
-    def copy(self, destination_parent, app_settings, dst_label=None,
-             dry_run=False):
+    def copy(self, destination_parent, app_settings, dst_label=None):
         """
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
@@ -109,12 +108,10 @@ class XnatItem(XnatBase):
         :dst_label: label for destination object, or None to use source label
         :return: a new XnatItem corresponding to the duplicate item
         """
-        duplicate = self.duplicate(destination_parent, app_settings, dst_label,
-                                   dry_run)
+        duplicate = self.duplicate(destination_parent, app_settings, dst_label)
         return duplicate
 
-    def duplicate(self, destination_parent, app_settings, dst_label=None,
-                  dry_run=False):
+    def duplicate(self, destination_parent, app_settings, dst_label=None):
         """
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
@@ -146,7 +143,7 @@ class XnatItem(XnatBase):
             )
             copied_item.create_on_server(create_params=create_params,
                                          local_file=local_file,
-                                         dry_run=dry_run)
+                                         dry_run=app_settings.dry_run)
             if local_file:
                 os.remove(local_file)
 
@@ -272,10 +269,8 @@ class XnatParentItem(XnatItem):
             xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
-    def copy(self, destination_parent, app_settings, dst_label=None,
-             dry_run=False):
-        duplicate = super().copy(destination_parent, app_settings, dst_label,
-                                 dry_run)
+    def copy(self, destination_parent, app_settings, dst_label=None):
+        duplicate = super().copy(destination_parent, app_settings, dst_label)
 
         if duplicate:
             # Update the maps that are used to modify attributes in child items
@@ -327,14 +322,12 @@ class XnatFile(XnatItem):
         local_file = self.interface.download_file(folder_path)
         return local_file, attributes
 
-    def copy(self, destination_parent, app_settings, dst_label=None,
-             dry_run=False):
+    def copy(self, destination_parent, app_settings, dst_label=None):
         if app_settings.download_zips:
             return None
         return super().copy(destination_parent=destination_parent,
                             app_settings=app_settings,
-                            dst_label=dst_label,
-                            dry_run=dry_run)
+                            dst_label=dst_label)
 
     def export(self, app_settings):
         if app_settings.download_zips:

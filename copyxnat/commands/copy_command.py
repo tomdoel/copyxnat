@@ -51,8 +51,7 @@ class CopyCommand(Command):
         dst_copy = xnat_item.copy(
             destination_parent=from_parent,
             app_settings=self.inputs.app_settings,
-            dst_label=dst_name,
-            dry_run=self.inputs.reporter.dry_run)
+            dst_label=dst_name)
         self._recurse(xnat_item=xnat_item, to_children=dst_copy)
 
         if dst_copy and not missing_session_type:

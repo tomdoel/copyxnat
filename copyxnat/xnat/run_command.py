@@ -32,6 +32,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
     @param fix_scan_types: Set to True to fix incorrect scan types when copying
+    @param overwrite_existing: Set to True to overwrite existing data on the
+    XNAT server
     @param ignore_datatype_errors: Set to True to copy files even if the
     datatype is not present on the destination server
     @param download_zips: If True then resources will be uploaded and downloaded
