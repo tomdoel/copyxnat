@@ -28,7 +28,7 @@ class XnatBase(abc.ABC):
     """Base class for an item in the XNAT data hierarchy"""
 
     def __init__(self, parent_cache, interface, label, read_only, xml_cleaner,
-                 reporter, parent):
+                 app_settings, reporter, parent):
         self.parent = parent
         self.interface = interface
         if not label:
@@ -40,6 +40,7 @@ class XnatBase(abc.ABC):
         self.full_name = self.cache.full_name
         self.xml_cleaner = xml_cleaner
         self.reporter = reporter
+        self.app_settings = app_settings
         self.label_map = {self._xml_id: label}  # pylint: disable=no-member
         if parent:
             for item_tag, item_label in parent.label_map.items():
@@ -81,6 +82,7 @@ class XnatItem(XnatBase):
                          label=label,
                          read_only=parent.read_only,
                          reporter=parent.reporter,
+                         app_settings=parent.app_settings,
                          xml_cleaner=parent.xml_cleaner,
                          parent=parent)
 
@@ -499,6 +501,7 @@ class XnatServer(XnatBase):
     def __init__(self,
                  factory,
                  params,
+                 app_settings,
                  base_cache,
                  reporter
                  ):
@@ -516,6 +519,7 @@ class XnatServer(XnatBase):
                          interface=interface,
                          label=label,
                          read_only=params.read_only,
+                         app_settings=app_settings,
                          xml_cleaner=XmlCleaner(reporter=reporter),
                          reporter=reporter,
                          parent=None)

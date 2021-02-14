@@ -42,7 +42,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     @param cache_dir: Directory where downloaded or cached files will be stored
     """
     if not reporter:
-        reporter = PyReporter(dry_run=dry_run, verbose=verbose)
+        reporter = PyReporter(verbose=verbose)
 
     app_settings = AppSettings(
         fix_scan_types=fix_scan_types,
@@ -62,12 +62,14 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     src_xnat = XnatServer(factory=factory,
                           params=src_params,
                           base_cache=base_cache,
+                          app_settings=app_settings,
                           reporter=reporter)
 
     if dst_params and command.USE_DST_SERVER:
         dst_xnat = XnatServer(factory=factory,
                               params=dst_params,
                               base_cache=base_cache,
+                              app_settings=app_settings,
                               reporter=reporter)
     else:
         dst_xnat = None

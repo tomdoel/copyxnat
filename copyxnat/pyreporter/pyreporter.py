@@ -17,8 +17,7 @@ class PyReporter(object):
     _VERBOSE_PREFIX = 'VERBOSE INFO (verbose)'
     _SEPARATOR = ': '
 
-    def __init__(self, dry_run=False, verbose=False):
-        self.dry_run = dry_run
+    def __init__(self, verbose=False):
         self.verbose = verbose
         self._handlers = [self._print_handler]
         self._iter_num = None
