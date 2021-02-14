@@ -71,6 +71,15 @@ class XnatBase(abc.ABC):
             for item in getattr(self.interface, child_class.interface_method)():
                 yield child_class.get_existing(interface=item, parent=self)
 
+    @abc.abstractmethod
+    def metadata_missing(self):
+        """Return True if this item or any parent requires metadata which could
+        be found from the child Files"""
+
+    @abc.abstractmethod
+    def provide_metadata(self, metadata):
+        """Supply missing metadata to parent items"""
+
 
 class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy. Used for all
@@ -221,6 +230,21 @@ class XnatItem(XnatBase):
     def post_create(self):
         """Post-processing after item creation"""
 
+    def metadata_missing(self):
+        """Return True if this item or any parent requires metadata which could
+        be found from the child Files"""
+        return self._metadata_missing() or self.parent.metadata_missing()
+
+    def provide_metadata(self, metadata):
+        self._provide_metadata(metadata)
+        self.parent.provide_metadata(metadata)
+
+    def _metadata_missing(self):  # pylint: disable=no-self-use
+        return False
+
+    def _provide_metadata(self, metadata):  # pylint: disable=no-self-use
+        pass
+
 
 class XnatParentItem(XnatItem):
     """
@@ -327,6 +351,7 @@ class XnatFile(XnatItem):
         dst_item.create_on_server(create_params=attributes,
                                   local_file=local_file)
         if local_file:
+            self._add_missing_metadata(local_file=local_file)
             os.remove(local_file)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
@@ -352,6 +377,44 @@ class XnatFile(XnatItem):
             attrs.get('file_tags'))
 
         return base_string + attr_string
+
+    def ohif_generate_session(self):
+        # Use files to supply missing metadata
+        self._add_missing_metadata()
+
+    def _add_missing_metadata(self, local_file=None):
+        tmp_local_file = None
+        if not local_file:
+            folder_path = self.cache.make_output_path()
+            tmp_local_file = self.interface.download_file(folder_path)
+            local_file = tmp_local_file
+
+        if self.metadata_missing():
+            metadata = self._parse_metadata(local_file)
+
+            if metadata:
+                self.provide_metadata(metadata)
+
+        if tmp_local_file:
+            os.remove(tmp_local_file)
+
+    def _parse_metadata(self, local_file):  # pylint: disable=no-self-use
+        metadata = {}
+        try:
+            if pydicom.misc.is_dicom(local_file):
+                tags = pydicom.dcmread(
+                    local_file,
+                    stop_before_pixels=True,
+                    specific_tags=[
+                        pydicom.datadict.tag_for_keyword('SeriesInstanceUID')]
+                )
+                metadata['series_instance_uid'] = \
+                    tags['SeriesInstanceUID'].value
+
+        except Exception as exc:  # pylint: disable=broad-except
+            self.reporter.warning('Error when attempting to parse file {}: '
+                                  'Error: {}'.format(local_file, exc))
+        return metadata
 
 
 class XnatResource(XnatFileContainerItem):
@@ -424,6 +487,30 @@ class XnatScan(XnatParentItem):
     _xml_id = XnatType.scan
     interface_method = 'scans'
     _child_types = [XnatResource]
+
+    def __init__(self, interface, label, parent):
+        self._metadata = {'UID': None}
+        super().__init__(interface, label, parent)
+
+    def _metadata_missing(self):
+        if not self._metadata['UID']:
+            self._metadata['UID'] = self.interface.fetch_interface().\
+                attrs.get('UID')
+        return not all(self._metadata.values())
+
+    def _provide_metadata(self, metadata):
+        if (not self._metadata['UID']) and ('series_instance_uid' in metadata):
+            uid = metadata['series_instance_uid']
+            current_uid = self.interface.fetch_interface().attrs.get('UID')
+            if current_uid:
+                if not current_uid == uid:
+                    self.reporter.warning(
+                        'The scan UID is {} but a DICOM file has a series '
+                        'instance UID of {}. Will not modify the scan UID'.
+                        format(current_uid, uid))
+            else:
+                self.reporter.warning('Setting Scan UID to {}'.format(uid))
+                self.interface.fetch_interface().attrs.set('UID', uid)
 
 
 class XnatExperiment(XnatParentItem):
@@ -590,3 +677,9 @@ class XnatServer(XnatBase):
                 disallowed_secondary_ids.append(project["secondary_ID"])
         return {"names": disallowed_names,
                 "secondary_ids": disallowed_secondary_ids}
+
+    def metadata_missing(self):  # pylint: disable=no-self-use
+        return False
+
+    def provide_metadata(self, metadata):  # pylint: disable=no-self-use
+        pass
