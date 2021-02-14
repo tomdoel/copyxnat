@@ -67,17 +67,24 @@ class XnatBase(abc.ABC):
             # Call the defined PyXnatItem method to get the interfaces, and
             # wrap each in an XnatItem
             for item in getattr(self.interface, child_class.interface_method)():
-                yield child_class(parent_cache=self.cache,
-                                  interface=item,
+                yield child_class(interface=item,
                                   label=item.fetch_interface().label(),
-                                  read_only=self.read_only,
-                                  xml_cleaner=self.xml_cleaner,
-                                  reporter=self.reporter,
                                   parent=self)
 
 
 class XnatItem(XnatBase):
-    """Base class for data-level item in the XNAT data hierarchy"""
+    """Base class for data-level item in the XNAT data hierarchy. Used for all
+    non-root items (ie all items other than XnatServer) """
+
+    def __init__(self, interface, label, parent):
+
+        super().__init__(parent_cache=parent.cache,
+                         interface=interface,
+                         label=label,
+                         read_only=parent.read_only,
+                         reporter=parent.reporter,
+                         xml_cleaner=parent.xml_cleaner,
+                         parent=parent)
 
     def copy(self, destination_parent, app_settings, dst_label=None,
              dry_run=False):
@@ -130,12 +137,8 @@ class XnatItem(XnatBase):
         interface = self.interface.create(parent_pyxnatitem=parent.interface,
                                           label=label)
 
-        return cls(parent_cache=parent.cache,
-                   interface=interface,
+        return cls(interface=interface,
                    label=label,
-                   read_only=parent.read_only,
-                   xml_cleaner=parent.xml_cleaner,
-                   reporter=self.reporter,
                    parent=parent)
 
     def create_on_server(self, create_params, local_file, dry_run):
@@ -508,12 +511,8 @@ class XnatServer(XnatBase):
 
     def project(self, label):
         """Return XnatProject for this project id"""
-        return XnatProject(parent_cache=self.cache,
-                           interface=self.interface.project(label),
+        return XnatProject(interface=self.interface.project(label),
                            label=label,
-                           read_only=self.read_only,
-                           xml_cleaner=self.xml_cleaner,
-                           reporter=self.reporter,
                            parent=self)
 
     def logout(self):
