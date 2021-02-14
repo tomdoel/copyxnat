@@ -171,6 +171,11 @@ class XnatItem(XnatBase):
     def export(self, app_settings) -> str:
         """Save this item to the cache"""
 
+    @abc.abstractmethod
+    def prepare_local_file(self, app_settings, destination_parent, label):
+        """Create a local file copy of this item, with any required
+        cleaning so that it is ready for upload to the destination server"""
+
     def ohif_generate_session(self):
         """Trigger regeneration of OHIF session data"""
 
@@ -222,16 +227,11 @@ class XnatParentItem(XnatItem):
                 write_dst = False
 
         if write_dst:
-            # Note that cleaning will modify the xml_root object passed in
-            cleaned_xml_root = self.clean(
-                xml_root=self.get_xml(),
-                fix_scan_types=app_settings.fix_scan_types,
+            local_file = self.prepare_local_file(
+                app_settings=app_settings,
                 destination_parent=destination_parent,
                 label=label
             )
-
-            local_file = self.cache.write_xml(
-                cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
 
             copied_item.create_on_server(create_params=None,
                                          local_file=local_file,
@@ -241,6 +241,19 @@ class XnatParentItem(XnatItem):
                 os.remove(local_file)
 
         return copied_item
+
+    def prepare_local_file(self, app_settings, destination_parent, label):
+
+        # Note that cleaning will modify the xml_root object passed in
+        cleaned_xml_root = self.clean(
+            xml_root=self.get_xml(),
+            fix_scan_types=app_settings.fix_scan_types,
+            destination_parent=destination_parent,
+            label=label
+        )
+        local_file = self.cache.write_xml(
+            cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
+        return local_file
 
     def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
         """
@@ -300,11 +313,11 @@ class XnatFileContainerItem(XnatItem):
                 write_dst = False
 
         if write_dst:
-            if app_settings.download_zips:
-                folder_path = self.cache.make_output_path()
-                local_file = self.interface.download_zip_file(folder_path)
-            else:
-                local_file = None
+            local_file = self.prepare_local_file(
+                app_settings=app_settings,
+                destination_parent=destination_parent,
+                label=label
+            )
 
             copied_item.create_on_server(create_params=None,
                                          local_file=local_file,
@@ -314,6 +327,14 @@ class XnatFileContainerItem(XnatItem):
                 os.remove(local_file)
 
         return copied_item
+
+    def prepare_local_file(self, app_settings, destination_parent, label):
+        if app_settings.download_zips:
+            folder_path = self.cache.make_output_path()
+            local_file = self.interface.download_zip_file(folder_path)
+        else:
+            local_file = None
+        return local_file
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
@@ -349,9 +370,11 @@ class XnatFile(XnatItem):
                 write_dst = False
 
         if write_dst:
-            folder_path = self.cache.make_output_path()
-            attributes = self.interface.file_attributes()
-            local_file = self.interface.download_file(folder_path)
+            attributes, local_file = self.prepare_local_file(
+                app_settings=app_settings,
+                destination_parent=destination_parent,
+                label=label
+            )
             copied_item.create_on_server(create_params=attributes,
                                          local_file=local_file,
                                          dry_run=dry_run)
@@ -359,6 +382,12 @@ class XnatFile(XnatItem):
                 os.remove(local_file)
 
         return copied_item
+
+    def prepare_local_file(self, app_settings, destination_parent, label):
+        folder_path = self.cache.make_output_path()
+        attributes = self.interface.file_attributes()
+        local_file = self.interface.download_file(folder_path)
+        return attributes, local_file
 
     def copy(self, destination_parent, app_settings, dst_label=None,
              dry_run=False):
