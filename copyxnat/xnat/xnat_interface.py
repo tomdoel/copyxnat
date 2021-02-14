@@ -138,11 +138,7 @@ class XnatItem(XnatBase):
                 write_dst = False
 
         if write_dst:
-            self.create(
-                dst_item=copied_item,
-                destination_parent=destination_parent,
-                label=label
-            )
+            self.create(dst_item=copied_item)
 
         return copied_item
 
@@ -197,7 +193,7 @@ class XnatItem(XnatBase):
         """Save this item to the cache"""
 
     @abc.abstractmethod
-    def create(self, dst_item, destination_parent, label):
+    def create(self, dst_item):
         """
         Create a local file copy of this item, with any required
         cleaning so that it is ready for upload to the destination server
@@ -239,14 +235,14 @@ class XnatParentItem(XnatItem):
         """Get an XML representation of this item"""
         return XmlCleaner.xml_from_string(self.get_xml_string())
 
-    def create(self, dst_item, destination_parent, label):
+    def create(self, dst_item):
 
         # Note that cleaning will modify the xml_root object passed in
         cleaned_xml_root = self.clean(
             xml_root=self.get_xml(),
             fix_scan_types=self.app_settings.fix_scan_types,
-            destination_parent=destination_parent,
-            label=label
+            destination_parent=dst_item.parent,
+            label=dst_item.label
         )
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
@@ -294,7 +290,7 @@ class XnatParentItem(XnatItem):
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
-    def create(self, dst_item, destination_parent, label):
+    def create(self, dst_item):
         if self.app_settings.download_zips:
             folder_path = self.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
@@ -323,7 +319,7 @@ class XnatFile(XnatItem):
     interface_method = 'files'
     _child_types = []
 
-    def create(self, dst_item, destination_parent, label):
+    def create(self, dst_item):
         folder_path = self.cache.make_output_path()
         attributes = self.interface.file_attributes()
         local_file = self.interface.download_file(folder_path)
