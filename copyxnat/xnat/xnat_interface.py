@@ -144,8 +144,7 @@ class XnatItem(XnatBase):
                 label=label
             )
             copied_item.create_on_server(create_params=create_params,
-                                         local_file=local_file,
-                                         dry_run=app_settings.dry_run)
+                                         local_file=local_file)
             if local_file:
                 os.remove(local_file)
 
@@ -180,9 +179,9 @@ class XnatItem(XnatBase):
                    label=label,
                    parent=parent)
 
-    def create_on_server(self, create_params, local_file, dry_run):
+    def create_on_server(self, create_params, local_file):
         """Create this item on the XNAT server if it does not already exist"""
-        if dry_run:
+        if self.app_settings.dry_run:
             print('DRY RUN: did not create {} {} with file {}'.
                   format(self._name, self.label, local_file))  # pylint: disable=protected-access, no-member
         else:
