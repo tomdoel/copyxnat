@@ -6,6 +6,7 @@
 import abc
 import os
 
+import pydicom
 import urllib3
 
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
