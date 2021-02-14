@@ -242,14 +242,6 @@ class XnatParentItem(XnatItem):
             if local_file:
                 os.remove(local_file)
 
-        # Update the maps that are used to modify attributes in child items
-        src_xml_root = self.get_xml()
-        final_xml_root = copied_item.get_xml()
-        self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
-                                        dst_xml_root=final_xml_root,
-                                        xnat_type=self._xml_id,  # pylint: disable=no-member
-                                        )
-
         return copied_item
 
     def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
@@ -267,6 +259,22 @@ class XnatParentItem(XnatItem):
             xml_root=xml_root,
             xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
+
+    def copy(self, destination_parent, app_settings, dst_label=None,
+             dry_run=False):
+        duplicate = super().copy(destination_parent, app_settings, dst_label,
+                                 dry_run)
+
+        if duplicate:
+            # Update the maps that are used to modify attributes in child items
+            src_xml_root = self.get_xml()
+            final_xml_root = duplicate.get_xml()
+            self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
+                                            dst_xml_root=final_xml_root,
+                                            xnat_type=self._xml_id,  # pylint: disable=no-member
+                                            )
+
+        return duplicate
 
     def export(self, app_settings):
         src_xml_root = self.get_xml()
