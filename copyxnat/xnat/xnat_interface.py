@@ -113,8 +113,8 @@ class XnatItem(XnatBase):
                                    dry_run)
         return duplicate
 
-    @abc.abstractmethod
-    def duplicate(self, destination_parent, app_settings, dst_label, dry_run):
+    def duplicate(self, destination_parent, app_settings, dst_label=None,
+                  dry_run=False):
         """
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
@@ -123,6 +123,34 @@ class XnatItem(XnatBase):
         :dst_label: label for destination object, or None to use source label
         :return: a new XnatItem corresponding to the duplicate item
         """
+
+        label = dst_label or self.label
+        copied_item = self.get_or_create_child(parent=destination_parent,
+                                               label=label)
+
+        if copied_item.exists_on_server():
+            if app_settings.overwrite_existing:
+                self.reporter.warning("Updating existing {} {}".
+                                      format(self._name, label))  # pylint: disable=no-member
+                write_dst = True
+            else:
+                self.reporter.warning("Skipping {} {} (already exists on "
+                                      "destination)".format(self._name, label))  # pylint: disable=no-member
+                write_dst = False
+
+        if write_dst:
+            local_file, create_params = self.prepare_local_file(
+                app_settings=app_settings,
+                destination_parent=destination_parent,
+                label=label
+            )
+            copied_item.create_on_server(create_params=create_params,
+                                         local_file=local_file,
+                                         dry_run=dry_run)
+            if local_file:
+                os.remove(local_file)
+
+        return copied_item
 
     def progress_update(self, reporter):
         """Update the user about current progress"""
@@ -173,8 +201,15 @@ class XnatItem(XnatBase):
 
     @abc.abstractmethod
     def prepare_local_file(self, app_settings, destination_parent, label):
-        """Create a local file copy of this item, with any required
-        cleaning so that it is ready for upload to the destination server"""
+        """
+        Create a local file copy of this item, with any required
+        cleaning so that it is ready for upload to the destination server
+
+        :app_settings: global settings
+        :destination_parent: parent XnatItem under which to make the duplicate
+        :label: The identifier used to find or create the child item
+        :return: tuple of local file path, additional creation parameters
+        """
 
     def ohif_generate_session(self):
         """Trigger regeneration of OHIF session data"""
@@ -208,40 +243,6 @@ class XnatParentItem(XnatItem):
         """Get an XML representation of this item"""
         return XmlCleaner.xml_from_string(self.get_xml_string())
 
-    def duplicate(self, destination_parent, app_settings, dst_label=None,
-                  dry_run=False):
-
-        label = dst_label or self.label
-
-        copied_item = self.get_or_create_child(
-            parent=destination_parent, label=label)
-
-        if copied_item.exists_on_server():
-            if app_settings.overwrite_existing:
-                self.reporter.warning("Updating existing {} {}".
-                                      format(self._name, label))  # pylint: disable=no-member
-                write_dst = True
-            else:
-                self.reporter.warning("Skipping {} {} (already exists on "
-                                      "destination)".format(self._name, label))  # pylint: disable=no-member
-                write_dst = False
-
-        if write_dst:
-            local_file = self.prepare_local_file(
-                app_settings=app_settings,
-                destination_parent=destination_parent,
-                label=label
-            )
-
-            copied_item.create_on_server(create_params=None,
-                                         local_file=local_file,
-                                         dry_run=dry_run)
-
-            if local_file:
-                os.remove(local_file)
-
-        return copied_item
-
     def prepare_local_file(self, app_settings, destination_parent, label):
 
         # Note that cleaning will modify the xml_root object passed in
@@ -253,7 +254,7 @@ class XnatParentItem(XnatItem):
         )
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
-        return local_file
+        return local_file, None
 
     def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
         """
@@ -295,46 +296,13 @@ class XnatParentItem(XnatItem):
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
-    def duplicate(self, destination_parent, app_settings, dst_label=None,
-                  dry_run=False):
-
-        label = dst_label or self.label
-        copied_item = self.get_or_create_child(parent=destination_parent,
-                                               label=label)
-
-        if copied_item.exists_on_server():
-            if app_settings.overwrite_existing:
-                self.reporter.warning("Updating existing {} {}".
-                                      format(self._name, label))  # pylint: disable=no-member
-                write_dst = True
-            else:
-                self.reporter.warning("Skipping {} {} (already exists on "
-                                      "destination)".format(self._name, label))  # pylint: disable=no-member
-                write_dst = False
-
-        if write_dst:
-            local_file = self.prepare_local_file(
-                app_settings=app_settings,
-                destination_parent=destination_parent,
-                label=label
-            )
-
-            copied_item.create_on_server(create_params=None,
-                                         local_file=local_file,
-                                         dry_run=dry_run)
-
-            if local_file:
-                os.remove(local_file)
-
-        return copied_item
-
     def prepare_local_file(self, app_settings, destination_parent, label):
         if app_settings.download_zips:
             folder_path = self.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
         else:
             local_file = None
-        return local_file
+        return local_file, None
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
@@ -353,41 +321,11 @@ class XnatFile(XnatItem):
     interface_method = 'files'
     _child_types = []
 
-    def duplicate(self, destination_parent, app_settings, dst_label=None,
-                  dry_run=False):
-        label = dst_label or self.label
-        copied_item = self.get_or_create_child(parent=destination_parent,
-                                               label=label)
-
-        if copied_item.exists_on_server():
-            if app_settings.overwrite_existing:
-                self.reporter.warning("Updating existing {} {}".
-                                      format(self._name, label))  # pylint: disable=no-member
-                write_dst = True
-            else:
-                self.reporter.warning("Skipping {} {} (already exists on "
-                                      "destination)".format(self._name, label))  # pylint: disable=no-member
-                write_dst = False
-
-        if write_dst:
-            attributes, local_file = self.prepare_local_file(
-                app_settings=app_settings,
-                destination_parent=destination_parent,
-                label=label
-            )
-            copied_item.create_on_server(create_params=attributes,
-                                         local_file=local_file,
-                                         dry_run=dry_run)
-            if local_file:
-                os.remove(local_file)
-
-        return copied_item
-
     def prepare_local_file(self, app_settings, destination_parent, label):
         folder_path = self.cache.make_output_path()
         attributes = self.interface.file_attributes()
         local_file = self.interface.download_file(folder_path)
-        return attributes, local_file
+        return local_file, attributes
 
     def copy(self, destination_parent, app_settings, dst_label=None,
              dry_run=False):
