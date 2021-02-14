@@ -11,10 +11,8 @@ from copyxnat.xnat.xnat_interface import XnatServer
 
 
 def run_command(command, src_params, dst_params=None, project_filter=None,
-                verbose=False, dry_run=False, backend='pyxnat',
-                reporter=None, cache_dir=None, fix_scan_types=False,
-                download_zips=False, ignore_datatype_errors=False,
-                overwrite_existing=False):
+                app_settings=None, verbose=False, backend='pyxnat',
+                reporter=None, cache_dir=None):
     """Runs the command on the specified XNAT servers
 
     @param command: the command class to run
@@ -24,33 +22,18 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     all projects visible on the server. If a project name needs to be different
     on the source and destination servers, the string should be of the form
     src_project_name:dst_project_name
+    @param app_settings: Global settings; if None then defaults will be used
     @param verbose: set to True for verbose output for debugging
-    @param dry_run: set to True to request that write operations are not made
-    on the destination server, to allow testing. Note that some changes may
-    still take place
     @param backend: the Python library used to interact with the XNAT
     servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
-    @param fix_scan_types: Set to True to fix incorrect scan types when copying
-    @param overwrite_existing: Set to True to overwrite existing data on the
-    XNAT server
-    @param ignore_datatype_errors: Set to True to copy files even if the
-    datatype is not present on the destination server
-    @param download_zips: If True then resources will be uploaded and downloaded
-    as zip files, which is faster but individual file attributes will not be
-    set when copying between servers
     @param cache_dir: Directory where downloaded or cached files will be stored
     """
     if not reporter:
         reporter = PyReporter(verbose=verbose)
 
-    app_settings = AppSettings(
-        fix_scan_types=fix_scan_types,
-        download_zips=download_zips,
-        ignore_datatype_errors=ignore_datatype_errors,
-        dry_run=dry_run,
-        overwrite_existing=overwrite_existing
-    )
+    if not app_settings:
+        app_settings = AppSettings()
 
     cache_box = CacheBox(root_path=cache_dir)
     cache_type = command.CACHE_TYPE

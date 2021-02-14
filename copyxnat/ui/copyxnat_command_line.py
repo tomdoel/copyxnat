@@ -10,6 +10,7 @@ from copyxnat.commands import find_commands
 from copyxnat.xnat.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
 from copyxnat.xnat.xnat_interface import XnatServerParams
+from xnat.commands import AppSettings
 
 
 def main(args=None):
@@ -133,6 +134,16 @@ def main(args=None):
     else:
         dst_params = None
 
+    overwrite_existing = True  # ToDo
+
+    app_settings = AppSettings(
+        fix_scan_types=fix_scan_types,
+        download_zips=download_zips,
+        ignore_datatype_errors=ignore_datatype_errors,
+        dry_run=args.dry_run,
+        overwrite_existing=overwrite_existing
+    )
+
     result = run_command(command=command,
                          src_params=src_params,
                          dst_params=dst_params,
@@ -141,7 +152,8 @@ def main(args=None):
                          fix_scan_types=fix_scan_types,
                          dry_run=args.dry_run,
                          download_zips=download_zips,
-                         ignore_datatype_errors=ignore_datatype_errors
+                         ignore_datatype_errors=ignore_datatype_errors,
+                         app_settings=app_settings
                          )
 
     if verbose:
