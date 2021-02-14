@@ -86,6 +86,19 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.metadata_missing">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">metadata_missing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.metadata_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.metadata_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if this item or any parent requires metadata which could
+be found from the child Files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.provide_metadata">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">provide_metadata</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.provide_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.provide_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supply missing metadata to parent items</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatBase.user_visible_info">
 <code class="sig-name descname"><span class="pre">user_visible_info</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.user_visible_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.user_visible_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>String representation of this object that can be shown to user</p>
@@ -183,6 +196,12 @@ cleaning so that it is ready for upload to the destination server</p>
 <dt id="copyxnat.xnat.xnat_interface.XnatFile.interface_method">
 <code class="sig-name descname"><span class="pre">interface_method</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'files'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFile.interface_method" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatFile.ohif_generate_session">
+<code class="sig-name descname"><span class="pre">ohif_generate_session</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFile.ohif_generate_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFile.ohif_generate_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger regeneration of OHIF session data</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatFile.user_visible_info">
@@ -356,6 +375,13 @@ it doesn’t already exist</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatItem.metadata_missing">
+<code class="sig-name descname"><span class="pre">metadata_missing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.metadata_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.metadata_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if this item or any parent requires metadata which could
+be found from the child Files</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.ohif_generate_session">
 <code class="sig-name descname"><span class="pre">ohif_generate_session</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.ohif_generate_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.ohif_generate_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trigger regeneration of OHIF session data</p>
@@ -377,6 +403,12 @@ it doesn’t already exist</p>
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.progress_update">
 <code class="sig-name descname"><span class="pre">progress_update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.progress_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.progress_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the user about current progress</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatItem.provide_metadata">
+<code class="sig-name descname"><span class="pre">provide_metadata</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.provide_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.provide_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supply missing metadata to parent items</p>
 </dd></dl>
 
 <dl class="py method">
@@ -602,6 +634,13 @@ in the disallowed lists).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">
+<code class="sig-name descname"><span class="pre">metadata_missing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.metadata_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if this item or any parent requires metadata which could
+be found from the child Files</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatServer.num_experiments">
 <code class="sig-name descname"><span class="pre">num_experiments</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.num_experiments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.num_experiments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return number of experiments in this project</p>
@@ -623,6 +662,12 @@ in the disallowed lists).</p>
 <dt id="copyxnat.xnat.xnat_interface.XnatServer.project_list">
 <code class="sig-name descname"><span class="pre">project_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.project_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.project_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return array of project ids</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatServer.provide_metadata">
+<code class="sig-name descname"><span class="pre">provide_metadata</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.provide_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.provide_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supply missing metadata to parent items</p>
 </dd></dl>
 
 <dl class="py method">
