@@ -205,12 +205,16 @@ class XnatParentItem(XnatItem):
 
     def duplicate(self, destination_parent, app_settings, dst_label=None,
                   dry_run=False):
-        src_xml_root = self.get_xml()
-
-        # Make sure we make a copy, as we need to preserve the original
-        cleaned_xml_root = self.get_xml()
 
         label = dst_label or self.label
+
+        copied_item = self.get_or_create_child(
+            parent=destination_parent, label=label)
+
+        # Make a copy of the original XML before cleaning, as the cleaning will
+        # modify the XML
+        src_xml_root = self.get_xml()
+        cleaned_xml_root = self.get_xml()
 
         cleaned_xml_root = self.clean(
             xml_root=cleaned_xml_root,
@@ -219,17 +223,14 @@ class XnatParentItem(XnatItem):
             label=label
         )
 
-        output = self.get_or_create_child(
-            parent=destination_parent, label=label)
-
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
 
-        output.create_on_server(create_params=None,
-                                local_file=local_file,
-                                dry_run=dry_run)
+        copied_item.create_on_server(create_params=None,
+                                     local_file=local_file,
+                                     dry_run=dry_run)
 
-        final_xml_root = output.get_xml()
+        final_xml_root = copied_item.get_xml()
 
         self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
                                         dst_xml_root=final_xml_root,
@@ -238,7 +239,7 @@ class XnatParentItem(XnatItem):
         if local_file:
             os.remove(local_file)
 
-        return output
+        return copied_item
 
     def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
         """
@@ -267,15 +268,25 @@ class XnatFileContainerItem(XnatItem):
     def duplicate(self, destination_parent, app_settings, dst_label=None,
                   dry_run=False):
 
+        label = dst_label or self.label
+        copied_item = self.get_or_create_child(parent=destination_parent,
+                                               label=label)
+
+        if copied_item.exists_on_server():
+            if app_settings.overwrite_existing:
+                self.reporter.warning("Updating {} {}".
+                                      format(self._name, label))  # pylint: disable=no-member
+            else:
+                self.reporter.warning("Skipping {} {} (already exists on "
+                                      "destination)".format(self._name, label))  # pylint: disable=no-member
+                return copied_item
+
         if app_settings.download_zips:
             folder_path = self.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
         else:
             local_file = None
 
-        label = dst_label or self.label
-        copied_item = self.get_or_create_child(parent=destination_parent,
-                                               label=label)
         copied_item.create_on_server(create_params=None,
                                      local_file=local_file,
                                      dry_run=dry_run)
@@ -308,20 +319,26 @@ class XnatFile(XnatItem):
             return None
 
         label = dst_label or self.label
-        folder_path = self.cache.make_output_path()
-        attributes = self.interface.file_attributes()
         copied_item = self.get_or_create_child(parent=destination_parent,
                                                label=label)
+
         if copied_item.exists_on_server():
-            self.reporter.verbose_log(
-                'Skipping {}: item already exists on server'.format(label))
-        else:
-            local_file = self.interface.download_file(folder_path)
-            copied_item.create_on_server(create_params=attributes,
-                                         local_file=local_file,
-                                         dry_run=dry_run)
-            if local_file:
-                os.remove(local_file)
+            if app_settings.overwrite_existing:
+                self.reporter.warning("Updating {} {}".
+                                      format(self._name, label))  # pylint: disable=no-member
+            else:
+                self.reporter.warning("Skipping {} {} (already exists on "
+                                      "destination)".format(self._name, label))  # pylint: disable=no-member
+                return copied_item
+
+        folder_path = self.cache.make_output_path()
+        attributes = self.interface.file_attributes()
+        local_file = self.interface.download_file(folder_path)
+        copied_item.create_on_server(create_params=attributes,
+                                     local_file=local_file,
+                                     dry_run=dry_run)
+        if local_file:
+            os.remove(local_file)
 
         return copied_item
 
