@@ -50,6 +50,7 @@
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.run_command</span> <span class="kn">import</span> <span class="n">run_command</span>
 <span class="kn">from</span> <span class="nn">copyxnat.utils.versioning</span> <span class="kn">import</span> <span class="n">get_version_string</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatServerParams</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">AppSettings</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../copyxnat.ui.copyxnat_command_line.html#copyxnat.ui.copyxnat_command_line.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -136,6 +137,12 @@
                                          <span class="s2">&quot;if the datatype is not known&quot;</span>
                                     <span class="p">)</span>
 
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--overwrite-existing&quot;</span><span class="p">,</span>
+                                    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Overwrite existing data on the&quot;</span>
+                                         <span class="s2">&quot;destination server&quot;</span>
+                                    <span class="p">)</span>
+
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
     <span class="n">command</span> <span class="o">=</span> <span class="n">find_command</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">command</span><span class="p">)</span>
@@ -145,6 +152,8 @@
 
     <span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="k">if</span> <span class="s1">&#39;fix_scan_types&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="k">if</span> \
+        <span class="s1">&#39;overwrite_existing&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
     <span class="n">download_zips</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">download_zips</span> <span class="k">if</span> <span class="s1">&#39;download_zips&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
     <span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="k">if</span> \
         <span class="s1">&#39;ignore_datatype_errors&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
@@ -173,15 +182,20 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dst_params</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">(</span>
+        <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
+        <span class="n">download_zips</span><span class="o">=</span><span class="n">download_zips</span><span class="p">,</span>
+        <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">ignore_datatype_errors</span><span class="p">,</span>
+        <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
+        <span class="n">overwrite_existing</span><span class="o">=</span><span class="n">overwrite_existing</span>
+    <span class="p">)</span>
+
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
                          <span class="n">src_params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
                          <span class="n">dst_params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
                          <span class="n">project_filter</span><span class="o">=</span><span class="n">project_list</span><span class="p">,</span>
                          <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-                         <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
-                         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
-                         <span class="n">download_zips</span><span class="o">=</span><span class="n">download_zips</span><span class="p">,</span>
-                         <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">ignore_datatype_errors</span>
+                         <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span>
                          <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -227,7 +241,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
     </div>
   </body>
 </html>

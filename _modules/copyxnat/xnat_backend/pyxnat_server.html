@@ -112,12 +112,12 @@
         <span class="sd">&quot;&quot;&quot;Return the pyxnat interface to this item&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interface</span></div>
 
-<div class="viewcode-block" id="PyXnatItem.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<div class="viewcode-block" id="PyXnatItem.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="sd">&quot;&quot;&quot;Create this item on the XNAT server if it does not already exist&quot;&quot;&quot;</span>
 
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">xml</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span> <span class="n">allowDataDeletion</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">xml</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
+                                      <span class="n">allowDataDeletion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                      <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyXnatItem.datatype"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.datatype">[docs]</a>    <span class="k">def</span> <span class="nf">datatype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the XNAT datatype of this item&quot;&quot;&quot;</span>
@@ -130,6 +130,10 @@
 <div class="viewcode-block" id="PyXnatItem.exists"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if the item already exists on the server&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyXnatItem.get_label"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.get_label">[docs]</a>    <span class="k">def</span> <span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the XNAT label of this item&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">label</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyXnatItem.get_id"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the XNAT ID of this item&quot;&quot;&quot;</span>
@@ -177,15 +181,19 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">interface</span><span class="o">=</span><span class="n">parent_pyxnatitem</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="n">label</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PyXnatResourceBase.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyXnatResourceBase.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
-                <span class="n">interface</span><span class="o">.</span><span class="n">put_zip</span><span class="p">(</span><span class="n">zip_location</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span> <span class="n">extract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span><span class="s2">&quot;Resource is empty or zip download is &quot;</span>
-                                     <span class="s2">&quot;disabled&quot;</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
+            <span class="n">interface</span><span class="o">.</span><span class="n">put_zip</span><span class="p">(</span>
+                <span class="n">zip_location</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
+                <span class="n">extract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reporter</span><span class="o">.</span><span class="n">verbose_log</span><span class="p">(</span><span class="s2">&quot;Resource is empty or zip download is &quot;</span>
+                                 <span class="s2">&quot;disabled&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyXnatResourceBase.download_zip_file"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.download_zip_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_zip_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get zip file from server and save to disk&quot;&quot;&quot;</span>
@@ -227,23 +235,23 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">parent_pyxnatitem</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">file</span><span class="p">(</span><span class="n">label</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PyXnatFile.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
-                <span class="n">interface</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span>
-                              <span class="n">content</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_content&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="nb">format</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_format&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
-                              <span class="n">tags</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_tags&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
-                              <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">reporter</span><span class="o">.</span><span class="n">log_verbose</span><span class="p">(</span><span class="s2">&quot;Resource is empty or zip download is &quot;</span>
-                                     <span class="s2">&quot;disabled&quot;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="PyXnatFile.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                <span class="n">local_file</span><span class="p">,</span>
+                <span class="n">content</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_content&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="nb">format</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_format&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">tags</span><span class="o">=</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_tags&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reporter</span><span class="o">.</span><span class="n">log_verbose</span><span class="p">(</span><span class="s2">&quot;Resource is empty or zip download is &quot;</span>
+                                 <span class="s2">&quot;disabled&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyXnatFile.download_file"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.download_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get file from server and save to disk&quot;&quot;&quot;</span>
 
-        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">label</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No file label!&#39;</span><span class="p">)</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
@@ -261,31 +269,6 @@
 
 <div class="viewcode-block" id="PyXnatProject"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject">[docs]</a><span class="k">class</span> <span class="nc">PyXnatProject</span><span class="p">(</span><span class="n">PyXnatItemWithResources</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper around a pyxnat project interface&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="PyXnatProject.get_disallowed_project_ids"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.get_disallowed_project_ids">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_disallowed_project_ids</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return arrays of project names and secondary IDs that cannot be used</span>
-<span class="sd">        for the destination project because they are already in use by other</span>
-<span class="sd">        projects on this server. If the project already exists then the name</span>
-<span class="sd">        and ID it is currently using are allowed (ie they will not be included</span>
-<span class="sd">        in the disallowed lists).</span>
-
-<span class="sd">        :param server: the XnatServer from which to get the disallowed IDs</span>
-<span class="sd">        :param label: the label of the project which</span>
-<span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">project_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">project</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]:</span> <span class="n">project</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span>
-            <span class="n">server</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">_get_json</span><span class="p">(</span><span class="s1">&#39;/REST/projects&#39;</span><span class="p">)}</span>  <span class="c1"># pylint: disable=protected-access</span>
-
-        <span class="n">disallowed_secondary_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">disallowed_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">pr_id</span><span class="p">,</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">project_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">pr_id</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
-                <span class="n">disallowed_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-                <span class="n">disallowed_secondary_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;names&quot;</span><span class="p">:</span> <span class="n">disallowed_names</span><span class="p">,</span>
-                <span class="s2">&quot;secondary_ids&quot;</span><span class="p">:</span> <span class="n">disallowed_secondary_ids</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="PyXnatProject.create"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_pyxnatitem</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
@@ -402,7 +385,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
     </div>
   </body>
 </html>

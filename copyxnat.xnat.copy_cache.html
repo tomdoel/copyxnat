@@ -52,12 +52,12 @@
 <p>Abstraction of disk cache used to store XNAT files</p>
 <dl class="py class">
 <dt id="copyxnat.xnat.copy_cache.CacheBox">
-<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.copy_cache.</code><code class="sig-name descname">CacheBox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CacheBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CacheBox" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.copy_cache.</span></code><code class="sig-name descname"><span class="pre">CacheBox</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CacheBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CacheBox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Controls caches on disk</p>
 <dl class="py method">
 <dt id="copyxnat.xnat.copy_cache.CacheBox.new_cache">
-<code class="sig-name descname">new_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CacheBox.new_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CacheBox.new_cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">new_cache</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CacheBox.new_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CacheBox.new_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new cache within the main cache</p>
 </dd></dl>
 
@@ -65,24 +65,24 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat.copy_cache.CopyCache">
-<em class="property">class </em><code class="sig-prename descclassname">copyxnat.xnat.copy_cache.</code><code class="sig-name descname">CopyCache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache_type</span></em>, <em class="sig-param"><span class="n">root_path</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent_rel_path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">read_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_level</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">base_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.copy_cache.</span></code><code class="sig-name descname"><span class="pre">CopyCache</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_rel_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstraction of disk cache used to store XNAT files</p>
 <dl class="py method">
 <dt id="copyxnat.xnat.copy_cache.CopyCache.full_path">
-<code class="sig-name descname">full_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.full_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.full_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">full_path</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.full_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.full_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return absolute path to this cache</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat.copy_cache.CopyCache.make_output_path">
-<code class="sig-name descname">make_output_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.make_output_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.make_output_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">make_output_path</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.make_output_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.make_output_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write to file to this cache</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat.copy_cache.CopyCache.sub_cache">
-<code class="sig-name descname">sub_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache_type</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.sub_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.sub_cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">sub_cache</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.sub_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.sub_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a child cache representing some level of the XNAT hierarchy
 &#64;param cache_type: The type of XNAT item
 &#64;param name: label for this cache
@@ -91,7 +91,7 @@
 
 <dl class="py method">
 <dt id="copyxnat.xnat.copy_cache.CopyCache.write_xml">
-<code class="sig-name descname">write_xml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_root</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.write_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.write_xml" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">write_xml</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/copy_cache.html#CopyCache.write_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.copy_cache.CopyCache.write_xml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write XML to a file in this cache</p>
 </dd></dl>
 
@@ -160,7 +160,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
     </div>
   </body>
 </html>

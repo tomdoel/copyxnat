@@ -51,9 +51,8 @@
 
 
 <div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span>
-                <span class="n">reporter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">download_zips</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="n">app_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span>
+                <span class="n">reporter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs the command on the specified XNAT servers</span>
 
 <span class="sd">    @param command: the command class to run</span>
@@ -63,30 +62,18 @@
 <span class="sd">    all projects visible on the server. If a project name needs to be different</span>
 <span class="sd">    on the source and destination servers, the string should be of the form</span>
 <span class="sd">    src_project_name:dst_project_name</span>
+<span class="sd">    @param app_settings: Global settings; if None then defaults will be used</span>
 <span class="sd">    @param verbose: set to True for verbose output for debugging</span>
-<span class="sd">    @param dry_run: set to True to request that write operations are not made</span>
-<span class="sd">    on the destination server, to allow testing. Note that some changes may</span>
-<span class="sd">    still take place</span>
 <span class="sd">    @param backend: the Python library used to interact with the XNAT</span>
 <span class="sd">    servers. Defaults to `pyxnat`</span>
 <span class="sd">    @param reporter: PyReporter object for user input/output and logging</span>
-<span class="sd">    @param fix_scan_types: Set to True to fix incorrect scan types when copying</span>
-<span class="sd">    @param ignore_datatype_errors: Set to True to copy files even if the</span>
-<span class="sd">    datatype is not present on the destination server</span>
-<span class="sd">    @param download_zips: If True then resources will be uploaded and downloaded</span>
-<span class="sd">    as zip files, which is faster but individual file attributes will not be</span>
-<span class="sd">    set when copying between servers</span>
 <span class="sd">    @param cache_dir: Directory where downloaded or cached files will be stored</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">reporter</span><span class="p">:</span>
-        <span class="n">reporter</span> <span class="o">=</span> <span class="n">PyReporter</span><span class="p">(</span><span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="n">reporter</span> <span class="o">=</span> <span class="n">PyReporter</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
-    <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">(</span>
-        <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
-        <span class="n">download_zips</span><span class="o">=</span><span class="n">download_zips</span><span class="p">,</span>
-        <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">ignore_datatype_errors</span><span class="p">,</span>
-        <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span>
-    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app_settings</span><span class="p">:</span>
+        <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
 
     <span class="n">cache_box</span> <span class="o">=</span> <span class="n">CacheBox</span><span class="p">(</span><span class="n">root_path</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">)</span>
     <span class="n">cache_type</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">CACHE_TYPE</span>
@@ -98,12 +85,14 @@
     <span class="n">src_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
                           <span class="n">params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
                           <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
+                          <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                           <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dst_params</span> <span class="ow">and</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
         <span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
                               <span class="n">params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
                               <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
+                              <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                               <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dst_xnat</span> <span class="o">=</span> <span class="kc">None</span>
@@ -245,7 +234,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
     </div>
   </body>
 </html>

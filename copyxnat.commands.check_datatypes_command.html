@@ -53,53 +53,53 @@
 scan datatypes that are present on the source server</p>
 <dl class="py class">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand">
-<em class="property">class </em><code class="sig-prename descclassname">copyxnat.commands.check_datatypes_command.</code><code class="sig-name descname">CheckDatatypesCommand</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span></em>, <em class="sig-param"><span class="n">scope</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/check_datatypes_command.html#CheckDatatypesCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.commands.check_datatypes_command.</span></code><code class="sig-name descname"><span class="pre">CheckDatatypesCommand</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/check_datatypes_command.html#CheckDatatypesCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command" title="copyxnat.xnat.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.commands.Command</span></code></a></p>
 <p>Command which checks if destination server has all the
 scan datatypes that are present on the source server</p>
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.CACHE_TYPE">
-<code class="sig-name descname">CACHE_TYPE</code><em class="property"> = 'cache'</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">CACHE_TYPE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'cache'</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.COMMAND_LINE">
-<code class="sig-name descname">COMMAND_LINE</code><em class="property"> = 'check-datatypes'</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">COMMAND_LINE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'check-datatypes'</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.HELP">
-<code class="sig-name descname">HELP</code><em class="property"> = 'Check if session data types on source XNAT are present on destination'</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.HELP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">HELP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Check</span> <span class="pre">if</span> <span class="pre">session</span> <span class="pre">data</span> <span class="pre">types</span> <span class="pre">on</span> <span class="pre">source</span> <span class="pre">XNAT</span> <span class="pre">are</span> <span class="pre">present</span> <span class="pre">on</span> <span class="pre">destination'</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.HELP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.MODIFY_DST_SERVER">
-<code class="sig-name descname">MODIFY_DST_SERVER</code><em class="property"> = False</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">MODIFY_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.NAME">
-<code class="sig-name descname">NAME</code><em class="property"> = 'Check Datatypes'</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.NAME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">NAME</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Check</span> <span class="pre">Datatypes'</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.NAME" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.SUPPLEMENTAL_DATATYPE_INFO">
-<code class="sig-name descname">SUPPLEMENTAL_DATATYPE_INFO</code><em class="property"> = {'icr:roiCollectionData': 'This datatype can be added by installing the XNAT-OHIF Viewer Plugin (https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin)', 'proc:genProcData': 'This datatype can be added by installing the DAX plugin (https://github.com/VUIIS/dax)'}</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.SUPPLEMENTAL_DATATYPE_INFO" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">SUPPLEMENTAL_DATATYPE_INFO</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'icr:roiCollectionData':</span> <span class="pre">'This</span> <span class="pre">datatype</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">added</span> <span class="pre">by</span> <span class="pre">installing</span> <span class="pre">the</span> <span class="pre">XNAT-OHIF</span> <span class="pre">Viewer</span> <span class="pre">Plugin</span> <span class="pre">(https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin)',</span> <span class="pre">'proc:genProcData':</span> <span class="pre">'This</span> <span class="pre">datatype</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">added</span> <span class="pre">by</span> <span class="pre">installing</span> <span class="pre">the</span> <span class="pre">DAX</span> <span class="pre">plugin</span> <span class="pre">(https://github.com/VUIIS/dax)'}</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.SUPPLEMENTAL_DATATYPE_INFO" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.USE_DST_SERVER">
-<code class="sig-name descname">USE_DST_SERVER</code><em class="property"> = True</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">USE_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.VERB">
-<code class="sig-name descname">VERB</code><em class="property"> = 'check'</em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.VERB" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">VERB</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'check'</span></em><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.VERB" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.print_results">
-<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/check_datatypes_command.html#CheckDatatypesCommand.print_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.print_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">print_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/check_datatypes_command.html#CheckDatatypesCommand.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.print_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output results to user</p>
 </dd></dl>
 
@@ -168,7 +168,7 @@ scan datatypes that are present on the source server</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
     </div>
   </body>
 </html>
