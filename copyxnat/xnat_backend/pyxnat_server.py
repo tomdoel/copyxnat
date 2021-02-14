@@ -91,6 +91,10 @@ class PyXnatItem(abc.ABC):
         """Return True if the item already exists on the server"""
         return self.fetch_interface().exists()
 
+    def get_label(self):
+        """Return the XNAT label of this item"""
+        return self.fetch_interface().label()
+
     def get_id(self):
         """Return the XNAT ID of this item"""
         return self.fetch_interface().id()
