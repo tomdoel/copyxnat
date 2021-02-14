@@ -146,6 +146,8 @@ class XnatItem(XnatBase):
                 self.reporter.warning("Skipping {} {} (already exists on "
                                       "destination)".format(self._name, label))  # pylint: disable=no-member
                 write_dst = False
+        else:
+            write_dst = True
 
         if write_dst:
             self.create(dst_item=copied_item)
