@@ -328,9 +328,6 @@ class XnatFile(XnatItem):
 
     def duplicate(self, destination_parent, app_settings, dst_label=None,
                   dry_run=False):
-        if app_settings.download_zips:
-            return None
-
         label = dst_label or self.label
         copied_item = self.get_or_create_child(parent=destination_parent,
                                                label=label)
@@ -356,6 +353,15 @@ class XnatFile(XnatItem):
                 os.remove(local_file)
 
         return copied_item
+
+    def copy(self, destination_parent, app_settings, dst_label=None,
+             dry_run=False):
+        if app_settings.download_zips:
+            return None
+        return super().copy(destination_parent=destination_parent,
+                            app_settings=app_settings,
+                            dst_label=dst_label,
+                            dry_run=dry_run)
 
     def export(self, app_settings):
         if app_settings.download_zips:
