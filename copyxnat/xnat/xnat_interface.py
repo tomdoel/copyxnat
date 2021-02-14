@@ -176,14 +176,17 @@ class XnatItem(XnatBase):
                    parent=parent)
 
     def create_on_server(self, create_params, local_file):
-        """Create this item on the XNAT server if it does not already exist"""
+        """Create this item on the XNAT server"""
         if self.app_settings.dry_run:
             print('DRY RUN: did not create {} {} with file {}'.
                   format(self._name, self.label, local_file))  # pylint: disable=protected-access, no-member
         else:
-            self.interface.create_on_server(local_file=local_file,
-                                            create_params=create_params,
-                                            reporter=self.reporter)
+            self.interface.create_on_server(
+                local_file=local_file,
+                create_params=create_params,
+                overwrite=self.app_settings.overwrite_existing,
+                reporter=self.reporter
+            )
 
     def exists_on_server(self):
         """Return True if item already exists on the XNAT server"""

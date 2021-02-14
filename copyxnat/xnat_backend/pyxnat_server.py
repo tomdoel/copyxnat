@@ -72,12 +72,12 @@ class PyXnatItem(abc.ABC):
         """Return the pyxnat interface to this item"""
         return self._interface
 
-    def create_on_server(self, local_file, create_params, reporter):  # pylint: disable=unused-argument
+    def create_on_server(self, local_file, create_params, overwrite, reporter):  # pylint: disable=unused-argument
         """Create this item on the XNAT server if it does not already exist"""
 
-        interface = self.fetch_interface()
-        if not interface.exists():
-            interface.create(xml=local_file, allowDataDeletion=False)
+        self.fetch_interface().create(xml=local_file,
+                                      allowDataDeletion=False,
+                                      overwrite=overwrite)
 
     def datatype(self):
         """Return the XNAT datatype of this item"""
@@ -141,15 +141,19 @@ class PyXnatResourceBase(PyXnatItem):
         return cls(
             interface=parent_pyxnatitem.fetch_interface().resource(label))
 
-    def create_on_server(self, local_file, create_params, reporter):
+    def create_on_server(self, local_file, create_params, overwrite, reporter):
         interface = self.fetch_interface()
         if not interface.exists():
             interface.create()
-            if local_file:
-                interface.put_zip(zip_location=local_file, extract=True)
-            else:
-                reporter.verbose_log("Resource is empty or zip download is "
-                                     "disabled")
+        if local_file:
+            interface.put_zip(
+                zip_location=local_file,
+                extract=True,
+                overwrite=overwrite
+            )
+        else:
+            reporter.verbose_log("Resource is empty or zip download is "
+                                 "disabled")
 
     def download_zip_file(self, save_dir):
         """Get zip file from server and save to disk"""
@@ -191,18 +195,18 @@ class PyXnatFile(PyXnatItem):
         """
         return cls(interface=parent_pyxnatitem.fetch_interface().file(label))
 
-    def create_on_server(self, local_file, create_params, reporter):
-        interface = self.fetch_interface()
-        if not interface.exists():
-            if local_file:
-                interface.put(local_file,
-                              content=create_params["file_content"] or None,
-                              format=create_params["file_format"] or None,
-                              tags=create_params["file_tags"] or None
-                              )
-            else:
-                reporter.log_verbose("Resource is empty or zip download is "
-                                     "disabled")
+    def create_on_server(self, local_file, create_params, overwrite, reporter):
+        if local_file:
+            self.fetch_interface().put(
+                local_file,
+                content=create_params["file_content"] or None,
+                format=create_params["file_format"] or None,
+                tags=create_params["file_tags"] or None,
+                overwrite=overwrite
+            )
+        else:
+            reporter.log_verbose("Resource is empty or zip download is "
+                                 "disabled")
 
     def download_file(self, save_dir):
         """Get file from server and save to disk"""
