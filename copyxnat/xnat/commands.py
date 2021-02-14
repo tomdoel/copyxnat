@@ -67,9 +67,9 @@ class AppSettings:
         @param download_zips: If True then resources will be uploaded and
         downloaded as zip files, which is faster but individual file attributes
         will not be set when copying between servers
-        @param dry_run: set to True to request that write operations are not made
-        on the destination server, to allow testing. Note that some changes may
-        still take place
+        @param dry_run: set to True to request that write operations are not
+        made on the destination server, to allow testing. Note that some
+        changes may still take place
         @param ignore_datatype_errors: Set to True to copy files even if the
         datatype is not present on the destination server
         @param overwrite_existing: Set to True to overwrite existing data on the
