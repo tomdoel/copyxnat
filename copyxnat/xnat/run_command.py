@@ -13,7 +13,8 @@ from copyxnat.xnat.xnat_interface import XnatServer
 def run_command(command, src_params, dst_params=None, project_filter=None,
                 verbose=False, dry_run=False, backend='pyxnat',
                 reporter=None, cache_dir=None, fix_scan_types=False,
-                download_zips=False, ignore_datatype_errors=False):
+                download_zips=False, ignore_datatype_errors=False,
+                overwrite_existing=False):
     """Runs the command on the specified XNAT servers
 
     @param command: the command class to run
@@ -45,7 +46,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         fix_scan_types=fix_scan_types,
         download_zips=download_zips,
         ignore_datatype_errors=ignore_datatype_errors,
-        dry_run=dry_run
+        dry_run=dry_run,
+        overwrite_existing=overwrite_existing
     )
 
     cache_box = CacheBox(root_path=cache_dir)
