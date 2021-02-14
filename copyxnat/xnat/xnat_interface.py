@@ -214,13 +214,11 @@ class XnatParentItem(XnatItem):
         if copied_item.exists_on_server():
             if app_settings.overwrite_existing:
                 self.reporter.warning("Updating existing {} {}".
-                                      format(self._name,
-                                             label))  # pylint: disable=no-member
+                                      format(self._name, label))  # pylint: disable=no-member
                 write_dst = True
             else:
                 self.reporter.warning("Skipping {} {} (already exists on "
-                                      "destination)".format(self._name,
-                                                            label))  # pylint: disable=no-member
+                                      "destination)".format(self._name, label))  # pylint: disable=no-member
                 write_dst = False
 
         if write_dst:
