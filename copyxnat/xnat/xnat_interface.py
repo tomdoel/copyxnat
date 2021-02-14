@@ -275,7 +275,7 @@ class XnatParentItem(XnatItem):
         if duplicate:
             # Update the maps that are used to modify attributes in child items
             src_xml_root = self.get_xml()
-            final_xml_root = duplicate.get_xml()
+            final_xml_root = duplicate.get_xml()  # pylint: disable=no-member
             self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
                                             dst_xml_root=final_xml_root,
                                             xnat_type=self._xml_id,  # pylint: disable=no-member
