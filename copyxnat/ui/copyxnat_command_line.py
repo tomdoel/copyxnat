@@ -97,6 +97,12 @@ def main(args=None):
                                          "if the datatype is not known"
                                     )
 
+            sub_parser.add_argument("-o", "--overwrite-existing",
+                                    action="store_true",
+                                    help="Overwrite existing data on the"
+                                         "destination server"
+                                    )
+
     args = parser.parse_args(args)
 
     command = find_command(args.command)
@@ -106,6 +112,8 @@ def main(args=None):
 
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
     verbose = args.verbose if 'verbose' in args else False
+    overwrite_existing = args.overwrite_existing if \
+        'overwrite_existing' in args else False
     download_zips = args.download_zips if 'download_zips' in args else False
     ignore_datatype_errors = args.ignore_datatype_errors if \
         'ignore_datatype_errors' in args else False
@@ -134,8 +142,6 @@ def main(args=None):
     else:
         dst_params = None
 
-    overwrite_existing = True  # ToDo
-
     app_settings = AppSettings(
         fix_scan_types=fix_scan_types,
         download_zips=download_zips,
@@ -149,10 +155,6 @@ def main(args=None):
                          dst_params=dst_params,
                          project_filter=project_list,
                          verbose=verbose,
-                         fix_scan_types=fix_scan_types,
-                         dry_run=args.dry_run,
-                         download_zips=download_zips,
-                         ignore_datatype_errors=ignore_datatype_errors,
                          app_settings=app_settings
                          )
 
