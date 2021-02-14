@@ -67,9 +67,7 @@ class XnatBase(abc.ABC):
             # Call the defined PyXnatItem method to get the interfaces, and
             # wrap each in an XnatItem
             for item in getattr(self.interface, child_class.interface_method)():
-                yield child_class(interface=item,
-                                  label=item.fetch_interface().label(),
-                                  parent=self)
+                yield child_class.get_existing(interface=item, parent=self)
 
 
 class XnatItem(XnatBase):
@@ -85,6 +83,20 @@ class XnatItem(XnatBase):
                          reporter=parent.reporter,
                          xml_cleaner=parent.xml_cleaner,
                          parent=parent)
+
+    @classmethod
+    def get_existing(cls, interface, parent):
+        """
+        Return XnatItem for the provided interface which must represent an
+        item that already exists on the server. Error if it does not exist.
+        :return: a new XnatItem corresponding to the inteerface
+        """
+        label = interface.get_label()
+        if not interface.exists():
+            raise ValueError('{} {} should already exist under {} but was '
+                             'not found'.
+                             format(cls._name, label, parent.full_name))  # pylint: disable=no-member
+        return cls(interface=interface, label=label, parent=parent)
 
     def copy(self, destination_parent, app_settings, dst_label=None,
              dry_run=False):
@@ -150,6 +162,10 @@ class XnatItem(XnatBase):
             self.interface.create_on_server(local_file=local_file,
                                             create_params=create_params,
                                             reporter=self.reporter)
+
+    def exists_on_server(self):
+        """Return True if item already exists on the XNAT server"""
+        return self.interface.exists()
 
     @abc.abstractmethod
     def export(self, app_settings) -> str:
@@ -296,7 +312,7 @@ class XnatFile(XnatItem):
         attributes = self.interface.file_attributes()
         copied_item = self.get_or_create_child(parent=destination_parent,
                                                label=label)
-        if copied_item.interface.exists():
+        if copied_item.exists_on_server():
             self.reporter.verbose_log(
                 'Skipping {}: item already exists on server'.format(label))
         else:
@@ -511,9 +527,9 @@ class XnatServer(XnatBase):
 
     def project(self, label):
         """Return XnatProject for this project id"""
-        return XnatProject(interface=self.interface.project(label),
-                           label=label,
-                           parent=self)
+        return XnatProject.get_existing(
+            interface=self.interface.project(label),
+            parent=self)
 
     def logout(self):
         """Disconnect from this server"""
