@@ -471,7 +471,7 @@ class XnatProject(XnatParentItem):
 
     def clean(self, xml_root, fix_scan_types, destination_parent,
               label):
-        disallowed = self.interface.get_disallowed_project_ids(
+        disallowed = self.get_disallowed_project_ids(
             server=destination_parent, label=label)
         cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
             xml_root=xml_root,
@@ -483,6 +483,31 @@ class XnatProject(XnatParentItem):
             xml_root=cleaned_xml_root,
             xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
+
+    @staticmethod
+    def get_disallowed_project_ids(server, label):
+        """
+        Return arrays of project names and secondary IDs that cannot be used
+        for the destination project because they are already in use by other
+        projects on this server. If the project already exists then the name
+        and ID it is currently using are allowed (ie they will not be included
+        in the disallowed lists).
+
+        :param server: the XnatServer from which to get the disallowed IDs
+        :param label: the label of the project which
+        :return:
+        """
+        project_list = {project['ID']: project for project in
+            server.fetch_interface()._get_json('/REST/projects')}  # pylint: disable=protected-access
+
+        disallowed_secondary_ids = []
+        disallowed_names = []
+        for pr_id, project in project_list.items():
+            if not pr_id == label:
+                disallowed_names.append(project["name"])
+                disallowed_secondary_ids.append(project["secondary_ID"])
+        return {"names": disallowed_names,
+                "secondary_ids": disallowed_secondary_ids}
 
 
 class XnatServer(XnatBase):

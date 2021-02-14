@@ -207,7 +207,7 @@ class PyXnatFile(PyXnatItem):
     def download_file(self, save_dir):
         """Get file from server and save to disk"""
 
-        label = self.fetch_interface().label()
+        label = self.get_label()
         if not label:
             raise ValueError('No file label!')
         file_path = os.path.join(save_dir, label)
@@ -225,31 +225,6 @@ class PyXnatFile(PyXnatItem):
 
 class PyXnatProject(PyXnatItemWithResources):
     """Wrapper around a pyxnat project interface"""
-
-    @staticmethod
-    def get_disallowed_project_ids(server, label):
-        """
-        Return arrays of project names and secondary IDs that cannot be used
-        for the destination project because they are already in use by other
-        projects on this server. If the project already exists then the name
-        and ID it is currently using are allowed (ie they will not be included
-        in the disallowed lists).
-
-        :param server: the XnatServer from which to get the disallowed IDs
-        :param label: the label of the project which
-        :return:
-        """
-        project_list = {project['ID']: project for project in
-            server.fetch_interface()._get_json('/REST/projects')}  # pylint: disable=protected-access
-
-        disallowed_secondary_ids = []
-        disallowed_names = []
-        for pr_id, project in project_list.items():
-            if not pr_id == label:
-                disallowed_names.append(project["name"])
-                disallowed_secondary_ids.append(project["secondary_ID"])
-        return {"names": disallowed_names,
-                "secondary_ids": disallowed_secondary_ids}
 
     @classmethod
     def create(cls, parent_pyxnatitem, label):
