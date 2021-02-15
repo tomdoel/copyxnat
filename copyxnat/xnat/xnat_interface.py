@@ -83,6 +83,7 @@ class XnatItem(XnatBase):
     def __init__(self, interface, label, parent):
         self._datatype = None
         self._id = None
+        self._exists_on_server = exists
 
         super().__init__(parent_cache=parent.cache,
                          interface=interface,
@@ -221,7 +222,13 @@ class XnatItem(XnatBase):
 
     def exists_on_server(self):
         """Return True if item already exists on the XNAT server"""
-        return self.interface.exists()
+
+        # If the cached value is not True then we check the server to determine
+        # the exists status. Once it does exist we no longer need to check the
+        # server.
+        if not self._exists_on_server:
+            self._exists_on_server = self.interface.exists()
+        return self._exists_on_server
 
     @abc.abstractmethod
     def export(self, app_settings) -> str:
