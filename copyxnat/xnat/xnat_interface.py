@@ -484,7 +484,7 @@ class XnatAssessor(XnatParentItem):
     _xml_filename = 'metadata_assessor.xml'
     _xml_id = XnatType.assessor
     interface_method = 'assessors'
-    _child_types = [XnatResource, XnatInResource, XnatOutResource]
+    _child_types = [XnatInResource, XnatOutResource]
 
     def rebuild_catalog(self):
         uri = 'data/services/refresh/catalog?' \
