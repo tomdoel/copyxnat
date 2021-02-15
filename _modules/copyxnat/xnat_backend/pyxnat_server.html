@@ -65,6 +65,20 @@
         <span class="sd">&quot;&quot;&quot;Return array of project ids&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">inspect</span><span class="o">.</span><span class="n">project_values</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="PyXnatServer.project_name_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatServer.project_name_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">project_name_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return list of dictionaries containing project name metadata&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">[</span><span class="s1">&#39;name_csv&#39;</span><span class="p">],</span>
+             <span class="s1">&#39;secondary_ID&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">[</span><span class="s1">&#39;secondary_id&#39;</span><span class="p">]</span>
+             <span class="p">}</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+                <span class="s1">&#39;xnat:projectData&#39;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s1">&#39;xnat:projectData/ID&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;xnat:projectData/name&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;xnat:projectData/secondary_ID&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">]</span></div>
+
 <div class="viewcode-block" id="PyXnatServer.projects"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatServer.projects">[docs]</a>    <span class="k">def</span> <span class="nf">projects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of PyXnatProject projects&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_list</span><span class="p">():</span>
@@ -137,7 +151,15 @@
 
 <div class="viewcode-block" id="PyXnatItem.get_id"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the XNAT ID of this item&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyXnatItem.get_attribute"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.get_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">get_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the specified attribute from this item&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyXnatItem.set_attribute"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.set_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">set_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the specified attribute from this item&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatItemWithResources"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources">[docs]</a><span class="k">class</span> <span class="nc">PyXnatItemWithResources</span><span class="p">(</span><span class="n">PyXnatItem</span><span class="p">):</span>
