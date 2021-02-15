@@ -43,7 +43,7 @@ class CopyCommand(Command):
                                    'destination project, not the Project Title '
                                    'or Running Title.'.format(dst_name))
 
-        datatype = xnat_item.interface.datatype()
+        datatype = xnat_item.datatype()
 
         missing_session_type = isinstance(xnat_item, XnatExperiment) and \
                                datatype not in self.dst_datatypes

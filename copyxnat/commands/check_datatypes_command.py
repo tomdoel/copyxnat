@@ -50,7 +50,7 @@ class CheckDatatypesCommand(Command):
 
     def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
 
-        datatype = xnat_item.interface.datatype()
+        datatype = xnat_item.datatype()
         if isinstance(xnat_item, XnatExperiment):
             self.outputs['required_experiment_datatypes'].add(datatype)
 

@@ -81,6 +81,7 @@ class XnatItem(XnatBase):
     non-root items (ie all items other than XnatServer) """
 
     def __init__(self, interface, label, parent):
+        self._datatype = None
         self._id = None
 
         super().__init__(parent_cache=parent.cache,
@@ -91,6 +92,15 @@ class XnatItem(XnatBase):
                          app_settings=parent.app_settings,
                          xml_cleaner=parent.xml_cleaner,
                          parent=parent)
+
+    def datatype(self):
+        if self._datatype is None:
+            if not self.exists_on_server():
+                raise RuntimeError('Attempt to access datatype before object '
+                                   'has been created in item {}'.
+                                   format(self.full_name))
+            self._datatype = self.interface.datatype()
+        return self._datatype
 
     def id(self):
         if self._id is None:
