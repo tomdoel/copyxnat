@@ -95,6 +95,7 @@ class XnatItem(XnatBase):
                          parent=parent)
 
     def datatype(self):
+        """Return datatype name of the underlying XNAT item"""
         if self._datatype is None:
             if not self.exists_on_server():
                 raise RuntimeError('Attempt to access datatype before object '
@@ -103,7 +104,9 @@ class XnatItem(XnatBase):
             self._datatype = self.interface.datatype()
         return self._datatype
 
-    def id(self):
+    def get_id(self):
+        """Return XNAT ID of the underlying XNAT item"""
+
         if self._id is None:
             if not self.exists_on_server():
                 raise RuntimeError('Attempt to access id before object '
@@ -521,7 +524,7 @@ class XnatAssessor(XnatParentItem):
               'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
-                self.id())
+                self.get_id())
         self.request(uri, 'POST', warn_on_fail=True)
 
 
@@ -576,7 +579,7 @@ class XnatExperiment(XnatParentItem):
         if self.ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
-                self.id())
+                self.get_id())
             self.request(uri, 'POST', warn_on_fail=True)
 
     def rebuild_catalog(self):
@@ -585,7 +588,7 @@ class XnatExperiment(XnatParentItem):
               'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
-                self.id())
+                self.get_id())
         self.request(uri, 'POST', warn_on_fail=True)
 
     def progress_update(self, reporter):
