@@ -148,6 +148,19 @@ class PyXnatItemWithResources(PyXnatItem):
         for resource in self.fetch_interface().resources():
             yield PyXnatResource(interface=resource)
 
+
+class PyXnatItemWithInOutResources(PyXnatItem):
+    """Wrapper around a pyxnat interface that can contain resources"""
+
+    @classmethod
+    @abc.abstractmethod
+    def create(cls, parent_pyxnatitem, label):
+        """
+        Create a new wrapper object of this class
+        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
+        @param label: XNAT label of the item being created
+        """
+
     def in_resources(self):
         """Return item's in resources as an array of PyXnatResource wrappers"""
         for in_resource in self.fetch_interface().in_resources():
@@ -333,7 +346,7 @@ class PyXnatScan(PyXnatItemWithResources):
         return cls(interface=parent_pyxnatitem.fetch_interface().scan(label))
 
 
-class PyXnatAssessor(PyXnatItemWithResources):
+class PyXnatAssessor(PyXnatItemWithInOutResources):
     """Wrapper around a pyxnat assessor interface"""
 
     @classmethod
@@ -342,7 +355,7 @@ class PyXnatAssessor(PyXnatItemWithResources):
             interface=parent_pyxnatitem.fetch_interface().assessor(label))
 
 
-class PyXnatReconstruction(PyXnatItemWithResources):
+class PyXnatReconstruction(PyXnatItemWithInOutResources):
     """Wrapper around a pyxnat reconstruction interface"""
 
     @classmethod
