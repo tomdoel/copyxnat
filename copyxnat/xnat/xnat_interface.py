@@ -241,6 +241,14 @@ class XnatItem(XnatBase):
         self._provide_metadata(metadata)
         self.parent.provide_metadata(metadata)
 
+    def get_attribute(self, name):
+        """Return the specified XNAT attribute from this item"""
+        return self.interface.get_attribute(name)
+
+    def set_attribute(self, name, value):
+        """Set the specified XNAT attribute of this item"""
+        return self.interface.set_attribute(name, value)
+
     def _metadata_missing(self):  # pylint: disable=no-self-use
         return False
 
@@ -496,14 +504,13 @@ class XnatScan(XnatParentItem):
 
     def _metadata_missing(self):
         if not self._metadata['UID']:
-            self._metadata['UID'] = self.interface.fetch_interface().\
-                attrs.get('UID')
+            self._metadata['UID'] = self.get_attribute('UID')
         return not all(self._metadata.values())
 
     def _provide_metadata(self, metadata):
         if (not self._metadata['UID']) and ('series_instance_uid' in metadata):
             uid = metadata['series_instance_uid']
-            current_uid = self.interface.fetch_interface().attrs.get('UID')
+            current_uid = self.get_attribute('UID')
             if current_uid:
                 if not current_uid == uid:
                     self.reporter.warning(
@@ -512,7 +519,7 @@ class XnatScan(XnatParentItem):
                         format(current_uid, uid))
             else:
                 self.reporter.warning('Setting Scan UID to {}'.format(uid))
-                self.interface.fetch_interface().attrs.set('UID', uid)
+                self.interface.set_attribute('UID', uid)
 
 
 class XnatExperiment(XnatParentItem):

@@ -99,6 +99,14 @@ class PyXnatItem(abc.ABC):
         """Return the XNAT ID of this item"""
         return self.fetch_interface().id()
 
+    def get_attribute(self, name):
+        """Return the specified attribute from this item"""
+        return self.fetch_interface().attrs.get(name)
+
+    def set_attribute(self, name, value):
+        """Return the specified attribute from this item"""
+        self.fetch_interface().attrs.set(name, value)
+
 
 class PyXnatItemWithResources(PyXnatItem):
     """Wrapper around a pyxnat interface that can contain resources"""
