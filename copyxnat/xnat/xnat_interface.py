@@ -139,10 +139,10 @@ class XnatItem(XnatBase):
                 write_dst = True
             else:
                 self.reporter.warning("{} {} already exists on the destination "
-                                      "server and will not be updated. "
-                                      "Use the --overwrite_existing option to "
-                                      "allow updating of existing data".
-                                      format(self._name, label))  # pylint: disable=no-member
+                                      "server existing data will not be "
+                                      "modified. Use the --overwrite_existing "
+                                      "option to allow updating of existing "
+                                      "data".format(self._name, label))  # pylint: disable=no-member
                 write_dst = False
         else:
             write_dst = True
