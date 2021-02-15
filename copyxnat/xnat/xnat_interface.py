@@ -181,9 +181,14 @@ class XnatItem(XnatBase):
 
     def create_on_server(self, create_params, local_file):
         """Create this item on the XNAT server"""
+        if self.read_only:
+            raise RuntimeError('Programming error: attempting to create item '
+                               'with file {} in read-only mode on server {}'.
+                               format(local_file, self.full_name))
+
         if self.app_settings.dry_run:
-            print('DRY RUN: did not create {} {} with file {}'.
-                  format(self._name, self.label, local_file))  # pylint: disable=protected-access, no-member
+            self.reporter.warning('DRY RUN: did not create {} {} with file {}'.
+                                  format(self._name, self.label, local_file))  # pylint: disable=protected-access, no-member
         else:
             self.interface.create_on_server(
                 local_file=local_file,
@@ -243,6 +248,11 @@ class XnatItem(XnatBase):
 
     def set_attribute(self, name, value):
         """Set the specified XNAT attribute of this item"""
+        if self.read_only:
+            raise RuntimeError('Programming error: attempting to set attribute '
+                               '{} to {} in read-only mode on server {}'.
+                               format(name, value, self.full_name))
+
         return self.interface.set_attribute(name, value)
 
     def _metadata_missing(self):  # pylint: disable=no-self-use
@@ -649,6 +659,12 @@ class XnatServer(XnatBase):
 
     def request(self, uri, method, warn_on_fail=True):
         """Execute a REST call on the server"""
+
+        if self.read_only and not method == 'GET':
+            raise RuntimeError('Programming error: attempting {} request {} in '
+                               'read-only mode to server {}'.
+                               format(method, uri, self.full_name))
+
         return self.interface.request(uri=uri,
                                       method=method,
                                       reporter=self.reporter,
