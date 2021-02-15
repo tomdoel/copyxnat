@@ -15,14 +15,13 @@ from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 class XnatServerParams:
     """Encapsulates parameters used to access an XNAT server"""
 
-    def __init__(self, host, user, pwd, insecure=False, read_only=False):
+    def __init__(self, host, user, pwd, insecure=False):
         if '://' not in host:
             host = 'https://' + host
         self.host = host
         self.user = user
         self.pwd = pwd
         self.insecure = insecure
-        self.read_only = read_only
 
 
 class XnatBase(abc.ABC):
@@ -610,7 +609,8 @@ class XnatServer(XnatBase):
                  params,
                  app_settings,
                  base_cache,
-                 reporter
+                 reporter,
+                 read_only
                  ):
 
         if params.insecure:
@@ -625,7 +625,7 @@ class XnatServer(XnatBase):
         super().__init__(parent_cache=base_cache,
                          interface=interface,
                          label=label,
-                         read_only=params.read_only,
+                         read_only=read_only,
                          app_settings=app_settings,
                          xml_cleaner=XmlCleaner(reporter=reporter),
                          reporter=reporter,

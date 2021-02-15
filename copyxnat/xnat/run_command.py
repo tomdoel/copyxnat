@@ -46,14 +46,16 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
                           params=src_params,
                           base_cache=base_cache,
                           app_settings=app_settings,
-                          reporter=reporter)
+                          reporter=reporter,
+                          read_only=not command.MODIFY_SRC_SERVER)
 
     if dst_params and command.USE_DST_SERVER:
         dst_xnat = XnatServer(factory=factory,
                               params=dst_params,
                               base_cache=base_cache,
                               app_settings=app_settings,
-                              reporter=reporter)
+                              reporter=reporter,
+                              read_only=not command.MODIFY_DST_SERVER)
     else:
         dst_xnat = None
 

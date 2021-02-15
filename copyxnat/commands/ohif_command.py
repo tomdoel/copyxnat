@@ -12,6 +12,7 @@ class OhifCommand(Command):
     VERB = 'reset'
     COMMAND_LINE = 'ohif'
     USE_DST_SERVER = False
+    MODIFY_SRC_SERVER = True
     MODIFY_DST_SERVER = False
     CACHE_TYPE = 'cache'
     HELP = 'Reset the OHIF viewer session data so it will find all images'

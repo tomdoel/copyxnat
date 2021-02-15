@@ -19,6 +19,7 @@ class CheckDatatypesCommand(Command):
     VERB = 'check'
     COMMAND_LINE = 'check-datatypes'
     USE_DST_SERVER = True
+    MODIFY_SRC_SERVER = False
     MODIFY_DST_SERVER = False
     CACHE_TYPE = 'cache'
     HELP = 'Check if session data types on source XNAT are present on ' \

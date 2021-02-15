@@ -124,8 +124,7 @@ def main(args=None):
     src_params = XnatServerParams(host=args.src_host,
                                   user=args.src_user,
                                   pwd=src_pw,
-                                  insecure=args.insecure,
-                                  read_only=True)
+                                  insecure=args.insecure)
 
     if command.USE_DST_SERVER:
         dst_host = args.dst_host if 'dst_host' in args else None
@@ -137,8 +136,7 @@ def main(args=None):
         dst_params = XnatServerParams(host=dst_host,
                                       user=dst_user,
                                       pwd=dst_pw,
-                                      insecure=args.insecure,
-                                      read_only=False)
+                                      insecure=args.insecure)
     else:
         dst_params = None
 

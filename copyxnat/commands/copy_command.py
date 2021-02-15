@@ -13,6 +13,7 @@ class CopyCommand(Command):
     VERB = 'copy'
     COMMAND_LINE = 'copy'
     USE_DST_SERVER = True
+    MODIFY_SRC_SERVER = False
     MODIFY_DST_SERVER = True
     CACHE_TYPE = 'cache'
     HELP = 'Copy projects between server, or duplicate on same server'

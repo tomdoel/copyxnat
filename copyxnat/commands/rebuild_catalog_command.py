@@ -14,6 +14,7 @@ class RebuildCatalogCommand(Command):
     VERB = 'rebuild'
     COMMAND_LINE = 'rebuild-catalog'
     USE_DST_SERVER = False
+    MODIFY_SRC_SERVER = True
     MODIFY_DST_SERVER = False
     CACHE_TYPE = 'cache'
     HELP = 'Request a rebuild of the XNAT catalog to fix data issues'
