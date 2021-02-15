@@ -178,8 +178,11 @@
                                       <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
                 <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Skipping </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> (already exists on &quot;</span>
-                                      <span class="s2">&quot;destination)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> already exists on the destination &quot;</span>
+                                      <span class="s2">&quot;server and will not be updated. &quot;</span>
+                                      <span class="s2">&quot;Use the --overwrite_existing option to &quot;</span>
+                                      <span class="s2">&quot;allow updating of existing data&quot;</span><span class="o">.</span>
+                                      <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
                 <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">True</span>
@@ -521,7 +524,7 @@
     <span class="n">_xml_filename</span> <span class="o">=</span> <span class="s1">&#39;metadata_assessor.xml&#39;</span>
     <span class="n">_xml_id</span> <span class="o">=</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">assessor</span>
     <span class="n">interface_method</span> <span class="o">=</span> <span class="s1">&#39;assessors&#39;</span>
-    <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">]</span>
+    <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">]</span>
 
 <div class="viewcode-block" id="XnatAssessor.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatAssessor.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;data/services/refresh/catalog?&#39;</span> \
