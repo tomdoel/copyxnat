@@ -81,6 +81,7 @@ class XnatItem(XnatBase):
     non-root items (ie all items other than XnatServer) """
 
     def __init__(self, interface, label, parent):
+        self._id = None
 
         super().__init__(parent_cache=parent.cache,
                          interface=interface,
@@ -90,6 +91,15 @@ class XnatItem(XnatBase):
                          app_settings=parent.app_settings,
                          xml_cleaner=parent.xml_cleaner,
                          parent=parent)
+
+    def id(self):
+        if self._id is None:
+            if not self.exists_on_server():
+                raise RuntimeError('Attempt to access id before object '
+                                   'has been created in item {}'.
+                                   format(self.full_name))
+            self._id = self.interface.get_id()
+        return self._id
 
     @classmethod
     def get_existing(cls, interface, parent):
@@ -492,7 +502,7 @@ class XnatAssessor(XnatParentItem):
               'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
-                self.interface.get_id())
+                self.id())
         self.request(uri, 'POST', warn_on_fail=True)
 
 
@@ -547,7 +557,7 @@ class XnatExperiment(XnatParentItem):
         if self.ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
-                self.interface.get_id())
+                self.id())
             self.request(uri, 'POST', warn_on_fail=True)
 
     def rebuild_catalog(self):
@@ -556,7 +566,7 @@ class XnatExperiment(XnatParentItem):
               'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
-                self.interface.get_id())
+                self.id())
         self.request(uri, 'POST', warn_on_fail=True)
 
     def progress_update(self, reporter):
