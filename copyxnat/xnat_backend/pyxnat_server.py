@@ -25,6 +25,20 @@ class PyXnatServer(object):
         """Return array of project ids"""
         return self.fetch_interface().inspect.project_values()
 
+    def project_name_metadata(self):
+        """Return list of dictionaries containing project name metadata"""
+
+        return [
+            {'ID': project['id'],
+             'name': project['name_csv'],
+             'secondary_ID': project['secondary_id']
+             } for project in self.fetch_interface().select(
+                'xnat:projectData',
+                ['xnat:projectData/ID',
+                 'xnat:projectData/name',
+                 'xnat:projectData/secondary_ID']).all()
+        ]
+
     def projects(self):
         """Return array of PyXnatProject projects"""
         for label in self.project_list():

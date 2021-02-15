@@ -47,10 +47,6 @@ class XnatBase(abc.ABC):
             for item_tag, item_label in parent.label_map.items():
                 self.label_map[item_tag] = item_label
 
-    def fetch_interface(self):
-        """Get the XNAT backend interface for this object"""
-        return self.interface.fetch_interface()
-
     def user_visible_info(self):
         """String representation of this object that can be shown to user"""
         level = self.cache.cache_level
@@ -633,6 +629,10 @@ class XnatServer(XnatBase):
         """Return array of project ids"""
         return self.interface.project_list()
 
+    def project_name_metadata(self):
+        """Return list of dictionaries containing project name metadata"""
+        return self.interface.project_name_metadata()
+
     def project(self, label):
         """Return XnatProject for this project id"""
         return XnatProject.get_existing(
@@ -675,13 +675,11 @@ class XnatServer(XnatBase):
         :param label: the label of the project which
         :return:
         """
-        project_list = {project['ID']: project for project in
-            self.fetch_interface()._get_json('/REST/projects')}  # pylint: disable=protected-access
 
         disallowed_secondary_ids = []
         disallowed_names = []
-        for pr_id, project in project_list.items():
-            if not pr_id == label:
+        for project in self.project_name_metadata():
+            if not project["ID"] == label:
                 disallowed_names.append(project["name"])
                 disallowed_secondary_ids.append(project["secondary_ID"])
         return {"names": disallowed_names,
