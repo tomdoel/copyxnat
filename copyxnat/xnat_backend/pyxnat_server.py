@@ -86,6 +86,15 @@ class PyXnatItem(abc.ABC):
         """Return the pyxnat interface to this item"""
         return self._interface
 
+    @classmethod
+    @abc.abstractmethod
+    def create(cls, parent_pyxnatitem, label):
+        """
+        Create a new wrapper object of this class
+        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
+        @param label: XNAT label of the item being created
+        """
+
     def create_on_server(self, local_file, create_params, overwrite, reporter):  # pylint: disable=unused-argument
         """Create this item on the XNAT server if it does not already exist"""
 
@@ -154,14 +163,13 @@ class PyXnatResourceBase(PyXnatItem):
     """Wrapper around a pyxnat resource interface"""
 
     @classmethod
+    @abc.abstractmethod
     def create(cls, parent_pyxnatitem, label):
         """
-        Create a new resource wrapper
+        Create a new wrapper object of this class
         @param parent_pyxnatitem: parent PyXnatItem of the item to be created
         @param label: XNAT label of the item being created
         """
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().resource(label))
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         interface = self.fetch_interface()
@@ -196,13 +204,28 @@ class PyXnatResourceBase(PyXnatItem):
 class PyXnatResource(PyXnatResourceBase):
     """Wrapper around a pyxnat resource interface"""
 
+    @classmethod
+    def create(cls, parent_pyxnatitem, label):
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().resource(label))
+
 
 class PyXnatInResource(PyXnatResourceBase):
     """Wrapper around a pyxnat in resource interface"""
 
+    @classmethod
+    def create(cls, parent_pyxnatitem, label):
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().in_resource(label))
+
 
 class PyXnatOutResource(PyXnatResourceBase):
     """Wrapper around a pyxnat out resource interface"""
+
+    @classmethod
+    def create(cls, parent_pyxnatitem, label):
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().out_resource(label))
 
 
 class PyXnatFile(PyXnatItem):
