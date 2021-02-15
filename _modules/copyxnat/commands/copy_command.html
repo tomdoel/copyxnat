@@ -64,9 +64,22 @@
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
-        <span class="c1"># Override the project name</span>
-        <span class="n">dst_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span> <span class="k">if</span> \
-            <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">dst_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
+            <span class="n">dst_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span>
+            <span class="k">if</span> <span class="n">dst_name</span> <span class="ow">in</span> <span class="n">from_parent</span><span class="o">.</span>\
+                    <span class="n">get_disallowed_project_ids</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Cannot copy this project because the &#39;</span>
+                                   <span class="s1">&#39;destination project ID </span><span class="si">{}</span><span class="s1"> is already &#39;</span>
+                                   <span class="s1">&#39;being used as the Project Title or Running &#39;</span>
+                                   <span class="s1">&#39;Title of another project on the &#39;</span>
+                                   <span class="s1">&#39;destination server. You must choose a &#39;</span>
+                                   <span class="s1">&#39;different Project ID to make a new copy. &#39;</span>
+                                   <span class="s1">&#39;If you are trying to update an existing &#39;</span>
+                                   <span class="s1">&#39;copy, you must specify the Project ID of &#39;</span>
+                                   <span class="s1">&#39;destination project, not the Project Title &#39;</span>
+                                   <span class="s1">&#39;or Running Title.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dst_name</span><span class="p">))</span>
 
         <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
 

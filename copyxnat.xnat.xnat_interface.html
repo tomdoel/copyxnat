@@ -618,17 +618,17 @@ for changes in unique identifiers.</p>
 <dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatServer.get_disallowed_project_ids">
 <code class="sig-name descname"><span class="pre">get_disallowed_project_ids</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.get_disallowed_project_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.get_disallowed_project_ids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return arrays of project names and secondary IDs that cannot be used
+<dd><p>Return list of project names and secondary IDs that cannot be used
 for the destination project because they are already in use by other
-projects on this server. If the project already exists then the name
-and ID it is currently using are allowed (ie they will not be included
-in the disallowed lists).</p>
+projects on this server. If the project already exists (whihc imples
+the project is being udated) then its IDs are permitted (ie they will
+not be included in the disallowed lists).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> – the label of the project which</p>
+<dd class="field-odd"><p><strong>label</strong> – the label of the current project</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>list of IDs (names and secondary_IDs) used by other projects</p>
 </dd>
 </dl>
 </dd></dl>
