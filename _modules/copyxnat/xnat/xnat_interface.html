@@ -120,7 +120,10 @@
     <span class="sd">&quot;&quot;&quot;Base class for data-level item in the XNAT data hierarchy. Used for all</span>
 <span class="sd">    non-root items (ie all items other than XnatServer) &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">exists</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exists_on_server</span> <span class="o">=</span> <span class="n">exists</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent_cache</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">cache</span><span class="p">,</span>
                          <span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
@@ -130,6 +133,27 @@
                          <span class="n">app_settings</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
                          <span class="n">xml_cleaner</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">,</span>
                          <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+
+<div class="viewcode-block" id="XnatItem.datatype"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.datatype">[docs]</a>    <span class="k">def</span> <span class="nf">datatype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return datatype name of the underlying XNAT item&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_on_server</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Attempt to access datatype before object &#39;</span>
+                                   <span class="s1">&#39;has been created in item </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
+                                   <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span></div>
+
+<div class="viewcode-block" id="XnatItem.get_id"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return XNAT ID of the underlying XNAT item&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_on_server</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Attempt to access id before object &#39;</span>
+                                   <span class="s1">&#39;has been created in item </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
+                                   <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span></div>
 
 <div class="viewcode-block" id="XnatItem.get_existing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.get_existing">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_existing</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
@@ -143,7 +167,8 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> should already exist under </span><span class="si">{}</span><span class="s1"> but was &#39;</span>
                                <span class="s1">&#39;not found&#39;</span><span class="o">.</span>
                                <span class="nb">format</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+                   <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatItem.copy"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -179,10 +204,10 @@
                 <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> already exists on the destination &quot;</span>
-                                      <span class="s2">&quot;server and will not be updated. &quot;</span>
-                                      <span class="s2">&quot;Use the --overwrite_existing option to &quot;</span>
-                                      <span class="s2">&quot;allow updating of existing data&quot;</span><span class="o">.</span>
-                                      <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
+                                      <span class="s2">&quot;server existing data will not be &quot;</span>
+                                      <span class="s2">&quot;modified. Use the --overwrite_existing &quot;</span>
+                                      <span class="s2">&quot;option to allow updating of existing &quot;</span>
+                                      <span class="s2">&quot;data&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
                 <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">True</span>
@@ -241,7 +266,13 @@
 
 <div class="viewcode-block" id="XnatItem.exists_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.exists_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">exists_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if item already exists on the XNAT server&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span></div>
+
+        <span class="c1"># If the cached value is not True then we check the server to determine</span>
+        <span class="c1"># the exists status. Once it does exist we no longer need to check the</span>
+        <span class="c1"># server.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists_on_server</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_exists_on_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists_on_server</span></div>
 
 <div class="viewcode-block" id="XnatItem.export"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.export">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -348,20 +379,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
             <span class="n">xml_root</span><span class="o">=</span><span class="n">xml_root</span><span class="p">,</span>
-            <span class="n">xnat_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">,</span>  <span class="c1"># pylint: disable=no-member</span>
             <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatParentItem.copy"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">duplicate</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">duplicate</span><span class="p">:</span>
-            <span class="c1"># Update the maps that are used to modify attributes in child items</span>
-            <span class="n">src_xml_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">()</span>
-            <span class="n">final_xml_root</span> <span class="o">=</span> <span class="n">duplicate</span><span class="o">.</span><span class="n">get_xml</span><span class="p">()</span>  <span class="c1"># pylint: disable=no-member</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">add_tag_remaps</span><span class="p">(</span><span class="n">src_xml_root</span><span class="o">=</span><span class="n">src_xml_root</span><span class="p">,</span>
-                                            <span class="n">dst_xml_root</span><span class="o">=</span><span class="n">final_xml_root</span><span class="p">,</span>
-                                            <span class="n">xnat_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">,</span>  <span class="c1"># pylint: disable=no-member</span>
-                                            <span class="p">)</span>
+            <span class="c1"># Update the ID maps are used to modify tags in child items</span>
+            <span class="n">id_src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+            <span class="n">id_dst</span> <span class="o">=</span> <span class="n">duplicate</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">add_tag_remaps</span><span class="p">(</span>
+                <span class="n">xnat_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">,</span>  <span class="c1"># pylint: disable=no-member</span>
+                <span class="n">id_src</span><span class="o">=</span><span class="n">id_src</span><span class="p">,</span>
+                <span class="n">id_dst</span><span class="o">=</span><span class="n">id_dst</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">duplicate</span></div>
 
@@ -405,7 +436,7 @@
 <div class="viewcode-block" id="XnatFile.create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_item</span><span class="p">):</span>
         <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">file_attributes</span><span class="p">()</span>
-        <span class="n">local_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+        <span class="n">local_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
         <span class="n">dst_item</span><span class="o">.</span><span class="n">create_on_server</span><span class="p">(</span><span class="n">create_params</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
                                   <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
@@ -424,7 +455,7 @@
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatFile.user_visible_info"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.user_visible_info">[docs]</a>    <span class="k">def</span> <span class="nf">user_visible_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">base_string</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">()</span>
@@ -444,7 +475,8 @@
         <span class="n">tmp_local_file</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">local_file</span><span class="p">:</span>
             <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
-            <span class="n">tmp_local_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+            <span class="n">tmp_local_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
             <span class="n">local_file</span> <span class="o">=</span> <span class="n">tmp_local_file</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_missing</span><span class="p">():</span>
@@ -532,7 +564,7 @@
               <span class="s1">&#39;resource=/archive/projects/</span><span class="si">{}</span><span class="s1">/subjects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
 
 
@@ -546,9 +578,9 @@
     <span class="n">interface_method</span> <span class="o">=</span> <span class="s1">&#39;scans&#39;</span>
     <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">exists</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;UID&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">exists</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">[</span><span class="s1">&#39;UID&#39;</span><span class="p">]:</span>
@@ -587,7 +619,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">():</span>
             <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;xapi/viewer/projects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -596,7 +628,7 @@
               <span class="s1">&#39;resource=/archive/projects/</span><span class="si">{}</span><span class="s1">/subjects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.progress_update"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.progress_update">[docs]</a>    <span class="k">def</span> <span class="nf">progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
@@ -634,7 +666,6 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
             <span class="n">xml_root</span><span class="o">=</span><span class="n">cleaned_xml_root</span><span class="p">,</span>
-            <span class="n">xnat_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">,</span>  <span class="c1"># pylint: disable=no-member</span>
             <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">)</span></div></div>
 
 
@@ -661,6 +692,7 @@
         <span class="n">interface</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">label</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projects</span> <span class="o">=</span> <span class="kc">None</span>
@@ -734,13 +766,14 @@
 <span class="sd">        :return: list of IDs (names and secondary_IDs) used by other projects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">disallowed_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name_metadata</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
-                <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">])</span>
-                <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-                <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">disallowed_ids</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name_metadata</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span></div>
 
 <div class="viewcode-block" id="XnatServer.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
         <span class="k">return</span> <span class="kc">False</span></div>
