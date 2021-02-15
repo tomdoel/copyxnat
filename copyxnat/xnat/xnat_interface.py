@@ -80,7 +80,7 @@ class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy. Used for all
     non-root items (ie all items other than XnatServer) """
 
-    def __init__(self, interface, label, parent):
+    def __init__(self, interface, label, parent, exists=None):
         self._datatype = None
         self._id = None
         self._exists_on_server = exists
@@ -124,7 +124,8 @@ class XnatItem(XnatBase):
             raise RuntimeError('{} {} should already exist under {} but was '
                                'not found'.
                                format(cls._name, label, parent.full_name))  # pylint: disable=no-member
-        return cls(interface=interface, label=label, parent=parent)
+        return cls(interface=interface, label=label, parent=parent,
+                   exists=True)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
         """
@@ -534,9 +535,9 @@ class XnatScan(XnatParentItem):
     interface_method = 'scans'
     _child_types = [XnatResource]
 
-    def __init__(self, interface, label, parent):
+    def __init__(self, interface, label, parent, exists=None):
         self._metadata = {'UID': None}
-        super().__init__(interface, label, parent)
+        super().__init__(interface, label, parent, exists)
 
     def _metadata_missing(self):
         if not self._metadata['UID']:
