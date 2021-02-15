@@ -24,9 +24,22 @@ class CopyCommand(Command):
 
     def _run(self, xnat_item, from_parent):
 
-        # Override the project name
-        dst_name = self.inputs.dst_project if \
-            isinstance(xnat_item, XnatProject) else None
+        dst_name = None
+
+        if isinstance(xnat_item, XnatProject):
+            dst_name = self.inputs.dst_project
+            if dst_name in from_parent.\
+                    get_disallowed_project_ids(label=dst_name):
+                raise RuntimeError('Cannot copy this project because the '
+                                   'destination project ID {} is already '
+                                   'being used as the Project Title or Running '
+                                   'Title of another project on the '
+                                   'destination server. You must choose a '
+                                   'different Project ID to make a new copy. '
+                                   'If you are trying to update an existing '
+                                   'copy, you must specify the Project ID of '
+                                   'destination project, not the Project Title '
+                                   'or Running Title.'.format(dst_name))
 
         datatype = xnat_item.interface.datatype()
 

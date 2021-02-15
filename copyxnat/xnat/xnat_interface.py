@@ -589,8 +589,7 @@ class XnatProject(XnatParentItem):
         disallowed = destination_parent.get_disallowed_project_ids(label=label)
         cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
             xml_root=xml_root,
-            disallowed_ids=disallowed["secondary_ids"],
-            disallowed_names=disallowed["names"]
+            disallowed_ids=disallowed
         )
 
         return self.xml_cleaner.clean(
@@ -685,24 +684,23 @@ class XnatServer(XnatBase):
 
     def get_disallowed_project_ids(self, label):
         """
-        Return arrays of project names and secondary IDs that cannot be used
+        Return list of project names and secondary IDs that cannot be used
         for the destination project because they are already in use by other
-        projects on this server. If the project already exists then the name
-        and ID it is currently using are allowed (ie they will not be included
-        in the disallowed lists).
+        projects on this server. If the project already exists (whihc imples
+        the project is being udated) then its IDs are permitted (ie they will
+        not be included in the disallowed lists).
 
-        :param label: the label of the project which
-        :return:
+        :param label: the label of the current project
+        :return: list of IDs (names and secondary_IDs) used by other projects
         """
 
-        disallowed_secondary_ids = []
-        disallowed_names = []
+        disallowed_ids = []
         for project in self.project_name_metadata():
             if not project["ID"] == label:
-                disallowed_names.append(project["name"])
-                disallowed_secondary_ids.append(project["secondary_ID"])
-        return {"names": disallowed_names,
-                "secondary_ids": disallowed_secondary_ids}
+                disallowed_ids.append(project["ID"])
+                disallowed_ids.append(project["name"])
+                disallowed_ids.append(project["secondary_ID"])
+        return disallowed_ids
 
     def metadata_missing(self):  # pylint: disable=no-self-use
         return False

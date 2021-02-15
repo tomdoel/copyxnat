@@ -131,14 +131,12 @@ class XmlCleaner:
             register_namespace(prefix, namespace)
         return root
 
-    def make_project_names_unique(self, xml_root, disallowed_names,
-                                  disallowed_ids):
+    def make_project_names_unique(self, xml_root, disallowed_ids):
         """
         Update project XML tags and attributes to ensure unique values
 
         @param xml_root: ElementTree root of the XML to remap
-        @param disallowed_names: names already in use by other projects
-        @param disallowed_ids: secondary IDs already in use by other projects
+        @param disallowed_ids: names and secondary IDs in use by other projects
         """
 
         # Get current values of secondary ID and name
@@ -151,7 +149,7 @@ class XmlCleaner:
         new_id = secondary_id
         new_name = name
         index = 0
-        while new_id in disallowed_ids or new_name in disallowed_names:
+        while new_id in disallowed_ids or new_name in disallowed_ids:
             index += 1
             new_id = secondary_id + ' copy {}'.format(index)
             new_name = name + ' copy {}'.format(index)
