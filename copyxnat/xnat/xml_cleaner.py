@@ -34,61 +34,20 @@ class XmlCleaner:
     XNAT_IMAGE_SCAN_DATA_TAG = '{http://nrg.wustl.edu/xnat}imageScanData'
     XNAT_OTHER_SCAN = 'xnat:OtherDicomScan'
 
-    # Index names for the maps which store the before->after values
-    PROJECT_ID_MAP = 'PROJECT_ID_MAP'
-    SUBJECT_ID_MAP = 'SUBJECT_ID_MAP'
-    SESSION_ID_MAP = 'SESSION_ID_MAP'
-    SCAN_ID_MAP = 'SCAN_ID_MAP'
-    ASSESSOR_ID_MAP = 'ASSESSOR_ID_MAP'
-    RECONSTRUCTION_ID_MAP = 'RECONSTRUCTION_ID_MAP'
-
     TAGS_TO_REMAP = {
-        '{http://icr.ac.uk/icr}subjectID': SUBJECT_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}subject_ID': SUBJECT_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}image_session_ID': SESSION_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}imageSession_ID': SESSION_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}session_id': SESSION_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}scanID': SCAN_ID_MAP,
-        '{http://nrg.wustl.edu/xnat}imageScan_ID': SCAN_ID_MAP
+        '{http://icr.ac.uk/icr}subjectID': XnatType.subject,
+        '{http://nrg.wustl.edu/xnat}subject_ID': XnatType.subject,
+        '{http://nrg.wustl.edu/xnat}image_session_ID': XnatType.experiment,
+        '{http://nrg.wustl.edu/xnat}imageSession_ID': XnatType.experiment,
+        '{http://nrg.wustl.edu/xnat}session_id': XnatType.experiment,
+        '{http://nrg.wustl.edu/xnat}scanID': XnatType.scan,
+        '{http://nrg.wustl.edu/xnat}imageScan_ID': XnatType.scan
     }
 
-    ATTRS_TO_REMAP = {
-        XnatType.project: {
-            'ID': PROJECT_ID_MAP
-        },
-        XnatType.subject: {
-            'ID': SUBJECT_ID_MAP,
-            'project': PROJECT_ID_MAP
-        },
-        XnatType.experiment: {
-            'ID': SESSION_ID_MAP,
-            'project': PROJECT_ID_MAP
-        },
-        XnatType.scan: {
-            'ID': SCAN_ID_MAP,
-            'project': PROJECT_ID_MAP
-        },
-        XnatType.assessor: {
-            'ID': ASSESSOR_ID_MAP,
-            'project': PROJECT_ID_MAP
-        },
-        XnatType.reconstruction: {
-            'ID': RECONSTRUCTION_ID_MAP,
-            'project': PROJECT_ID_MAP
-        },
-        XnatType.resource: {
-        },
-        XnatType.in_resource: {
-        },
-        XnatType.out_resource: {
-        },
-        XnatType.file: {
-        }
+    ATTRS_TO_DELETE = {
+        'ID',
+        'project'
     }
-
-    def get_tags_to_remap(self, xnat_type):
-        """Return a map of attribute mappings for this xnat item type"""
-        return self.ATTRS_TO_REMAP[xnat_type]
 
     TAGS_TO_DELETE = {
         '{http://nrg.wustl.edu/xnat}out',
@@ -121,6 +80,7 @@ class XmlCleaner:
     def __init__(self, reporter):
         self._reporter = reporter
         self.tag_values = {}
+        self.id_maps = {}
 
     @staticmethod
     def xml_from_string(xml_string):
@@ -161,19 +121,17 @@ class XmlCleaner:
             child.text = new_name
         return xml_root
 
-    def clean(self, xml_root, xnat_type, fix_scan_types):
+    def clean(self, xml_root, fix_scan_types):
         """
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
-        @param xnat_type: Enumeration describing the type of XNAT item
         @param fix_scan_types: set to True to correct ambiguous scan types
         @return:
         """
-        attr_to_tag_map = self.get_tags_to_remap(xnat_type)
 
         # Delete all attributes that change on dest server
-        for attr in attr_to_tag_map:
+        for attr in self.ATTRS_TO_DELETE:
             if attr in xml_root.attrib:
                 del xml_root.attrib[attr]
 
@@ -195,11 +153,9 @@ class XmlCleaner:
             for child in xml_root.findall(tag, self.NAMESPACES):
                 xml_root.remove(child)
 
-        # Remap all tags that change on dest server
-        # for tag, values in self.tag_values.items():
-        for tag, tag_id in self.TAGS_TO_REMAP.items():
+        for tag, xnat_id_type in self.TAGS_TO_REMAP.items():
             for child in xml_root.findall(tag, self.NAMESPACES):
-                tag_remap_dict = self.tag_values[tag_id]
+                tag_remap_dict = self.id_maps[xnat_id_type]
                 src_value = child.text
                 if src_value not in tag_remap_dict:
                     raise ValueError('Tag {}: no new value for {} found'.format(
@@ -211,19 +167,16 @@ class XmlCleaner:
 
         return xml_root
 
-    def add_tag_remaps(self, src_xml_root, dst_xml_root, xnat_type):
+    def add_tag_remaps(self, xnat_type, id_src, id_dst):
         """
-        Update the remapping dictionary to add add before and after values
+        Update the remapping dictionary to add add before and after ID values
         for the tags in the map
-        @param src_xml_root: the original XML
-        @param dst_xml_root: the XML after XNAT has assigned variables
-        @param xnat_type: Enumeration describing the type of XNAT item
+        @param xnat_type: Enumeration describing the type of XNAT item which the
+        ID describes
+        @param id_src: ID on the source server
+        @param id_dst: ID on the destination server
         """
-        attr_to_tag_map = self.get_tags_to_remap(xnat_type)
-        for attr, global_attr_name in attr_to_tag_map.items():
-            if attr in src_xml_root.attrib:
-                attr_dict = self.tag_values.get(global_attr_name, {})
-                src_value = src_xml_root.attrib[attr]
-                dst_value = dst_xml_root.attrib[attr]
-                attr_dict[src_value] = dst_value
-                self.tag_values[global_attr_name] = attr_dict
+
+        id_map = self.id_maps.get(xnat_type, {})
+        id_map[id_src] = id_dst
+        self.id_maps[xnat_type] = id_map

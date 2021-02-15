@@ -336,20 +336,20 @@ class XnatParentItem(XnatItem):
         """
         return self.xml_cleaner.clean(
             xml_root=xml_root,
-            xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
         duplicate = super().copy(destination_parent, app_settings, dst_label)
 
         if duplicate:
-            # Update the maps that are used to modify attributes in child items
-            src_xml_root = self.get_xml()
-            final_xml_root = duplicate.get_xml()  # pylint: disable=no-member
-            self.xml_cleaner.add_tag_remaps(src_xml_root=src_xml_root,
-                                            dst_xml_root=final_xml_root,
-                                            xnat_type=self._xml_id,  # pylint: disable=no-member
-                                            )
+            # Update the ID maps are used to modify tags in child items
+            id_src = self.get_id()
+            id_dst = duplicate.get_id()
+            self.xml_cleaner.add_tag_remaps(
+                xnat_type=self._xml_id,  # pylint: disable=no-member
+                id_src=id_src,
+                id_dst=id_dst
+            )
 
         return duplicate
 
@@ -623,7 +623,6 @@ class XnatProject(XnatParentItem):
 
         return self.xml_cleaner.clean(
             xml_root=cleaned_xml_root,
-            xnat_type=self._xml_id,  # pylint: disable=no-member
             fix_scan_types=fix_scan_types)
 
 
