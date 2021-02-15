@@ -392,7 +392,7 @@ class XnatFile(XnatItem):
     def create(self, dst_item):
         folder_path = self.cache.make_output_path()
         attributes = self.interface.file_attributes()
-        local_file = self.interface.download_file(folder_path)
+        local_file = self.interface.download_file(folder_path, self.label)
         dst_item.create_on_server(create_params=attributes,
                                   local_file=local_file)
         if local_file:
@@ -411,7 +411,7 @@ class XnatFile(XnatItem):
             return None
 
         folder_path = self.cache.make_output_path()
-        return self.interface.download_file(folder_path)
+        return self.interface.download_file(folder_path, self.label)
 
     def user_visible_info(self):
         base_string = super().user_visible_info()
@@ -431,7 +431,8 @@ class XnatFile(XnatItem):
         tmp_local_file = None
         if not local_file:
             folder_path = self.cache.make_output_path()
-            tmp_local_file = self.interface.download_file(folder_path)
+            tmp_local_file = self.interface.download_file(folder_path,
+                                                          self.label)
             local_file = tmp_local_file
 
         if self.metadata_missing():

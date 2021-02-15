@@ -266,10 +266,9 @@ class PyXnatFile(PyXnatItem):
             reporter.log_verbose("Resource is empty or zip download is "
                                  "disabled")
 
-    def download_file(self, save_dir):
+    def download_file(self, save_dir, label):
         """Get file from server and save to disk"""
 
-        label = self.get_label()
         if not label:
             raise ValueError('No file label!')
         file_path = os.path.join(save_dir, label)
