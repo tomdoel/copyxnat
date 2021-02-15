@@ -650,6 +650,7 @@ class XnatServer(XnatBase):
         interface = factory.create(params=params)
 
         self.ohif = None
+        self._disallowed_ids = None
 
         label = params.host.replace('https://', '').replace('http://', '')
         self._projects = None
@@ -723,13 +724,14 @@ class XnatServer(XnatBase):
         :return: list of IDs (names and secondary_IDs) used by other projects
         """
 
-        disallowed_ids = []
-        for project in self.project_name_metadata():
-            if not project["ID"] == label:
-                disallowed_ids.append(project["ID"])
-                disallowed_ids.append(project["name"])
-                disallowed_ids.append(project["secondary_ID"])
-        return disallowed_ids
+        if self._disallowed_ids is None:
+            self._disallowed_ids = []
+            for project in self.project_name_metadata():
+                if not project["ID"] == label:
+                    self._disallowed_ids.append(project["ID"])
+                    self._disallowed_ids.append(project["name"])
+                    self._disallowed_ids.append(project["secondary_ID"])
+        return self._disallowed_ids
 
     def metadata_missing(self):  # pylint: disable=no-self-use
         return False
