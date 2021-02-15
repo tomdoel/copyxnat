@@ -54,7 +54,7 @@ class PyXnatServer(object):
 
     def logout(self):
         """Disconnect from server"""
-        self._interface.close_jsession()
+        self.fetch_interface().close_jsession()
 
     def num_experiments(self, project):
         """Return number of experiments in this project"""
