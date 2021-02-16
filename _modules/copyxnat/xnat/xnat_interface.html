@@ -692,7 +692,7 @@
         <span class="n">interface</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">label</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projects</span> <span class="o">=</span> <span class="kc">None</span>
@@ -715,7 +715,9 @@
 
 <div class="viewcode-block" id="XnatServer.project_name_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.project_name_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">project_name_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return list of dictionaries containing project name metadata&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">project_name_metadata</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">project_name_metadata</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span></div>
 
 <div class="viewcode-block" id="XnatServer.project"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.project">[docs]</a>    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return XnatProject for this project id&quot;&quot;&quot;</span>
@@ -758,7 +760,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return list of project names and secondary IDs that cannot be used</span>
 <span class="sd">        for the destination project because they are already in use by other</span>
-<span class="sd">        projects on this server. If the project already exists (whihc imples</span>
+<span class="sd">        projects on this server. If the project already exists (which imples</span>
 <span class="sd">        the project is being udated) then its IDs are permitted (ie they will</span>
 <span class="sd">        not be included in the disallowed lists).</span>
 
@@ -766,14 +768,13 @@
 <span class="sd">        :return: list of IDs (names and secondary_IDs) used by other projects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name_metadata</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">])</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disallowed_ids</span></div>
+        <span class="n">disallowed_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name_metadata</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+                <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">])</span>
+                <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">disallowed_ids</span></div>
 
 <div class="viewcode-block" id="XnatServer.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
         <span class="k">return</span> <span class="kc">False</span></div>
