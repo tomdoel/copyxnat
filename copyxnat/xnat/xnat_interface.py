@@ -453,12 +453,13 @@ class XnatFile(XnatItem):
                     specific_tags=[
                         pydicom.datadict.tag_for_keyword('SeriesInstanceUID')]
                 )
-                metadata['series_instance_uid'] = \
-                    tags['SeriesInstanceUID'].value
+                if 'SeriesInstanceUID' in tags:
+                    metadata['series_instance_uid'] = \
+                        tags['SeriesInstanceUID'].value
 
         except Exception as exc:  # pylint: disable=broad-except
             self.reporter.warning('Error when attempting to parse file {}: '
-                                  'Error: {}'.format(local_file, exc))
+                                  'Error: {}'.format(local_file, str(exc)))
         return metadata
 
 
