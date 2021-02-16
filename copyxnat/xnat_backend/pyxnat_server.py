@@ -79,7 +79,8 @@ class PyXnatServer(object):
 
 class PyXnatItem(abc.ABC):
     """Abstraction of wrappers around pyXnat interfaces"""
-    def __init__(self, interface):
+    def __init__(self, interface, label=None):
+        self._label = label
         self._interface = interface
 
     def fetch_interface(self):
@@ -116,7 +117,9 @@ class PyXnatItem(abc.ABC):
 
     def get_label(self):
         """Return the XNAT label of this item"""
-        return self.fetch_interface().label()
+        if self._label is None:
+            self._label = self.fetch_interface().label()
+        return self._label
 
     def get_id(self):
         """Return the XNAT ID of this item"""
@@ -220,7 +223,9 @@ class PyXnatResource(PyXnatResourceBase):
     @classmethod
     def create(cls, parent_pyxnatitem, label):
         return cls(
-            interface=parent_pyxnatitem.fetch_interface().resource(label))
+            interface=parent_pyxnatitem.fetch_interface().resource(label),
+            label=label
+        )
 
 
 class PyXnatInResource(PyXnatResourceBase):
@@ -229,7 +234,9 @@ class PyXnatInResource(PyXnatResourceBase):
     @classmethod
     def create(cls, parent_pyxnatitem, label):
         return cls(
-            interface=parent_pyxnatitem.fetch_interface().in_resource(label))
+            interface=parent_pyxnatitem.fetch_interface().in_resource(label),
+            label=label
+        )
 
 
 class PyXnatOutResource(PyXnatResourceBase):
@@ -238,7 +245,9 @@ class PyXnatOutResource(PyXnatResourceBase):
     @classmethod
     def create(cls, parent_pyxnatitem, label):
         return cls(
-            interface=parent_pyxnatitem.fetch_interface().out_resource(label))
+            interface=parent_pyxnatitem.fetch_interface().out_resource(label),
+            label=label
+        )
 
 
 class PyXnatFile(PyXnatItem):
@@ -251,7 +260,10 @@ class PyXnatFile(PyXnatItem):
         @param parent_pyxnatitem: parent PyXnatItem of the item to be created
         @param label: XNAT label of the item being created
         """
-        return cls(interface=parent_pyxnatitem.fetch_interface().file(label))
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().file(label),
+            label=label
+        )
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         if local_file:
@@ -291,7 +303,9 @@ class PyXnatProject(PyXnatItemWithResources):
     def create(cls, parent_pyxnatitem, label):
         return cls(
             interface=parent_pyxnatitem.fetch_interface().select(
-                '/project/{}'.format(label)))
+                '/project/{}'.format(label)),
+            label=label
+        )
 
     def subjects(self):
         """Return array of PyXnatSubject wrappers for this project"""
@@ -305,7 +319,9 @@ class PyXnatSubject(PyXnatItemWithResources):
     @classmethod
     def create(cls, parent_pyxnatitem, label):
         return cls(
-            interface=parent_pyxnatitem.fetch_interface().subject(label))
+            interface=parent_pyxnatitem.fetch_interface().subject(label),
+            label=label
+        )
 
     def experiments(self):
         """Return array of PyXnatExperiment wrappers for this subject"""
@@ -319,7 +335,9 @@ class PyXnatExperiment(PyXnatItemWithResources):
     @classmethod
     def create(cls, parent_pyxnatitem, label):
         return cls(
-            interface=parent_pyxnatitem.fetch_interface().experiment(label))
+            interface=parent_pyxnatitem.fetch_interface().experiment(label),
+            label=label
+        )
 
     def scans(self):
         """Return array of PyXnatScan wrappers for this experiment"""
@@ -342,7 +360,10 @@ class PyXnatScan(PyXnatItemWithResources):
 
     @classmethod
     def create(cls, parent_pyxnatitem, label):
-        return cls(interface=parent_pyxnatitem.fetch_interface().scan(label))
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().scan(label),
+            label=label
+        )
 
 
 class PyXnatAssessor(PyXnatItemWithInOutResources):
@@ -351,7 +372,9 @@ class PyXnatAssessor(PyXnatItemWithInOutResources):
     @classmethod
     def create(cls, parent_pyxnatitem, label):
         return cls(
-            interface=parent_pyxnatitem.fetch_interface().assessor(label))
+            interface=parent_pyxnatitem.fetch_interface().assessor(label),
+            label=label
+        )
 
 
 class PyXnatReconstruction(PyXnatItemWithInOutResources):
@@ -359,5 +382,7 @@ class PyXnatReconstruction(PyXnatItemWithInOutResources):
 
     @classmethod
     def create(cls, parent_pyxnatitem, label):
-        return cls(interface=parent_pyxnatitem.fetch_interface().
-                   reconstruction(label))
+        return cls(
+            interface=parent_pyxnatitem.fetch_interface().reconstruction(label),
+            label=label
+        )
