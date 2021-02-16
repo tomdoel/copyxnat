@@ -83,26 +83,27 @@
                                    <span class="s1">&#39;destination project, not the Project Title &#39;</span>
                                    <span class="s1">&#39;or Running Title.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dst_name</span><span class="p">))</span>
 
-        <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
+        <span class="n">missing_session_type</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
+            <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
+            <span class="n">missing_session_type</span> <span class="o">=</span> <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span>
 
-        <span class="n">missing_session_type</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">)</span> <span class="ow">and</span> \
-                               <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span>
+            <span class="k">if</span> <span class="n">missing_session_type</span><span class="p">:</span>
+                <span class="n">item_id</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
 
-        <span class="k">if</span> <span class="n">missing_session_type</span><span class="p">:</span>
-            <span class="n">item_id</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ignore_datatype_errors</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;datatype </span><span class="si">{}</span><span class="s1"> is missing on the destination server but &#39;</span>
-                    <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> will be copied anyway because &#39;</span>
-                    <span class="s1">&#39;--ignore-datatype-errors was specified.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">datatype</span><span class="p">,</span> <span class="n">item_id</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;Did not copy </span><span class="si">{}</span><span class="s1"> because datatype </span><span class="si">{}</span><span class="s1"> needs to be added &#39;</span>
-                    <span class="s1">&#39;to the destination server. To force copying of the data  &#39;</span>
-                    <span class="s1">&#39;use --ignore-datatype-errors &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span> <span class="n">datatype</span><span class="p">))</span>
-                <span class="k">return</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ignore_datatype_errors</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s1">&#39;datatype </span><span class="si">{}</span><span class="s1"> is missing on the destination server but &#39;</span>
+                        <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> will be copied anyway because &#39;</span>
+                        <span class="s1">&#39;--ignore-datatype-errors was specified.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">datatype</span><span class="p">,</span> <span class="n">item_id</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s1">&#39;Did not copy </span><span class="si">{}</span><span class="s1"> because datatype </span><span class="si">{}</span><span class="s1"> needs to be added &#39;</span>
+                        <span class="s1">&#39;to the destination server. To force copying of the &#39;</span>
+                        <span class="s1">&#39;data, use --ignore-datatype-errors &#39;</span><span class="o">.</span>
+                            <span class="nb">format</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span> <span class="n">datatype</span><span class="p">))</span>
+                    <span class="k">return</span>
 
         <span class="n">dst_copy</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
             <span class="n">destination_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
@@ -153,7 +154,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
     </div>
   </body>
 </html>

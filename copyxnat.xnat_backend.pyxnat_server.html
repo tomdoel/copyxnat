@@ -52,22 +52,19 @@
 <p>Wrappers for communicating between copyxnat items and pyXNAT backend items</p>
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatAssessor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatAssessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatAssessor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatAssessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources</span></code></a></p>
 <p>Wrapper around a pyxnat assessor interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatAssessor.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatAssessor.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatExperiment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatExperiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatExperiment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatExperiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources</span></code></a></p>
 <p>Wrapper around a pyxnat experiment interface</p>
 <dl class="py method">
@@ -77,12 +74,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatExperiment.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatExperiment.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.reconstructions">
@@ -100,16 +94,13 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItem</span></code></a></p>
 <p>Wrapper around a pyxnat file interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new file wrapper
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatFile.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server">
@@ -133,31 +124,25 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatInResource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatInResource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatInResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatInResource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatInResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase" title="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase</span></code></a></p>
 <p>Wrapper around a pyxnat in resource interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatInResource.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatInResource.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatInResource.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatInResource.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItem">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatItem</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatItem</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstraction of wrappers around pyXnat interfaces</p>
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItem.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItem.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create_on_server">
@@ -217,17 +202,9 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatItemWithInOutResources</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithInOutResources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatItemWithInOutResources</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithInOutResources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItem</span></code></a></p>
 <p>Wrapper around a pyxnat interface that can contain resources</p>
-<dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources.create">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithInOutResources.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
-
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources.in_resources">
 <code class="sig-name descname"><span class="pre">in_resources</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithInOutResources.in_resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources.in_resources" title="Permalink to this definition">¶</a></dt>
@@ -244,17 +221,9 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatItemWithResources</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithResources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatItemWithResources</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithResources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItem</span></code></a></p>
 <p>Wrapper around a pyxnat interface that can contain resources</p>
-<dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources.create">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithResources.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
-
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources.resources">
 <code class="sig-name descname"><span class="pre">resources</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatItemWithResources.resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources.resources" title="Permalink to this definition">¶</a></dt>
@@ -265,31 +234,25 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatOutResource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatOutResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatOutResource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatOutResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase" title="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase</span></code></a></p>
 <p>Wrapper around a pyxnat out resource interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatOutResource.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatOutResource.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatProject">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatProject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatProject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatProject" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatProject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatProject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources</span></code></a></p>
 <p>Wrapper around a pyxnat project interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatProject.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatProject.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatProject.subjects">
@@ -301,47 +264,33 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatReconstruction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatReconstruction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatReconstruction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatReconstruction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources</span></code></a></p>
 <p>Wrapper around a pyxnat reconstruction interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatReconstruction.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatReconstruction.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatResource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatResource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase" title="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase</span></code></a></p>
 <p>Wrapper around a pyxnat resource interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResource.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResource.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResource.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResource.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResource.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResource.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatResourceBase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatResourceBase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItem" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItem</span></code></a></p>
 <p>Wrapper around a pyxnat resource interface</p>
-<dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create">
-<em class="property"><span class="pre">abstract</span> <span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
-
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server">
 <code class="sig-name descname"><span class="pre">create_on_server</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatResourceBase.create_on_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server" title="Permalink to this definition">¶</a></dt>
@@ -364,16 +313,13 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatScan">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatScan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatScan" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatScan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatScan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources</span></code></a></p>
 <p>Wrapper around a pyxnat scan interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatScan.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatScan.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatScan.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatScan.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatScan.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatScan.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -440,16 +386,13 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatSubject">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatSubject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatSubject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatSubject" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.pyxnat_server.</span></code><code class="sig-name descname"><span class="pre">PyXnatSubject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatSubject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatSubject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources" title="copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources</span></code></a></p>
 <p>Wrapper around a pyxnat subject interface</p>
 <dl class="py method">
-<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatSubject.create">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_pyxnatitem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatSubject.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatSubject.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new wrapper object of this class
-&#64;param parent_pyxnatitem: parent PyXnatItem of the item to be created
-&#64;param label: XNAT label of the item being created</p>
-</dd></dl>
+<dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatSubject.create_interface">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">create_interface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/pyxnat_server.html#PyXnatSubject.create_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.pyxnat_server.PyXnatSubject.create_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.xnat_backend.pyxnat_server.PyXnatSubject.experiments">
@@ -522,7 +465,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
     </div>
   </body>
 </html>
