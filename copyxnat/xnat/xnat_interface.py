@@ -652,7 +652,7 @@ class XnatServer(XnatBase):
         interface = factory.create(params=params)
 
         self.ohif = None
-        self._disallowed_ids = None
+        self._project_name_metadata = None
 
         label = params.host.replace('https://', '').replace('http://', '')
         self._projects = None
@@ -675,7 +675,9 @@ class XnatServer(XnatBase):
 
     def project_name_metadata(self):
         """Return list of dictionaries containing project name metadata"""
-        return self.interface.project_name_metadata()
+        if self._project_name_metadata is None:
+            self._project_name_metadata = self.interface.project_name_metadata()
+        return self._project_name_metadata
 
     def project(self, label):
         """Return XnatProject for this project id"""
@@ -718,7 +720,7 @@ class XnatServer(XnatBase):
         """
         Return list of project names and secondary IDs that cannot be used
         for the destination project because they are already in use by other
-        projects on this server. If the project already exists (whihc imples
+        projects on this server. If the project already exists (which imples
         the project is being udated) then its IDs are permitted (ie they will
         not be included in the disallowed lists).
 
@@ -726,14 +728,13 @@ class XnatServer(XnatBase):
         :return: list of IDs (names and secondary_IDs) used by other projects
         """
 
-        if self._disallowed_ids is None:
-            self._disallowed_ids = []
-            for project in self.project_name_metadata():
-                if not project["ID"] == label:
-                    self._disallowed_ids.append(project["ID"])
-                    self._disallowed_ids.append(project["name"])
-                    self._disallowed_ids.append(project["secondary_ID"])
-        return self._disallowed_ids
+        disallowed_ids = []
+        for project in self.project_name_metadata():
+            if not project["ID"] == label:
+                disallowed_ids.append(project["ID"])
+                disallowed_ids.append(project["name"])
+                disallowed_ids.append(project["secondary_ID"])
+        return disallowed_ids
 
     def metadata_missing(self):  # pylint: disable=no-self-use
         return False
