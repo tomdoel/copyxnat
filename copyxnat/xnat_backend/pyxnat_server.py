@@ -88,13 +88,13 @@ class PyXnatItem(abc.ABC):
         return self._interface
 
     @classmethod
-    @abc.abstractmethod
     def create(cls, parent_pyxnatitem, label):
-        """
-        Create a new wrapper object of this class
-        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
-        @param label: XNAT label of the item being created
-        """
+        return cls(
+            interface=cls.create_interface(
+                parent=parent_pyxnatitem.fetch_interface(),
+                label=label),
+            label=label
+        )
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):  # pylint: disable=unused-argument
         """Create this item on the XNAT server if it does not already exist"""
@@ -137,15 +137,6 @@ class PyXnatItem(abc.ABC):
 class PyXnatItemWithResources(PyXnatItem):
     """Wrapper around a pyxnat interface that can contain resources"""
 
-    @classmethod
-    @abc.abstractmethod
-    def create(cls, parent_pyxnatitem, label):
-        """
-        Create a new wrapper object of this class
-        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
-        @param label: XNAT label of the item being created
-        """
-
     def resources(self):
         """Return item's resources as an array of PyXnatResource wrappers"""
         for resource in self.fetch_interface().resources():
@@ -154,15 +145,6 @@ class PyXnatItemWithResources(PyXnatItem):
 
 class PyXnatItemWithInOutResources(PyXnatItem):
     """Wrapper around a pyxnat interface that can contain resources"""
-
-    @classmethod
-    @abc.abstractmethod
-    def create(cls, parent_pyxnatitem, label):
-        """
-        Create a new wrapper object of this class
-        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
-        @param label: XNAT label of the item being created
-        """
 
     def in_resources(self):
         """Return item's in resources as an array of PyXnatResource wrappers"""
@@ -177,15 +159,6 @@ class PyXnatItemWithInOutResources(PyXnatItem):
 
 class PyXnatResourceBase(PyXnatItem):
     """Wrapper around a pyxnat resource interface"""
-
-    @classmethod
-    @abc.abstractmethod
-    def create(cls, parent_pyxnatitem, label):
-        """
-        Create a new wrapper object of this class
-        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
-        @param label: XNAT label of the item being created
-        """
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         interface = self.fetch_interface()
@@ -221,49 +194,32 @@ class PyXnatResource(PyXnatResourceBase):
     """Wrapper around a pyxnat resource interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().resource(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.resource(label)
 
 
 class PyXnatInResource(PyXnatResourceBase):
     """Wrapper around a pyxnat in resource interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().in_resource(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.in_resource(label)
 
 
 class PyXnatOutResource(PyXnatResourceBase):
     """Wrapper around a pyxnat out resource interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().out_resource(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.out_resource(label)
 
 
 class PyXnatFile(PyXnatItem):
     """Wrapper around a pyxnat file interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        """
-        Create a new file wrapper
-        @param parent_pyxnatitem: parent PyXnatItem of the item to be created
-        @param label: XNAT label of the item being created
-        """
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().file(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.file(label)
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         if local_file:
@@ -300,12 +256,8 @@ class PyXnatProject(PyXnatItemWithResources):
     """Wrapper around a pyxnat project interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().select(
-                '/project/{}'.format(label)),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.select('/project/{}'.format(label))
 
     def subjects(self):
         """Return array of PyXnatSubject wrappers for this project"""
@@ -317,11 +269,8 @@ class PyXnatSubject(PyXnatItemWithResources):
     """Wrapper around a pyxnat subject interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().subject(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.subject(label)
 
     def experiments(self):
         """Return array of PyXnatExperiment wrappers for this subject"""
@@ -333,11 +282,8 @@ class PyXnatExperiment(PyXnatItemWithResources):
     """Wrapper around a pyxnat experiment interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().experiment(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.experiment(label)
 
     def scans(self):
         """Return array of PyXnatScan wrappers for this experiment"""
@@ -359,30 +305,21 @@ class PyXnatScan(PyXnatItemWithResources):
     """Wrapper around a pyxnat scan interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().scan(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.scan(label)
 
 
 class PyXnatAssessor(PyXnatItemWithInOutResources):
     """Wrapper around a pyxnat assessor interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().assessor(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.assessor(label)
 
 
 class PyXnatReconstruction(PyXnatItemWithInOutResources):
     """Wrapper around a pyxnat reconstruction interface"""
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
-        return cls(
-            interface=parent_pyxnatitem.fetch_interface().reconstruction(label),
-            label=label
-        )
+    def create_interface(cls, parent, label):
+        return parent.reconstruction(label)
