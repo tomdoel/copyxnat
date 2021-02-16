@@ -89,6 +89,7 @@ class PyXnatItem(abc.ABC):
 
     @classmethod
     def create(cls, parent_pyxnatitem, label):
+        """Create a new child item of this class type from given parent"""
         return cls(
             interface=cls.create_interface(
                 parent=parent_pyxnatitem.fetch_interface(),
@@ -133,9 +134,19 @@ class PyXnatItem(abc.ABC):
         """Return the specified attribute from this item"""
         self.fetch_interface().attrs.set(name, value)
 
+    @classmethod
+    @abc.abstractmethod
+    def create_interface(cls, parent, label):
+        """Create a pyXnat child interface from the given pyXnat parent"""
+
 
 class PyXnatItemWithResources(PyXnatItem):
     """Wrapper around a pyxnat interface that can contain resources"""
+
+    @classmethod
+    @abc.abstractmethod
+    def create_interface(cls, parent, label):
+        """Create a pyXnat child interface from the given pyXnat parent"""
 
     def resources(self):
         """Return item's resources as an array of PyXnatResource wrappers"""
@@ -145,6 +156,11 @@ class PyXnatItemWithResources(PyXnatItem):
 
 class PyXnatItemWithInOutResources(PyXnatItem):
     """Wrapper around a pyxnat interface that can contain resources"""
+
+    @classmethod
+    @abc.abstractmethod
+    def create_interface(cls, parent, label):
+        """Create a pyXnat child interface from the given pyXnat parent"""
 
     def in_resources(self):
         """Return item's in resources as an array of PyXnatResource wrappers"""
@@ -159,6 +175,11 @@ class PyXnatItemWithInOutResources(PyXnatItem):
 
 class PyXnatResourceBase(PyXnatItem):
     """Wrapper around a pyxnat resource interface"""
+
+    @classmethod
+    @abc.abstractmethod
+    def create_interface(cls, parent, label):
+        """Create a pyXnat child interface from the given pyXnat parent"""
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         interface = self.fetch_interface()
