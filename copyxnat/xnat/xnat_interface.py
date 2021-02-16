@@ -123,12 +123,7 @@ class XnatItem(XnatBase):
         :return: a new XnatItem corresponding to the inteerface
         """
         label = interface.get_label()
-        if not interface.exists():
-            raise RuntimeError('{} {} should already exist under {} but was '
-                               'not found'.
-                               format(cls._name, label, parent.full_name))  # pylint: disable=no-member
-        return cls(interface=interface, label=label, parent=parent,
-                   exists=True)
+        return cls(interface=interface, label=label, parent=parent, exists=True)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
         """
