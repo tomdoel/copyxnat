@@ -89,4 +89,6 @@ class CopyCache(object):
 
     def clear(self):
         """Delete contents of cache"""
-        shutil.rmtree(self.full_path())
+        cache_path = self.full_path()
+        if os.path.exists(cache_path):
+            shutil.rmtree(self.full_path())
