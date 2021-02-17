@@ -76,4 +76,4 @@ class ProjectRsync:
             self.reporter.error('An error occurred running the rsync command {}'
                                 '. The error was :{}'.format(string_command,
                                                              str(exc)),
-                                excption_type=ProjectFailure)
+                                exception_type=ProjectFailure)
