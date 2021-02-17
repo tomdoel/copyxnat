@@ -663,6 +663,7 @@ class XnatServer(XnatBase):
                  read_only
                  ):
 
+        self.params = params
         if params.insecure:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
