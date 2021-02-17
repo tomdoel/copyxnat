@@ -292,6 +292,9 @@ class XnatItem(XnatBase):
     def _provide_metadata(self, metadata):  # pylint: disable=no-self-use
         pass
 
+    def project_server_path(self):
+        return self.parent.project_server_path()
+
 
 class XnatParentItem(XnatItem):
     """
@@ -627,6 +630,9 @@ class XnatProject(XnatParentItem):
             xml_root=cleaned_xml_root,
             fix_scan_types=fix_scan_types)
 
+    def project_server_path(self):
+        return "{}/{}".format(self.parent.get_archive_path(), self.label)
+
 
 class XnatServer(XnatBase):
     """Access an XNAT server"""
@@ -652,6 +658,7 @@ class XnatServer(XnatBase):
 
         self.ohif = None
         self._project_name_metadata = None
+        self._archive_path = None
 
         label = params.host.replace('https://', '').replace('http://', '')
         self._projects = None
@@ -735,6 +742,16 @@ class XnatServer(XnatBase):
                 disallowed_ids.append(project["name"])
                 disallowed_ids.append(project["secondary_ID"])
         return disallowed_ids
+
+    def get_archive_path(self):
+        """Return the XNAT server's local data archive path"""
+
+        if self._archive_path is None:
+            self._archive_path = \
+                self.request('xapi/siteConfig/archivePath',
+                             method='GET',
+                             return_string=True)
+        return self._archive_path
 
     def metadata_missing(self):  # pylint: disable=no-self-use
         return False
