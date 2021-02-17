@@ -103,32 +103,15 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
     src_project_name:dst_project_name
     """
 
-    server_projects = src_xnat_server.project_list()
-    if not server_projects:
-        reporter.warning("No visible projects found on the server")
+    projects_list = _projects_to_process(
+        project_filter=project_filter,
+        src_xnat_server=src_xnat_server,
+        reporter=reporter)
 
-    # Allow project_filter to be a single string
-    if isinstance(project_filter, str):
-        project_filter = [project_filter]
-
-    if project_filter:
-        # If project filter specified then we process specified projects
-        projects_to_process = []
-        for project in project_filter:
-            src_project, _ = resolve_projects(project)
-            if src_project in server_projects:
-                projects_to_process.append(project)
-            else:
-                reporter.warning("Skipping project {}: not found on server".
-                                 format(src_project))
-
-    else:
-        # If no project filter specified then we process all visible projects
-        projects_to_process = server_projects
 
     global_results = {}
 
-    for project in projects_to_process:
+    for project in projects_list:
         src_project, dst_project = resolve_projects(project)
         inputs = CommandInputs(dst_xnat=dst_xnat_server,
                                dst_project=dst_project,
@@ -156,3 +139,28 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         global_results[project] = project_results
 
     return global_results
+
+
+def _projects_to_process(project_filter, src_xnat_server, reporter):
+    server_projects = src_xnat_server.project_list()
+    if not server_projects:
+        reporter.warning("No visible projects found on the server")
+    # Allow project_filter to be a single string
+    if isinstance(project_filter, str):
+        project_filter = [project_filter]
+    if project_filter:
+        # If project filter specified then we process specified projects
+        final_project_list = []
+        for project in project_filter:
+            src_project, _ = resolve_projects(project)
+            if src_project in server_projects:
+                final_project_list.append(project)
+            else:
+                reporter.warning("Skipping project {}: not found on server".
+                                 format(src_project))
+
+    else:
+        # If no project filter specified then we process all visible projects
+        final_project_list = server_projects
+
+    return final_project_list
