@@ -315,7 +315,6 @@ class XnatParentItem(XnatItem):
         # Note that cleaning will modify the xml_root object passed in
         cleaned_xml_root = self.clean(
             xml_root=self.get_xml(),
-            fix_scan_types=self.app_settings.fix_scan_types,
             destination_parent=dst_item.parent,
             label=dst_item.label
         )
@@ -327,7 +326,7 @@ class XnatParentItem(XnatItem):
         if local_file:
             os.remove(local_file)
 
-    def clean(self, xml_root, fix_scan_types, destination_parent, label):  # pylint: disable=unused-argument
+    def clean(self, xml_root, destination_parent, label):  # pylint: disable=unused-argument
         """
         Modify XML values for items copied between XNAT projects, to allow
         for changes in unique identifiers.
@@ -340,7 +339,7 @@ class XnatParentItem(XnatItem):
         """
         return self.xml_cleaner.clean(
             xml_root=xml_root,
-            fix_scan_types=fix_scan_types)
+            fix_scan_types=self.app_settings.fix_scan_types,
 
     def copy(self, destination_parent, app_settings, dst_label=None):
         duplicate = super().copy(destination_parent, app_settings, dst_label)
@@ -618,8 +617,7 @@ class XnatProject(XnatParentItem):
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
-    def clean(self, xml_root, fix_scan_types, destination_parent,
-              label):
+    def clean(self, xml_root, destination_parent, label):
         disallowed = destination_parent.get_disallowed_project_ids(label=label)
         cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
             xml_root=xml_root,
@@ -628,7 +626,8 @@ class XnatProject(XnatParentItem):
 
         return self.xml_cleaner.clean(
             xml_root=cleaned_xml_root,
-            fix_scan_types=fix_scan_types)
+            fix_scan_types=self.app_settings.fix_scan_types,
+        )
 
     def project_server_path(self):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
