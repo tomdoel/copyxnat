@@ -5,6 +5,7 @@ Execute rsync command
 import getpass
 import subprocess
 
+from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
 
 
@@ -60,9 +61,12 @@ class ProjectRsync:
             "--exclude=*.log",
             "--exclude=.*",
             "--exclude=*.json",
+            "--stats",
+            "--progress",
             src,
             dst
         ]
+
         string_command = " ".join(command_to_run)
 
         self.reporter.log('Running rsync command: {}'.format(string_command))
@@ -71,4 +75,5 @@ class ProjectRsync:
         except subprocess.CalledProcessError as exc:
             self.reporter.error('An error occurred running the rsync command {}'
                                 '. The error was :{}'.format(string_command,
-                                                             str(exc)))
+                                                             str(exc)),
+                                excption_type=ProjectFailure)

@@ -3,7 +3,7 @@
 """API for running the specified command on XNAT servers"""
 
 
-from copyxnat.pyreporter.pyreporter import PyReporter
+from copyxnat.pyreporter.pyreporter import PyReporter, ProjectFailure
 from copyxnat.utils.rsync import ProjectRsync
 from copyxnat.xnat.commands import CommandInputs
 from copyxnat.xnat.app_settings import AppSettings
@@ -118,32 +118,36 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
     global_results = {}
 
     for project in projects_list:
-        src_project, dst_project = resolve_projects(project)
-        inputs = CommandInputs(dst_xnat=dst_xnat_server,
-                               dst_project=dst_project,
-                               app_settings=app_settings,
-                               rsync=rsync,
-                               reporter=reporter)
-        project_command = command(inputs=inputs, scope=project)
+        try:
+            src_project, dst_project = resolve_projects(project)
+            inputs = CommandInputs(dst_xnat=dst_xnat_server,
+                                   dst_project=dst_project,
+                                   app_settings=app_settings,
+                                   rsync=rsync,
+                                   reporter=reporter)
+            project_command = command(inputs=inputs, scope=project)
 
-        server_project = src_xnat_server.project(src_project)
-        num_sessions = src_xnat_server.num_experiments(src_project)
+            server_project = src_xnat_server.project(src_project)
+            num_sessions = src_xnat_server.num_experiments(src_project)
 
-        reporter.start_progress(
-            message="{:>20}: {:>3} sessions to {} ".format(
-                server_project.label, num_sessions, command.VERB),
-            max_iter=num_sessions)
+            reporter.start_progress(
+                message="{:>20}: {:>3} sessions to {} ".format(
+                    server_project.label, num_sessions, command.VERB),
+                max_iter=num_sessions)
 
-        project_command.run(server_project, dst_xnat_server)
+            project_command.run(server_project, dst_xnat_server)
 
-        reporter.complete_progress()
+            reporter.complete_progress()
 
-        # Output results for current project
-        project_results = project_command.outputs
-        project_command.print_results()
+            # Output results for current project
+            project_results = project_command.outputs
+            project_command.print_results()
 
-        # Aggregate results across all projects
-        global_results[project] = project_results
+            # Aggregate results across all projects
+            global_results[project] = project_results
+        except ProjectFailure as project_exception:
+            reporter.warning('Failed to copy project {}. Error:{}'.format(
+                src_project, str(project_exception)))
 
     return global_results
 

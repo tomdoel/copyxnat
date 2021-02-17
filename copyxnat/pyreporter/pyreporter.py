@@ -15,6 +15,11 @@ class PyReporterError(RuntimeError):
     """Non-recoverable error"""
 
 
+class ProjectFailure(PyReporterError):
+    """An error which is non-recoverable for a project but which allows other
+    project processing to continue"""
+
+
 class PyReporter(object):
     """Class for custom reporting actions"""
     _ERROR_PREFIX = 'ERROR'
@@ -48,11 +53,12 @@ class PyReporter(object):
         self._output(prefix=self._WARN_PREFIX, message=message,
                      colour=PyReporterCodes.WARNING)
 
-    def error(self, message):
+    def error(self, message, exception_type=PyReporterError):
         """Error message to report to end user"""
         self._output(prefix=self._ERROR_PREFIX, message=message,
                      colour=PyReporterCodes.ERROR)
-        raise PyReporterError(message)
+
+        raise exception_type(message)
 
     def log(self, message):
         """Message for logs but need not report to end user"""
