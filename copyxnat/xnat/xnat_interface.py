@@ -247,9 +247,12 @@ class XnatItem(XnatBase):
     def ohif_generate_session(self):
         """Trigger regeneration of OHIF session data"""
 
-    def request(self, uri, method, warn_on_fail=True):
+    def request(self, uri, method, warn_on_fail=True, return_string=False):
         """Execute a REST call on the server"""
-        return self.parent.request(uri, method, warn_on_fail)
+        return self.parent.request(uri=uri,
+                                   method=method,
+                                   warn_on_fail=warn_on_fail,
+                                   return_string=return_string)
 
     def ohif_present(self):
         """Return True if the OHIF viewer plugin is installed"""
@@ -689,7 +692,7 @@ class XnatServer(XnatBase):
         """Return number of experiments in this project"""
         return self.interface.num_experiments(project)
 
-    def request(self, uri, method, warn_on_fail=True):
+    def request(self, uri, method, warn_on_fail=True, return_string=False):
         """Execute a REST call on the server"""
 
         if self.read_only and not method == 'GET':
@@ -700,7 +703,8 @@ class XnatServer(XnatBase):
         return self.interface.request(uri=uri,
                                       method=method,
                                       reporter=self.reporter,
-                                      warn_on_fail=warn_on_fail)
+                                      warn_on_fail=warn_on_fail,
+                                      return_string=return_string)
 
     def ohif_present(self):
         """Return True if the OHIF viewer plugin is installed"""

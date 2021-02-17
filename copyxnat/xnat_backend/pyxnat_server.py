@@ -62,11 +62,14 @@ class PyXnatServer(object):
             self.fetch_interface()._get_json('/REST/projects/{}/experiments'.  # pylint: disable=protected-access
                 format(project)))
 
-    def request(self, uri, method, reporter, warn_on_fail):
+    def request(self, uri, method, reporter, warn_on_fail, return_string):
         """Execute a REST call on the server and return True if it succeeds"""
         try:
-            self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
-            return True
+            result = self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
+            if return_string:
+                return result.decode("utf-8")
+            else:
+                return True
         except Exception as exc:  # pylint: disable=broad-except
             message = 'Failure executing {} call {}: {}'.\
                 format(method, uri, exc)
