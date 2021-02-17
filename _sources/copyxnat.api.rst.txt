@@ -1,0 +1,18 @@
+copyxnat.api package
+====================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.api.run_command
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.api
+   :members:
+   :undoc-members:
+   :show-inheritance:

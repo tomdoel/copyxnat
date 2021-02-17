@@ -1,0 +1,7 @@
+copyxnat.api.run\_command module
+================================
+
+.. automodule:: copyxnat.api.run_command
+   :members:
+   :undoc-members:
+   :show-inheritance:

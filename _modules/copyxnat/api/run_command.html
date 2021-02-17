@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>copyxnat.xnat.run_command &#8212; CopyXnat  documentation</title>
+    <title>copyxnat.api.run_command &#8212; CopyXnat  documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     
@@ -28,7 +28,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.run_command</a></li> 
+        <li class="nav-item nav-item-this"><a href="">copyxnat.api.run_command</a></li> 
       </ul>
     </div>  
 
@@ -37,20 +37,21 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for copyxnat.xnat.run_command</h1><div class="highlight"><pre>
+  <h1>Source code for copyxnat.api.run_command</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding=utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;API for running the specified command on XNAT servers&quot;&quot;&quot;</span>
 
 
 <span class="kn">from</span> <span class="nn">copyxnat.pyreporter.pyreporter</span> <span class="kn">import</span> <span class="n">PyReporter</span>
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">CommandInputs</span><span class="p">,</span> <span class="n">AppSettings</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">CommandInputs</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.app_settings</span> <span class="kn">import</span> <span class="n">AppSettings</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.copy_cache</span> <span class="kn">import</span> <span class="n">CacheBox</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat_backend.server_factory</span> <span class="kn">import</span> <span class="n">ServerFactory</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatServer</span>
 
 
-<div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../../copyxnat.api.run_command.html#copyxnat.api.run_command.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">app_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span>
                 <span class="n">reporter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs the command on the specified XNAT servers</span>
@@ -118,7 +119,7 @@
     <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="resolve_projects"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.resolve_projects">[docs]</a><span class="k">def</span> <span class="nf">resolve_projects</span><span class="p">(</span><span class="n">single_project_filter</span><span class="p">):</span>
+<div class="viewcode-block" id="resolve_projects"><a class="viewcode-back" href="../../../copyxnat.api.run_command.html#copyxnat.api.run_command.resolve_projects">[docs]</a><span class="k">def</span> <span class="nf">resolve_projects</span><span class="p">(</span><span class="n">single_project_filter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return source and destination project names from a src:dst string&quot;&quot;&quot;</span>
     <span class="n">mapping</span> <span class="o">=</span> <span class="n">single_project_filter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
     <span class="n">src_project</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -126,7 +127,7 @@
     <span class="k">return</span> <span class="n">src_project</span><span class="p">,</span> <span class="n">dst_project</span></div>
 
 
-<div class="viewcode-block" id="run_command_on_servers"><a class="viewcode-back" href="../../../copyxnat.xnat.run_command.html#copyxnat.xnat.run_command.run_command_on_servers">[docs]</a><span class="k">def</span> <span class="nf">run_command_on_servers</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">src_xnat_server</span><span class="p">,</span> <span class="n">dst_xnat_server</span><span class="p">,</span>
+<div class="viewcode-block" id="run_command_on_servers"><a class="viewcode-back" href="../../../copyxnat.api.run_command.html#copyxnat.api.run_command.run_command_on_servers">[docs]</a><span class="k">def</span> <span class="nf">run_command_on_servers</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">src_xnat_server</span><span class="p">,</span> <span class="n">dst_xnat_server</span><span class="p">,</span>
                            <span class="n">reporter</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the specified command on the specified XnatServer objects</span>
@@ -231,7 +232,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat.run_command</a></li> 
+        <li class="nav-item nav-item-this"><a href="">copyxnat.api.run_command</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

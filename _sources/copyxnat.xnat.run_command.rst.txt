@@ -1,7 +1,0 @@
-copyxnat.xnat.run\_command module
-=================================
-
-.. automodule:: copyxnat.xnat.run_command
-   :members:
-   :undoc-members:
-   :show-inheritance:
