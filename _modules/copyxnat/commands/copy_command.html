@@ -41,7 +41,7 @@
 <span></span><span class="c1"># coding=utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
-
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.app_settings</span> <span class="kn">import</span> <span class="n">TransferMode</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">,</span> \
     <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatResource</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
@@ -62,9 +62,11 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">zip</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatFile</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span><span class="p">,</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">meta</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
@@ -114,7 +116,7 @@
             <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> <span class="ow">and</span> \
-                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">rsync</span><span class="o">.</span><span class="n">rsync_project_data</span><span class="p">(</span>
                 <span class="n">src_project_path</span><span class="o">=</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
                 <span class="n">dst_project_path</span><span class="o">=</span><span class="n">dst_copy</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>

@@ -41,6 +41,15 @@
 <span></span><span class="c1"># coding=utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;Wrap global settings for copyxnat&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+
+<div class="viewcode-block" id="TransferMode"><a class="viewcode-back" href="../../../copyxnat.xnat.app_settings.html#copyxnat.xnat.app_settings.TransferMode">[docs]</a><span class="k">class</span> <span class="nc">TransferMode</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Defines how resource files (images etc) will be transferred&quot;&quot;&quot;</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;file&#39;</span>  <span class="c1"># Transfer file-by-file</span>
+    <span class="nb">zip</span> <span class="o">=</span> <span class="s1">&#39;zip&#39;</span>  <span class="c1"># Transfer resource collections as a zip file</span>
+    <span class="n">rsync</span> <span class="o">=</span> <span class="s1">&#39;rsync&#39;</span>  <span class="c1"># Transfer resource files using rsync</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="s1">&#39;meta&#39;</span>  <span class="c1"># Do not transfer resource files</span></div>
 
 
 <div class="viewcode-block" id="AppSettings"><a class="viewcode-back" href="../../../copyxnat.xnat.app_settings.html#copyxnat.xnat.app_settings.AppSettings">[docs]</a><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">:</span>
@@ -48,19 +57,15 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">fix_scan_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">download_zips</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">overwrite_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">metadata_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">transfer_mode</span><span class="o">=</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create global application settings</span>
 
 <span class="sd">        @param fix_scan_types: If True then ambiguous scan types will be</span>
 <span class="sd">        modified on the destination XNAT server to match the expected scan type</span>
-<span class="sd">        @param download_zips: If True then resources will be uploaded and</span>
-<span class="sd">        downloaded as zip files, which is faster but individual file attributes</span>
-<span class="sd">        will not be set when copying between servers</span>
 <span class="sd">        @param dry_run: set to True to request that write operations are not</span>
 <span class="sd">        made on the destination server, to allow testing. Note that some</span>
 <span class="sd">        changes may still take place</span>
@@ -68,15 +73,14 @@
 <span class="sd">        datatype is not present on the destination server</span>
 <span class="sd">        @param overwrite_existing: If True then overwrite existing data may be</span>
 <span class="sd">        overwritten</span>
-<span class="sd">        @param metadata_only: If True then transfer metadata only</span>
+<span class="sd">        @param transfer_mode: See TransferMode enum</span>
 <span class="sd">        XNAT server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">dry_run</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">download_zips</span> <span class="o">=</span> <span class="n">download_zips</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">fix_scan_types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">ignore_datatype_errors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">overwrite_existing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_only</span> <span class="o">=</span> <span class="n">metadata_only</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">=</span> <span class="n">TransferMode</span><span class="p">(</span><span class="n">transfer_mode</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

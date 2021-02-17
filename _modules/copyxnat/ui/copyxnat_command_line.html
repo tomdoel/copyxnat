@@ -96,6 +96,12 @@
                              <span class="s2">&quot;the data&quot;</span>
                         <span class="p">)</span>
 
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--rsync-src-user&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;When using rsync transfer, ssh username for &quot;</span>
+                             <span class="s2">&quot;source server (this is not the XNAT username)&quot;</span>
+                        <span class="p">)</span>
+
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--project&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of project containing the data&quot;</span>
                         <span class="p">)</span>
@@ -110,13 +116,22 @@
                              <span class="s2">&quot;instead of individual files&quot;</span><span class="p">,</span>
                         <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--metadata_only&quot;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Only transfer metadata and do not transfer any&quot;</span>
-                             <span class="s2">&quot;imaging or other files. This option is useful&quot;</span>
-                             <span class="s2">&quot;when you have already transferred the files &quot;</span>
-                             <span class="s2">&quot;through some other means.&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--transfer-mode&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;file&#39;</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rsync&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">],</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Choose how resource files will be transferred. &quot;</span>
+                             <span class="s2">&quot;The file method is the safest and copies files&quot;</span>
+                             <span class="s2">&quot;individually and maintains their attributes.&quot;</span>
+                             <span class="s2">&quot;The zip method copies each resource folder as a &quot;</span>
+                             <span class="s2">&quot;zip archive. The rsync option is a more &quot;</span>
+                             <span class="s2">&quot;experimental approach which should be used with &quot;</span>
+                             <span class="s2">&quot;caution. It requires you to have ssh keys set up &quot;</span>
+                             <span class="s2">&quot;and you must supply the account usernames. The &quot;</span>
+                             <span class="s2">&quot;meta option only copies metadata and requires you&quot;</span>
+                             <span class="s2">&quot; to have manually transferred the files over &quot;</span>
+                             <span class="s2">&quot;first.&quot;</span>
                         <span class="p">)</span>
+
 
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
@@ -136,6 +151,13 @@
             <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--fix-scan-types&quot;</span><span class="p">,</span>
                                     <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Fix undefined scan types on the copy&quot;</span><span class="p">,</span>
+                                    <span class="p">)</span>
+
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-j&quot;</span><span class="p">,</span> <span class="s2">&quot;--rsync-dst-user&quot;</span><span class="p">,</span>
+                                    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;When using rsync transfer, ssh &quot;</span>
+                                         <span class="s2">&quot;username for destination server &quot;</span>
+                                         <span class="s2">&quot;(this is not the XNAT username)&quot;</span>
                                     <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_DST_SERVER</span><span class="p">:</span>
@@ -158,14 +180,16 @@
     <span class="n">src_pw</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Please enter the password for </span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span>
                      <span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">src_host</span><span class="p">))</span>
 
+    <span class="n">src_rsync</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">rsync_src_user</span> <span class="k">if</span> <span class="s1">&#39;rsync_src_user&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
+
     <span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="k">if</span> <span class="s1">&#39;fix_scan_types&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
     <span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="k">if</span> \
         <span class="s1">&#39;overwrite_existing&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
-    <span class="n">download_zips</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">download_zips</span> <span class="k">if</span> <span class="s1">&#39;download_zips&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
     <span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="k">if</span> \
         <span class="s1">&#39;ignore_datatype_errors&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
-    <span class="n">metadata_only</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">metadata_only</span> <span class="k">if</span> <span class="s1">&#39;metadata_only&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="n">transfer_mode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">transfer_mode</span>
 
     <span class="n">project_list</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> \
                                               <span class="n">args</span><span class="o">.</span><span class="n">project</span> <span class="k">else</span> <span class="kc">None</span>
@@ -173,29 +197,30 @@
     <span class="n">src_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">src_host</span><span class="p">,</span>
                                   <span class="n">user</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span>
                                   <span class="n">pwd</span><span class="o">=</span><span class="n">src_pw</span><span class="p">,</span>
+                                  <span class="n">rsync_user</span><span class="o">=</span><span class="n">src_rsync</span><span class="p">,</span>
                                   <span class="n">insecure</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">insecure</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
         <span class="n">dst_host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_host</span> <span class="k">if</span> <span class="s1">&#39;dst_host&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">dst_user</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_user</span> <span class="k">if</span> <span class="s1">&#39;dst_user&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
-
+        <span class="n">dst_rsync</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">rsync_dst_user</span> <span class="k">if</span> <span class="s1">&#39;rsync_dst_user&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">dst_pw</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Please enter the password for </span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span>
                          <span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dst_user</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_host</span><span class="p">))</span>
 
         <span class="n">dst_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">dst_host</span><span class="p">,</span>
                                       <span class="n">user</span><span class="o">=</span><span class="n">dst_user</span><span class="p">,</span>
                                       <span class="n">pwd</span><span class="o">=</span><span class="n">dst_pw</span><span class="p">,</span>
+                                      <span class="n">rsync_user</span><span class="o">=</span><span class="n">dst_rsync</span><span class="p">,</span>
                                       <span class="n">insecure</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">insecure</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dst_params</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">(</span>
         <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
-        <span class="n">download_zips</span><span class="o">=</span><span class="n">download_zips</span><span class="p">,</span>
         <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">ignore_datatype_errors</span><span class="p">,</span>
         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
         <span class="n">overwrite_existing</span><span class="o">=</span><span class="n">overwrite_existing</span><span class="p">,</span>
-        <span class="n">metadata_only</span><span class="o">=</span><span class="n">metadata_only</span>
+        <span class="n">transfer_mode</span><span class="o">=</span><span class="n">transfer_mode</span>
     <span class="p">)</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>

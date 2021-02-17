@@ -55,6 +55,11 @@
     <span class="sd">&quot;&quot;&quot;Non-recoverable error&quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="ProjectFailure"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.ProjectFailure">[docs]</a><span class="k">class</span> <span class="nc">ProjectFailure</span><span class="p">(</span><span class="n">PyReporterError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An error which is non-recoverable for a project but which allows other</span>
+<span class="sd">    project processing to continue&quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="PyReporter"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter">[docs]</a><span class="k">class</span> <span class="nc">PyReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for custom reporting actions&quot;&quot;&quot;</span>
     <span class="n">_ERROR_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;ERROR&#39;</span>
@@ -88,11 +93,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_WARN_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
                      <span class="n">colour</span><span class="o">=</span><span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyReporter.error"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<div class="viewcode-block" id="PyReporter.error"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">exception_type</span><span class="o">=</span><span class="n">PyReporterError</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Error message to report to end user&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
                      <span class="n">colour</span><span class="o">=</span><span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="n">PyReporterError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+        <span class="k">raise</span> <span class="n">exception_type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.log"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Message for logs but need not report to end user&quot;&quot;&quot;</span>

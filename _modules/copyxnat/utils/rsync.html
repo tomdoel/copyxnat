@@ -45,6 +45,7 @@
 <span class="kn">import</span> <span class="nn">getpass</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
+<span class="kn">from</span> <span class="nn">copyxnat.pyreporter.pyreporter</span> <span class="kn">import</span> <span class="n">ProjectFailure</span>
 <span class="kn">from</span> <span class="nn">copyxnat.utils.network_utils</span> <span class="kn">import</span> <span class="n">get_host</span>
 
 
@@ -100,9 +101,12 @@
             <span class="s2">&quot;--exclude=*.log&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--exclude=.*&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--exclude=*.json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--stats&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--progress&quot;</span><span class="p">,</span>
             <span class="n">src</span><span class="p">,</span>
             <span class="n">dst</span>
         <span class="p">]</span>
+
         <span class="n">string_command</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">command_to_run</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Running rsync command: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string_command</span><span class="p">))</span>
@@ -111,7 +115,8 @@
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;An error occurred running the rsync command </span><span class="si">{}</span><span class="s1">&#39;</span>
                                 <span class="s1">&#39;. The error was :</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string_command</span><span class="p">,</span>
-                                                             <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span></div>
+                                                             <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)),</span>
+                                <span class="n">excption_type</span><span class="o">=</span><span class="n">ProjectFailure</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
