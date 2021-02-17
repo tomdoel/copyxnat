@@ -3,6 +3,7 @@
 """Abstraction of disk cache used to store XNAT files"""
 
 import os
+import shutil
 from os.path import expanduser
 from xml.etree import cElementTree
 
@@ -85,3 +86,7 @@ class CopyCache(object):
     def full_path(self):
         """Return absolute path to this cache"""
         return os.path.join(self.root_path, self.rel_path)
+
+    def clear(self):
+        """Delete contents of cache"""
+        shutil.rmtree(self.full_path())
