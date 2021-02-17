@@ -72,6 +72,15 @@ class CopyCommand(Command):
             destination_parent=from_parent,
             app_settings=self.inputs.app_settings,
             dst_label=dst_name)
+
+        if isinstance(xnat_item, XnatProject) and \
+                self.inputs.app_settings.metadata_only:
+            self.inputs.rsync.rsync_project_data(
+                src_project_path=xnat_item.project_server_path(),
+                dst_project_path=dst_copy.project_server_path(),
+                src_label=xnat_item.label
+            )
+
         self._recurse(xnat_item=xnat_item, to_children=dst_copy)
 
         if dst_copy and not missing_session_type:
