@@ -70,6 +70,14 @@ def main(args=None):
                              "instead of individual files",
                         )
 
+    parser.add_argument("-e", "--metadata_only",
+                        action="store_true",
+                        help="Only transfer metadata and do not transfer any"
+                             "imaging or other files. This option is useful"
+                             "when you have already transferred the files "
+                             "through some other means.",
+                        )
+
     for command in find_commands.commands():
         command_key = command.COMMAND_LINE
         sub_parser = subparsers.choices[command_key]
@@ -117,6 +125,7 @@ def main(args=None):
     download_zips = args.download_zips if 'download_zips' in args else False
     ignore_datatype_errors = args.ignore_datatype_errors if \
         'ignore_datatype_errors' in args else False
+    metadata_only = args.metadata_only if 'metadata_only' in args else False
 
     project_list = args.project.split(',') if 'project' in args and \
                                               args.project else None
@@ -145,7 +154,8 @@ def main(args=None):
         download_zips=download_zips,
         ignore_datatype_errors=ignore_datatype_errors,
         dry_run=args.dry_run,
-        overwrite_existing=overwrite_existing
+        overwrite_existing=overwrite_existing,
+        metadata_only=metadata_only
     )
 
     result = run_command(command=command,

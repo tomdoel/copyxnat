@@ -58,7 +58,8 @@ class AppSettings:
                  download_zips=False,
                  dry_run=False,
                  ignore_datatype_errors=False,
-                 overwrite_existing=False):
+                 overwrite_existing=False,
+                 metadata_only=False):
         """
         Create global application settings
 
@@ -72,7 +73,9 @@ class AppSettings:
         changes may still take place
         @param ignore_datatype_errors: Set to True to copy files even if the
         datatype is not present on the destination server
-        @param overwrite_existing: Set to True to overwrite existing data on the
+        @param overwrite_existing: If True then overwrite existing data may be
+        overwritten
+        @param metadata_only: If True then transfer metadata only
         XNAT server
         """
         self.dry_run = dry_run
@@ -80,6 +83,7 @@ class AppSettings:
         self.fix_scan_types = fix_scan_types
         self.ignore_datatype_errors = ignore_datatype_errors
         self.overwrite_existing = overwrite_existing
+        self.metadata_only = metadata_only
 
 
 class CommandInputs:
