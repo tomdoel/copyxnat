@@ -1,0 +1,7 @@
+copyxnat.utils.rsync module
+===========================
+
+.. automodule:: copyxnat.utils.rsync
+   :members:
+   :undoc-members:
+   :show-inheritance:

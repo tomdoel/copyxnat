@@ -44,6 +44,7 @@
 
 
 <span class="kn">from</span> <span class="nn">copyxnat.pyreporter.pyreporter</span> <span class="kn">import</span> <span class="n">PyReporter</span>
+<span class="kn">from</span> <span class="nn">copyxnat.utils.rsync</span> <span class="kn">import</span> <span class="n">ProjectRsync</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">CommandInputs</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.app_settings</span> <span class="kn">import</span> <span class="n">AppSettings</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.copy_cache</span> <span class="kn">import</span> <span class="n">CacheBox</span>
@@ -143,36 +144,25 @@
 <span class="sd">    src_project_name:dst_project_name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">server_projects</span> <span class="o">=</span> <span class="n">src_xnat_server</span><span class="o">.</span><span class="n">project_list</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">server_projects</span><span class="p">:</span>
-        <span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No visible projects found on the server&quot;</span><span class="p">)</span>
+    <span class="n">projects_list</span> <span class="o">=</span> <span class="n">_projects_to_process</span><span class="p">(</span>
+        <span class="n">project_filter</span><span class="o">=</span><span class="n">project_filter</span><span class="p">,</span>
+        <span class="n">src_xnat_server</span><span class="o">=</span><span class="n">src_xnat_server</span><span class="p">,</span>
+        <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
 
-    <span class="c1"># Allow project_filter to be a single string</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project_filter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">project_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">project_filter</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">project_filter</span><span class="p">:</span>
-        <span class="c1"># If project filter specified then we process specified projects</span>
-        <span class="n">projects_to_process</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">project_filter</span><span class="p">:</span>
-            <span class="n">src_project</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">resolve_projects</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">src_project</span> <span class="ow">in</span> <span class="n">server_projects</span><span class="p">:</span>
-                <span class="n">projects_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Skipping project </span><span class="si">{}</span><span class="s2">: not found on server&quot;</span><span class="o">.</span>
-                                 <span class="nb">format</span><span class="p">(</span><span class="n">src_project</span><span class="p">))</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># If no project filter specified then we process all visible projects</span>
-        <span class="n">projects_to_process</span> <span class="o">=</span> <span class="n">server_projects</span>
+    <span class="n">rsync</span> <span class="o">=</span> <span class="n">ProjectRsync</span><span class="p">(</span>
+        <span class="n">cache</span><span class="o">=</span><span class="n">src_xnat_server</span><span class="o">.</span><span class="n">cache</span><span class="p">,</span>
+        <span class="n">src_params</span><span class="o">=</span><span class="n">src_xnat_server</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">dst_params</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
 
     <span class="n">global_results</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">projects_to_process</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">projects_list</span><span class="p">:</span>
         <span class="n">src_project</span><span class="p">,</span> <span class="n">dst_project</span> <span class="o">=</span> <span class="n">resolve_projects</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="n">CommandInputs</span><span class="p">(</span><span class="n">dst_xnat</span><span class="o">=</span><span class="n">dst_xnat_server</span><span class="p">,</span>
                                <span class="n">dst_project</span><span class="o">=</span><span class="n">dst_project</span><span class="p">,</span>
                                <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
+                               <span class="n">rsync</span><span class="o">=</span><span class="n">rsync</span><span class="p">,</span>
                                <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">)</span>
         <span class="n">project_command</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 
@@ -196,6 +186,31 @@
         <span class="n">global_results</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_results</span>
 
     <span class="k">return</span> <span class="n">global_results</span></div>
+
+
+<span class="k">def</span> <span class="nf">_projects_to_process</span><span class="p">(</span><span class="n">project_filter</span><span class="p">,</span> <span class="n">src_xnat_server</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+    <span class="n">server_projects</span> <span class="o">=</span> <span class="n">src_xnat_server</span><span class="o">.</span><span class="n">project_list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">server_projects</span><span class="p">:</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No visible projects found on the server&quot;</span><span class="p">)</span>
+    <span class="c1"># Allow project_filter to be a single string</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project_filter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">project_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">project_filter</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">project_filter</span><span class="p">:</span>
+        <span class="c1"># If project filter specified then we process specified projects</span>
+        <span class="n">final_project_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">project_filter</span><span class="p">:</span>
+            <span class="n">src_project</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">resolve_projects</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">src_project</span> <span class="ow">in</span> <span class="n">server_projects</span><span class="p">:</span>
+                <span class="n">final_project_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Skipping project </span><span class="si">{}</span><span class="s2">: not found on server&quot;</span><span class="o">.</span>
+                                 <span class="nb">format</span><span class="p">(</span><span class="n">src_project</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If no project filter specified then we process all visible projects</span>
+        <span class="n">final_project_list</span> <span class="o">=</span> <span class="n">server_projects</span>
+
+    <span class="k">return</span> <span class="n">final_project_list</span>
 </pre></div>
 
             <div class="clearer"></div>

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.utils.rsync &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.rsync</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.utils.rsync</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Execute rsync command</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">copyxnat.utils.network_utils</span> <span class="kn">import</span> <span class="n">get_host</span>
+
+
+<div class="viewcode-block" id="ProjectRsync"><a class="viewcode-back" href="../../../copyxnat.utils.rsync.html#copyxnat.utils.rsync.ProjectRsync">[docs]</a><span class="k">class</span> <span class="nc">ProjectRsync</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Sync datafiles between XNAT servers&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span> <span class="o">=</span> <span class="n">reporter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_user</span><span class="p">(</span><span class="n">src_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dst_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_user</span><span class="p">(</span><span class="n">dst_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_host</span> <span class="o">=</span> <span class="n">get_host</span><span class="p">(</span><span class="n">src_params</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dst_host</span> <span class="o">=</span> <span class="n">get_host</span><span class="p">(</span><span class="n">dst_params</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">sub_cache</span><span class="p">(</span><span class="s1">&#39;cache&#39;</span><span class="p">,</span> <span class="s1">&#39;rsync&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProjectRsync.rsync_project_data"><a class="viewcode-back" href="../../../copyxnat.utils.rsync.html#copyxnat.utils.rsync.ProjectRsync.rsync_project_data">[docs]</a>    <span class="k">def</span> <span class="nf">rsync_project_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_project_path</span><span class="p">,</span> <span class="n">dst_project_path</span><span class="p">,</span> <span class="n">src_label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rsync data using calling server cache&quot;&quot;&quot;</span>
+
+        <span class="n">project_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">sub_cache</span><span class="p">(</span><span class="s1">&#39;projects&#39;</span><span class="p">,</span> <span class="n">src_label</span><span class="p">)</span>
+        <span class="n">project_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">cache_path</span> <span class="o">=</span> <span class="n">project_cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
+
+        <span class="n">src_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_string</span><span class="p">(</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span>
+            <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_host</span><span class="p">,</span>
+            <span class="n">project_path</span><span class="o">=</span><span class="n">src_project_path</span>
+        <span class="p">)</span>
+        <span class="n">dst_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_string</span><span class="p">(</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dst_user</span><span class="p">,</span>
+            <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dst_host</span><span class="p">,</span>
+            <span class="n">project_path</span><span class="o">=</span><span class="n">dst_project_path</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rsync_files</span><span class="p">(</span><span class="n">src_string</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rsync_files</span><span class="p">(</span><span class="n">cache_path</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">dst_string</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_user</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">rsync_user</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;No username speccified for rsync&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_server_string</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">project_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">:/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">project_path</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_rsync_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+        <span class="n">command_to_run</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;rsync&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-azP&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--ignore-existing&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--exclude=*.log&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--exclude=.*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--exclude=*.json&quot;</span><span class="p">,</span>
+            <span class="n">src</span><span class="p">,</span>
+            <span class="n">dst</span>
+        <span class="p">]</span>
+        <span class="n">string_command</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">command_to_run</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Running rsync command: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string_command</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command_to_run</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;An error occurred running the rsync command </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                <span class="s1">&#39;. The error was :</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string_command</span><span class="p">,</span>
+                                                             <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.rsync</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+  </body>
+</html>

@@ -112,6 +112,15 @@
             <span class="n">destination_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
             <span class="n">app_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
             <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">rsync</span><span class="o">.</span><span class="n">rsync_project_data</span><span class="p">(</span>
+                <span class="n">src_project_path</span><span class="o">=</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
+                <span class="n">dst_project_path</span><span class="o">=</span><span class="n">dst_copy</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
+                <span class="n">src_label</span><span class="o">=</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span>
+            <span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">dst_copy</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">dst_copy</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">missing_session_type</span><span class="p">:</span>

@@ -92,11 +92,13 @@
 
 <div class="viewcode-block" id="CommandInputs"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.CommandInputs">[docs]</a><span class="k">class</span> <span class="nc">CommandInputs</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Wrap global input variables for a command&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_xnat</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_xnat</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">rsync</span><span class="p">,</span>
+                 <span class="n">dst_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dst_project</span> <span class="o">=</span> <span class="n">dst_project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span> <span class="o">=</span> <span class="n">app_settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span> <span class="o">=</span> <span class="n">reporter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">dst_xnat</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">dst_xnat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rsync</span> <span class="o">=</span> <span class="n">rsync</span></div>
 </pre></div>
 
             <div class="clearer"></div>

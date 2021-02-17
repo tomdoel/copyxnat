@@ -46,12 +46,18 @@
 <div class="viewcode-block" id="PyReporterCodes"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporterCodes">[docs]</a><span class="k">class</span> <span class="nc">PyReporterCodes</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;ANSI sequences for terminal output operations&quot;&quot;&quot;</span>
     <span class="n">WARNING</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[93m&#39;</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[91m&#39;</span>
     <span class="n">END</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[0m&#39;</span>
     <span class="n">CLEAR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[K&#39;</span></div>
 
 
+<div class="viewcode-block" id="PyReporterError"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporterError">[docs]</a><span class="k">class</span> <span class="nc">PyReporterError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Non-recoverable error&quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="PyReporter"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter">[docs]</a><span class="k">class</span> <span class="nc">PyReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for custom reporting actions&quot;&quot;&quot;</span>
+    <span class="n">_ERROR_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;ERROR&#39;</span>
     <span class="n">_WARN_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;WARNING&#39;</span>
     <span class="n">_INFO_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;INFO&#39;</span>
     <span class="n">_VERBOSE_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;VERBOSE INFO (verbose)&#39;</span>
@@ -81,6 +87,12 @@
         <span class="sd">&quot;&quot;&quot;Warning message to report to end user&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_WARN_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
                      <span class="n">colour</span><span class="o">=</span><span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyReporter.error"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Error message to report to end user&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+                     <span class="n">colour</span><span class="o">=</span><span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PyReporterError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.log"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Message for logs but need not report to end user&quot;&quot;&quot;</span>

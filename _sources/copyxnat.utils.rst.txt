@@ -7,6 +7,8 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   copyxnat.utils.network_utils
+   copyxnat.utils.rsync
    copyxnat.utils.versioneer_version
    copyxnat.utils.versioning
 

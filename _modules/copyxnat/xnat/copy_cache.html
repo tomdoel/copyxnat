@@ -43,6 +43,7 @@
 <span class="sd">&quot;&quot;&quot;Abstraction of disk cache used to store XNAT files&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">expanduser</span>
 <span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">cElementTree</span>
 
@@ -124,7 +125,11 @@
 
 <div class="viewcode-block" id="CopyCache.full_path"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.full_path">[docs]</a>    <span class="k">def</span> <span class="nf">full_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return absolute path to this cache&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_path</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CopyCache.clear"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete contents of cache&quot;&quot;&quot;</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">())</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
