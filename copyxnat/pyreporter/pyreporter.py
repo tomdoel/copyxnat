@@ -6,12 +6,18 @@
 class PyReporterCodes:
     """ANSI sequences for terminal output operations"""
     WARNING = '\33[93m'
+    ERROR = '\33[91m'
     END = '\33[0m'
     CLEAR = '\33[K'
 
 
+class PyReporterError(RuntimeError):
+    """Non-recoverable error"""
+
+
 class PyReporter(object):
     """Class for custom reporting actions"""
+    _ERROR_PREFIX = 'ERROR'
     _WARN_PREFIX = 'WARNING'
     _INFO_PREFIX = 'INFO'
     _VERBOSE_PREFIX = 'VERBOSE INFO (verbose)'
@@ -41,6 +47,12 @@ class PyReporter(object):
         """Warning message to report to end user"""
         self._output(prefix=self._WARN_PREFIX, message=message,
                      colour=PyReporterCodes.WARNING)
+
+    def error(self, message):
+        """Error message to report to end user"""
+        self._output(prefix=self._ERROR_PREFIX, message=message,
+                     colour=PyReporterCodes.ERROR)
+        raise PyReporterError(message)
 
     def log(self, message):
         """Message for logs but need not report to end user"""
