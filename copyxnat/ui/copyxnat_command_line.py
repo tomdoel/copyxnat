@@ -56,6 +56,12 @@ def main(args=None):
                              "the data"
                         )
 
+    parser.add_argument("-i", "--rsync-src-user",
+                        default=None,
+                        help="When using rsync transfer, ssh username for "
+                             "source server (this is not the XNAT username)"
+                        )
+
     parser.add_argument("-p", "--project", default=None,
                         help="Name of project containing the data"
                         )
@@ -107,6 +113,13 @@ def main(args=None):
                                     help="Fix undefined scan types on the copy",
                                     )
 
+            sub_parser.add_argument("-j", "--rsync-dst-user",
+                                    default=None,
+                                    help="When using rsync transfer, ssh "
+                                         "username for destination server "
+                                         "(this is not the XNAT username)"
+                                    )
+
         if command.MODIFY_DST_SERVER:
             sub_parser.add_argument("-m", "--ignore-datatype-errors",
                                     action="store_true",
@@ -127,6 +140,8 @@ def main(args=None):
     src_pw = getpass("Please enter the password for {}@{}:".
                      format(args.src_user, args.src_host))
 
+    src_rsync = args.rsync_src_user if 'rsync_src_user' in args else None
+
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
     verbose = args.verbose if 'verbose' in args else False
     overwrite_existing = args.overwrite_existing if \
@@ -142,18 +157,20 @@ def main(args=None):
     src_params = XnatServerParams(host=args.src_host,
                                   user=args.src_user,
                                   pwd=src_pw,
+                                  rsync_user=src_rsync,
                                   insecure=args.insecure)
 
     if command.USE_DST_SERVER:
         dst_host = args.dst_host if 'dst_host' in args else None
         dst_user = args.dst_user if 'dst_user' in args else None
-
+        dst_rsync = args.rsync_dst_user if 'rsync_dst_user' in args else None
         dst_pw = getpass("Please enter the password for {}@{}:".
                          format(args.dst_user, args.dst_host))
 
         dst_params = XnatServerParams(host=dst_host,
                                       user=dst_user,
                                       pwd=dst_pw,
+                                      rsync_user=dst_rsync,
                                       insecure=args.insecure)
     else:
         dst_params = None
