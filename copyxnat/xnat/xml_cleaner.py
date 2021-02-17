@@ -122,6 +122,7 @@ class XmlCleaner:
             child.text = new_name
         return xml_root
 
+    # pylint: disable=too-many-branches
     def clean(self, xml_root, fix_scan_types, src_path, dst_path,
               remove_files=True):
         """
@@ -178,17 +179,20 @@ class XmlCleaner:
             if remove_files:
                 xml_root.remove(child)
             else:
-                if 'URI' in child.attrib:
-                    current = child.attrib['URI']
-                    if src_path not in current:
-                        raise RuntimeError('Unexpected server file path')
-                    self._reporter.log('Replacing path {}->{}'.format(src_path,
-                                                                      dst_path))
-                    new = current.replace('{}/'.format(src_path),
-                                          '{}/'.format(dst_path), 1)
-                    child.attrib['URI'] = new
+                self._rewrite_uris(child, src_path, dst_path)
 
         return xml_root
+
+    def _rewrite_uris(self, child, src_path, dst_path):
+        if 'URI' in child.attrib:
+            current = child.attrib['URI']
+            if src_path not in current:
+                raise RuntimeError('Unexpected server file path')
+            self._reporter.log('Replacing path {}->{}'.format(src_path,
+                                                              dst_path))
+            new = current.replace('{}/'.format(src_path),
+                                  '{}/'.format(dst_path), 1)
+            child.attrib['URI'] = new
 
     def add_tag_remaps(self, xnat_type, id_src, id_dst):
         """

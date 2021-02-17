@@ -68,8 +68,7 @@ class PyXnatServer(object):
             result = self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
             if return_string:
                 return result.decode("utf-8")
-            else:
-                return True
+            return True
         except Exception as exc:  # pylint: disable=broad-except
             message = 'Failure executing {} call {}: {}'.\
                 format(method, uri, exc)

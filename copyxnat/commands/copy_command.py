@@ -2,8 +2,8 @@
 
 """Command which copies XNAT projects between servers"""
 
-from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, XnatFile, \
-    XnatResource
+from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, \
+    XnatFile, XnatResource
 from copyxnat.xnat.commands import Command
 
 

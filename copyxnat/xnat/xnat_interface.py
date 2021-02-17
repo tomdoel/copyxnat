@@ -76,6 +76,7 @@ class XnatBase(abc.ABC):
         """Supply missing metadata to parent items"""
 
 
+# pylint: disable=too-many-public-methods
 class XnatItem(XnatBase):
     """Base class for data-level item in the XNAT data hierarchy. Used for all
     non-root items (ie all items other than XnatServer) """
@@ -293,6 +294,7 @@ class XnatItem(XnatBase):
         pass
 
     def project_server_path(self):
+        """Return XNAT server archive path"""
         return self.parent.project_server_path()
 
 
