@@ -10,6 +10,7 @@ import pydicom
 import urllib3
 
 from copyxnat.utils.network_utils import get_host
+from copyxnat.xnat.app_settings import TransferMode
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 
 
@@ -346,7 +347,9 @@ class XnatParentItem(XnatItem):
             fix_scan_types=self.app_settings.fix_scan_types,
             src_path=self.project_server_path(),
             dst_path=destination_parent.project_server_path(),
-            remove_files=not self.app_settings.metadata_only)
+            remove_files=(not self.app_settings.transfer_mode ==
+                              TransferMode.rsync)
+        )
 
     def copy(self, destination_parent, app_settings, dst_label=None):
         duplicate = super().copy(destination_parent, app_settings, dst_label)
@@ -372,8 +375,7 @@ class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
     def create(self, dst_item):
-        if self.app_settings.download_zips and not \
-                self.app_settings.metadata_only:
+        if self.app_settings.transfer_mode == TransferMode.zip:
             folder_path = self.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
         else:
@@ -386,10 +388,12 @@ class XnatFileContainerItem(XnatItem):
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
-        if self.app_settings.metadata_only or not app_settings.download_zips:
+
+        if not self.app_settings.transfer_mode == TransferMode.zip:
             return folder_path
 
         return self.interface.download_zip_file(folder_path)
+
 
 
 class XnatFile(XnatItem):
@@ -412,14 +416,14 @@ class XnatFile(XnatItem):
             os.remove(local_file)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
-        if app_settings.download_zips or self.app_settings.metadata_only:
+        if not app_settings.transfer_mode == TransferMode.file:
             return None
         return super().copy(destination_parent=destination_parent,
                             app_settings=app_settings,
                             dst_label=dst_label)
 
     def export(self, app_settings):
-        if app_settings.download_zips or self.app_settings.metadata_only:
+        if not app_settings.transfer_mode == TransferMode.file:
             return None
 
         folder_path = self.cache.make_output_path()

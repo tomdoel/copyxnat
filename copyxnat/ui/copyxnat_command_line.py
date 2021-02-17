@@ -70,13 +70,22 @@ def main(args=None):
                              "instead of individual files",
                         )
 
-    parser.add_argument("-e", "--metadata_only",
-                        action="store_true",
-                        help="Only transfer metadata and do not transfer any"
-                             "imaging or other files. This option is useful"
-                             "when you have already transferred the files "
-                             "through some other means.",
+    parser.add_argument("-t", "--transfer-mode",
+                        default='file',
+                        choices=['file', 'zip', 'rsync', 'meta'],
+                        help="Choose how resource files will be transferred. "
+                             "The file method is the safest and copies files"
+                             "individually and maintains their attributes."
+                             "The zip method copies each resource folder as a "
+                             "zip archive. The rsync option is a more "
+                             "experimental approach which should be used with "
+                             "caution. It requires you to have ssh keys set up "
+                             "and you must supply the account usernames. The "
+                             "meta option only copies metadata and requires you"
+                             " to have manually transferred the files over "
+                             "first."
                         )
+
 
     for command in find_commands.commands():
         command_key = command.COMMAND_LINE
@@ -122,10 +131,10 @@ def main(args=None):
     verbose = args.verbose if 'verbose' in args else False
     overwrite_existing = args.overwrite_existing if \
         'overwrite_existing' in args else False
-    download_zips = args.download_zips if 'download_zips' in args else False
     ignore_datatype_errors = args.ignore_datatype_errors if \
         'ignore_datatype_errors' in args else False
-    metadata_only = args.metadata_only if 'metadata_only' in args else False
+
+    transfer_mode = args.transfer_mode
 
     project_list = args.project.split(',') if 'project' in args and \
                                               args.project else None
@@ -151,11 +160,10 @@ def main(args=None):
 
     app_settings = AppSettings(
         fix_scan_types=fix_scan_types,
-        download_zips=download_zips,
         ignore_datatype_errors=ignore_datatype_errors,
         dry_run=args.dry_run,
         overwrite_existing=overwrite_existing,
-        metadata_only=metadata_only
+        transfer_mode=transfer_mode
     )
 
     result = run_command(command=command,

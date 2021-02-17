@@ -1,7 +1,7 @@
 # coding=utf-8
 
 """Command which copies XNAT projects between servers"""
-
+from copyxnat.xnat.app_settings import TransferMode
 from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, \
     XnatFile, XnatResource
 from copyxnat.xnat.commands import Command
@@ -22,9 +22,11 @@ class CopyCommand(Command):
     def __init__(self, inputs, scope):
         super().__init__(inputs, scope)
         self.dst_datatypes = inputs.dst_xnat.datatypes()
-        if inputs.app_settings.download_zips:
+
+        mode = inputs.app_settings.transfer_mode
+        if mode == TransferMode.zip:
             self.ignore_filter = [XnatFile]
-        if inputs.app_settings.metadata_only:
+        elif mode in [TransferMode.rsync, TransferMode.meta]:
             self.ignore_filter = [XnatResource, XnatFile]
 
     def _run(self, xnat_item, from_parent):
@@ -74,7 +76,7 @@ class CopyCommand(Command):
             dst_label=dst_name)
 
         if isinstance(xnat_item, XnatProject) and \
-                self.inputs.app_settings.metadata_only:
+                self.inputs.app_settings.transfer_mode == TransferMode.rsync:
             self.inputs.rsync.rsync_project_data(
                 src_project_path=xnat_item.project_server_path(),
                 dst_project_path=dst_copy.project_server_path(),
