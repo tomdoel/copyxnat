@@ -9,6 +9,7 @@ import os
 import pydicom
 import urllib3
 
+from copyxnat.utils.network_utils import get_host
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 
 
@@ -671,7 +672,7 @@ class XnatServer(XnatBase):
         self._project_name_metadata = None
         self._archive_path = None
 
-        label = params.host.replace('https://', '').replace('http://', '')
+        label = get_host(params.host)
         self._projects = None
         super().__init__(parent_cache=base_cache,
                          interface=interface,
