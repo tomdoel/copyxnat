@@ -42,7 +42,8 @@
 
 <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">,</span> <span class="n">XnatFile</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">,</span> \
+    <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatResource</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
@@ -63,6 +64,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatFile</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 

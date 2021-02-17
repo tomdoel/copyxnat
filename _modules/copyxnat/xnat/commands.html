@@ -98,7 +98,8 @@
                  <span class="n">download_zips</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">overwrite_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">overwrite_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">metadata_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create global application settings</span>
 
@@ -112,14 +113,17 @@
 <span class="sd">        changes may still take place</span>
 <span class="sd">        @param ignore_datatype_errors: Set to True to copy files even if the</span>
 <span class="sd">        datatype is not present on the destination server</span>
-<span class="sd">        @param overwrite_existing: Set to True to overwrite existing data on the</span>
+<span class="sd">        @param overwrite_existing: If True then overwrite existing data may be</span>
+<span class="sd">        overwritten</span>
+<span class="sd">        @param metadata_only: If True then transfer metadata only</span>
 <span class="sd">        XNAT server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">dry_run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_zips</span> <span class="o">=</span> <span class="n">download_zips</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">fix_scan_types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">ignore_datatype_errors</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">overwrite_existing</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">overwrite_existing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_only</span> <span class="o">=</span> <span class="n">metadata_only</span></div>
 
 
 <div class="viewcode-block" id="CommandInputs"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.CommandInputs">[docs]</a><span class="k">class</span> <span class="nc">CommandInputs</span><span class="p">:</span>

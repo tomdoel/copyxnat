@@ -116,6 +116,7 @@
         <span class="sd">&quot;&quot;&quot;Supply missing metadata to parent items&quot;&quot;&quot;</span></div></div>
 
 
+<span class="c1"># pylint: disable=too-many-public-methods</span>
 <div class="viewcode-block" id="XnatItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem">[docs]</a><span class="k">class</span> <span class="nc">XnatItem</span><span class="p">(</span><span class="n">XnatBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for data-level item in the XNAT data hierarchy. Used for all</span>
 <span class="sd">    non-root items (ie all items other than XnatServer) &quot;&quot;&quot;</span>
@@ -287,9 +288,12 @@
 <div class="viewcode-block" id="XnatItem.ohif_generate_session"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.ohif_generate_session">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_generate_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Trigger regeneration of OHIF session data&quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="XnatItem.request"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="XnatItem.request"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a REST call on the server&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+                                   <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+                                   <span class="n">warn_on_fail</span><span class="o">=</span><span class="n">warn_on_fail</span><span class="p">,</span>
+                                   <span class="n">return_string</span><span class="o">=</span><span class="n">return_string</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatItem.ohif_present"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.ohif_present">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_present</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if the OHIF viewer plugin is installed&quot;&quot;&quot;</span>
@@ -327,7 +331,11 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">_provide_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
-        <span class="k">pass</span></div>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="XnatItem.project_server_path"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.project_server_path">[docs]</a>    <span class="k">def</span> <span class="nf">project_server_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return XNAT server archive path&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="XnatParentItem"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem">[docs]</a><span class="k">class</span> <span class="nc">XnatParentItem</span><span class="p">(</span><span class="n">XnatItem</span><span class="p">):</span>
@@ -349,7 +357,6 @@
         <span class="c1"># Note that cleaning will modify the xml_root object passed in</span>
         <span class="n">cleaned_xml_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
             <span class="n">xml_root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">(),</span>
-            <span class="n">fix_scan_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">fix_scan_types</span><span class="p">,</span>
             <span class="n">destination_parent</span><span class="o">=</span><span class="n">dst_item</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="n">dst_item</span><span class="o">.</span><span class="n">label</span>
         <span class="p">)</span>
@@ -361,7 +368,7 @@
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="XnatParentItem.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+<div class="viewcode-block" id="XnatParentItem.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Modify XML values for items copied between XNAT projects, to allow</span>
 <span class="sd">        for changes in unique identifiers.</span>
@@ -374,7 +381,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
             <span class="n">xml_root</span><span class="o">=</span><span class="n">xml_root</span><span class="p">,</span>
-            <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">)</span></div>
+            <span class="n">fix_scan_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">fix_scan_types</span><span class="p">,</span>
+            <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
+            <span class="n">dst_path</span><span class="o">=</span><span class="n">destination_parent</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
+            <span class="n">remove_files</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatParentItem.copy"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">duplicate</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="p">)</span>
@@ -400,7 +410,8 @@
     <span class="sd">&quot;&quot;&quot;Base wrapper for resource items&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="XnatFileContainerItem.create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFileContainerItem.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_item</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span> <span class="ow">and</span> <span class="ow">not</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
             <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
             <span class="n">local_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_zip_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -413,7 +424,7 @@
 
 <div class="viewcode-block" id="XnatFileContainerItem.export"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFileContainerItem.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">):</span>
         <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">folder_path</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_zip_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span></div></div>
@@ -439,14 +450,14 @@
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatFile.copy"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">,</span> <span class="n">dst_label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">destination_parent</span><span class="o">=</span><span class="n">destination_parent</span><span class="p">,</span>
                             <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                             <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatFile.export"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_settings</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">download_zips</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">metadata_only</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">folder_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
@@ -652,17 +663,24 @@
     <span class="n">interface_method</span> <span class="o">=</span> <span class="s1">&#39;projects&#39;</span>
     <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatSubject</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">]</span>
 
-<div class="viewcode-block" id="XnatProject.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatProject.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span>
-              <span class="n">label</span><span class="p">):</span>
+<div class="viewcode-block" id="XnatProject.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatProject.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">destination_parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="n">disallowed</span> <span class="o">=</span> <span class="n">destination_parent</span><span class="o">.</span><span class="n">get_disallowed_project_ids</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
         <span class="n">cleaned_xml_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">make_project_names_unique</span><span class="p">(</span>
             <span class="n">xml_root</span><span class="o">=</span><span class="n">xml_root</span><span class="p">,</span>
             <span class="n">disallowed_ids</span><span class="o">=</span><span class="n">disallowed</span>
         <span class="p">)</span>
 
+        <span class="c1"># Note: we do not try to remap files specified at the project level</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
             <span class="n">xml_root</span><span class="o">=</span><span class="n">cleaned_xml_root</span><span class="p">,</span>
-            <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">)</span></div></div>
+            <span class="n">fix_scan_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">fix_scan_types</span><span class="p">,</span>
+            <span class="n">src_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dst_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">remove_files</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatProject.project_server_path"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatProject.project_server_path">[docs]</a>    <span class="k">def</span> <span class="nf">project_server_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_archive_path</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="XnatServer"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer">[docs]</a><span class="k">class</span> <span class="nc">XnatServer</span><span class="p">(</span><span class="n">XnatBase</span><span class="p">):</span>
@@ -689,6 +707,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">label</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projects</span> <span class="o">=</span> <span class="kc">None</span>
@@ -729,7 +748,7 @@
         <span class="sd">&quot;&quot;&quot;Return number of experiments in this project&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">num_experiments</span><span class="p">(</span><span class="n">project</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="XnatServer.request"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="XnatServer.request"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a REST call on the server&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
@@ -740,7 +759,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
                                       <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
                                       <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span>
-                                      <span class="n">warn_on_fail</span><span class="o">=</span><span class="n">warn_on_fail</span><span class="p">)</span></div>
+                                      <span class="n">warn_on_fail</span><span class="o">=</span><span class="n">warn_on_fail</span><span class="p">,</span>
+                                      <span class="n">return_string</span><span class="o">=</span><span class="n">return_string</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatServer.ohif_present"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.ohif_present">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_present</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if the OHIF viewer plugin is installed&quot;&quot;&quot;</span>
@@ -771,6 +791,16 @@
                 <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
                 <span class="n">disallowed_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;secondary_ID&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">disallowed_ids</span></div>
+
+<div class="viewcode-block" id="XnatServer.get_archive_path"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.get_archive_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_archive_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the XNAT server&#39;s local data archive path&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s1">&#39;xapi/siteConfig/archivePath&#39;</span><span class="p">,</span>
+                             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                             <span class="n">return_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span></div>
 
 <div class="viewcode-block" id="XnatServer.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
         <span class="k">return</span> <span class="kc">False</span></div>

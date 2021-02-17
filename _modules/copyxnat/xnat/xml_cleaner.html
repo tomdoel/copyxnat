@@ -74,6 +74,8 @@
     <span class="n">XNAT_IMAGE_SCAN_DATA_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageScanData&#39;</span>
     <span class="n">XNAT_OTHER_SCAN</span> <span class="o">=</span> <span class="s1">&#39;xnat:OtherDicomScan&#39;</span>
 
+    <span class="n">XNAT_FILE_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}file&#39;</span>
+
     <span class="n">TAGS_TO_REMAP</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;{http://icr.ac.uk/icr}subjectID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
         <span class="s1">&#39;{http://nrg.wustl.edu/xnat}subject_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
@@ -96,8 +98,7 @@
         <span class="s1">&#39;{http://nrg.wustl.edu/xnat}resources&#39;</span><span class="p">,</span>
         <span class="s1">&#39;{http://nrg.wustl.edu/xnat}assessors&#39;</span><span class="p">,</span>
         <span class="s1">&#39;{http://nrg.wustl.edu/xnat}prearchivePath&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}sharing&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}file&#39;</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}sharing&#39;</span>
     <span class="p">}</span>
 
     <span class="n">MODALITY_TO_SCAN</span> <span class="o">=</span> <span class="p">{</span>
@@ -161,12 +162,19 @@
             <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">new_name</span>
         <span class="k">return</span> <span class="n">xml_root</span></div>
 
-<div class="viewcode-block" id="XmlCleaner.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">):</span>
+    <span class="c1"># pylint: disable=too-many-branches</span>
+<div class="viewcode-block" id="XmlCleaner.clean"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">fix_scan_types</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">,</span>
+              <span class="n">remove_files</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove or XML remap tags that change between XNAT servers</span>
 
 <span class="sd">        @param xml_root: ElementTree root of the XML to remap</span>
+<span class="sd">        @param src_path: Archive path on source server</span>
+<span class="sd">        @param dst_path: Archive path on destination server</span>
 <span class="sd">        @param fix_scan_types: set to True to correct ambiguous scan types</span>
+<span class="sd">        @param remove_files: set to True to remove file tags. Only set to False</span>
+<span class="sd">        if the files and file catalogs are already in place on the destination</span>
+<span class="sd">        server at the correct locations</span>
 <span class="sd">        @return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -205,7 +213,26 @@
                 <span class="n">dst_value</span> <span class="o">=</span> <span class="n">tag_remap_dict</span><span class="p">[</span><span class="n">src_value</span><span class="p">]</span>
                 <span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">dst_value</span>
 
+        <span class="c1"># File tags should be removed (if uploading files) or their paths</span>
+        <span class="c1"># rewritten (if files are already present in the correct locations)</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">xml_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">XNAT_FILE_TAG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">remove_files</span><span class="p">:</span>
+                <span class="n">xml_root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rewrite_uris</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">xml_root</span></div>
+
+    <span class="k">def</span> <span class="nf">_rewrite_uris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;URI&#39;</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;URI&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">src_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unexpected server file path&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Replacing path </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span>
+                                                              <span class="n">dst_path</span><span class="p">))</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">src_path</span><span class="p">),</span>
+                                  <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dst_path</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
 
 <div class="viewcode-block" id="XmlCleaner.add_tag_remaps"><a class="viewcode-back" href="../../../copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.add_tag_remaps">[docs]</a>    <span class="k">def</span> <span class="nf">add_tag_remaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_type</span><span class="p">,</span> <span class="n">id_src</span><span class="p">,</span> <span class="n">id_dst</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

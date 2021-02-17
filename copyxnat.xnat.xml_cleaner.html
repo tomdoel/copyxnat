@@ -77,12 +77,17 @@
 
 <dl class="py attribute">
 <dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.TAGS_TO_DELETE">
-<code class="sig-name descname"><span class="pre">TAGS_TO_DELETE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'{http://nrg.wustl.edu/xnat}assessors',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}experiments',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}file',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}out',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}prearchivePath',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}resources',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}scans',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}sharing'}</span></em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.TAGS_TO_DELETE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">TAGS_TO_DELETE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'{http://nrg.wustl.edu/xnat}assessors',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}experiments',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}out',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}prearchivePath',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}resources',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}scans',</span> <span class="pre">'{http://nrg.wustl.edu/xnat}sharing'}</span></em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.TAGS_TO_DELETE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.TAGS_TO_REMAP">
 <code class="sig-name descname"><span class="pre">TAGS_TO_REMAP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'{http://icr.ac.uk/icr}subjectID':</span> <span class="pre">&lt;XnatType.subject:</span> <span class="pre">'subject'&gt;,</span> <span class="pre">'{http://nrg.wustl.edu/xnat}imageScan_ID':</span> <span class="pre">&lt;XnatType.scan:</span> <span class="pre">'scan'&gt;,</span> <span class="pre">'{http://nrg.wustl.edu/xnat}imageSession_ID':</span> <span class="pre">&lt;XnatType.experiment:</span> <span class="pre">'experiment'&gt;,</span> <span class="pre">'{http://nrg.wustl.edu/xnat}image_session_ID':</span> <span class="pre">&lt;XnatType.experiment:</span> <span class="pre">'experiment'&gt;,</span> <span class="pre">'{http://nrg.wustl.edu/xnat}scanID':</span> <span class="pre">&lt;XnatType.scan:</span> <span class="pre">'scan'&gt;,</span> <span class="pre">'{http://nrg.wustl.edu/xnat}session_id':</span> <span class="pre">&lt;XnatType.experiment:</span> <span class="pre">'experiment'&gt;,</span> <span class="pre">'{http://nrg.wustl.edu/xnat}subject_ID':</span> <span class="pre">&lt;XnatType.subject:</span> <span class="pre">'subject'&gt;}</span></em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.TAGS_TO_REMAP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.XNAT_FILE_TAG">
+<code class="sig-name descname"><span class="pre">XNAT_FILE_TAG</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'{http://nrg.wustl.edu/xnat}file'</span></em><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.XNAT_FILE_TAG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -118,10 +123,15 @@ ID describes
 
 <dl class="py method">
 <dt id="copyxnat.xnat.xml_cleaner.XmlCleaner.clean">
-<code class="sig-name descname"><span class="pre">clean</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_scan_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xml_cleaner.html#XmlCleaner.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.clean" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">clean</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_scan_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xml_cleaner.html#XmlCleaner.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xml_cleaner.XmlCleaner.clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove or XML remap tags that change between XNAT servers</p>
 <p>&#64;param xml_root: ElementTree root of the XML to remap
+&#64;param src_path: Archive path on source server
+&#64;param dst_path: Archive path on destination server
 &#64;param fix_scan_types: set to True to correct ambiguous scan types
+&#64;param remove_files: set to True to remove file tags. Only set to False
+if the files and file catalogs are already in place on the destination
+server at the correct locations
 &#64;return:</p>
 </dd></dl>
 
