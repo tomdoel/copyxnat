@@ -52,8 +52,10 @@ class Command:
 
 class CommandInputs:
     """Wrap global input variables for a command"""
-    def __init__(self, dst_xnat, reporter, app_settings, dst_project=None):
+    def __init__(self, dst_xnat, reporter, app_settings, rsync,
+                 dst_project=None):
         self.dst_project = dst_project
         self.app_settings = app_settings
         self.reporter = reporter
         self.dst_xnat = dst_xnat
+        self.rsync = rsync

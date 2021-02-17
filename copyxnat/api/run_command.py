@@ -4,6 +4,7 @@
 
 
 from copyxnat.pyreporter.pyreporter import PyReporter
+from copyxnat.utils.rsync import ProjectRsync
 from copyxnat.xnat.commands import CommandInputs
 from copyxnat.xnat.app_settings import AppSettings
 from copyxnat.xnat.copy_cache import CacheBox
@@ -108,6 +109,11 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         src_xnat_server=src_xnat_server,
         reporter=reporter)
 
+    rsync = ProjectRsync(
+        cache=src_xnat_server.cache,
+        src_params=src_xnat_server.params,
+        dst_params=dst_xnat_server.params,
+        reporter=reporter)
 
     global_results = {}
 
@@ -116,6 +122,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         inputs = CommandInputs(dst_xnat=dst_xnat_server,
                                dst_project=dst_project,
                                app_settings=app_settings,
+                               rsync=rsync,
                                reporter=reporter)
         project_command = command(inputs=inputs, scope=project)
 

@@ -16,7 +16,6 @@ from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 class XnatServerParams:
     """Encapsulates parameters used to access an XNAT server"""
 
-    def __init__(self, host, user, pwd, insecure=False):
     def __init__(self, host, user, pwd, rsync_user=None, insecure=False):
         if '://' not in host:
             host = 'https://' + host
