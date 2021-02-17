@@ -2,7 +2,8 @@
 
 """Command which copies XNAT projects between servers"""
 
-from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, XnatFile
+from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, XnatFile, \
+    XnatResource
 from copyxnat.xnat.commands import Command
 
 
@@ -23,6 +24,8 @@ class CopyCommand(Command):
         self.dst_datatypes = inputs.dst_xnat.datatypes()
         if inputs.app_settings.download_zips:
             self.ignore_filter = [XnatFile]
+        if inputs.app_settings.metadata_only:
+            self.ignore_filter = [XnatResource, XnatFile]
 
     def _run(self, xnat_item, from_parent):
 

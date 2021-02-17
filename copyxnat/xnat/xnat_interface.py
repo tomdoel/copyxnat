@@ -340,6 +340,9 @@ class XnatParentItem(XnatItem):
         return self.xml_cleaner.clean(
             xml_root=xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
+            src_path=self.project_server_path(),
+            dst_path=destination_parent.project_server_path(),
+            remove_files=not self.app_settings.metadata_only)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
         duplicate = super().copy(destination_parent, app_settings, dst_label)
@@ -365,7 +368,8 @@ class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
     def create(self, dst_item):
-        if self.app_settings.download_zips:
+        if self.app_settings.download_zips and not \
+                self.app_settings.metadata_only:
             folder_path = self.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
         else:
@@ -378,7 +382,7 @@ class XnatFileContainerItem(XnatItem):
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
-        if not app_settings.download_zips:
+        if self.app_settings.metadata_only or not app_settings.download_zips:
             return folder_path
 
         return self.interface.download_zip_file(folder_path)
@@ -404,14 +408,14 @@ class XnatFile(XnatItem):
             os.remove(local_file)
 
     def copy(self, destination_parent, app_settings, dst_label=None):
-        if app_settings.download_zips:
+        if app_settings.download_zips or self.app_settings.metadata_only:
             return None
         return super().copy(destination_parent=destination_parent,
                             app_settings=app_settings,
                             dst_label=dst_label)
 
     def export(self, app_settings):
-        if app_settings.download_zips:
+        if app_settings.download_zips or self.app_settings.metadata_only:
             return None
 
         folder_path = self.cache.make_output_path()
@@ -624,9 +628,13 @@ class XnatProject(XnatParentItem):
             disallowed_ids=disallowed
         )
 
+        # Note: we do not try to remap files specified at the project level
         return self.xml_cleaner.clean(
             xml_root=cleaned_xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
+            src_path=None,
+            dst_path=None,
+            remove_files=True
         )
 
     def project_server_path(self):

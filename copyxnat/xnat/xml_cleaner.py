@@ -34,6 +34,8 @@ class XmlCleaner:
     XNAT_IMAGE_SCAN_DATA_TAG = '{http://nrg.wustl.edu/xnat}imageScanData'
     XNAT_OTHER_SCAN = 'xnat:OtherDicomScan'
 
+    XNAT_FILE_TAG = '{http://nrg.wustl.edu/xnat}file'
+
     TAGS_TO_REMAP = {
         '{http://icr.ac.uk/icr}subjectID': XnatType.subject,
         '{http://nrg.wustl.edu/xnat}subject_ID': XnatType.subject,
@@ -56,8 +58,7 @@ class XmlCleaner:
         '{http://nrg.wustl.edu/xnat}resources',
         '{http://nrg.wustl.edu/xnat}assessors',
         '{http://nrg.wustl.edu/xnat}prearchivePath',
-        '{http://nrg.wustl.edu/xnat}sharing',
-        '{http://nrg.wustl.edu/xnat}file'
+        '{http://nrg.wustl.edu/xnat}sharing'
     }
 
     MODALITY_TO_SCAN = {
@@ -121,12 +122,18 @@ class XmlCleaner:
             child.text = new_name
         return xml_root
 
-    def clean(self, xml_root, fix_scan_types):
+    def clean(self, xml_root, fix_scan_types, src_path, dst_path,
+              remove_files=True):
         """
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
+        @param src_path: Archive path on source server
+        @param dst_path: Archive path on destination server
         @param fix_scan_types: set to True to correct ambiguous scan types
+        @param remove_files: set to True to remove file tags. Only set to False
+        if the files and file catalogs are already in place on the destination
+        server at the correct locations
         @return:
         """
 
@@ -164,6 +171,22 @@ class XmlCleaner:
 
                 dst_value = tag_remap_dict[src_value]
                 child.text = dst_value
+
+        # File tags should be removed (if uploading files) or their paths
+        # rewritten (if files are already present in the correct locations)
+        for child in xml_root.findall(self.XNAT_FILE_TAG, self.NAMESPACES):
+            if remove_files:
+                xml_root.remove(child)
+            else:
+                if 'URI' in child.attrib:
+                    current = child.attrib['URI']
+                    if src_path not in current:
+                        raise RuntimeError('Unexpected server file path')
+                    self._reporter.log('Replacing path {}->{}'.format(src_path,
+                                                                      dst_path))
+                    new = current.replace('{}/'.format(src_path),
+                                          '{}/'.format(dst_path), 1)
+                    child.attrib['URI'] = new
 
         return xml_root
 
