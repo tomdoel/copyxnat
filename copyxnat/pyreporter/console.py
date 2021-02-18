@@ -3,10 +3,12 @@
 """Output text to the console"""
 
 
-class ConsoleCodes:
+class AnsiCodes:
     """ANSI sequences for console output operations"""
-    WARNING = '\33[93m'
-    ERROR = '\33[91m'
+    YELLOW = '\33[93m'
+    RED = '\33[91m'
+    GREEN = '\33[92m'
+    CYAN = '\33[96m'
     END = '\33[0m'
     CLEAR = '\33[K'
 
@@ -29,12 +31,17 @@ class Console:
             print()
         self._last_sticky_text = None
 
-    def text(self, message):
+    def text(self, message, color=None):
         """Output text without interfering with sticky text"""
-        print(message + ConsoleCodes.CLEAR)
+        if color:
+            text = color + message + AnsiCodes.END
+        else:
+            text = message
+        print(text + AnsiCodes.CLEAR)
         self._reprint_sticky()
 
     def _reprint_sticky(self):
         """Re-print sticky text"""
         if self._last_sticky_text:
-            print(self._last_sticky_text, end='\r', flush=True)
+            text = AnsiCodes.CYAN + self._last_sticky_text + AnsiCodes.END
+            print(text, end='\r', flush=True)
