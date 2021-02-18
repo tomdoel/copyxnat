@@ -37,7 +37,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     if not app_settings:
         app_settings = AppSettings()
 
-    cache_box = CacheBox(root_path=cache_dir)
+    cache_box = CacheBox(root_path=app_settings.data_dir)
     cache_type = command.CACHE_TYPE
 
     base_cache = cache_box.new_cache(cache_type=cache_type)

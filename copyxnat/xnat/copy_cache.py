@@ -10,8 +10,8 @@ from shutil import rmtree
 
 class CacheBox(object):
     """Controls caches on disk"""
-    def __init__(self, root_path=None):
-        self.root_path = root_path or os.path.join(expanduser("~"), 'copyxnat')
+    def __init__(self, root_path):
+        self.root_path = root_path
 
     def new_cache(self, cache_type):
         """Create a new cache within the main cache"""
