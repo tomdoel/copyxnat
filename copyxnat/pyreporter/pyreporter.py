@@ -40,18 +40,6 @@ class PyReporter(object):
         self._handlers = [self._print_handler]
         self._setup_logging(data_dir=data_dir, verbose=verbose)
 
-    def _setup_logging(self, data_dir, verbose):
-        log_dir = join(data_dir, 'logs')
-        if not exists(log_dir):
-            makedirs(log_dir)
-        log_file = join(self._log_dir, 'copyxnat.log')
-
-        level = logging.DEBUG if verbose else logging.INFO
-
-        # PyCharm inspection: https://youtrack.jetbrains.com/issue/PY-39762
-        # noinspection PyArgumentList
-        logging.basicConfig(filename=log_file, encoding='utf-8', level=level)
-
     def info(self, message):
         """Status message to show to end user"""
         self._output(prefix=self._INFO_PREFIX, message=message)
@@ -122,6 +110,19 @@ class PyReporter(object):
         print()
         self._message = None
         self._last_progress_text = None
+
+    def _setup_logging(self, data_dir, verbose):
+        log_dir = join(data_dir, 'logs')
+        if not exists(log_dir):
+            makedirs(log_dir)
+        log_file = join(self._log_dir, 'copyxnat.log')
+
+        level = logging.DEBUG if verbose else logging.INFO
+
+        # PyCharm inspection: https://youtrack.jetbrains.com/issue/PY-39762
+        # noinspection PyArgumentList
+        logging.basicConfig(filename=log_file, encoding='utf-8', level=level)
+
 
     def _output(self, prefix, message, colour=None):
         combined_prefix = prefix + self._SEPARATOR if prefix is not None \
