@@ -95,12 +95,12 @@ class PyReporter:
         self._progress = PyProgress()
 
     def info(self, message):
-        """Status message to show to end user"""
+        """Informational message which should be shown to the user"""
         logging.info(message)
         self._output(prefix=self._INFO_PREFIX, message=message)
 
     def output(self, message):
-        """A message to the user"""
+        """Print text to the console without a message prefix"""
         logging.info(message)
         self._output(prefix=None, message=message)
 
@@ -117,12 +117,15 @@ class PyReporter:
                      colour=PyReporterCodes.ERROR)
 
     def log(self, message):
-        """Message for logs but need not report to end user"""
+        """Message which should always be written to the log but not shown
+        to the end user unless debugging"""
         logging.info(message)
-        self._output(prefix=self._INFO_PREFIX, message=message)
+        if self.verbose:
+            self._output(prefix=self._INFO_PREFIX, message=message)
 
     def verbose_log(self, message):
-        """Message for logs only in verbose mode"""
+        """Message which can be ignored unless in verbose mode
+        """
         logging.debug(message)
         if self.verbose:
             self._output(prefix=self._VERBOSE_PREFIX, message=message)
