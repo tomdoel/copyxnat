@@ -13,7 +13,7 @@ from copyxnat.xnat.xnat_interface import XnatServer
 
 
 def run_command(command, src_params, dst_params=None, project_filter=None,
-                app_settings=None, verbose=False, backend='pyxnat',
+                app_settings=None, backend='pyxnat',
                 reporter=None):
     """Runs the command on the specified XNAT servers
 
@@ -25,13 +25,13 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     on the source and destination servers, the string should be of the form
     src_project_name:dst_project_name
     @param app_settings: Global settings; if None then defaults will be used
-    @param verbose: set to True for verbose output for debugging
     @param backend: the Python library used to interact with the XNAT
     servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
     """
     if not reporter:
-        reporter = PyReporter(data_dir=app_settings.data_dir, verbose=verbose)
+        reporter = PyReporter(data_dir=app_settings.data_dir,
+                              verbose=app_settings.verbose)
 
     if not app_settings:
         app_settings = AppSettings()

@@ -23,7 +23,8 @@ class AppSettings:
                  ignore_datatype_errors=False,
                  overwrite_existing=False,
                  transfer_mode=TransferMode.file,
-                 data_dir=None
+                 data_dir=None,
+                 verbose=False
                  ):
         """
         Create global application settings
@@ -38,6 +39,8 @@ class AppSettings:
         @param overwrite_existing: If True then overwrite existing data may be
         overwritten
         @param transfer_mode: See TransferMode enum
+        @param data_dir: Local directory for logs, downloads, cache files
+        @param verbose: True to show debugging output
         XNAT server
         """
         self.dry_run = dry_run
@@ -46,3 +49,4 @@ class AppSettings:
         self.overwrite_existing = overwrite_existing
         self.transfer_mode = TransferMode(transfer_mode)
         self.data_dir = data_dir or join(expanduser("~"), 'copyxnat')
+        self.verbose = verbose

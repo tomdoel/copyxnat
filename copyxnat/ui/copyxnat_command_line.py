@@ -181,13 +181,13 @@ def main(args=None):
         overwrite_existing=overwrite_existing,
         transfer_mode=transfer_mode,
         data_dir=args.cache_dir,
+        verbose=verbose
     )
 
     result = run_command(command=command,
                          src_params=src_params,
                          dst_params=dst_params,
                          project_filter=project_list,
-                         verbose=verbose,
                          app_settings=app_settings
                          )
 
