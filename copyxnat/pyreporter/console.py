@@ -20,7 +20,6 @@ class Console:
     def sticky_text(self, text):
         """Print sticky text, which will stay as final output line even if
         other text is printed"""
-        print('\r' + text, end='', flush=True)
         self._last_sticky_text = text
         self._reprint_sticky()
 
