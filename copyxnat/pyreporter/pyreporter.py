@@ -94,6 +94,18 @@ class PyReporter:
         self._setup_logging(data_dir=data_dir, verbose=verbose)
         self._progress = PyProgress()
 
+    def error(self, message):
+        """Error message to report to end user"""
+        logging.error(message)
+        self._output(prefix=self._ERROR_PREFIX, message=message,
+                     colour=PyReporterCodes.ERROR)
+
+    def warning(self, message):
+        """Warning message to report to end user"""
+        logging.warning(message)
+        self._output(prefix=self._WARN_PREFIX, message=message,
+                     colour=PyReporterCodes.WARNING)
+
     def info(self, message):
         """Informational message which should be shown to the user"""
         logging.info(message)
@@ -103,18 +115,6 @@ class PyReporter:
         """Print text to the console without a message prefix"""
         logging.info(message)
         self._output(prefix=None, message=message)
-
-    def warning(self, message):
-        """Warning message to report to end user"""
-        logging.warning(message)
-        self._output(prefix=self._WARN_PREFIX, message=message,
-                     colour=PyReporterCodes.WARNING)
-
-    def error(self, message):
-        """Error message to report to end user"""
-        logging.error(message)
-        self._output(prefix=self._ERROR_PREFIX, message=message,
-                     colour=PyReporterCodes.ERROR)
 
     def log(self, message):
         """Message which should always be written to the log but not shown
