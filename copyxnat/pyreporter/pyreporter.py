@@ -28,39 +28,41 @@ class PyReporter:
         self.verbose = verbose
         self._console = Console()
         self._progress = Progress(self._console)
-        self._file_logger = FileLogger(data_dir=data_dir, verbose=verbose)
-        self._console_logger = ConsoleLogger(self._console, verbose=verbose)
+        self._handlers = [
+            FileLogger(data_dir=data_dir, verbose=verbose),
+            ConsoleLogger(self._console, verbose=verbose)
+        ]
 
     def error(self, message):
         """Error message to report to end user"""
-        self._file_logger.error(message)
-        self._console_logger.error(message)
+        for handler in self._handlers:
+            handler.error(message)
 
     def warning(self, message):
         """Warning message to report to end user"""
-        self._file_logger.warning(message)
-        self._console_logger.warning(message)
+        for handler in self._handlers:
+            handler.warning(message)
 
     def info(self, message):
         """Informational message which should be shown to the user"""
-        self._file_logger.info(message)
-        self._console_logger.info(message)
+        for handler in self._handlers:
+            handler.info(message)
 
     def output(self, message):
         """Print text to the console without a message prefix"""
-        self._file_logger.output(message)
-        self._console_logger.output(message)
+        for handler in self._handlers:
+            handler.output(message)
 
     def log(self, message):
         """Message which should always be written to the log but not shown
         to the end user unless debugging"""
-        self._file_logger.log(message)
-        self._console_logger.log(message)
+        for handler in self._handlers:
+            handler.log(message)
 
     def debug(self, message):
         """Message which can be ignored unless in verbose mode"""
-        self._file_logger.debug(message)
-        self._console_logger.debug(message)
+        for handler in self._handlers:
+            handler.debug(message)
 
     def start_progress(self, message, max_iter):
         """Display a progress bar"""
