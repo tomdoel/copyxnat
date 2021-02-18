@@ -10,8 +10,7 @@ from os.path import join, exists
 class FileLogger:
     """Class for logging to a file"""
 
-    def __init__(self, data_dir, verbose=False):
-        self.verbose = verbose
+    def __init__(self, data_dir, verbose):
         self._setup_logging(data_dir=data_dir, verbose=verbose)
 
     @staticmethod

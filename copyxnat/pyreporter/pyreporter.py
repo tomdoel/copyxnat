@@ -1,16 +1,10 @@
 # coding=utf-8
 
 """Logging and user I/O"""
+from copyxnat.pyreporter.console import Console
+from copyxnat.pyreporter.console_logger import ConsoleLogger
 from copyxnat.pyreporter.file_logger import FileLogger
 from copyxnat.pyreporter.progress import Progress
-
-
-class PyReporterCodes:
-    """ANSI sequences for terminal output operations"""
-    WARNING = '\33[93m'
-    ERROR = '\33[91m'
-    END = '\33[0m'
-    CLEAR = '\33[K'
 
 
 class PyReporterError(RuntimeError):
@@ -32,44 +26,41 @@ class PyReporter:
 
     def __init__(self, data_dir, verbose=False):
         self.verbose = verbose
-        self._handlers = [self._print_handler]
-        self._progress = Progress()
+        self._console = Console()
+        self._progress = Progress(self._console)
         self._file_logger = FileLogger(data_dir=data_dir, verbose=verbose)
+        self._console_logger = ConsoleLogger(self._console, verbose=verbose)
 
     def error(self, message):
         """Error message to report to end user"""
         self._file_logger.error(message)
-        self._output(prefix=self._ERROR_PREFIX, message=message,
-                     colour=PyReporterCodes.ERROR)
+        self._console_logger.error(message)
 
     def warning(self, message):
         """Warning message to report to end user"""
         self._file_logger.warning(message)
-        self._output(prefix=self._WARN_PREFIX, message=message,
-                     colour=PyReporterCodes.WARNING)
+        self._console_logger.warning(message)
 
     def info(self, message):
         """Informational message which should be shown to the user"""
         self._file_logger.info(message)
-        self._output(prefix=self._INFO_PREFIX, message=message)
+        self._console_logger.info(message)
 
     def output(self, message):
         """Print text to the console without a message prefix"""
         self._file_logger.output(message)
-        self._output(prefix=None, message=message)
+        self._console_logger.output(message)
 
     def log(self, message):
         """Message which should always be written to the log but not shown
         to the end user unless debugging"""
         self._file_logger.log(message)
-        if self.verbose:
-            self._output(prefix=self._INFO_PREFIX, message=message)
+        self._console_logger.log(message)
 
     def debug(self, message):
         """Message which can be ignored unless in verbose mode"""
         self._file_logger.debug(message)
-        if self.verbose:
-            self._output(prefix=self._VERBOSE_PREFIX, message=message)
+        self._console_logger.debug(message)
 
     def start_progress(self, message, max_iter):
         """Display a progress bar"""
@@ -82,20 +73,3 @@ class PyReporter:
     def complete_progress(self):
         """Complete progress bar"""
         self._progress.complete_progress()
-
-    def _output(self, prefix, message, colour=None):
-        combined_prefix = prefix + self._SEPARATOR if prefix is not None \
-            else ''
-        if colour:
-            colour_prefix = colour
-            colour_suffix = PyReporterCodes.END
-        else:
-            colour_prefix = ''
-            colour_suffix = ''
-
-        self._print_handler(colour_prefix + combined_prefix + message +
-                            colour_suffix)
-
-    def _print_handler(self, message):
-        print(message + PyReporterCodes.CLEAR)
-        self._progress.reprint_progress()
