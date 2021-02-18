@@ -3,7 +3,7 @@
 """Class for logging to a file"""
 
 import logging
-from logging.handlers import RotatingFileHandler
+from datetime import datetime
 from os import makedirs
 from os.path import join, exists, isfile
 
@@ -44,17 +44,24 @@ class FileLogger:
         log_dir = join(data_dir, 'logs')
         if not exists(log_dir):
             makedirs(log_dir)
-        log_file = join(log_dir, 'copyxnat.log')
-        log_file_exists = isfile(log_file)
+
+        log_file = self._get_unique_filename(log_dir)
 
         self._logger = logging.getLogger(self.name)
         self._logger.setLevel(logging.DEBUG if verbose else logging.INFO)
 
-        handler = RotatingFileHandler(log_file, mode='a', backupCount=20,
-                                      delay=True)
+        handler = logging.FileHandler(log_file, mode='a')
         handler.setFormatter(
             logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
         self._logger.addHandler(handler)
 
-        if log_file_exists:
-            handler.doRollover()
+    @staticmethod
+    def _get_unique_filename(log_dir):
+        now_string = datetime.now().strftime('%d_%m_%Y_%H_%M_%S_')
+        log_file = join(log_dir, 'copyxnat_{}.log'.format(now_string))
+        suffix_index = 0
+        while isfile(log_file):
+            suffix_index += 1
+            log_file = join(log_dir, 'copyxnat_{}_{}.log'.format(now_string,
+                                                                suffix_index))
+        return log_file
