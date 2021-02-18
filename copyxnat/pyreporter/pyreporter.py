@@ -99,11 +99,6 @@ class PyReporter:
         logging.info(message)
         self._output(prefix=self._INFO_PREFIX, message=message)
 
-    def message(self, message):
-        """A message to the user"""
-        logging.info(message)
-        self._output(prefix='', message=message)
-
     def output(self, message):
         """A message to the user"""
         logging.info(message)
