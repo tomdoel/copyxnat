@@ -41,14 +41,10 @@
 <span></span><span class="c1"># coding=utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;Logging and user I/O&quot;&quot;&quot;</span>
-
-
-<div class="viewcode-block" id="PyReporterCodes"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporterCodes">[docs]</a><span class="k">class</span> <span class="nc">PyReporterCodes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;ANSI sequences for terminal output operations&quot;&quot;&quot;</span>
-    <span class="n">WARNING</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[93m&#39;</span>
-    <span class="n">ERROR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[91m&#39;</span>
-    <span class="n">END</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[0m&#39;</span>
-    <span class="n">CLEAR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[K&#39;</span></div>
+<span class="kn">from</span> <span class="nn">copyxnat.pyreporter.console</span> <span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span> <span class="nn">copyxnat.pyreporter.console_logger</span> <span class="kn">import</span> <span class="n">ConsoleLogger</span>
+<span class="kn">from</span> <span class="nn">copyxnat.pyreporter.file_logger</span> <span class="kn">import</span> <span class="n">FileLogger</span>
+<span class="kn">from</span> <span class="nn">copyxnat.pyreporter.progress</span> <span class="kn">import</span> <span class="n">Progress</span>
 
 
 <div class="viewcode-block" id="PyReporterError"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporterError">[docs]</a><span class="k">class</span> <span class="nc">PyReporterError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
@@ -60,7 +56,7 @@
 <span class="sd">    project processing to continue&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="PyReporter"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter">[docs]</a><span class="k">class</span> <span class="nc">PyReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PyReporter"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter">[docs]</a><span class="k">class</span> <span class="nc">PyReporter</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for custom reporting actions&quot;&quot;&quot;</span>
     <span class="n">_ERROR_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;ERROR&#39;</span>
     <span class="n">_WARN_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;WARNING&#39;</span>
@@ -68,113 +64,55 @@
     <span class="n">_VERBOSE_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;VERBOSE INFO (verbose)&#39;</span>
     <span class="n">_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;: &#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_print_handler</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_progress_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">Progress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span> <span class="o">=</span> <span class="n">FileLogger</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span> <span class="o">=</span> <span class="n">ConsoleLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyReporter.info"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Status message to show to end user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_INFO_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PyReporter.message"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.message">[docs]</a>    <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A message to the user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PyReporter.output"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A message to the user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
+<div class="viewcode-block" id="PyReporter.error"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Error message to report to end user&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.warning"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.warning">[docs]</a>    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Warning message to report to end user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_WARN_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
-                     <span class="n">colour</span><span class="o">=</span><span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyReporter.error"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">exception_type</span><span class="o">=</span><span class="n">PyReporterError</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Error message to report to end user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ERROR_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
-                     <span class="n">colour</span><span class="o">=</span><span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<div class="viewcode-block" id="PyReporter.info"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Informational message which should be shown to the user&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
-        <span class="k">raise</span> <span class="n">exception_type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+<div class="viewcode-block" id="PyReporter.output"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print text to the console without a message prefix&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.log"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Message for logs but need not report to end user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_INFO_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Message which should always be written to the log but not shown</span>
+<span class="sd">        to the end user unless debugging&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyReporter.verbose_log"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.verbose_log">[docs]</a>    <span class="k">def</span> <span class="nf">verbose_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Message for logs only in verbose mode&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_VERBOSE_PREFIX</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">colour</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">combined_prefix</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SEPARATOR</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
-            <span class="k">else</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">colour</span><span class="p">:</span>
-            <span class="n">colour_prefix</span> <span class="o">=</span> <span class="n">colour</span>
-            <span class="n">colour_suffix</span> <span class="o">=</span> <span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">END</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">colour_prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-            <span class="n">colour_suffix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_handler</span><span class="p">(</span><span class="n">colour_prefix</span> <span class="o">+</span> <span class="n">combined_prefix</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span>
-                            <span class="n">colour_suffix</span><span class="p">)</span>
+<div class="viewcode-block" id="PyReporter.debug"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.debug">[docs]</a>    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Message which can be ignored unless in verbose mode&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.start_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.start_progress">[docs]</a>    <span class="k">def</span> <span class="nf">start_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Display a progress bar</span>
-<span class="sd">        @param message: message to display in the progress bar</span>
-<span class="sd">        @param max_iter: total number of iterations</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div>
+        <span class="sd">&quot;&quot;&quot;Display a progress bar&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">start_progress</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.next_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.next_progress">[docs]</a>    <span class="k">def</span> <span class="nf">next_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Display a progress bar</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="mi">50</span>
-            <span class="n">num_bars</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span><span class="p">)</span> <span class="k">if</span> \
-                <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">width</span>
-            <span class="n">bar_str</span> <span class="o">=</span> <span class="s1">&#39;█&#39;</span><span class="o">*</span><span class="n">num_bars</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">num_bars</span><span class="p">)</span>
-            <span class="n">progress_text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="si">{}</span><span class="s1"> |</span><span class="si">{}</span><span class="s1">| </span><span class="si">{:3d}</span><span class="s1">/</span><span class="si">{}</span><span class="s1"> done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">,</span>
-                                                             <span class="n">bar_str</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span>
-                                                             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">progress_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">progress_text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_progress</span><span class="p">(</span><span class="n">progress_text</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_print_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_text</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_progress_text</span> <span class="o">=</span> <span class="n">progress_text</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reprint_progress</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_reprint_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_progress_text</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_progress_text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Update existing progress bar to next step&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyReporter.complete_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.complete_progress">[docs]</a>    <span class="k">def</span> <span class="nf">complete_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Complete a progress bar</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_progress_text</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-    <span class="k">def</span> <span class="nf">_print_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="n">PyReporterCodes</span><span class="o">.</span><span class="n">CLEAR</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reprint_progress</span><span class="p">()</span></div>
+        <span class="sd">&quot;&quot;&quot;Complete progress bar&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">complete_progress</span><span class="p">()</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

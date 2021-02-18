@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.config.app_settings module &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="copyxnat.config.server_params module" href="copyxnat.config.server_params.html" />
+    <link rel="prev" title="copyxnat.config package" href="copyxnat.config.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.config.server_params.html" title="copyxnat.config.server_params module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.config.html" title="copyxnat.config package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.config.html" accesskey="U">copyxnat.config package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.config.app_settings module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-copyxnat.config.app_settings">
+<span id="copyxnat-config-app-settings-module"></span><h1>copyxnat.config.app_settings module<a class="headerlink" href="#module-copyxnat.config.app_settings" title="Permalink to this headline">¶</a></h1>
+<p>Wrap global settings for copyxnat</p>
+<dl class="py class">
+<dt id="copyxnat.config.app_settings.AppSettings">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.config.app_settings.</span></code><code class="sig-name descname"><span class="pre">AppSettings</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fix_scan_types=False</span></em>, <em class="sig-param"><span class="pre">dry_run=False</span></em>, <em class="sig-param"><span class="pre">ignore_datatype_errors=False</span></em>, <em class="sig-param"><span class="pre">overwrite_existing=False</span></em>, <em class="sig-param"><span class="pre">transfer_mode=&lt;TransferMode.file:</span> <span class="pre">'file'&gt;</span></em>, <em class="sig-param"><span class="pre">data_dir=None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/config/app_settings.html#AppSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.config.app_settings.AppSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrap global settings for this utility</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="copyxnat.config.app_settings.TransferMode">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.config.app_settings.</span></code><code class="sig-name descname"><span class="pre">TransferMode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/config/app_settings.html#TransferMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.config.app_settings.TransferMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Defines how resource files (images etc) will be transferred</p>
+<dl class="py attribute">
+<dt id="copyxnat.config.app_settings.TransferMode.file">
+<code class="sig-name descname"><span class="pre">file</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'file'</span></em><a class="headerlink" href="#copyxnat.config.app_settings.TransferMode.file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.config.app_settings.TransferMode.meta">
+<code class="sig-name descname"><span class="pre">meta</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'meta'</span></em><a class="headerlink" href="#copyxnat.config.app_settings.TransferMode.meta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.config.app_settings.TransferMode.rsync">
+<code class="sig-name descname"><span class="pre">rsync</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'rsync'</span></em><a class="headerlink" href="#copyxnat.config.app_settings.TransferMode.rsync" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.config.app_settings.TransferMode.zip">
+<code class="sig-name descname"><span class="pre">zip</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'zip'</span></em><a class="headerlink" href="#copyxnat.config.app_settings.TransferMode.zip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/project-icon.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyxnat.config.html"
+                        title="previous chapter">copyxnat.config package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyxnat.config.server_params.html"
+                        title="next chapter">copyxnat.config.server_params module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/copyxnat.config.app_settings.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.config.server_params.html" title="copyxnat.config.server_params module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.config.html" title="copyxnat.config package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.config.html" >copyxnat.config package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.config.app_settings module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+  </body>
+</html>

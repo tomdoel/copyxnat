@@ -1,0 +1,7 @@
+copyxnat.pyreporter.console\_logger module
+==========================================
+
+.. automodule:: copyxnat.pyreporter.console_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:

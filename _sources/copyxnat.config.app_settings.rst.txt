@@ -1,0 +1,7 @@
+copyxnat.config.app\_settings module
+====================================
+
+.. automodule:: copyxnat.config.app_settings
+   :members:
+   :undoc-members:
+   :show-inheritance:

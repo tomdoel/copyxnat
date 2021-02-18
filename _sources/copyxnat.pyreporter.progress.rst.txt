@@ -1,0 +1,7 @@
+copyxnat.pyreporter.progress module
+===================================
+
+.. automodule:: copyxnat.pyreporter.progress
+   :members:
+   :undoc-members:
+   :show-inheritance:

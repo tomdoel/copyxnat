@@ -1,0 +1,7 @@
+copyxnat.config.server\_params module
+=====================================
+
+.. automodule:: copyxnat.config.server_params
+   :members:
+   :undoc-members:
+   :show-inheritance:

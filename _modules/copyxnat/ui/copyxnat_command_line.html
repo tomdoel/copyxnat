@@ -49,8 +49,8 @@
 <span class="kn">from</span> <span class="nn">copyxnat.commands</span> <span class="kn">import</span> <span class="n">find_commands</span>
 <span class="kn">from</span> <span class="nn">copyxnat.api.run_command</span> <span class="kn">import</span> <span class="n">run_command</span>
 <span class="kn">from</span> <span class="nn">copyxnat.utils.versioning</span> <span class="kn">import</span> <span class="n">get_version_string</span>
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatServerParams</span>
-<span class="kn">from</span> <span class="nn">copyxnat.xnat.app_settings</span> <span class="kn">import</span> <span class="n">AppSettings</span>
+<span class="kn">from</span> <span class="nn">copyxnat.config.server_params</span> <span class="kn">import</span> <span class="n">XnatServerParams</span>
+<span class="kn">from</span> <span class="nn">copyxnat.config.app_settings</span> <span class="kn">import</span> <span class="n">AppSettings</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../copyxnat.ui.copyxnat_command_line.html#copyxnat.ui.copyxnat_command_line.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -131,7 +131,6 @@
                              <span class="s2">&quot; to have manually transferred the files over &quot;</span>
                              <span class="s2">&quot;first.&quot;</span>
                         <span class="p">)</span>
-
 
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
@@ -220,7 +219,8 @@
         <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">ignore_datatype_errors</span><span class="p">,</span>
         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
         <span class="n">overwrite_existing</span><span class="o">=</span><span class="n">overwrite_existing</span><span class="p">,</span>
-        <span class="n">transfer_mode</span><span class="o">=</span><span class="n">transfer_mode</span>
+        <span class="n">transfer_mode</span><span class="o">=</span><span class="n">transfer_mode</span><span class="p">,</span>
+        <span class="n">data_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>

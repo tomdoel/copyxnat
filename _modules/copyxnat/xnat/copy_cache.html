@@ -42,16 +42,16 @@
 
 <span class="sd">&quot;&quot;&quot;Abstraction of disk cache used to store XNAT files&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">expanduser</span>
 <span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">cElementTree</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">exists</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">makedirs</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">rmtree</span>
 
 
 <div class="viewcode-block" id="CacheBox"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CacheBox">[docs]</a><span class="k">class</span> <span class="nc">CacheBox</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Controls caches on disk&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="n">root_path</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="n">root_path</span>
 
 <div class="viewcode-block" id="CacheBox.new_cache"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CacheBox.new_cache">[docs]</a>    <span class="k">def</span> <span class="nf">new_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new cache within the main cache&quot;&quot;&quot;</span>
@@ -72,15 +72,15 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name_i</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name_i</span><span class="p">)</span>
-            <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_rel_path</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
-            <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
+            <span class="n">rel_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">parent_rel_path</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
                 <span class="n">name_i</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name_i</span><span class="p">)</span>
-                <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_rel_path</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
+                <span class="n">rel_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">parent_rel_path</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">full_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_rel_path</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">rel_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">parent_rel_path</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">rel_path</span> <span class="o">=</span> <span class="n">rel_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache_level</span> <span class="o">=</span> <span class="n">cache_level</span>
@@ -107,7 +107,7 @@
 <div class="viewcode-block" id="CopyCache.write_xml"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.write_xml">[docs]</a>    <span class="k">def</span> <span class="nf">write_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_root</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write XML to a file in this cache&quot;&quot;&quot;</span>
         <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_output_path</span><span class="p">()</span>
-        <span class="n">full_xml_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">full_xml_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
             <span class="n">cElementTree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">xml_root</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">full_xml_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_xml_path</span></div>
@@ -119,19 +119,19 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not making directory </span><span class="si">{}</span><span class="s1"> due to read-only mode&#39;</span><span class="o">.</span>
                   <span class="nb">format</span><span class="p">(</span><span class="n">full_path</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
+                <span class="n">makedirs</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_path</span></div>
 
 <div class="viewcode-block" id="CopyCache.full_path"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.full_path">[docs]</a>    <span class="k">def</span> <span class="nf">full_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return absolute path to this cache&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_path</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CopyCache.clear"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete contents of cache&quot;&quot;&quot;</span>
         <span class="n">cache_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cache_path</span><span class="p">):</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">())</span></div></div>
+        <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">cache_path</span><span class="p">):</span>
+            <span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">())</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

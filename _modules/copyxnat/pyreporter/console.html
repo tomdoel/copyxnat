@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.pyreporter.console &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.pyreporter.console</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.pyreporter.console</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;Output text to the console&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="AnsiCodes"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.AnsiCodes">[docs]</a><span class="k">class</span> <span class="nc">AnsiCodes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;ANSI sequences for console output operations&quot;&quot;&quot;</span>
+    <span class="n">YELLOW</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[93m&#39;</span>
+    <span class="n">RED</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[91m&#39;</span>
+    <span class="n">GREEN</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[92m&#39;</span>
+    <span class="n">CYAN</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[96m&#39;</span>
+    <span class="n">END</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[0m&#39;</span>
+    <span class="n">CLEAR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\33</span><span class="s1">[K&#39;</span></div>
+
+
+<div class="viewcode-block" id="Console"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.Console">[docs]</a><span class="k">class</span> <span class="nc">Console</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Output text to the console&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Console.sticky_text"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.Console.sticky_text">[docs]</a>    <span class="k">def</span> <span class="nf">sticky_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print sticky text, which will stay as final output line even if</span>
+<span class="sd">        other text is printed&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reprint_sticky</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Console.end_sticky"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.Console.end_sticky">[docs]</a>    <span class="k">def</span> <span class="nf">end_sticky</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear sticky text, but keep previous sticky text in console&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Console.text"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.Console.text">[docs]</a>    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Output text without interfering with sticky text&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">color</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">END</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">text</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">CLEAR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reprint_sticky</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_reprint_sticky</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Re-print sticky text&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">CYAN</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">END</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.pyreporter.console</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+  </body>
+</html>

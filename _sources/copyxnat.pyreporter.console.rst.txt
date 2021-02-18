@@ -1,7 +1,7 @@
-copyxnat.xnat.app\_settings module
+copyxnat.pyreporter.console module
 ==================================
 
-.. automodule:: copyxnat.xnat.app_settings
+.. automodule:: copyxnat.pyreporter.console
    :members:
    :undoc-members:
    :show-inheritance:

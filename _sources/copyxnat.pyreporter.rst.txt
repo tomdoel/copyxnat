@@ -7,6 +7,10 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   copyxnat.pyreporter.console
+   copyxnat.pyreporter.console_logger
+   copyxnat.pyreporter.file_logger
+   copyxnat.pyreporter.progress
    copyxnat.pyreporter.pyreporter
 
 Module contents

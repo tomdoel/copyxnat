@@ -1,0 +1,19 @@
+copyxnat.config package
+=======================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   copyxnat.config.app_settings
+   copyxnat.config.server_params
+
+Module contents
+---------------
+
+.. automodule:: copyxnat.config
+   :members:
+   :undoc-members:
+   :show-inheritance:

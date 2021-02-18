@@ -9,6 +9,7 @@ Subpackages
 
    copyxnat.api
    copyxnat.commands
+   copyxnat.config
    copyxnat.pyreporter
    copyxnat.ui
    copyxnat.utils

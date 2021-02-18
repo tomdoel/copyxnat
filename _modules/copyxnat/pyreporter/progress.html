@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.pyreporter.progress &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.pyreporter.progress</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.pyreporter.progress</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;Class for displaying a progress bar&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.progress.html#copyxnat.pyreporter.progress.Progress">[docs]</a><span class="k">class</span> <span class="nc">Progress</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for displaying a progress bar&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span> <span class="o">=</span> <span class="n">console</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Progress.start_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.progress.html#copyxnat.pyreporter.progress.Progress.start_progress">[docs]</a>    <span class="k">def</span> <span class="nf">start_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display a progress bar</span>
+<span class="sd">        @param message: message to display in the progress bar</span>
+<span class="sd">        @param max_iter: total number of iterations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Progress.next_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.progress.html#copyxnat.pyreporter.progress.Progress.next_progress">[docs]</a>    <span class="k">def</span> <span class="nf">next_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update existing progress bar to next step&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="mi">50</span>
+            <span class="n">num_bars</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span><span class="p">)</span> <span class="k">if</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">width</span>
+            <span class="n">bar_str</span> <span class="o">=</span> <span class="s1">&#39;█&#39;</span><span class="o">*</span><span class="n">num_bars</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">num_bars</span><span class="p">)</span>
+            <span class="n">progress_text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="si">{}</span><span class="s1"> |</span><span class="si">{}</span><span class="s1">| </span><span class="si">{:3d}</span><span class="s1">/</span><span class="si">{}</span><span class="s1"> done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">,</span>
+                                                             <span class="n">bar_str</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span>
+                                                             <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">progress_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="o">.</span><span class="n">sticky_text</span><span class="p">(</span><span class="n">progress_text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Progress.complete_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.progress.html#copyxnat.pyreporter.progress.Progress.complete_progress">[docs]</a>    <span class="k">def</span> <span class="nf">complete_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Complete progress bar&quot;&quot;&quot;</span>
+
+        <span class="c1"># Make sure the progress bar shows as complete</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iter_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span>
+
+        <span class="c1"># End the updating of this progress bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="o">.</span><span class="n">end_sticky</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.pyreporter.progress</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+  </body>
+</html>

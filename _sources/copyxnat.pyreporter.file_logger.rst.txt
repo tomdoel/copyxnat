@@ -1,0 +1,7 @@
+copyxnat.pyreporter.file\_logger module
+=======================================
+
+.. automodule:: copyxnat.pyreporter.file_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:

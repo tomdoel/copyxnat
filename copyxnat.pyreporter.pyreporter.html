@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="copyxnat.ui package" href="copyxnat.ui.html" />
-    <link rel="prev" title="copyxnat.pyreporter package" href="copyxnat.pyreporter.html" /> 
+    <link rel="prev" title="copyxnat.pyreporter.progress module" href="copyxnat.pyreporter.progress.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -32,7 +32,7 @@
           <a href="copyxnat.ui.html" title="copyxnat.ui package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.pyreporter.html" title="copyxnat.pyreporter package"
+          <a href="copyxnat.pyreporter.progress.html" title="copyxnat.pyreporter.progress module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
@@ -60,63 +60,56 @@ project processing to continue</p>
 
 <dl class="py class">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.pyreporter.pyreporter.</span></code><code class="sig-name descname"><span class="pre">PyReporter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.pyreporter.pyreporter.</span></code><code class="sig-name descname"><span class="pre">PyReporter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for custom reporting actions</p>
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.complete_progress">
 <code class="sig-name descname"><span class="pre">complete_progress</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.complete_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.complete_progress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Complete a progress bar</p>
+<dd><p>Complete progress bar</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.pyreporter.pyreporter.PyReporter.debug">
+<code class="sig-name descname"><span class="pre">debug</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message which can be ignored unless in verbose mode</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.error">
-<code class="sig-name descname"><span class="pre">error</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">message</span></em>, <em class="sig-param"><span class="pre">exception_type=&lt;class</span> <span class="pre">'copyxnat.pyreporter.pyreporter.PyReporterError'&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.error" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">error</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Error message to report to end user</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.info">
 <code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Status message to show to end user</p>
+<dd><p>Informational message which should be shown to the user</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.log">
 <code class="sig-name descname"><span class="pre">log</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Message for logs but need not report to end user</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporter.message">
-<code class="sig-name descname"><span class="pre">message</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.message" title="Permalink to this definition">¶</a></dt>
-<dd><p>A message to the user</p>
+<dd><p>Message which should always be written to the log but not shown
+to the end user unless debugging</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.next_progress">
 <code class="sig-name descname"><span class="pre">next_progress</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.next_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.next_progress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display a progress bar</p>
+<dd><p>Update existing progress bar to next step</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.output">
 <code class="sig-name descname"><span class="pre">output</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.output" title="Permalink to this definition">¶</a></dt>
-<dd><p>A message to the user</p>
+<dd><p>Print text to the console without a message prefix</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="copyxnat.pyreporter.pyreporter.PyReporter.start_progress">
 <code class="sig-name descname"><span class="pre">start_progress</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.start_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.start_progress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display a progress bar
-&#64;param message: message to display in the progress bar
-&#64;param max_iter: total number of iterations</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporter.verbose_log">
-<code class="sig-name descname"><span class="pre">verbose_log</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.verbose_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.verbose_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Message for logs only in verbose mode</p>
+<dd><p>Display a progress bar</p>
 </dd></dl>
 
 <dl class="py method">
@@ -124,33 +117,6 @@ project processing to continue</p>
 <code class="sig-name descname"><span class="pre">warning</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporter.warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporter.warning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Warning message to report to end user</p>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporterCodes">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.pyreporter.pyreporter.</span></code><code class="sig-name descname"><span class="pre">PyReporterCodes</span></code><a class="reference internal" href="_modules/copyxnat/pyreporter/pyreporter.html#PyReporterCodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporterCodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>ANSI sequences for terminal output operations</p>
-<dl class="py attribute">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporterCodes.CLEAR">
-<code class="sig-name descname"><span class="pre">CLEAR</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'\x1b[K'</span></em><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporterCodes.CLEAR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporterCodes.END">
-<code class="sig-name descname"><span class="pre">END</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'\x1b[0m'</span></em><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporterCodes.END" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporterCodes.ERROR">
-<code class="sig-name descname"><span class="pre">ERROR</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'\x1b[91m'</span></em><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporterCodes.ERROR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="copyxnat.pyreporter.pyreporter.PyReporterCodes.WARNING">
-<code class="sig-name descname"><span class="pre">WARNING</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'\x1b[93m'</span></em><a class="headerlink" href="#copyxnat.pyreporter.pyreporter.PyReporterCodes.WARNING" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -174,8 +140,8 @@ project processing to continue</p>
               <img class="logo" src="_static/project-icon.png" alt="Logo"/>
             </a></p>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="copyxnat.pyreporter.html"
-                        title="previous chapter">copyxnat.pyreporter package</a></p>
+  <p class="topless"><a href="copyxnat.pyreporter.progress.html"
+                        title="previous chapter">copyxnat.pyreporter.progress module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="copyxnat.ui.html"
                         title="next chapter">copyxnat.ui package</a></p>
@@ -213,7 +179,7 @@ project processing to continue</p>
           <a href="copyxnat.ui.html" title="copyxnat.ui package"
              >next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.pyreporter.html" title="copyxnat.pyreporter package"
+          <a href="copyxnat.pyreporter.progress.html" title="copyxnat.pyreporter.progress module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>

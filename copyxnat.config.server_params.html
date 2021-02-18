@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>copyxnat.xnat package &#8212; CopyXnat  documentation</title>
+    <title>copyxnat.config.server_params module &#8212; CopyXnat  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -16,8 +16,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="copyxnat.xnat.commands module" href="copyxnat.xnat.commands.html" />
-    <link rel="prev" title="copyxnat.utils.versioning module" href="copyxnat.utils.versioning.html" /> 
+    <link rel="next" title="copyxnat.pyreporter package" href="copyxnat.pyreporter.html" />
+    <link rel="prev" title="copyxnat.config.app_settings module" href="copyxnat.config.app_settings.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,15 +29,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.xnat.commands.html" title="copyxnat.xnat.commands module"
+          <a href="copyxnat.pyreporter.html" title="copyxnat.pyreporter package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.utils.versioning.html" title="copyxnat.utils.versioning module"
+          <a href="copyxnat.config.app_settings.html" title="copyxnat.config.app_settings module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="copyxnat.html" accesskey="U">copyxnat package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat package</a></li> 
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.config.html" accesskey="U">copyxnat.config package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.config.server_params module</a></li> 
       </ul>
     </div>  
 
@@ -46,23 +47,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="copyxnat-xnat-package">
-<h1>copyxnat.xnat package<a class="headerlink" href="#copyxnat-xnat-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="copyxnat.xnat.commands.html">copyxnat.xnat.commands module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="copyxnat.xnat.copy_cache.html">copyxnat.xnat.copy_cache module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="copyxnat.xnat.xml_cleaner.html">copyxnat.xnat.xml_cleaner module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="copyxnat.xnat.xnat_interface.html">copyxnat.xnat.xnat_interface module</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="module-copyxnat.xnat">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-copyxnat.xnat" title="Permalink to this headline">¶</a></h2>
-<p>xnat</p>
-</div>
+  <div class="section" id="module-copyxnat.config.server_params">
+<span id="copyxnat-config-server-params-module"></span><h1>copyxnat.config.server_params module<a class="headerlink" href="#module-copyxnat.config.server_params" title="Permalink to this headline">¶</a></h1>
+<p>Encapsulates parameters used to access an XNAT server</p>
+<dl class="py class">
+<dt id="copyxnat.config.server_params.XnatServerParams">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.config.server_params.</span></code><code class="sig-name descname"><span class="pre">XnatServerParams</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rsync_user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insecure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/config/server_params.html#XnatServerParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.config.server_params.XnatServerParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Encapsulates parameters used to access an XNAT server</p>
+</dd></dl>
+
 </div>
 
 
@@ -75,25 +69,16 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/project-icon.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">copyxnat.xnat package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-copyxnat.xnat">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
-  <p class="topless"><a href="copyxnat.utils.versioning.html"
-                        title="previous chapter">copyxnat.utils.versioning module</a></p>
+  <p class="topless"><a href="copyxnat.config.app_settings.html"
+                        title="previous chapter">copyxnat.config.app_settings module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="copyxnat.xnat.commands.html"
-                        title="next chapter">copyxnat.xnat.commands module</a></p>
+  <p class="topless"><a href="copyxnat.pyreporter.html"
+                        title="next chapter">copyxnat.pyreporter package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/copyxnat.xnat.rst.txt"
+      <li><a href="_sources/copyxnat.config.server_params.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -121,15 +106,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.xnat.commands.html" title="copyxnat.xnat.commands module"
+          <a href="copyxnat.pyreporter.html" title="copyxnat.pyreporter package"
              >next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.utils.versioning.html" title="copyxnat.utils.versioning module"
+          <a href="copyxnat.config.app_settings.html" title="copyxnat.config.app_settings module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat package</a></li> 
+          <li class="nav-item nav-item-3"><a href="copyxnat.config.html" >copyxnat.config package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.config.server_params module</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

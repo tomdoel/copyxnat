@@ -7,7 +7,6 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   copyxnat.xnat.app_settings
    copyxnat.xnat.commands
    copyxnat.xnat.copy_cache
    copyxnat.xnat.xml_cleaner
