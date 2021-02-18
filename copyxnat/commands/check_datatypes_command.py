@@ -56,12 +56,12 @@ class CheckDatatypesCommand(Command):
 
             if datatype not in self.outputs['datatypes_on_dest']:
                 self.outputs['missing_session_datatypes'].add(datatype)
-                self.inputs.reporter.verbose_log(
+                self.inputs.reporter.debug(
                     'Session datatype {} needs to be added to '
                     'destination server. '.format(datatype))
 
             else:
-                self.inputs.reporter.verbose_log(
+                self.inputs.reporter.debug(
                     'OK: session datatype {} is on destination server.'.
                         format(datatype))
 
@@ -70,17 +70,17 @@ class CheckDatatypesCommand(Command):
 
             if datatype not in self.outputs['datatypes_on_dest']:
                 self.outputs['missing_assessor_datatypes'].add(datatype)
-                self.inputs.reporter.verbose_log(
+                self.inputs.reporter.debug(
                     'Assessor datatype {} needs to be added to '
                     'destination server. '.format(datatype))
 
             else:
-                self.inputs.reporter.verbose_log(
+                self.inputs.reporter.debug(
                     'OK: assessor datatype {} is on destination server.'.
                         format(datatype))
 
         if datatype:
-            self.inputs.reporter.verbose_log(
+            self.inputs.reporter.debug(
                 'Known datatype for {} {} {}'.format(xnat_item._name,  # pylint: disable=protected-access
                                                      xnat_item.label,
                                                      xnat_item.full_name))
@@ -90,7 +90,7 @@ class CheckDatatypesCommand(Command):
                                         xnat_item.label,
                                         xnat_item.full_name)
 
-            self.inputs.reporter.verbose_log('Empty datatype for {}'.format(
+            self.inputs.reporter.debug('Empty datatype for {}'.format(
                 item_id))
             self.outputs['ids_with_empty_datatypes'].add(item_id)
 

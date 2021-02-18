@@ -45,7 +45,7 @@ class Command:
 
     def print_results(self):
         """Output results to user"""
-        self.inputs.reporter.verbose_log(
+        self.inputs.reporter.debug(
             "Result of running {} on {}: {}".format(self.NAME, self.scope,  ## pylint:disable=no-member
                                                     self.outputs))
 

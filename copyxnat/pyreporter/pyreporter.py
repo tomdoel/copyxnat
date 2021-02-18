@@ -123,7 +123,7 @@ class PyReporter:
         if self.verbose:
             self._output(prefix=self._INFO_PREFIX, message=message)
 
-    def verbose_log(self, message):
+    def debug(self, message):
         """Message which can be ignored unless in verbose mode
         """
         logging.debug(message)

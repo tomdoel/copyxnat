@@ -60,7 +60,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     else:
         dst_xnat = None
 
-    reporter.verbose_log('Running {} command'.format(command.NAME))
+    reporter.debug('Running {} command'.format(command.NAME))
 
     result = run_command_on_servers(command=command,
                                     src_xnat_server=src_xnat,
@@ -75,7 +75,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         dst_xnat.logout()
 
     output_path = src_xnat.cache.full_path()
-    reporter.verbose_log('Output files are in {}'.format(output_path))
+    reporter.debug('Output files are in {}'.format(output_path))
     return result
 
 

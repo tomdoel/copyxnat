@@ -75,7 +75,7 @@ class PyXnatServer(object):
             if warn_on_fail:
                 reporter.warning(message)
             else:
-                reporter.verbose_log(message)
+                reporter.debug(message)
             return False
 
 
@@ -194,7 +194,7 @@ class PyXnatResourceBase(PyXnatItem):
                 overwrite=overwrite
             )
         else:
-            reporter.verbose_log("Resource is empty or zip download is "
+            reporter.debug("Resource is empty or zip download is "
                                  "disabled")
 
     def download_zip_file(self, save_dir):
