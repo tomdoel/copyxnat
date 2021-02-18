@@ -1,7 +1,9 @@
 # coding=utf-8
 
 """Logging and user I/O"""
-from os.path import join
+import logging
+from os import makedirs
+from os.path import join, exists
 
 
 class PyReporterCodes:
@@ -31,12 +33,24 @@ class PyReporter(object):
 
     def __init__(self, data_dir, verbose=False):
         self.verbose = verbose
-        self._log_dir = join(data_dir, 'logs')
-        self._handlers = [self._print_handler]
         self._iter_num = None
         self._max_iter = None
         self._message = None
         self._last_progress_text = None
+        self._handlers = [self._print_handler]
+        self._setup_logging(data_dir=data_dir, verbose=verbose)
+
+    def _setup_logging(self, data_dir, verbose):
+        log_dir = join(data_dir, 'logs')
+        if not exists(log_dir):
+            makedirs(log_dir)
+        log_file = join(self._log_dir, 'copyxnat.log')
+
+        level = logging.DEBUG if verbose else logging.INFO
+
+        # PyCharm inspection: https://youtrack.jetbrains.com/issue/PY-39762
+        # noinspection PyArgumentList
+        logging.basicConfig(filename=log_file, encoding='utf-8', level=level)
 
     def info(self, message):
         """Status message to show to end user"""
@@ -71,19 +85,6 @@ class PyReporter(object):
         if self.verbose:
             self._output(prefix=self._VERBOSE_PREFIX, message=message)
 
-    def _output(self, prefix, message, colour=None):
-        combined_prefix = prefix + self._SEPARATOR if prefix is not None \
-            else ''
-        if colour:
-            colour_prefix = colour
-            colour_suffix = PyReporterCodes.END
-        else:
-            colour_prefix = ''
-            colour_suffix = ''
-
-        self._print_handler(colour_prefix + combined_prefix + message +
-                            colour_suffix)
-
     def start_progress(self, message, max_iter):
         """
         Display a progress bar
@@ -96,9 +97,7 @@ class PyReporter(object):
         self.next_progress()
 
     def next_progress(self):
-        """
-        Display a progress bar
-        """
+        """Update existing progress bar to next step"""
         if self._iter_num is not None and self._max_iter is not None:
             width = 50
             num_bars = int(width*self._iter_num//self._max_iter) if \
@@ -116,6 +115,27 @@ class PyReporter(object):
         print('\r' + progress_text, end='', flush=True)
         self._print_progress(progress_text)
 
+    def complete_progress(self):
+        """Complete progress bar"""
+        self._iter_num = self._max_iter
+        self.next_progress()
+        print()
+        self._message = None
+        self._last_progress_text = None
+
+    def _output(self, prefix, message, colour=None):
+        combined_prefix = prefix + self._SEPARATOR if prefix is not None \
+            else ''
+        if colour:
+            colour_prefix = colour
+            colour_suffix = PyReporterCodes.END
+        else:
+            colour_prefix = ''
+            colour_suffix = ''
+
+        self._print_handler(colour_prefix + combined_prefix + message +
+                            colour_suffix)
+
     def _print_progress(self, progress_text):
         self._last_progress_text = progress_text
         self._reprint_progress()
@@ -123,16 +143,6 @@ class PyReporter(object):
     def _reprint_progress(self):
         if self._last_progress_text:
             print(self._last_progress_text, end='\r', flush=True)
-
-    def complete_progress(self):
-        """
-        Complete a progress bar
-        """
-        self._iter_num = self._max_iter
-        self.next_progress()
-        print()
-        self._message = None
-        self._last_progress_text = None
 
     def _print_handler(self, message):
         print(message + PyReporterCodes.CLEAR)
