@@ -63,7 +63,8 @@
                  <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">overwrite_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">transfer_mode</span><span class="o">=</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
-                 <span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span>
+                 <span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create global application settings</span>
@@ -78,6 +79,8 @@
 <span class="sd">        @param overwrite_existing: If True then overwrite existing data may be</span>
 <span class="sd">        overwritten</span>
 <span class="sd">        @param transfer_mode: See TransferMode enum</span>
+<span class="sd">        @param data_dir: Local directory for logs, downloads, cache files</span>
+<span class="sd">        @param verbose: True to show debugging output</span>
 <span class="sd">        XNAT server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">dry_run</span>
@@ -85,7 +88,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">ignore_datatype_errors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">overwrite_existing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">=</span> <span class="n">TransferMode</span><span class="p">(</span><span class="n">transfer_mode</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="ow">or</span> <span class="n">join</span><span class="p">(</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="ow">or</span> <span class="n">join</span><span class="p">(</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span></div>
 </pre></div>
 
             <div class="clearer"></div>
