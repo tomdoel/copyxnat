@@ -6,11 +6,11 @@ from copyxnat.pyreporter.console import AnsiCodes
 
 class ConsoleLogger:
     """Class for custom reporting actions"""
-    _ERROR_PREFIX = 'ERROR'
-    _WARN_PREFIX = 'WARNING'
-    _INFO_PREFIX = 'INFO'
-    _VERBOSE_PREFIX = 'DEBUG INFO'
-    _SEPARATOR = ': '
+    _ERROR_PREFIX = '[ERROR]'
+    _WARN_PREFIX = '[WARNING]'
+    _INFO_PREFIX = '[INFO]'
+    _VERBOSE_PREFIX = '[DEBUG INFO]'
+    _SEPARATOR = ' '
 
     def __init__(self, console, verbose=False):
         self._console = console
