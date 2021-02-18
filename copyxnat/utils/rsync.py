@@ -12,8 +12,9 @@ from copyxnat.utils.network_utils import get_host
 class ProjectRsync:
     """Sync datafiles between XNAT servers"""
 
-    def __init__(self, cache, src_params, dst_params, reporter):
+    def __init__(self, cache, src_params, dst_params, dry_run, reporter):
         self.reporter = reporter
+        self.dry_run = dry_run
         self.src_user = self._get_user(src_params)
         self.dst_user = self._get_user(dst_params)
         self.src_host = get_host(src_params.host)
@@ -40,13 +41,13 @@ class ProjectRsync:
         self._rsync_files(src_string + '/', cache_path)
         self._rsync_files(cache_path + '/', dst_string)
 
-    @staticmethod
-    def _get_user(params):
+    def _get_user(self, params):
         user = params.rsync_user
         if not user:
             user = getpass.getuser()
         if not user:
-            raise RuntimeError('No username speccified for rsync')
+            self.reporter.error('No username specified for rsync')
+            raise RuntimeError('No username specified for rsync')
         return user
 
     @staticmethod
@@ -70,10 +71,15 @@ class ProjectRsync:
         string_command = " ".join(command_to_run)
 
         self.reporter.log('Running rsync command: {}'.format(string_command))
-        try:
-            subprocess.check_output(command_to_run)
-        except subprocess.CalledProcessError as exc:
-            error_message = 'An error occurred running the rsync command {}.' \
-                            'The error was :{}'.format(string_command, str(exc))
-            self.reporter.error(error_message)
-            raise ProjectFailure(error_message) from exc
+        if self.dry_run:
+            self.reporter.info('DRY RUN: will not run {}'.
+                               format(string_command))
+        else:
+            try:
+                subprocess.check_output(command_to_run)
+            except subprocess.CalledProcessError as exc:
+                error_message = 'An error occurred running the rsync command ' \
+                                '{}. The error was :{}'.format(string_command,
+                                                               str(exc))
+                self.reporter.error(error_message)
+                raise ProjectFailure(error_message) from exc
