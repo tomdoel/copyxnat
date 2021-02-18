@@ -66,55 +66,64 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">Progress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">[</span>
+
+        <span class="c1"># Shared console handler for console progress and logs ensures they</span>
+        <span class="c1"># interact together correctly</span>
+        <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress_handlers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Progress</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="n">console</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">FileLogger</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
-            <span class="n">ConsoleLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="n">ConsoleLogger</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="n">console</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="p">]</span>
 
 <div class="viewcode-block" id="PyReporter.error"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Error message to report to end user&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span><span class="p">:</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.warning"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.warning">[docs]</a>    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Warning message to report to end user&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span><span class="p">:</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.info"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Informational message which should be shown to the user&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span><span class="p">:</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.output"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print text to the console without a message prefix&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span><span class="p">:</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.log"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Message which should always be written to the log but not shown</span>
 <span class="sd">        to the end user unless debugging&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span><span class="p">:</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.debug"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.debug">[docs]</a>    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Message which can be ignored unless in verbose mode&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_handlers</span><span class="p">:</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.start_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.start_progress">[docs]</a>    <span class="k">def</span> <span class="nf">start_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Display a progress bar&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">start_progress</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress_handlers</span><span class="p">:</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">start_progress</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyReporter.next_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.next_progress">[docs]</a>    <span class="k">def</span> <span class="nf">next_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update existing progress bar to next step&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress_handlers</span><span class="p">:</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyReporter.complete_progress"><a class="viewcode-back" href="../../../copyxnat.pyreporter.pyreporter.html#copyxnat.pyreporter.pyreporter.PyReporter.complete_progress">[docs]</a>    <span class="k">def</span> <span class="nf">complete_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Complete progress bar&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">complete_progress</span><span class="p">()</span></div></div>
+        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress_handlers</span><span class="p">:</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">complete_progress</span><span class="p">()</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
