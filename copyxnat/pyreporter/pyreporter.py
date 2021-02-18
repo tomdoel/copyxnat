@@ -66,23 +66,17 @@ class PyReporter:
             self._output(prefix=self._INFO_PREFIX, message=message)
 
     def debug(self, message):
-        """Message which can be ignored unless in verbose mode
-        """
+        """Message which can be ignored unless in verbose mode"""
         self._file_logger.debug(message)
         if self.verbose:
             self._output(prefix=self._VERBOSE_PREFIX, message=message)
 
     def start_progress(self, message, max_iter):
-        """Display a progress bar
-
-        @param message: message to display in the progress bar
-        @param max_iter: total number of iterations
-        """
+        """Display a progress bar"""
         self._progress.start_progress(message=message, max_iter=max_iter)
 
     def next_progress(self):
         """Update existing progress bar to next step"""
-
         self._progress.next_progress()
 
     def complete_progress(self):
