@@ -80,7 +80,6 @@ class PyProgress:
         self.reprint_progress()
 
 
-
 class PyReporter:
     """Class for custom reporting actions"""
     _ERROR_PREFIX = 'ERROR'
@@ -97,23 +96,28 @@ class PyReporter:
 
     def info(self, message):
         """Status message to show to end user"""
+        logging.info(message)
         self._output(prefix=self._INFO_PREFIX, message=message)
 
     def message(self, message):
         """A message to the user"""
+        logging.info(message)
         self._output(prefix='', message=message)
 
     def output(self, message):
         """A message to the user"""
+        logging.info(message)
         self._output(prefix=None, message=message)
 
     def warning(self, message):
         """Warning message to report to end user"""
+        logging.warning(message)
         self._output(prefix=self._WARN_PREFIX, message=message,
                      colour=PyReporterCodes.WARNING)
 
     def error(self, message, exception_type=PyReporterError):
         """Error message to report to end user"""
+        logging.error(message)
         self._output(prefix=self._ERROR_PREFIX, message=message,
                      colour=PyReporterCodes.ERROR)
 
@@ -121,10 +125,12 @@ class PyReporter:
 
     def log(self, message):
         """Message for logs but need not report to end user"""
+        logging.info(message)
         self._output(prefix=self._INFO_PREFIX, message=message)
 
     def verbose_log(self, message):
         """Message for logs only in verbose mode"""
+        logging.debug(message)
         if self.verbose:
             self._output(prefix=self._VERBOSE_PREFIX, message=message)
 
@@ -156,7 +162,12 @@ class PyReporter:
 
         # PyCharm inspection: https://youtrack.jetbrains.com/issue/PY-39762
         # noinspection PyArgumentList
-        logging.basicConfig(filename=log_file, encoding='utf-8', level=level)
+        logging.basicConfig(
+            filename=log_file,
+            encoding='utf-8',
+            format='%(asctime)s %(message)s',
+            level=level
+        )
 
     def _output(self, prefix, message, colour=None):
         combined_prefix = prefix + self._SEPARATOR if prefix is not None \
