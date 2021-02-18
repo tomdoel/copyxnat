@@ -92,7 +92,6 @@ def main(args=None):
                              "first."
                         )
 
-
     for command in find_commands.commands():
         command_key = command.COMMAND_LINE
         sub_parser = subparsers.choices[command_key]
@@ -180,7 +179,8 @@ def main(args=None):
         ignore_datatype_errors=ignore_datatype_errors,
         dry_run=args.dry_run,
         overwrite_existing=overwrite_existing,
-        transfer_mode=transfer_mode
+        transfer_mode=transfer_mode,
+        data_dir=args.cache_dir,
     )
 
     result = run_command(command=command,

@@ -14,7 +14,7 @@ from copyxnat.xnat.xnat_interface import XnatServer
 
 def run_command(command, src_params, dst_params=None, project_filter=None,
                 app_settings=None, verbose=False, backend='pyxnat',
-                reporter=None, cache_dir=None):
+                reporter=None):
     """Runs the command on the specified XNAT servers
 
     @param command: the command class to run
@@ -29,10 +29,9 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     @param backend: the Python library used to interact with the XNAT
     servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
-    @param cache_dir: Directory where downloaded or cached files will be stored
     """
     if not reporter:
-        reporter = PyReporter(verbose=verbose)
+        reporter = PyReporter(data_dir=app_settings.data_dir, verbose=verbose)
 
     if not app_settings:
         app_settings = AppSettings()

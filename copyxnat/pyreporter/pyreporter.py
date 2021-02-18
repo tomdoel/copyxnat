@@ -1,6 +1,7 @@
 # coding=utf-8
 
 """Logging and user I/O"""
+from os.path import join
 
 
 class PyReporterCodes:
@@ -28,8 +29,9 @@ class PyReporter(object):
     _VERBOSE_PREFIX = 'VERBOSE INFO (verbose)'
     _SEPARATOR = ': '
 
-    def __init__(self, verbose=False):
+    def __init__(self, data_dir, verbose=False):
         self.verbose = verbose
+        self._log_dir = join(data_dir, 'logs')
         self._handlers = [self._print_handler]
         self._iter_num = None
         self._max_iter = None
