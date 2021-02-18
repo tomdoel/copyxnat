@@ -1,10 +1,7 @@
 # coding=utf-8
 
 """Logging and user I/O"""
-import logging
-from os import makedirs
-from os.path import join, exists
-
+from copyxnat.pyreporter.file_logger import FileLogger
 from copyxnat.pyreporter.progress import Progress
 
 
@@ -36,42 +33,42 @@ class PyReporter:
     def __init__(self, data_dir, verbose=False):
         self.verbose = verbose
         self._handlers = [self._print_handler]
-        self._setup_logging(data_dir=data_dir, verbose=verbose)
         self._progress = Progress()
+        self._file_logger = FileLogger(data_dir=data_dir, verbose=verbose)
 
     def error(self, message):
         """Error message to report to end user"""
-        logging.error(message)
+        self._file_logger.error(message)
         self._output(prefix=self._ERROR_PREFIX, message=message,
                      colour=PyReporterCodes.ERROR)
 
     def warning(self, message):
         """Warning message to report to end user"""
-        logging.warning(message)
+        self._file_logger.warning(message)
         self._output(prefix=self._WARN_PREFIX, message=message,
                      colour=PyReporterCodes.WARNING)
 
     def info(self, message):
         """Informational message which should be shown to the user"""
-        logging.info(message)
+        self._file_logger.info(message)
         self._output(prefix=self._INFO_PREFIX, message=message)
 
     def output(self, message):
         """Print text to the console without a message prefix"""
-        logging.info(message)
+        self._file_logger.output(message)
         self._output(prefix=None, message=message)
 
     def log(self, message):
         """Message which should always be written to the log but not shown
         to the end user unless debugging"""
-        logging.info(message)
+        self._file_logger.log(message)
         if self.verbose:
             self._output(prefix=self._INFO_PREFIX, message=message)
 
     def debug(self, message):
         """Message which can be ignored unless in verbose mode
         """
-        logging.debug(message)
+        self._file_logger.debug(message)
         if self.verbose:
             self._output(prefix=self._VERBOSE_PREFIX, message=message)
 
@@ -91,24 +88,6 @@ class PyReporter:
     def complete_progress(self):
         """Complete progress bar"""
         self._progress.complete_progress()
-
-    @staticmethod
-    def _setup_logging(data_dir, verbose):
-        log_dir = join(data_dir, 'logs')
-        if not exists(log_dir):
-            makedirs(log_dir)
-        log_file = join(log_dir, 'copyxnat.log')
-
-        level = logging.DEBUG if verbose else logging.INFO
-
-        # PyCharm inspection: https://youtrack.jetbrains.com/issue/PY-39762
-        # noinspection PyArgumentList
-        logging.basicConfig(
-            filename=log_file,
-            encoding='utf-8',
-            format='%(asctime)s %(message)s',
-            level=level
-        )
 
     def _output(self, prefix, message, colour=None):
         combined_prefix = prefix + self._SEPARATOR if prefix is not None \
