@@ -6,11 +6,11 @@
 class Progress:
     """Class for displaying a progress bar"""
 
-    def __init__(self):
+    def __init__(self, console):
+        self._console = console
         self._iter_num = None
         self._max_iter = None
         self._message = None
-        self._last_progress_text = None
 
     def start_progress(self, message, max_iter):
         """
@@ -39,22 +39,15 @@ class Progress:
         else:
             progress_text = self._message
 
-        print('\r' + progress_text, end='', flush=True)
-        self._print_progress(progress_text)
+        self._console.sticky_text(progress_text)
 
     def complete_progress(self):
         """Complete progress bar"""
+
+        # Make sure the progress bar shows as complete
         self._iter_num = self._max_iter
         self.next_progress()
-        print()
+
+        # End the updating of this progress bar
+        self._console.end_sticky()
         self._message = None
-        self._last_progress_text = None
-
-    def reprint_progress(self):
-        """Re-print progress after text output"""
-        if self._last_progress_text:
-            print(self._last_progress_text, end='\r', flush=True)
-
-    def _print_progress(self, progress_text):
-        self._last_progress_text = progress_text
-        self.reprint_progress()
