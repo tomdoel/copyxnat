@@ -2,10 +2,10 @@
 
 """Abstraction of disk cache used to store XNAT files"""
 
-import os
-import shutil
-from os.path import expanduser
 from xml.etree import cElementTree
+from os.path import join, exists
+from os import makedirs
+from shutil import rmtree
 
 
 class CacheBox(object):
@@ -32,15 +32,15 @@ class CopyCache(object):
         if name is None:
             name_i = 1
             name = str(name_i)
-            rel_path = os.path.join(parent_rel_path, cache_type, name)
-            full_path = os.path.join(self.root_path, rel_path)
-            while os.path.exists(full_path):
+            rel_path = join(parent_rel_path, cache_type, name)
+            full_path = join(self.root_path, rel_path)
+            while exists(full_path):
                 name_i += 1
                 name = str(name_i)
-                rel_path = os.path.join(parent_rel_path, cache_type, name)
-                full_path = os.path.join(self.root_path, rel_path)
+                rel_path = join(parent_rel_path, cache_type, name)
+                full_path = join(self.root_path, rel_path)
         else:
-            rel_path = os.path.join(parent_rel_path, cache_type, name)
+            rel_path = join(parent_rel_path, cache_type, name)
 
         self.rel_path = rel_path
         self.cache_level = cache_level
@@ -67,7 +67,7 @@ class CopyCache(object):
     def write_xml(self, xml_root, filename):
         """Write XML to a file in this cache"""
         full_path = self.make_output_path()
-        full_xml_path = os.path.join(full_path, filename)
+        full_xml_path = join(full_path, filename)
         if not self._read_only:
             cElementTree.ElementTree(xml_root).write(full_xml_path)
         return full_xml_path
@@ -79,16 +79,16 @@ class CopyCache(object):
             print('Not making directory {} due to read-only mode'.
                   format(full_path))
         else:
-            if not os.path.exists(full_path):
-                os.makedirs(full_path)
+            if not exists(full_path):
+                makedirs(full_path)
         return full_path
 
     def full_path(self):
         """Return absolute path to this cache"""
-        return os.path.join(self.root_path, self.rel_path)
+        return join(self.root_path, self.rel_path)
 
     def clear(self):
         """Delete contents of cache"""
         cache_path = self.full_path()
-        if os.path.exists(cache_path):
-            shutil.rmtree(self.full_path())
+        if exists(cache_path):
+            rmtree(self.full_path())
