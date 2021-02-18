@@ -9,8 +9,8 @@ from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
 from copyxnat.api.run_command import run_command
 from copyxnat.utils.versioning import get_version_string
-from copyxnat.xnat.xnat_interface import XnatServerParams
-from copyxnat.xnat.app_settings import AppSettings
+from copyxnat.config.server_params import XnatServerParams
+from copyxnat.config.app_settings import AppSettings
 
 
 def main(args=None):

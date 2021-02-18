@@ -10,21 +10,8 @@ import pydicom
 import urllib3
 
 from copyxnat.utils.network_utils import get_host
-from copyxnat.xnat.app_settings import TransferMode
+from copyxnat.config.app_settings import TransferMode
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
-
-
-class XnatServerParams:
-    """Encapsulates parameters used to access an XNAT server"""
-
-    def __init__(self, host, user, pwd, rsync_user=None, insecure=False):
-        if '://' not in host:
-            host = 'https://' + host
-        self.host = host
-        self.user = user
-        self.pwd = pwd
-        self.rsync_user = rsync_user
-        self.insecure = insecure
 
 
 class XnatBase(abc.ABC):

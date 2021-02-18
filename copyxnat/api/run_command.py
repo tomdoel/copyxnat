@@ -6,7 +6,7 @@
 from copyxnat.pyreporter.pyreporter import PyReporter, ProjectFailure
 from copyxnat.utils.rsync import ProjectRsync
 from copyxnat.xnat.commands import CommandInputs
-from copyxnat.xnat.app_settings import AppSettings
+from copyxnat.config.app_settings import AppSettings
 from copyxnat.xnat.copy_cache import CacheBox
 from copyxnat.xnat_backend.server_factory import ServerFactory
 from copyxnat.xnat.xnat_interface import XnatServer
