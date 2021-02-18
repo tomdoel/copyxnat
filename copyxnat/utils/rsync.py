@@ -73,7 +73,8 @@ class ProjectRsync:
         try:
             subprocess.check_output(command_to_run)
         except subprocess.CalledProcessError as exc:
-            self.reporter.error('An error occurred running the rsync command {}'
-                                '. The error was :{}'.format(string_command,
-                                                             str(exc)),
-                                exception_type=ProjectFailure)
+            error_message = 'An error occurred running the rsync command {}.' \
+                            'The error was :{}'.format(string_command, str(exc))
+            self.reporter.error(error_message)
+            raise ProjectFailure(error_message)
+

@@ -115,13 +115,11 @@ class PyReporter:
         self._output(prefix=self._WARN_PREFIX, message=message,
                      colour=PyReporterCodes.WARNING)
 
-    def error(self, message, exception_type=PyReporterError):
+    def error(self, message):
         """Error message to report to end user"""
         logging.error(message)
         self._output(prefix=self._ERROR_PREFIX, message=message,
                      colour=PyReporterCodes.ERROR)
-
-        raise exception_type(message)
 
     def log(self, message):
         """Message for logs but need not report to end user"""
