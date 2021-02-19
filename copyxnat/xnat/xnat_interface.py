@@ -717,9 +717,10 @@ class XnatServer(XnatBase):
         return self.interface.does_request_succeed(
             uri=uri, reporter=self.reporter, method=method)
 
-    def request_string(self, uri):
+    def request_string(self, uri, error_on_failure=True):
         """Execute a REST call on the server and return string"""
-        return self.interface.request_string(uri=uri, reporter=self.reporter)
+        return self.interface.request_string(
+            uri=uri, reporter=self.reporter, error_on_failure=error_on_failure)
 
     def ohif_present(self):
         """Return True if the OHIF viewer plugin is installed on server"""
@@ -763,7 +764,8 @@ class XnatServer(XnatBase):
         if not self._archive_path:
             try:
                 self._archive_path = \
-                    self.request_string('xapi/siteConfig/archivePath')
+                    self.request_string(uri='xapi/siteConfig/archivePath',
+                                        error_on_failure=False)
             except DatabaseError as exc:
                 self.reporter.log('Error reading XNAT archive path. '
                                   'This will occur with older XNAT versions. '

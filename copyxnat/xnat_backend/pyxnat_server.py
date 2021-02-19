@@ -75,14 +75,18 @@ class PyXnatServer(object):
                 method, uri, str(exc)))
             return False
 
-    def request_string(self, uri, reporter):
+    def request_string(self, uri, reporter, error_on_failure):
         """Execute a REST call on the server and return string"""
         try:
             result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
             return result.decode("utf-8")
 
         except Exception as exc:
-            reporter.error('Failure executing GET call {}: {}'.format(uri, exc))
+            message = 'Failure executing GET call {}: {}'.format(uri, exc)
+            if error_on_failure:
+                reporter.error(message)
+            else:
+                reporter.log(message)
             raise exc
 
     def request_json_property(self, uri, reporter):
