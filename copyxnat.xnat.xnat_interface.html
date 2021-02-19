@@ -80,6 +80,12 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.get_server">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">get_server</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.get_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.get_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the parent server object</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatBase.metadata_missing">
 <em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">metadata_missing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.metadata_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.metadata_missing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if this item or any parent requires metadata which could
@@ -387,6 +393,12 @@ it doesn’t already exist</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatItem.get_server">
+<code class="sig-name descname"><span class="pre">get_server</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.get_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.get_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the parent XnatServer object</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.metadata_missing">
 <code class="sig-name descname"><span class="pre">metadata_missing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.metadata_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.metadata_missing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if this item or any parent requires metadata which could
@@ -397,12 +409,6 @@ be found from the child Files</p>
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.ohif_generate_session">
 <code class="sig-name descname"><span class="pre">ohif_generate_session</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.ohif_generate_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.ohif_generate_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trigger regeneration of OHIF session data</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatItem.ohif_present">
-<code class="sig-name descname"><span class="pre">ohif_present</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.ohif_present"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.ohif_present" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if the OHIF viewer plugin is installed</p>
 </dd></dl>
 
 <dl class="py method">
@@ -433,12 +439,6 @@ be found from the child Files</p>
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.rebuild_catalog">
 <code class="sig-name descname"><span class="pre">rebuild_catalog</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.rebuild_catalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.rebuild_catalog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a catalog refresh request</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatItem.request">
-<code class="sig-name descname"><span class="pre">request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_fail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a REST call on the server</p>
 </dd></dl>
 
 <dl class="py method">
@@ -640,6 +640,12 @@ for changes in unique identifiers.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatServer.does_request_succeed">
+<code class="sig-name descname"><span class="pre">does_request_succeed</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GET'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.does_request_succeed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.does_request_succeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return True if it succeeds</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatServer.get_archive_path">
 <code class="sig-name descname"><span class="pre">get_archive_path</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.get_archive_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.get_archive_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the XNAT server’s local data archive path</p>
@@ -664,6 +670,12 @@ not be included in the disallowed lists).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatServer.get_server">
+<code class="sig-name descname"><span class="pre">get_server</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.get_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.get_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the parent server object</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatServer.logout">
 <code class="sig-name descname"><span class="pre">logout</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.logout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disconnect from this server</p>
@@ -685,7 +697,7 @@ be found from the child Files</p>
 <dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatServer.ohif_present">
 <code class="sig-name descname"><span class="pre">ohif_present</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.ohif_present"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.ohif_present" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if the OHIF viewer plugin is installed</p>
+<dd><p>Return True if the OHIF viewer plugin is installed on server</p>
 </dd></dl>
 
 <dl class="py method">
@@ -713,9 +725,9 @@ be found from the child Files</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatServer.request">
-<code class="sig-name descname"><span class="pre">request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_fail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a REST call on the server</p>
+<dt id="copyxnat.xnat.xnat_interface.XnatServer.request_string">
+<code class="sig-name descname"><span class="pre">request_string</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatServer.request_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatServer.request_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return string</p>
 </dd></dl>
 
 </dd></dl>

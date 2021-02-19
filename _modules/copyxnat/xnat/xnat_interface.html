@@ -48,6 +48,7 @@
 
 <span class="kn">import</span> <span class="nn">pydicom</span>
 <span class="kn">import</span> <span class="nn">urllib3</span>
+<span class="kn">from</span> <span class="nn">pyxnat.core.errors</span> <span class="kn">import</span> <span class="n">DatabaseError</span>
 
 <span class="kn">from</span> <span class="nn">copyxnat.utils.network_utils</span> <span class="kn">import</span> <span class="n">get_host</span>
 <span class="kn">from</span> <span class="nn">copyxnat.config.app_settings</span> <span class="kn">import</span> <span class="n">TransferMode</span>
@@ -95,6 +96,10 @@
             <span class="c1"># wrap each in an XnatItem</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span> <span class="n">child_class</span><span class="o">.</span><span class="n">interface_method</span><span class="p">)():</span>
                 <span class="k">yield</span> <span class="n">child_class</span><span class="o">.</span><span class="n">get_existing</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatBase.get_server"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatBase.get_server">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the parent server object&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="XnatBase.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatBase.metadata_missing">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -278,16 +283,9 @@
 <div class="viewcode-block" id="XnatItem.ohif_generate_session"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.ohif_generate_session">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_generate_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Trigger regeneration of OHIF session data&quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="XnatItem.request"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
-                                   <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
-                                   <span class="n">warn_on_fail</span><span class="o">=</span><span class="n">warn_on_fail</span><span class="p">,</span>
-                                   <span class="n">return_string</span><span class="o">=</span><span class="n">return_string</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="XnatItem.ohif_present"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.ohif_present">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_present</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return True if the OHIF viewer plugin is installed&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">()</span></div>
+<div class="viewcode-block" id="XnatItem.get_server"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.get_server">[docs]</a>    <span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the parent XnatServer object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="XnatItem.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send a catalog refresh request&quot;&quot;&quot;</span></div>
@@ -420,7 +418,6 @@
             <span class="k">return</span> <span class="n">folder_path</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_zip_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span></div></div>
-
 
 
 <div class="viewcode-block" id="XnatFile"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile">[docs]</a><span class="k">class</span> <span class="nc">XnatFile</span><span class="p">(</span><span class="n">XnatItem</span><span class="p">):</span>
@@ -565,7 +562,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">does_request_succeed</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s1">&#39;Failure executing catalog rebuild POST </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="XnatScan"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatScan">[docs]</a><span class="k">class</span> <span class="nc">XnatScan</span><span class="p">(</span><span class="n">XnatParentItem</span><span class="p">):</span>
@@ -616,11 +615,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.ohif_generate_session"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.ohif_generate_session">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_generate_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">():</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">():</span>
             <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;xapi/viewer/projects/</span><span class="si">{}</span><span class="s1">/experiments/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">does_request_succeed</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+                                                          <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">&#39;Failure executing OHIF reset POST </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;data/services/refresh/catalog?&#39;</span> \
@@ -629,7 +631,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatProject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">label_map</span><span class="p">[</span><span class="n">XnatSubject</span><span class="o">.</span><span class="n">_xml_id</span><span class="p">],</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">does_request_succeed</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s1">&#39;Failure executing catalog rebuild POST </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="XnatExperiment.progress_update"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.progress_update">[docs]</a>    <span class="k">def</span> <span class="nf">progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="n">reporter</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span></div></div>
@@ -742,28 +746,35 @@
         <span class="sd">&quot;&quot;&quot;Return number of experiments in this project&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">num_experiments</span><span class="p">(</span><span class="n">project</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="XnatServer.request"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="XnatServer.does_request_succeed"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.does_request_succeed">[docs]</a>    <span class="k">def</span> <span class="nf">does_request_succeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return True if it succeeds&quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span> <span class="ow">and</span> <span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Programming error: attempting </span><span class="si">{}</span><span class="s1"> request </span><span class="si">{}</span><span class="s1"> in &#39;</span>
                                <span class="s1">&#39;read-only mode to server </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
                                <span class="nb">format</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
-                                      <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
-                                      <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span>
-                                      <span class="n">warn_on_fail</span><span class="o">=</span><span class="n">warn_on_fail</span><span class="p">,</span>
-                                      <span class="n">return_string</span><span class="o">=</span><span class="n">return_string</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">does_request_succeed</span><span class="p">(</span>
+            <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatServer.request_string"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.request_string">[docs]</a>    <span class="k">def</span> <span class="nf">request_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return string&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">request_string</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="XnatServer.ohif_present"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.ohif_present">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_present</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return True if the OHIF viewer plugin is installed&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return True if the OHIF viewer plugin is installed on server&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
-                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;xapi/plugins/ohifViewerPlugin&#39;</span><span class="p">,</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                <span class="n">warn_on_fail</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">does_request_succeed</span><span class="p">(</span>
+                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;xapi/plugins/ohifViewerPlugin&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;OHIF viewer found on server </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;OHIF viewer not found on server </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span></div>
 
 <div class="viewcode-block" id="XnatServer.get_disallowed_project_ids"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.get_disallowed_project_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_disallowed_project_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
@@ -789,18 +800,29 @@
 <div class="viewcode-block" id="XnatServer.get_archive_path"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.get_archive_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_archive_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the XNAT server&#39;s local data archive path&quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="o">=</span> \
-                <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s1">&#39;xapi/siteConfig/archivePath&#39;</span><span class="p">,</span>
-                             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                             <span class="n">return_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">request_string</span><span class="p">(</span><span class="s1">&#39;xapi/siteConfig/archivePath&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">DatabaseError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Error reading XNAT archive path. &#39;</span>
+                                  <span class="s1">&#39;This will occur with older XNAT versions. &#39;</span>
+                                  <span class="s1">&#39;Will try using a legacy API. Error: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
+                                  <span class="nb">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span>
+                        <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;REST/services/settings/archivePath&#39;</span><span class="p">,</span>
+                        <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span></div>
 
 <div class="viewcode-block" id="XnatServer.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="XnatServer.provide_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.provide_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">provide_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
-        <span class="k">pass</span></div></div>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="XnatServer.get_server"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.get_server">[docs]</a>    <span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

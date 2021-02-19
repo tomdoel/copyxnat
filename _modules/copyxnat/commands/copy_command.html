@@ -43,7 +43,7 @@
 <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">copyxnat.config.app_settings</span> <span class="kn">import</span> <span class="n">TransferMode</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">,</span> \
-    <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatResource</span>
+    <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">,</span> <span class="n">XnatInResource</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
@@ -67,7 +67,8 @@
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">zip</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatFile</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span><span class="p">,</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">meta</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span>
+                                  <span class="n">XnatOutResource</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
