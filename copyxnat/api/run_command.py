@@ -29,53 +29,66 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
     """
-    if not reporter:
-        reporter = PyReporter(data_dir=app_settings.data_dir,
-                              verbose=app_settings.verbose)
 
     if not app_settings:
         app_settings = AppSettings()
 
-    cache_box = CacheBox(root_path=app_settings.data_dir)
-    cache_type = command.CACHE_TYPE
+    if not reporter:
+        reporter = PyReporter(data_dir=app_settings.data_dir,
+                              verbose=app_settings.verbose)
 
-    base_cache = cache_box.new_cache(cache_type=cache_type)
+    src_xnat = None
+    dst_xnat = None
 
-    factory = ServerFactory(backend)
+    try:
+        reporter.output('Running {} command'.format(command.NAME))
 
-    src_xnat = XnatServer(factory=factory,
-                          params=src_params,
-                          base_cache=base_cache,
-                          app_settings=app_settings,
-                          reporter=reporter,
-                          read_only=not command.MODIFY_SRC_SERVER)
+        cache_box = CacheBox(root_path=app_settings.data_dir)
+        cache_type = command.CACHE_TYPE
 
-    if dst_params and command.USE_DST_SERVER:
-        dst_xnat = XnatServer(factory=factory,
-                              params=dst_params,
+        base_cache = cache_box.new_cache(cache_type=cache_type)
+
+        factory = ServerFactory(backend)
+
+        src_xnat = XnatServer(factory=factory,
+                              params=src_params,
                               base_cache=base_cache,
                               app_settings=app_settings,
                               reporter=reporter,
-                              read_only=not command.MODIFY_DST_SERVER)
-    else:
-        dst_xnat = None
+                              read_only=not command.MODIFY_SRC_SERVER)
 
-    reporter.debug('Running {} command'.format(command.NAME))
+        if dst_params and command.USE_DST_SERVER:
+            dst_xnat = XnatServer(factory=factory,
+                                  params=dst_params,
+                                  base_cache=base_cache,
+                                  app_settings=app_settings,
+                                  reporter=reporter,
+                                  read_only=not command.MODIFY_DST_SERVER)
+        else:
+            dst_xnat = None
 
-    result = run_command_on_servers(command=command,
-                                    src_xnat_server=src_xnat,
-                                    dst_xnat_server=dst_xnat,
-                                    project_filter=project_filter,
-                                    app_settings=app_settings,
-                                    reporter=reporter
-                                    )
+        result = run_command_on_servers(command=command,
+                                        src_xnat_server=src_xnat,
+                                        dst_xnat_server=dst_xnat,
+                                        project_filter=project_filter,
+                                        app_settings=app_settings,
+                                        reporter=reporter
+                                        )
 
-    src_xnat.logout()
-    if dst_params and command.USE_DST_SERVER:
-        dst_xnat.logout()
+        output_path = src_xnat.cache.full_path()
+        reporter.debug('Output files are in {}'.format(output_path))
+        reporter.output('Completed running {} command'.format(command.NAME))
 
-    output_path = src_xnat.cache.full_path()
-    reporter.debug('Output files are in {}'.format(output_path))
+    except Exception as exc:
+        reporter.error('Command {} failed due to error {}'.format(command.NAME,
+                                                                  str(exc)))
+        raise exc
+    finally:
+        if src_xnat:
+            src_xnat.logout()
+        if dst_xnat:
+            dst_xnat.logout()
+
     return result
 
 
