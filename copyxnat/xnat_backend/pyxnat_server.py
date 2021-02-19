@@ -3,6 +3,7 @@
 """Wrappers for communicating between copyxnat items and pyXNAT backend items"""
 
 import abc
+import json
 import os
 
 from pyxnat import Interface
@@ -62,7 +63,7 @@ class PyXnatServer(object):
             self.fetch_interface()._get_json('/REST/projects/{}/experiments'.  # pylint: disable=protected-access
                 format(project)))
 
-    def does_request_succeed(self, uri, reporter, method='GET'):
+    def does_request_succeed(self, uri, reporter, method):
         """Execute a REST call on the server and return True if it succeeds"""
         try:
             self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
@@ -74,22 +75,25 @@ class PyXnatServer(object):
                 method, uri, str(exc)))
             return False
 
-    def request(self, uri, method, reporter, warn_on_fail, return_string,
-                error_on_fail):
-        """Execute a REST call on the server and return True if it succeeds"""
+    def request_string(self, uri, reporter):
+        """Execute a REST call on the server and return string"""
         try:
-            result = self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
-            if return_string:
-                return result.decode("utf-8")
-            return True
-        except Exception as exc:  # pylint: disable=broad-except
-            message = 'Failure executing {} call {}: {}'.\
-                format(method, uri, exc)
-            if warn_on_fail:
-                reporter.warning(message)
-            else:
-                reporter.debug(message)
-            return False
+            result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
+            return result.decode("utf-8")
+
+        except Exception as exc:
+            reporter.error('Failure executing GET call {}: {}'.format(uri, exc))
+            raise exc
+
+    def request_json_property(self, uri, reporter):
+        """Execute a REST call on the server and return string"""
+        try:
+            result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
+            return json.loads(result.decode("utf-8"))["ResultSet"]['Result']
+
+        except Exception as exc:
+            reporter.error('Failure executing GET call {}: {}'.format(uri, exc))
+            raise exc
 
 
 class PyXnatItem(abc.ABC):
