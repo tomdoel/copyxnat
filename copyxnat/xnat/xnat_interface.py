@@ -57,6 +57,10 @@ class XnatBase(abc.ABC):
                 yield child_class.get_existing(interface=item, parent=self)
 
     @abc.abstractmethod
+    def get_server(self):
+        """Return the parent server object"""
+
+    @abc.abstractmethod
     def metadata_missing(self):
         """Return True if this item or any parent requires metadata which could
         be found from the child Files"""
@@ -245,9 +249,9 @@ class XnatItem(XnatBase):
                                    warn_on_fail=warn_on_fail,
                                    return_string=return_string)
 
-    def ohif_present(self):
-        """Return True if the OHIF viewer plugin is installed"""
-        return self.parent.ohif_present()
+    def get_server(self):
+        """Return the parent XnatServer object"""
+        return self.parent.get_server()
 
     def rebuild_catalog(self):
         """Send a catalog refresh request"""
@@ -576,7 +580,7 @@ class XnatExperiment(XnatParentItem):
         self.ohif_generate_session()
 
     def ohif_generate_session(self):
-        if self.ohif_present():
+        if self.get_server().ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.get_id())
@@ -717,13 +721,20 @@ class XnatServer(XnatBase):
                                       return_string=return_string)
 
     def ohif_present(self):
-        """Return True if the OHIF viewer plugin is installed"""
+        """Return True if the OHIF viewer plugin is installed on server"""
 
         if self.ohif is None:
             self.ohif = self.request(
                 uri='xapi/plugins/ohifViewerPlugin',
                 method='GET',
                 warn_on_fail=False)
+            if self.ohif:
+                self.reporter.log('OHIF viewer found on server {}'.format(
+                    self.full_name))
+            else:
+                self.reporter.log('OHIF viewer not found on server {}'.format(
+                    self.full_name))
+
         return self.ohif
 
     def get_disallowed_project_ids(self, label):
@@ -761,3 +772,6 @@ class XnatServer(XnatBase):
 
     def provide_metadata(self, metadata):  # pylint: disable=no-self-use
         pass
+
+    def get_server(self):
+        return self
