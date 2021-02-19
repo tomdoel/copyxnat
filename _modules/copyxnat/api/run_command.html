@@ -69,53 +69,66 @@
 <span class="sd">    servers. Defaults to `pyxnat`</span>
 <span class="sd">    @param reporter: PyReporter object for user input/output and logging</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">reporter</span><span class="p">:</span>
-        <span class="n">reporter</span> <span class="o">=</span> <span class="n">PyReporter</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
-                              <span class="n">verbose</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">app_settings</span><span class="p">:</span>
         <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
 
-    <span class="n">cache_box</span> <span class="o">=</span> <span class="n">CacheBox</span><span class="p">(</span><span class="n">root_path</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
-    <span class="n">cache_type</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">CACHE_TYPE</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reporter</span><span class="p">:</span>
+        <span class="n">reporter</span> <span class="o">=</span> <span class="n">PyReporter</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
+                              <span class="n">verbose</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
 
-    <span class="n">base_cache</span> <span class="o">=</span> <span class="n">cache_box</span><span class="o">.</span><span class="n">new_cache</span><span class="p">(</span><span class="n">cache_type</span><span class="o">=</span><span class="n">cache_type</span><span class="p">)</span>
+    <span class="n">src_xnat</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dst_xnat</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">factory</span> <span class="o">=</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;Running </span><span class="si">{}</span><span class="s1"> command&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">NAME</span><span class="p">))</span>
 
-    <span class="n">src_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
-                          <span class="n">params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
-                          <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
-                          <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
-                          <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">,</span>
-                          <span class="n">read_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_SRC_SERVER</span><span class="p">)</span>
+        <span class="n">cache_box</span> <span class="o">=</span> <span class="n">CacheBox</span><span class="p">(</span><span class="n">root_path</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+        <span class="n">cache_type</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">CACHE_TYPE</span>
 
-    <span class="k">if</span> <span class="n">dst_params</span> <span class="ow">and</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
-        <span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
-                              <span class="n">params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
+        <span class="n">base_cache</span> <span class="o">=</span> <span class="n">cache_box</span><span class="o">.</span><span class="n">new_cache</span><span class="p">(</span><span class="n">cache_type</span><span class="o">=</span><span class="n">cache_type</span><span class="p">)</span>
+
+        <span class="n">factory</span> <span class="o">=</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+
+        <span class="n">src_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
+                              <span class="n">params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
                               <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
                               <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                               <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">,</span>
-                              <span class="n">read_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_DST_SERVER</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">dst_xnat</span> <span class="o">=</span> <span class="kc">None</span>
+                              <span class="n">read_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_SRC_SERVER</span><span class="p">)</span>
 
-    <span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Running </span><span class="si">{}</span><span class="s1"> command&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">NAME</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">dst_params</span> <span class="ow">and</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
+            <span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
+                                  <span class="n">params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
+                                  <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
+                                  <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
+                                  <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">,</span>
+                                  <span class="n">read_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_DST_SERVER</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dst_xnat</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command_on_servers</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
-                                    <span class="n">src_xnat_server</span><span class="o">=</span><span class="n">src_xnat</span><span class="p">,</span>
-                                    <span class="n">dst_xnat_server</span><span class="o">=</span><span class="n">dst_xnat</span><span class="p">,</span>
-                                    <span class="n">project_filter</span><span class="o">=</span><span class="n">project_filter</span><span class="p">,</span>
-                                    <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
-                                    <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span>
-                                    <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">run_command_on_servers</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
+                                        <span class="n">src_xnat_server</span><span class="o">=</span><span class="n">src_xnat</span><span class="p">,</span>
+                                        <span class="n">dst_xnat_server</span><span class="o">=</span><span class="n">dst_xnat</span><span class="p">,</span>
+                                        <span class="n">project_filter</span><span class="o">=</span><span class="n">project_filter</span><span class="p">,</span>
+                                        <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
+                                        <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span>
+                                        <span class="p">)</span>
 
-    <span class="n">src_xnat</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">dst_params</span> <span class="ow">and</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
-        <span class="n">dst_xnat</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">src_xnat</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Output files are in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;Completed running </span><span class="si">{}</span><span class="s1"> command&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">NAME</span><span class="p">))</span>
 
-    <span class="n">output_path</span> <span class="o">=</span> <span class="n">src_xnat</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
-    <span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Output files are in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Command </span><span class="si">{}</span><span class="s1"> failed due to error </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span>
+                                                                  <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="n">exc</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">src_xnat</span><span class="p">:</span>
+            <span class="n">src_xnat</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dst_xnat</span><span class="p">:</span>
+            <span class="n">dst_xnat</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+
     <span class="k">return</span> <span class="n">result</span></div>
 
 
