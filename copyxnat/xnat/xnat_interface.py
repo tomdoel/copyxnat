@@ -724,10 +724,9 @@ class XnatServer(XnatBase):
         """Return True if the OHIF viewer plugin is installed on server"""
 
         if self.ohif is None:
-            self.ohif = self.request(
-                uri='xapi/plugins/ohifViewerPlugin',
-                method='GET',
-                warn_on_fail=False)
+            self.ohif = self.interface.does_request_succeed(
+                uri='xapi/plugins/ohifViewerPlugin', reporter=self.reporter)
+
             if self.ohif:
                 self.reporter.log('OHIF viewer found on server {}'.format(
                     self.full_name))
