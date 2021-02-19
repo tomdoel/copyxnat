@@ -8,6 +8,7 @@ import os
 
 import pydicom
 import urllib3
+from pyxnat.core.errors import DatabaseError
 
 from copyxnat.utils.network_utils import get_host
 from copyxnat.config.app_settings import TransferMode
@@ -242,13 +243,6 @@ class XnatItem(XnatBase):
     def ohif_generate_session(self):
         """Trigger regeneration of OHIF session data"""
 
-    def request(self, uri, method, warn_on_fail=True, return_string=False):
-        """Execute a REST call on the server"""
-        return self.parent.request(uri=uri,
-                                   method=method,
-                                   warn_on_fail=warn_on_fail,
-                                   return_string=return_string)
-
     def get_server(self):
         """Return the parent XnatServer object"""
         return self.parent.get_server()
@@ -384,7 +378,6 @@ class XnatFileContainerItem(XnatItem):
             return folder_path
 
         return self.interface.download_zip_file(folder_path)
-
 
 
 class XnatFile(XnatItem):
@@ -529,7 +522,9 @@ class XnatAssessor(XnatParentItem):
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
                 self.get_id())
-        self.request(uri, 'POST', warn_on_fail=True)
+        if not self.get_server().does_request_succeed(uri=uri, method='POST'):
+            self.reporter.warning(
+                'Failure executing catalog rebuild POST {}'.format(uri))
 
 
 class XnatScan(XnatParentItem):
@@ -584,7 +579,10 @@ class XnatExperiment(XnatParentItem):
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.get_id())
-            self.request(uri, 'POST', warn_on_fail=True)
+            if not self.get_server().does_request_succeed(uri=uri,
+                                                          method='POST'):
+                self.reporter.warning(
+                    'Failure executing OHIF reset POST {}'.format(uri))
 
     def rebuild_catalog(self):
         uri = 'data/services/refresh/catalog?' \
@@ -593,7 +591,9 @@ class XnatExperiment(XnatParentItem):
                 self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
                 self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
                 self.get_id())
-        self.request(uri, 'POST', warn_on_fail=True)
+        if not self.get_server().does_request_succeed(uri=uri, method='POST'):
+            self.reporter.warning(
+                'Failure executing catalog rebuild POST {}'.format(uri))
 
     def progress_update(self, reporter):
         reporter.next_progress()
@@ -706,26 +706,27 @@ class XnatServer(XnatBase):
         """Return number of experiments in this project"""
         return self.interface.num_experiments(project)
 
-    def request(self, uri, method, warn_on_fail=True, return_string=False):
-        """Execute a REST call on the server"""
+    def does_request_succeed(self, uri, method='GET'):
+        """Execute a REST call on the server and return True if it succeeds"""
 
-        if self.read_only and not method == 'GET':
+        if self.read_only and method != 'GET':
             raise RuntimeError('Programming error: attempting {} request {} in '
                                'read-only mode to server {}'.
                                format(method, uri, self.full_name))
 
-        return self.interface.request(uri=uri,
-                                      method=method,
-                                      reporter=self.reporter,
-                                      warn_on_fail=warn_on_fail,
-                                      return_string=return_string)
+        return self.interface.does_request_succeed(
+            uri=uri, reporter=self.reporter, method=method)
+
+    def request_string(self, uri):
+        """Execute a REST call on the server and return string"""
+        return self.interface.request_string(uri=uri, reporter=self.reporter)
 
     def ohif_present(self):
         """Return True if the OHIF viewer plugin is installed on server"""
 
         if self.ohif is None:
-            self.ohif = self.interface.does_request_succeed(
-                uri='xapi/plugins/ohifViewerPlugin', reporter=self.reporter)
+            self.ohif = self.does_request_succeed(
+                uri='xapi/plugins/ohifViewerPlugin')
 
             if self.ohif:
                 self.reporter.log('OHIF viewer found on server {}'.format(
