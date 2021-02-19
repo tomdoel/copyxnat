@@ -760,11 +760,19 @@ class XnatServer(XnatBase):
     def get_archive_path(self):
         """Return the XNAT server's local data archive path"""
 
-        if self._archive_path is None:
-            self._archive_path = \
-                self.request('xapi/siteConfig/archivePath',
-                             method='GET',
-                             return_string=True)
+        if not self._archive_path:
+            try:
+                self._archive_path = \
+                    self.request_string('xapi/siteConfig/archivePath')
+            except DatabaseError as exc:
+                self.reporter.log('Error reading XNAT archive path. '
+                                  'This will occur with older XNAT versions. '
+                                  'Will try using a legacy API. Error: {}'.
+                                  format(str(exc)))
+                self._archive_path = \
+                    self.interface.request_json_property(
+                        uri='REST/services/settings/archivePath',
+                        reporter=self.reporter)
         return self._archive_path
 
     def metadata_missing(self):  # pylint: disable=no-self-use
