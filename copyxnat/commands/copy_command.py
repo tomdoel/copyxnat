@@ -3,7 +3,7 @@
 """Command which copies XNAT projects between servers"""
 from copyxnat.config.app_settings import TransferMode
 from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, \
-    XnatFile, XnatResource
+    XnatFile, XnatResource, XnatOutResource, XnatInResource
 from copyxnat.xnat.commands import Command
 
 
@@ -27,7 +27,8 @@ class CopyCommand(Command):
         if mode == TransferMode.zip:
             self.ignore_filter = [XnatFile]
         elif mode in [TransferMode.rsync, TransferMode.meta]:
-            self.ignore_filter = [XnatResource, XnatFile]
+            self.ignore_filter = [XnatResource, XnatFile, XnatInResource,
+                                  XnatOutResource]
 
     def _run(self, xnat_item, from_parent):
 
