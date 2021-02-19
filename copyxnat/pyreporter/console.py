@@ -37,11 +37,11 @@ class Console:
             text = color + message + AnsiCodes.END
         else:
             text = message
-        print(text + AnsiCodes.CLEAR)
+        print('\r' + text + AnsiCodes.CLEAR)
         self._reprint_sticky()
 
     def _reprint_sticky(self):
         """Re-print sticky text"""
         if self._last_sticky_text:
             text = AnsiCodes.CYAN + self._last_sticky_text + AnsiCodes.END
-            print(text, end='\r', flush=True)
+            print('\r' + text, end='', flush=True)
