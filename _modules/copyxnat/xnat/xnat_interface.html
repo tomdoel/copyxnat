@@ -192,15 +192,15 @@
 
         <span class="k">if</span> <span class="n">copied_item</span><span class="o">.</span><span class="n">exists_on_server</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">app_settings</span><span class="o">.</span><span class="n">overwrite_existing</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Updating existing </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span>
-                                      <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Updating existing </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span>
+                                    <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
                 <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> already exists on the destination &quot;</span>
-                                      <span class="s2">&quot;server existing data will not be &quot;</span>
-                                      <span class="s2">&quot;modified. Use the --overwrite_existing &quot;</span>
-                                      <span class="s2">&quot;option to allow updating of existing &quot;</span>
-                                      <span class="s2">&quot;data&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> already exists on the destination &quot;</span>
+                                   <span class="s2">&quot;server existing data will not be &quot;</span>
+                                   <span class="s2">&quot;modified. Use the --overwrite_existing &quot;</span>
+                                   <span class="s2">&quot;option to allow updating of existing &quot;</span>
+                                   <span class="s2">&quot;data&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member</span>
                 <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">write_dst</span> <span class="o">=</span> <span class="kc">True</span>
@@ -238,7 +238,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">ProjectFailure</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">valid_label</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid XNAT label. Substituting&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid XNAT label. Substituting &#39;</span>
                                   <span class="s1">&#39;with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">valid_label</span><span class="p">))</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">parent_pyxnatitem</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span>
                                           <span class="n">label</span><span class="o">=</span><span class="n">valid_label</span><span class="p">)</span>
