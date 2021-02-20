@@ -210,9 +210,11 @@ class XnatItem(XnatBase):
     @staticmethod
     def _get_valid_label(label):
         """Replace any sequences of invalid characters with _ and strip leading
-        and trailing whitespace"""
-        return re.sub('[^A-Za-z0-9_-]+', '_', label).strip()
-
+        and trailing whitespace.
+        Note: Dots are permitted as they appear to be tolerated even though they
+        might not be valid labels"""
+        return re.sub(r'[^A-Za-z0-9_\-.]+', '_', label).strip()
+s
     def create_on_server(self, create_params, local_file):
         """Create this item on the XNAT server"""
         if self.read_only:
