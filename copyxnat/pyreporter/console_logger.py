@@ -29,7 +29,7 @@ class ConsoleLogger:
     def info(self, message):
         """Informational message which should be shown to the user"""
         self._output(prefix=self._INFO_PREFIX, message=message,
-                     color=AnsiCodes.GREEN)
+                     color=AnsiCodes.END)
 
     def output(self, message):
         """Print text to the console without a message prefix"""
