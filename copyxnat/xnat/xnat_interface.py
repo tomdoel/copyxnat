@@ -152,15 +152,15 @@ class XnatItem(XnatBase):
 
         if copied_item.exists_on_server():
             if app_settings.overwrite_existing:
-                self.reporter.warning("Updating existing {} {}".
-                                      format(self._name, label))  # pylint: disable=no-member
+                self.reporter.info("Updating existing {} {}".
+                                    format(self._name, label))  # pylint: disable=no-member
                 write_dst = True
             else:
-                self.reporter.warning("{} {} already exists on the destination "
-                                      "server existing data will not be "
-                                      "modified. Use the --overwrite_existing "
-                                      "option to allow updating of existing "
-                                      "data".format(self._name, label))  # pylint: disable=no-member
+                self.reporter.info("{} {} already exists on the destination "
+                                   "server existing data will not be "
+                                   "modified. Use the --overwrite_existing "
+                                   "option to allow updating of existing "
+                                   "data".format(self._name, label))  # pylint: disable=no-member
                 write_dst = False
         else:
             write_dst = True
@@ -198,7 +198,7 @@ class XnatItem(XnatBase):
             self.reporter.error(message)
             raise ProjectFailure(message)
         if label != valid_label:
-            self.reporter.warning('{} is not a valid XNAT label. Substituting'
+            self.reporter.warning('{} is not a valid XNAT label. Substituting '
                                   'with {}'.format(label, valid_label))
         interface = self.interface.create(parent_pyxnatitem=parent.interface,
                                           label=valid_label)
