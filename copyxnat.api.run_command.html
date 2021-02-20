@@ -47,47 +47,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-copyxnat.api.run_command">
-<span id="copyxnat-api-run-command-module"></span><h1>copyxnat.api.run_command module<a class="headerlink" href="#module-copyxnat.api.run_command" title="Permalink to this headline">¶</a></h1>
-<p>API for running the specified command on XNAT servers</p>
-<dl class="py function">
-<dt id="copyxnat.api.run_command.resolve_projects">
-<code class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></code><code class="sig-name descname"><span class="pre">resolve_projects</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_project_filter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#resolve_projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.resolve_projects" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return source and destination project names from a src:dst string</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="copyxnat.api.run_command.run_command">
-<code class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></code><code class="sig-name descname"><span class="pre">run_command</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pyxnat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#run_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.run_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs the command on the specified XNAT servers</p>
-<p>&#64;param command: the command class to run
-&#64;param src_params: XnatServerParams for source server
-&#64;param dst_params: XnatServerParams for destination server
-&#64;param project_filter: array of project names to process or None to process
-all projects visible on the server. If a project name needs to be different
-on the source and destination servers, the string should be of the form
-src_project_name:dst_project_name
-&#64;param app_settings: Global settings; if None then defaults will be used
-&#64;param backend: the Python library used to interact with the XNAT
-servers. Defaults to <cite>pyxnat</cite>
-&#64;param reporter: PyReporter object for user input/output and logging</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="copyxnat.api.run_command.run_command_on_servers">
-<code class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></code><code class="sig-name descname"><span class="pre">run_command_on_servers</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_xnat_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_xnat_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#run_command_on_servers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.run_command_on_servers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs the specified command on the specified XnatServer objects</p>
-<p>&#64;param command: command class
-&#64;param src_xnat_server: Source XnatServer
-&#64;param dst_xnat_server: Destination XnatServer, if required for this command
-&#64;param reporter: PyReporter object for user input/output and logging
-&#64;param app_settings: holds global parameters
-&#64;param project_filter: array of project names to process or None to process
-all projects visible on the server. If a project name needs to be different
-on the source and destination servers, the string should be of the form
-src_project_name:dst_project_name</p>
-</dd></dl>
-
+  <div class="section" id="copyxnat-api-run-command-module">
+<h1>copyxnat.api.run_command module<a class="headerlink" href="#copyxnat-api-run-command-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
