@@ -5,11 +5,13 @@
 
 import abc
 import os
+import re
 
 import pydicom
 import urllib3
 from pyxnat.core.errors import DatabaseError
 
+from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
 from copyxnat.config.app_settings import TransferMode
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
@@ -190,12 +192,26 @@ class XnatItem(XnatBase):
         """
 
         cls = self.__class__
+        valid_label = self._get_valid_label(label)
+        if not valid_label:
+            message = '{} is not a valid XNAT label'.format(label)
+            self.reporter.error(message)
+            raise ProjectFailure(message)
+        if label != valid_label:
+            self.reporter.warning('{} is not a valid XNAT label. Substituting'
+                                  'with {}'.format(label, valid_label))
         interface = self.interface.create(parent_pyxnatitem=parent.interface,
-                                          label=label)
+                                          label=valid_label)
 
         return cls(interface=interface,
                    label=label,
                    parent=parent)
+
+    @staticmethod
+    def _get_valid_label(label):
+        """Replace any sequences of invalid characters with _ and strip leading
+        and trailing whitespace"""
+        return re.sub('[^A-Za-z0-9_-]+', '_', label).strip()
 
     def create_on_server(self, create_params, local_file):
         """Create this item on the XNAT server"""
