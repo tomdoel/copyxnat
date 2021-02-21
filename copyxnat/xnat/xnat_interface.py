@@ -125,7 +125,6 @@ class XnatItem(XnatBase):
 
     def _update_remaps(self, duplicate):
         """Update the ID maps are used to modify tags in child items"""
-        pass
 
     def duplicate(self, destination_parent, app_settings, dst_label=None):
         """
@@ -402,7 +401,7 @@ class XnatFile(XnatItem):
         dst_item.create_on_server(create_params=attributes,
                                   local_file=local_file)
         if local_file:
-            dst_item._add_missing_metadata(local_file=local_file)
+            dst_item.add_missing_metadata(local_file=local_file)
             os.remove(local_file)
 
     def export(self, app_settings):
@@ -423,10 +422,12 @@ class XnatFile(XnatItem):
         return base_string + attr_string
 
     def ohif_generate_session(self):
-        # Use files to supply missing metadata
-        self._add_missing_metadata()
 
-    def _add_missing_metadata(self, local_file=None):
+        # Use files to supply missing metadata
+        self.add_missing_metadata()
+
+    def add_missing_metadata(self, local_file=None):
+        """Update parent items using metadata from this file"""
         tmp_local_file = None
         if not local_file:
             folder_path = self.cache.make_output_path()
