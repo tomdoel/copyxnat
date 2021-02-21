@@ -65,7 +65,8 @@
                  <span class="n">overwrite_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">transfer_mode</span><span class="o">=</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
                  <span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">skip_existing</span><span class="o">=</span><span class="kc">False</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create global application settings</span>
@@ -84,6 +85,7 @@
 <span class="sd">        @param verbose: True to show debugging output</span>
 <span class="sd">        XNAT server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skip_existing</span> <span class="o">=</span> <span class="n">skip_existing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">dry_run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">fix_scan_types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">ignore_datatype_errors</span>

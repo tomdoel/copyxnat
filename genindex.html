@@ -67,6 +67,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.add_missing_metadata">add_missing_metadata() (copyxnat.xnat.xnat_interface.XnatFile method)</a>
+</li>
       <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.add_tag_remaps">add_tag_remaps() (copyxnat.xnat.xml_cleaner.XmlCleaner method)</a>
 </li>
       <li><a href="copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.AnsiCodes">AnsiCodes (class in copyxnat.pyreporter.console)</a>
@@ -75,7 +77,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.assessor">assessor (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.assessor">assessor (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.assessors">assessors() (copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment method)</a>
 </li>
@@ -107,14 +109,8 @@
 </li>
       <li><a href="copyxnat.commands.check_datatypes_command.html#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand">CheckDatatypesCommand (class in copyxnat.commands.check_datatypes_command)</a>
 </li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.clean">clean() (copyxnat.xnat.xml_cleaner.XmlCleaner method)</a>
-
-      <ul>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.clean">(copyxnat.xnat.xnat_interface.XnatParentItem method)</a>
+      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.clean_xml">clean_xml() (copyxnat.xnat.xml_cleaner.XmlCleaner method)</a>
 </li>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatProject.clean">(copyxnat.xnat.xnat_interface.XnatProject method)</a>
-</li>
-      </ul></li>
       <li><a href="copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.AnsiCodes.CLEAR">CLEAR (copyxnat.pyreporter.console.AnsiCodes attribute)</a>
 </li>
       <li><a href="copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.clear">clear() (copyxnat.xnat.copy_cache.CopyCache method)</a>
@@ -149,14 +145,6 @@
 </li>
       <li><a href="copyxnat.pyreporter.console_logger.html#copyxnat.pyreporter.console_logger.ConsoleLogger">ConsoleLogger (class in copyxnat.pyreporter.console_logger)</a>
 </li>
-      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.copy">copy() (copyxnat.xnat.xnat_interface.XnatFile method)</a>
-
-      <ul>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.copy">(copyxnat.xnat.xnat_interface.XnatItem method)</a>
-</li>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.copy">(copyxnat.xnat.xnat_interface.XnatParentItem method)</a>
-</li>
-      </ul></li>
       <li><a href="copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache">CopyCache (class in copyxnat.xnat.copy_cache)</a>
 </li>
       <li><a href="copyxnat.commands.copy_command.html#copyxnat.commands.copy_command.CopyCommand">CopyCommand (class in copyxnat.commands.copy_command)</a>
@@ -273,8 +261,6 @@
         <li><a href="copyxnat.pyreporter.console.html#module-copyxnat.pyreporter.console">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     copyxnat.pyreporter.console_logger
 
@@ -289,6 +275,8 @@
         <li><a href="copyxnat.pyreporter.file_logger.html#module-copyxnat.pyreporter.file_logger">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     copyxnat.pyreporter.progress
 
@@ -388,6 +376,13 @@
 </li>
       </ul></li>
       <li>
+    copyxnat.xnat.xnat_xml
+
+      <ul>
+        <li><a href="copyxnat.xnat.xnat_xml.html#module-copyxnat.xnat.xnat_xml">module</a>
+</li>
+      </ul></li>
+      <li>
     copyxnat.xnat_backend
 
       <ul>
@@ -408,18 +403,20 @@
         <li><a href="copyxnat.xnat_backend.server_factory.html#module-copyxnat.xnat_backend.server_factory">module</a>
 </li>
       </ul></li>
-      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.create">create() (copyxnat.xnat.xnat_interface.XnatFile method)</a>
+      <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create">create() (copyxnat.xnat_backend.pyxnat_server.PyXnatItem class method)</a>
 
       <ul>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFileContainerItem.create">(copyxnat.xnat.xnat_interface.XnatFileContainerItem method)</a>
-</li>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.create">(copyxnat.xnat.xnat_interface.XnatItem method)</a>
-</li>
-        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.create">(copyxnat.xnat.xnat_interface.XnatParentItem method)</a>
-</li>
-        <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create">(copyxnat.xnat_backend.pyxnat_server.PyXnatItem class method)</a>
-</li>
         <li><a href="copyxnat.xnat_backend.server_factory.html#copyxnat.xnat_backend.server_factory.ServerFactory.create">(copyxnat.xnat_backend.server_factory.ServerFactory method)</a>
+</li>
+      </ul></li>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.create_from_source">create_from_source() (copyxnat.xnat.xnat_interface.XnatFile method)</a>
+
+      <ul>
+        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFileContainerItem.create_from_source">(copyxnat.xnat.xnat_interface.XnatFileContainerItem method)</a>
+</li>
+        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.create_from_source">(copyxnat.xnat.xnat_interface.XnatItem method)</a>
+</li>
+        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatParentItem.create_from_source">(copyxnat.xnat.xnat_interface.XnatParentItem method)</a>
 </li>
       </ul></li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor.create_interface">create_interface() (copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor class method)</a>
@@ -506,8 +503,6 @@
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.download_zip_file">download_zip_file() (copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase method)</a>
 </li>
-      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.duplicate">duplicate() (copyxnat.xnat.xnat_interface.XnatItem method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -532,7 +527,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.experiment">experiment (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.experiment">experiment (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatSubject.experiments">experiments() (copyxnat.xnat_backend.pyxnat_server.PyXnatSubject method)</a>
 </li>
@@ -563,7 +558,7 @@
       <li><a href="copyxnat.config.app_settings.html#copyxnat.config.app_settings.TransferMode.file">file (copyxnat.config.app_settings.TransferMode attribute)</a>
 
       <ul>
-        <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.file">(copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+        <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.file">(copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -698,7 +693,9 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.in_resource">in_resource (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.IDS_TO_MAP">IDS_TO_MAP (copyxnat.xnat.xml_cleaner.XmlCleaner attribute)</a>
+</li>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.in_resource">in_resource (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources.in_resources">in_resources() (copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources method)</a>
 </li>
@@ -874,6 +871,8 @@
 </li>
         <li><a href="copyxnat.xnat.xnat_interface.html#module-copyxnat.xnat.xnat_interface">copyxnat.xnat.xnat_interface</a>
 </li>
+        <li><a href="copyxnat.xnat.xnat_xml.html#module-copyxnat.xnat.xnat_xml">copyxnat.xnat.xnat_xml</a>
+</li>
         <li><a href="copyxnat.xnat_backend.html#module-copyxnat.xnat_backend">copyxnat.xnat_backend</a>
 </li>
         <li><a href="copyxnat.xnat_backend.pyxnat_server.html#module-copyxnat.xnat_backend.pyxnat_server">copyxnat.xnat_backend.pyxnat_server</a>
@@ -905,8 +904,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.NAMESPACES">NAMESPACES (copyxnat.xnat.xml_cleaner.XmlCleaner attribute)</a>
-</li>
       <li><a href="copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CacheBox.new_cache">new_cache() (copyxnat.xnat.copy_cache.CacheBox method)</a>
 </li>
       <li><a href="copyxnat.pyreporter.progress.html#copyxnat.pyreporter.progress.Progress.next_progress">next_progress() (copyxnat.pyreporter.progress.Progress method)</a>
@@ -943,7 +940,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.out_resource">out_resource (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.out_resource">out_resource (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources.out_resources">out_resources() (copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithInOutResources method)</a>
 </li>
@@ -991,7 +988,7 @@
         <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatProject.progress_update">(copyxnat.xnat.xnat_interface.XnatProject method)</a>
 </li>
       </ul></li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.project">project (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.project">project (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.project">project() (copyxnat.xnat.xnat_interface.XnatServer method)</a>
 
@@ -1083,7 +1080,7 @@
       </ul></li>
       <li><a href="copyxnat.commands.rebuild_catalog_command.html#copyxnat.commands.rebuild_catalog_command.RebuildCatalogCommand">RebuildCatalogCommand (class in copyxnat.commands.rebuild_catalog_command)</a>
 </li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.reconstruction">reconstruction (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.reconstruction">reconstruction (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.reconstructions">reconstructions() (copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment method)</a>
 </li>
@@ -1149,7 +1146,7 @@
       </ul></li>
       <li><a href="copyxnat.api.run_command.html#copyxnat.api.run_command.resolve_projects">resolve_projects() (in module copyxnat.api.run_command)</a>
 </li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.resource">resource (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.resource">resource (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources.resources">resources() (copyxnat.xnat_backend.pyxnat_server.PyXnatItemWithResources method)</a>
 </li>
@@ -1175,13 +1172,13 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.scan">scan (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.scan">scan (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="versioneer.html#versioneer.scan_setup_py">scan_setup_py() (in module versioneer)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment.scans">scans() (copyxnat.xnat_backend.pyxnat_server.PyXnatExperiment method)</a>
 </li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.server">server (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.server">server (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.server_factory.html#copyxnat.xnat_backend.server_factory.ServerFactory">ServerFactory (class in copyxnat.xnat_backend.server_factory)</a>
 </li>
@@ -1205,7 +1202,7 @@
 </li>
       <li><a href="copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache.sub_cache">sub_cache() (copyxnat.xnat.copy_cache.CopyCache method)</a>
 </li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType.subject">subject (copyxnat.xnat.xml_cleaner.XnatType attribute)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType.subject">subject (copyxnat.xnat.xnat_interface.XnatType attribute)</a>
 </li>
       <li><a href="copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.subjects">subjects() (copyxnat.xnat_backend.pyxnat_server.PyXnatProject method)</a>
 </li>
@@ -1330,7 +1327,7 @@
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner.xml_from_string">xml_from_string() (copyxnat.xnat.xml_cleaner.XmlCleaner static method)</a>
+      <li><a href="copyxnat.xnat.xnat_xml.html#copyxnat.xnat.xnat_xml.xml_from_string">xml_from_string() (in module copyxnat.xnat.xnat_xml)</a>
 </li>
       <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XmlCleaner">XmlCleaner (class in copyxnat.xnat.xml_cleaner)</a>
 </li>
@@ -1378,7 +1375,7 @@
 </li>
       <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatSubject">XnatSubject (class in copyxnat.xnat.xnat_interface)</a>
 </li>
-      <li><a href="copyxnat.xnat.xml_cleaner.html#copyxnat.xnat.xml_cleaner.XnatType">XnatType (class in copyxnat.xnat.xml_cleaner)</a>
+      <li><a href="copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatType">XnatType (class in copyxnat.xnat.xnat_interface)</a>
 </li>
   </ul></td>
 </tr></table>

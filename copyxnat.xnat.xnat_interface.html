@@ -16,7 +16,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="copyxnat.xnat_backend package" href="copyxnat.xnat_backend.html" />
+    <link rel="next" title="copyxnat.xnat.xnat_xml module" href="copyxnat.xnat.xnat_xml.html" />
     <link rel="prev" title="copyxnat.xnat.xml_cleaner module" href="copyxnat.xnat.xml_cleaner.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -29,7 +29,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.xnat_backend.html" title="copyxnat.xnat_backend package"
+          <a href="copyxnat.xnat.xnat_xml.html" title="copyxnat.xnat.xnat_xml module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="copyxnat.xnat.xml_cleaner.html" title="copyxnat.xnat.xml_cleaner module"
@@ -70,7 +70,7 @@
 
 <dl class="py class">
 <dt id="copyxnat.xnat.xnat_interface.XnatBase">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.xnat_interface.</span></code><code class="sig-name descname"><span class="pre">XnatBase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_cleaner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.xnat_interface.</span></code><code class="sig-name descname"><span class="pre">XnatBase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for an item in the XNAT data hierarchy</p>
 <dl class="py method">
@@ -148,40 +148,22 @@ be found from the child Files</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat.xnat_interface.XnatItem" title="copyxnat.xnat.xnat_interface.XnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.xnat_interface.XnatItem</span></code></a></p>
 <p>Base wrapper for file items</p>
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatFile.copy">
-<code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFile.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFile.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a copy of this item on a different server, if it doesn’t already
-exist, and return an XnatItem interface to the duplicate item.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">App_settings</dt>
-<dd class="field-even"><p>global settings</p>
-</dd>
-<dt class="field-odd">Dst_label</dt>
-<dd class="field-odd"><p>label for destination object, or None to use source label</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a new XnatItem corresponding to the duplicate item</p>
-</dd>
-</dl>
+<dt id="copyxnat.xnat.xnat_interface.XnatFile.add_missing_metadata">
+<code class="sig-name descname"><span class="pre">add_missing_metadata</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFile.add_missing_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFile.add_missing_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update parent items using metadata from this file</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatFile.create">
-<code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFile.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFile.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a local file copy of this item, with any required
-cleaning so that it is ready for upload to the destination server</p>
+<dt id="copyxnat.xnat.xnat_interface.XnatFile.create_from_source">
+<code class="sig-name descname"><span class="pre">create_from_source</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_cleaner</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFile.create_from_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFile.create_from_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on this server by fetching the item from the source and
+applying XML cleaning where required</p>
 <dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+<dt class="field-odd">Src_item</dt>
+<dd class="field-odd"><p>the item from which to cope the file or XML</p>
 </dd>
-<dt class="field-even">Label</dt>
-<dd class="field-even"><p>The identifier used to find or create the child item</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>tuple of local file path, additional creation parameters</p>
+<dt class="field-even">Xml_cleaner</dt>
+<dd class="field-even"><p>XmlCleaner to modify the XML as required</p>
 </dd>
 </dl>
 </dd></dl>
@@ -217,19 +199,16 @@ cleaning so that it is ready for upload to the destination server</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat.xnat_interface.XnatItem" title="copyxnat.xnat.xnat_interface.XnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.xnat_interface.XnatItem</span></code></a></p>
 <p>Base wrapper for resource items</p>
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatFileContainerItem.create">
-<code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFileContainerItem.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFileContainerItem.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a local file copy of this item, with any required
-cleaning so that it is ready for upload to the destination server</p>
+<dt id="copyxnat.xnat.xnat_interface.XnatFileContainerItem.create_from_source">
+<code class="sig-name descname"><span class="pre">create_from_source</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_cleaner</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatFileContainerItem.create_from_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatFileContainerItem.create_from_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on this server by fetching the item from the source and
+applying XML cleaning where required</p>
 <dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+<dt class="field-odd">Src_item</dt>
+<dd class="field-odd"><p>the item from which to cope the file or XML</p>
 </dd>
-<dt class="field-even">Label</dt>
-<dd class="field-even"><p>The identifier used to find or create the child item</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>tuple of local file path, additional creation parameters</p>
+<dt class="field-even">Xml_cleaner</dt>
+<dd class="field-even"><p>XmlCleaner to modify the XML as required</p>
 </dd>
 </dl>
 </dd></dl>
@@ -261,40 +240,16 @@ cleaning so that it is ready for upload to the destination server</p>
 <p>Base class for data-level item in the XNAT data hierarchy. Used for all
 non-root items (ie all items other than XnatServer)</p>
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatItem.copy">
-<code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a copy of this item on a different server, if it doesn’t already
-exist, and return an XnatItem interface to the duplicate item.</p>
+<dt id="copyxnat.xnat.xnat_interface.XnatItem.create_from_source">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">create_from_source</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_cleaner</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.create_from_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.create_from_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on this server by fetching the item from the source and
+applying XML cleaning where required</p>
 <dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
+<dt class="field-odd">Src_item</dt>
+<dd class="field-odd"><p>the item from which to cope the file or XML</p>
 </dd>
-<dt class="field-even">App_settings</dt>
-<dd class="field-even"><p>global settings</p>
-</dd>
-<dt class="field-odd">Dst_label</dt>
-<dd class="field-odd"><p>label for destination object, or None to use source label</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a new XnatItem corresponding to the duplicate item</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatItem.create">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a local file copy of this item, with any required
-cleaning so that it is ready for upload to the destination server</p>
-<dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">Label</dt>
-<dd class="field-even"><p>The identifier used to find or create the child item</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>tuple of local file path, additional creation parameters</p>
+<dt class="field-even">Xml_cleaner</dt>
+<dd class="field-even"><p>XmlCleaner to modify the XML as required</p>
 </dd>
 </dl>
 </dd></dl>
@@ -309,24 +264,6 @@ cleaning so that it is ready for upload to the destination server</p>
 <dt id="copyxnat.xnat.xnat_interface.XnatItem.datatype">
 <code class="sig-name descname"><span class="pre">datatype</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.datatype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return datatype name of the underlying XNAT item</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatItem.duplicate">
-<code class="sig-name descname"><span class="pre">duplicate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatItem.duplicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatItem.duplicate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a copy of this item on a different server, if it doesn’t already
-exist, and return an XnatItem interface to the duplicate item.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">Dst_label</dt>
-<dd class="field-even"><p>label for destination object, or None to use source label</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a new XnatItem corresponding to the duplicate item</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -468,64 +405,16 @@ be found from the child Files</p>
 <p>Base class for item in the XNAT data hierarchy which can contain
 resources and child items</p>
 <dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatParentItem.clean">
-<code class="sig-name descname"><span class="pre">clean</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatParentItem.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatParentItem.clean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Modify XML values for items copied between XNAT projects, to allow
-for changes in unique identifiers.</p>
+<dt id="copyxnat.xnat.xnat_interface.XnatParentItem.create_from_source">
+<code class="sig-name descname"><span class="pre">create_from_source</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_cleaner</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatParentItem.create_from_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatParentItem.create_from_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on this server by fetching the item from the source and
+applying XML cleaning where required</p>
 <dl class="field-list simple">
-<dt class="field-odd">Xml_root</dt>
-<dd class="field-odd"><p>parent XML node for the xml contents to be modified</p>
+<dt class="field-odd">Src_item</dt>
+<dd class="field-odd"><p>the item from which to cope the file or XML</p>
 </dd>
-<dt class="field-even">Fix_scan_types</dt>
-<dd class="field-even"><p>if True then ambiguous scan types will be corrected</p>
-</dd>
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">Label</dt>
-<dd class="field-even"><p>label for destination object</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the modified xml_root</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatParentItem.copy">
-<code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatParentItem.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatParentItem.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a copy of this item on a different server, if it doesn’t already
-exist, and return an XnatItem interface to the duplicate item.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">App_settings</dt>
-<dd class="field-even"><p>global settings</p>
-</dd>
-<dt class="field-odd">Dst_label</dt>
-<dd class="field-odd"><p>label for destination object, or None to use source label</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a new XnatItem corresponding to the duplicate item</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatParentItem.create">
-<code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatParentItem.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatParentItem.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a local file copy of this item, with any required
-cleaning so that it is ready for upload to the destination server</p>
-<dl class="field-list simple">
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">Label</dt>
-<dd class="field-even"><p>The identifier used to find or create the child item</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>tuple of local file path, additional creation parameters</p>
+<dt class="field-even">Xml_cleaner</dt>
+<dd class="field-even"><p>XmlCleaner to modify the XML as required</p>
 </dd>
 </dl>
 </dd></dl>
@@ -555,30 +444,6 @@ cleaning so that it is ready for upload to the destination server</p>
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.xnat_interface.</span></code><code class="sig-name descname"><span class="pre">XnatProject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatProject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat.xnat_interface.XnatParentItem" title="copyxnat.xnat.xnat_interface.XnatParentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.xnat_interface.XnatParentItem</span></code></a></p>
 <p>Wrapper for access to an XNAT project</p>
-<dl class="py method">
-<dt id="copyxnat.xnat.xnat_interface.XnatProject.clean">
-<code class="sig-name descname"><span class="pre">clean</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatProject.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatProject.clean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Modify XML values for items copied between XNAT projects, to allow
-for changes in unique identifiers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Xml_root</dt>
-<dd class="field-odd"><p>parent XML node for the xml contents to be modified</p>
-</dd>
-<dt class="field-even">Fix_scan_types</dt>
-<dd class="field-even"><p>if True then ambiguous scan types will be corrected</p>
-</dd>
-<dt class="field-odd">Destination_parent</dt>
-<dd class="field-odd"><p>parent XnatItem under which to make the duplicate</p>
-</dd>
-<dt class="field-even">Label</dt>
-<dd class="field-even"><p>label for destination object</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the modified xml_root</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt id="copyxnat.xnat.xnat_interface.XnatProject.interface_method">
 <code class="sig-name descname"><span class="pre">interface_method</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'projects'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatProject.interface_method" title="Permalink to this definition">¶</a></dt>
@@ -750,6 +615,68 @@ be found from the child Files</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt id="copyxnat.xnat.xnat_interface.XnatType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.xnat_interface.</span></code><code class="sig-name descname"><span class="pre">XnatType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Describe the type of XNAT item so cleaning can be performed</p>
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.assessor">
+<code class="sig-name descname"><span class="pre">assessor</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'assessor'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.assessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.experiment">
+<code class="sig-name descname"><span class="pre">experiment</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'experiment'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.experiment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.file">
+<code class="sig-name descname"><span class="pre">file</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'file'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.in_resource">
+<code class="sig-name descname"><span class="pre">in_resource</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'in_resource'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.in_resource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.out_resource">
+<code class="sig-name descname"><span class="pre">out_resource</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'out_resource'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.out_resource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.project">
+<code class="sig-name descname"><span class="pre">project</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'project'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.reconstruction">
+<code class="sig-name descname"><span class="pre">reconstruction</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'reconstruction'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.reconstruction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.resource">
+<code class="sig-name descname"><span class="pre">resource</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'resource'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.resource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.scan">
+<code class="sig-name descname"><span class="pre">scan</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'scan'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.server">
+<code class="sig-name descname"><span class="pre">server</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'server'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.xnat.xnat_interface.XnatType.subject">
+<code class="sig-name descname"><span class="pre">subject</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'subject'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatType.subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -766,8 +693,8 @@ be found from the child Files</p>
   <p class="topless"><a href="copyxnat.xnat.xml_cleaner.html"
                         title="previous chapter">copyxnat.xnat.xml_cleaner module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="copyxnat.xnat_backend.html"
-                        title="next chapter">copyxnat.xnat_backend package</a></p>
+  <p class="topless"><a href="copyxnat.xnat.xnat_xml.html"
+                        title="next chapter">copyxnat.xnat.xnat_xml module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -799,7 +726,7 @@ be found from the child Files</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.xnat_backend.html" title="copyxnat.xnat_backend package"
+          <a href="copyxnat.xnat.xnat_xml.html" title="copyxnat.xnat.xnat_xml module"
              >next</a> |</li>
         <li class="right" >
           <a href="copyxnat.xnat.xml_cleaner.html" title="copyxnat.xnat.xml_cleaner module"

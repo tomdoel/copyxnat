@@ -42,8 +42,9 @@
 
 <span class="sd">&quot;&quot;&quot;Command which copies XNAT projects between servers&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">copyxnat.config.app_settings</span> <span class="kn">import</span> <span class="n">TransferMode</span>
+<span class="kn">from</span> <span class="nn">copyxnat.xnat.xml_cleaner</span> <span class="kn">import</span> <span class="n">XmlCleaner</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_interface</span> <span class="kn">import</span> <span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">,</span> \
-    <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">,</span> <span class="n">XnatInResource</span>
+    <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatSubject</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 
 
@@ -62,6 +63,8 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">datatypes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span> <span class="o">=</span> <span class="n">XmlCleaner</span><span class="p">(</span><span class="n">app_settings</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
+                                      <span class="n">reporter</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>
 
         <span class="n">mode</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">zip</span><span class="p">:</span>
@@ -72,24 +75,102 @@
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
-        <span class="n">dst_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Get the destination label for this item. Normally the same as the</span>
+        <span class="c1"># input label except a different destination project label may be</span>
+        <span class="c1"># selected</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_label</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
-            <span class="n">dst_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span>
-            <span class="k">if</span> <span class="n">dst_name</span> <span class="ow">in</span> <span class="n">from_parent</span><span class="o">.</span>\
-                    <span class="n">get_disallowed_project_ids</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Cannot copy this project because the &#39;</span>
-                                   <span class="s1">&#39;destination project ID </span><span class="si">{}</span><span class="s1"> is already &#39;</span>
-                                   <span class="s1">&#39;being used as the Project Title or Running &#39;</span>
-                                   <span class="s1">&#39;Title of another project on the &#39;</span>
-                                   <span class="s1">&#39;destination server. You must choose a &#39;</span>
-                                   <span class="s1">&#39;different Project ID to make a new copy. &#39;</span>
-                                   <span class="s1">&#39;If you are trying to update an existing &#39;</span>
-                                   <span class="s1">&#39;copy, you must specify the Project ID of &#39;</span>
-                                   <span class="s1">&#39;destination project, not the Project Title &#39;</span>
-                                   <span class="s1">&#39;or Running Title.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dst_name</span><span class="p">))</span>
+        <span class="c1"># Ensure that project label is valid before continuing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enforce_valid_project_names</span><span class="p">(</span><span class="n">from_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
+                                          <span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span>
+                                          <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 
-        <span class="n">missing_session_type</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Check for missing session types and decide whether to continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_session_types</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Create the interface to the destination item. At this point the item</span>
+        <span class="c1"># may already exist on the server but if not, it will not be created</span>
+        <span class="n">dst_copy</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">get_or_create_child</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
+                                                 <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="n">already_exists</span> <span class="o">=</span> <span class="n">dst_copy</span><span class="o">.</span><span class="n">exists_on_server</span><span class="p">()</span>
+
+        <span class="c1"># Create the item on the destination server</span>
+        <span class="n">should_create</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_create</span><span class="p">(</span>
+            <span class="n">already_exists</span><span class="o">=</span><span class="n">already_exists</span><span class="p">,</span> <span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">should_create</span><span class="p">:</span>
+            <span class="n">dst_copy</span><span class="o">.</span><span class="n">create_from_source</span><span class="p">(</span><span class="n">src_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span>
+                                        <span class="n">xml_cleaner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">)</span>
+
+        <span class="c1"># Update the XML cleaner with new before and after IDs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">add_tag_remaps</span><span class="p">(</span><span class="n">src_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">dst_item</span><span class="o">=</span><span class="n">dst_copy</span><span class="p">)</span>
+
+        <span class="c1"># In rsync mode, do the sync after the project is created but before</span>
+        <span class="c1"># before recursion to the child items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rsync</span><span class="p">(</span><span class="n">dst_copy</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">)</span>
+
+        <span class="c1"># Recursion to the child items</span>
+        <span class="n">should_recurse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_recurse</span><span class="p">(</span>
+            <span class="n">already_exists</span><span class="o">=</span><span class="n">already_exists</span><span class="p">,</span> <span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">should_recurse</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">dst_copy</span><span class="p">)</span>
+
+        <span class="c1"># Tasks that are run after the item is created and after recursion to</span>
+        <span class="c1"># child items</span>
+        <span class="k">if</span> <span class="n">dst_copy</span><span class="p">:</span>
+            <span class="n">dst_copy</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_should_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">already_exists</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+
+        <span class="c1"># If item does not exist then create</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">already_exists</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># If item exists, it&#39;s an experiment or descendent, and the</span>
+        <span class="c1"># skip-existing flag is set then do not create</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">skip_existing</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="p">(</span><span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatSubject</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Skipping existing </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> and all of its child items&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member, protected-access</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Do not overwrite unless overwrite flag is set</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">overwrite_existing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> already exists on the destination &quot;</span>
+                <span class="s2">&quot;server. Existing data will not be &quot;</span>
+                <span class="s2">&quot;modified. Use the --overwrite_existing &quot;</span>
+                <span class="s2">&quot;option to allow updating of existing &quot;</span>
+                <span class="s2">&quot;data&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member, protected-access</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Overwrite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Updating existing </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member, protected-access</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_should_recurse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">already_exists</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+
+        <span class="c1"># If item already exists, is an Experiment or descendent and the</span>
+        <span class="c1"># skip-existing flag is set, then do not recurse.</span>
+        <span class="c1"># Do not display a message to the user as a message should already have</span>
+        <span class="c1"># been displayed during the _should_create() check</span>
+        <span class="k">if</span> <span class="n">already_exists</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">skip_existing</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="p">(</span><span class="n">XnatProject</span><span class="p">,</span> <span class="n">XnatSubject</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+                <span class="s2">&quot;Skipping children of existing </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> becaue of skip-existing &quot;</span>
+                <span class="s2">&quot;flag&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-member, protected-access</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_check_session_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check for missing session datatypes, Return True to continue copy&quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
             <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
             <span class="n">missing_session_type</span> <span class="o">=</span> <span class="n">datatype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst_datatypes</span>
@@ -109,25 +190,37 @@
                         <span class="s1">&#39;to the destination server. To force copying of the &#39;</span>
                         <span class="s1">&#39;data, use --ignore-datatype-errors &#39;</span><span class="o">.</span>
                             <span class="nb">format</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span> <span class="n">datatype</span><span class="p">))</span>
-                    <span class="k">return</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="n">dst_copy</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
-            <span class="n">destination_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
-            <span class="n">app_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
-            <span class="n">dst_label</span><span class="o">=</span><span class="n">dst_name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_choose_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span> <span class="ow">or</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span>
+        <span class="k">return</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">)</span> <span class="ow">and</span> \
-                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_rsync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_copy</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span> <span class="ow">and</span> \
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">rsync</span><span class="o">.</span><span class="n">rsync_project_data</span><span class="p">(</span>
                 <span class="n">src_project_path</span><span class="o">=</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
                 <span class="n">dst_project_path</span><span class="o">=</span><span class="n">dst_copy</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
                 <span class="n">src_label</span><span class="o">=</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="n">dst_copy</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">dst_copy</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">missing_session_type</span><span class="p">:</span>
-            <span class="n">dst_copy</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span></div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_enforce_valid_project_names</span><span class="p">(</span><span class="n">from_parent</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">from_parent</span><span class="o">.</span><span class="n">get_disallowed_project_ids</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Cannot copy this project because the &#39;</span>
+                                   <span class="s1">&#39;destination project ID </span><span class="si">{}</span><span class="s1"> is already &#39;</span>
+                                   <span class="s1">&#39;being used as the Project Title or Running &#39;</span>
+                                   <span class="s1">&#39;Title of another project on the &#39;</span>
+                                   <span class="s1">&#39;destination server. You must choose a &#39;</span>
+                                   <span class="s1">&#39;different Project ID to make a new copy. &#39;</span>
+                                   <span class="s1">&#39;If you are trying to update an existing &#39;</span>
+                                   <span class="s1">&#39;copy, you must specify the Project ID of &#39;</span>
+                                   <span class="s1">&#39;destination project, not the Project Title &#39;</span>
+                                   <span class="s1">&#39;or Running Title.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span></div>
 </pre></div>
 
             <div class="clearer"></div>

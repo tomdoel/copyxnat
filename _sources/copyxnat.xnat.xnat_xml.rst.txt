@@ -1,0 +1,7 @@
+copyxnat.xnat.xnat\_xml module
+==============================
+
+.. automodule:: copyxnat.xnat.xnat_xml
+   :members:
+   :undoc-members:
+   :show-inheritance:
