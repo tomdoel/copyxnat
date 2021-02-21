@@ -307,8 +307,10 @@ class XnatParentItem(XnatItem):
     def create(self, dst_item, xml_cleaner):
 
         # Note that cleaning will modify the xml_root object passed in
-        cleaned_xml_root = self.clean_xml(
+        cleaned_xml_root = self.clean(
             xml_root=self.get_xml(),
+            src_item=self,
+            dst_item=dst_item,
             destination_parent=dst_item.parent,
             label=dst_item.label,
             xml_cleaner=xml_cleaner
@@ -321,7 +323,8 @@ class XnatParentItem(XnatItem):
         if local_file:
             os.remove(local_file)
 
-    def clean(self, xml_root, destination_parent, label, xml_cleaner):  # pylint: disable=unused-argument
+    def clean(self, xml_root, src_item, dst_item, destination_parent, label,  # pylint: disable=unused-argument
+              xml_cleaner):
         """
         Modify XML values for items copied between XNAT projects, to allow
         for changes in unique identifiers.
@@ -335,8 +338,8 @@ class XnatParentItem(XnatItem):
         return xml_cleaner.clean_xml(
             xml_root=xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
-            src_path=self.project_server_path(),
-            dst_path=destination_parent.project_server_path(),
+            src_item=src_item,
+            dst_item=dst_item,
             remove_files=(not self.app_settings.transfer_mode ==
                               TransferMode.rsync)
         )
@@ -606,7 +609,8 @@ class XnatProject(XnatParentItem):
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
-    def clean(self, xml_root, destination_parent, label, xml_cleaner):
+    def clean(self, xml_root, src_item, dst_item, destination_parent, label,
+              xml_cleaner):
         disallowed = destination_parent.get_disallowed_project_ids(label=label)
         cleaned_xml_root = xml_cleaner.make_project_names_unique(
             xml_root=xml_root,
@@ -614,11 +618,11 @@ class XnatProject(XnatParentItem):
         )
 
         # Note: we do not try to remap files specified at the project level
-        return xml_cleaner.clean(
+        return xml_cleaner.clean_xml(
             xml_root=cleaned_xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
-            src_path=None,
-            dst_path=None,
+            src_item=src_item,
+            dst_item=dst_item,
             remove_files=True
         )
 

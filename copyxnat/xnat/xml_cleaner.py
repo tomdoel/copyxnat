@@ -130,15 +130,15 @@ class XmlCleaner:
         return xml_root
 
     # pylint: disable=too-many-branches
-    def clean_xml(self, xml_root, fix_scan_types, src_path, dst_path,
+    def clean_xml(self, xml_root, fix_scan_types, src_item, dst_item,
                   remove_files=True):
         """
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
-        @param src_path: Archive path on source server
-        @param dst_path: Archive path on destination server
         @param fix_scan_types: set to True to correct ambiguous scan types
+        @param src_item: XNAT item on source server
+        @param dst_item: XNAT item on destination server
         @param remove_files: set to True to remove file tags. Only set to False
         if the files and file catalogs are already in place on the destination
         server at the correct locations
@@ -186,13 +186,16 @@ class XmlCleaner:
             if remove_files:
                 xml_root.remove(child)
             else:
-                self._rewrite_uris(child, src_path, dst_path)
+                self._rewrite_uris(child, src_item, dst_item)
 
         return xml_root
 
-    def _rewrite_uris(self, child, src_path, dst_path):
+    def _rewrite_uris(self, child, src_item, dst_item):
         if 'URI' in child.attrib:
             current = child.attrib['URI']
+            src_path = src_item.project_server_path()
+            dst_path = dst_item.project_server_path()
+
             if src_path not in current:
                 raise RuntimeError('Unexpected server file path')
             self._reporter.log('Replacing path {}->{}'.format(src_path,
