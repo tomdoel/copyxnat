@@ -35,24 +35,67 @@ class CopyCommand(Command):
 
     def _run(self, xnat_item, from_parent):
 
-        dst_name = None
+        # Get the destination label for this item. Normally the same as the
+        # input label except a different destination project label may be
+        # selected
+        label = self._choose_label(xnat_item)
 
-        if isinstance(xnat_item, XnatProject):
-            dst_name = self.inputs.dst_project
-            if dst_name in from_parent.\
-                    get_disallowed_project_ids(label=dst_name):
-                raise RuntimeError('Cannot copy this project because the '
-                                   'destination project ID {} is already '
-                                   'being used as the Project Title or Running '
-                                   'Title of another project on the '
-                                   'destination server. You must choose a '
-                                   'different Project ID to make a new copy. '
-                                   'If you are trying to update an existing '
-                                   'copy, you must specify the Project ID of '
-                                   'destination project, not the Project Title '
-                                   'or Running Title.'.format(dst_name))
+        # Ensure that project label is valid before continuing
+        self._enforce_valid_project_names(from_parent=from_parent,
+                                          xnat_item=xnat_item,
+                                          label=label)
 
-        missing_session_type = False
+        # Check for missing session types and decide whether to continue
+        if not self._check_session_types(xnat_item=xnat_item):
+            return
+
+        # Create the interface to the destination item. At this point the item
+        # may already exist on the server but if not, it will not be created
+        dst_copy = xnat_item.get_or_create_child(parent=from_parent,
+                                                 label=label)
+
+        # Create the item on the destination server
+        if self._should_create(dst_copy=dst_copy, xnat_item=xnat_item,
+                               label=label):
+            dst_copy.create_from_source(src_item=xnat_item,
+                                        xml_cleaner=self.xml_cleaner)
+
+        # Update the XML cleaner with new before and after IDs
+        self.xml_cleaner.add_tag_remaps(src_item=xnat_item, dst_item=dst_copy)
+
+        # In rsync mode, do the sync after the project is created but before
+        # before recursion to the child items
+        self._rsync(dst_copy, xnat_item)
+
+        # Recursion to the child items
+        self._recurse(xnat_item=xnat_item, to_children=dst_copy)
+
+        # Tasks that are run after the item is created and after recursion to
+        # child items
+        if dst_copy:
+            dst_copy.post_create()
+
+    def _should_create(self, dst_copy, xnat_item, label):
+        if dst_copy.exists_on_server():
+            if self.inputs.app_settings.overwrite_existing:
+                self.inputs.reporter.info(
+                    "Updating existing {} {}".format(xnat_item._name, label))  # pylint: disable=no-member, protected-access
+                write_dst = True
+            else:
+                self.inputs.reporter.info(
+                    "{} {} already exists on the destination "
+                    "server existing data will not be "
+                    "modified. Use the --overwrite_existing "
+                    "option to allow updating of existing "
+                    "data".format(xnat_item._name, label))  # pylint: disable=no-member, protected-access
+                write_dst = False
+        else:
+            write_dst = True
+        return write_dst
+
+    def _check_session_types(self, xnat_item):
+        """Check for missing session datatypes, Return True to continue copy"""
+
         if isinstance(xnat_item, XnatExperiment):
             datatype = xnat_item.datatype()
             missing_session_type = datatype not in self.dst_datatypes
@@ -72,29 +115,34 @@ class CopyCommand(Command):
                         'to the destination server. To force copying of the '
                         'data, use --ignore-datatype-errors '.
                             format(item_id, datatype))
-                    return
+                    return False
+        return True
 
-        dst_copy = xnat_item.duplicate(
-            destination_parent=from_parent,
-            app_settings=self.inputs.app_settings,
-            xml_cleaner=self.xml_cleaner,
-            dst_label=dst_name)
+    def _choose_label(self, xnat_item):
+        if isinstance(xnat_item, XnatProject):
+            return self.inputs.dst_project or xnat_item.label
+        return xnat_item.label
 
-        self.xml_cleaner.add_tag_remaps(
-            src_item=xnat_item,
-            dst_item=dst_copy,
-            xnat_type=xnat_item._xml_id  # pylint: disable=no-member, protected-access
-        )
-
-        if isinstance(xnat_item, XnatProject) and \
-                self.inputs.app_settings.transfer_mode == TransferMode.rsync:
+    def _rsync(self, dst_copy, xnat_item):
+        if self.inputs.app_settings.transfer_mode == TransferMode.rsync and \
+                isinstance(xnat_item, XnatProject):
             self.inputs.rsync.rsync_project_data(
                 src_project_path=xnat_item.project_server_path(),
                 dst_project_path=dst_copy.project_server_path(),
                 src_label=xnat_item.label
             )
 
-        self._recurse(xnat_item=xnat_item, to_children=dst_copy)
-
-        if dst_copy and not missing_session_type:
-            dst_copy.post_create()
+    @staticmethod
+    def _enforce_valid_project_names(from_parent, xnat_item, label):
+        if isinstance(xnat_item, XnatProject):
+            if label in from_parent.get_disallowed_project_ids(label=label):
+                raise RuntimeError('Cannot copy this project because the '
+                                   'destination project ID {} is already '
+                                   'being used as the Project Title or Running '
+                                   'Title of another project on the '
+                                   'destination server. You must choose a '
+                                   'different Project ID to make a new copy. '
+                                   'If you are trying to update an existing '
+                                   'copy, you must specify the Project ID of '
+                                   'destination project, not the Project Title '
+                                   'or Running Title.'.format(label))

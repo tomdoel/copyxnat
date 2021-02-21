@@ -138,42 +138,6 @@ class XnatItem(XnatBase):
         label = interface.get_label()
         return cls(interface=interface, label=label, parent=parent, exists=True)
 
-    def duplicate(self, destination_parent, app_settings, xml_cleaner,
-                  dst_label=None):
-        """
-        Make a copy of this item on a different server, if it doesn't already
-        exist, and return an XnatItem interface to the duplicate item.
-
-        :destination_parent: parent XnatItem under which to make the duplicate
-        :dst_label: label for destination object, or None to use source label
-        :return: a new XnatItem corresponding to the duplicate item
-        """
-
-        label = dst_label or self.label
-        copied_item = self.get_or_create_child(parent=destination_parent,
-                                               label=label)
-
-        if copied_item.exists_on_server():
-            if app_settings.overwrite_existing:
-                self.reporter.info("Updating existing {} {}".
-                                    format(self._name, label))  # pylint: disable=no-member
-                write_dst = True
-            else:
-                self.reporter.info("{} {} already exists on the destination "
-                                   "server existing data will not be "
-                                   "modified. Use the --overwrite_existing "
-                                   "option to allow updating of existing "
-                                   "data".format(self._name, label))  # pylint: disable=no-member
-                write_dst = False
-        else:
-            write_dst = True
-
-        if write_dst:
-            copied_item.create_from_source(src_item=self,
-                                           xml_cleaner=xml_cleaner)
-
-        return copied_item
-
     def progress_update(self, reporter):
         """Update the user about current progress"""
 
