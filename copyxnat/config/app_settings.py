@@ -3,7 +3,8 @@
 """Wrap global settings for copyxnat"""
 
 from enum import Enum
-from os.path import join, expanduser
+
+import appdirs
 
 
 class TransferMode(Enum):
@@ -48,5 +49,5 @@ class AppSettings:
         self.ignore_datatype_errors = ignore_datatype_errors
         self.overwrite_existing = overwrite_existing
         self.transfer_mode = TransferMode(transfer_mode)
-        self.data_dir = data_dir or join(expanduser("~"), 'copyxnat')
+        self.data_dir = data_dir or appdirs.user_data_dir('copyxnat')
         self.verbose = verbose

@@ -52,8 +52,9 @@ setup(
     install_requires=[
         'pyxnat>=1.4',
         'configparser>=5.0.1',
-        'urllib3>=1.26.2',
-        'pydicom==2.1.2'
+        'urllib3>=1.26.3',
+        'pydicom>=2.1.2',
+        'appdirs>=1.4.4'
     ],
 
     entry_points={
