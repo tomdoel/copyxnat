@@ -71,7 +71,7 @@ class CopyCommand(Command):
                             format(item_id, datatype))
                     return
 
-        dst_copy = xnat_item.copy(
+        dst_copy = xnat_item.duplicate(
             destination_parent=from_parent,
             app_settings=self.inputs.app_settings,
             dst_label=dst_name)

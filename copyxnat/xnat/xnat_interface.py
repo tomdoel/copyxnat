@@ -123,20 +123,6 @@ class XnatItem(XnatBase):
         label = interface.get_label()
         return cls(interface=interface, label=label, parent=parent, exists=True)
 
-    def copy(self, destination_parent, app_settings, dst_label=None):
-        """
-        Make a copy of this item on a different server, if it doesn't already
-        exist, and return an XnatItem interface to the duplicate item.
-
-        :destination_parent: parent XnatItem under which to make the duplicate
-        :app_settings: global settings
-        :dst_label: label for destination object, or None to use source label
-        :return: a new XnatItem corresponding to the duplicate item
-        """
-        duplicate = self.duplicate(destination_parent, app_settings, dst_label)
-        self._update_remaps(duplicate)
-        return duplicate
-
     def _update_remaps(self, duplicate):
         """Update the ID maps are used to modify tags in child items"""
         pass
@@ -172,6 +158,8 @@ class XnatItem(XnatBase):
 
         if write_dst:
             self.create(dst_item=copied_item)
+
+        self._update_remaps(copied_item)
 
         return copied_item
 
