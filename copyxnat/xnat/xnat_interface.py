@@ -307,7 +307,7 @@ class XnatParentItem(XnatItem):
     def create(self, dst_item, xml_cleaner):
 
         # Note that cleaning will modify the xml_root object passed in
-        cleaned_xml_root = self.clean(
+        cleaned_xml_root = self.clean_xml(
             xml_root=self.get_xml(),
             destination_parent=dst_item.parent,
             label=dst_item.label,
@@ -332,7 +332,7 @@ class XnatParentItem(XnatItem):
         :label: label for destination object
         :return: the modified xml_root
         """
-        return xml_cleaner.clean(
+        return xml_cleaner.clean_xml(
             xml_root=xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
             src_path=self.project_server_path(),

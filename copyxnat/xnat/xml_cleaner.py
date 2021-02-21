@@ -130,8 +130,8 @@ class XmlCleaner:
         return xml_root
 
     # pylint: disable=too-many-branches
-    def clean(self, xml_root, fix_scan_types, src_path, dst_path,
-              remove_files=True):
+    def clean_xml(self, xml_root, fix_scan_types, src_path, dst_path,
+                  remove_files=True):
         """
         Remove or XML remap tags that change between XNAT servers
 
