@@ -54,9 +54,11 @@ class CopyCommand(Command):
         dst_copy = xnat_item.get_or_create_child(parent=from_parent,
                                                  label=label)
 
+        should_create, should_recurse = self._should_create(
+            dst_copy=dst_copy, xnat_item=xnat_item, label=label)
+
         # Create the item on the destination server
-        if self._should_create(dst_copy=dst_copy, xnat_item=xnat_item,
-                               label=label):
+        if should_create:
             dst_copy.create_from_source(src_item=xnat_item,
                                         xml_cleaner=self.xml_cleaner)
 
@@ -68,7 +70,8 @@ class CopyCommand(Command):
         self._rsync(dst_copy, xnat_item)
 
         # Recursion to the child items
-        self._recurse(xnat_item=xnat_item, to_children=dst_copy)
+        if should_recurse:
+            self._recurse(xnat_item=xnat_item, to_children=dst_copy)
 
         # Tasks that are run after the item is created and after recursion to
         # child items
@@ -89,9 +92,17 @@ class CopyCommand(Command):
                     "option to allow updating of existing "
                     "data".format(xnat_item._name, label))  # pylint: disable=no-member, protected-access
                 write_dst = False
+            if self.inputs.app_settings.skip_existing:
+                self.inputs.reporter.info(
+                    "Will not process child items of existing {} {}".format(
+                        xnat_item._name, label))  # pylint: disable=no-member, protected-access
+                recurse = False
+            else:
+                recurse = True
         else:
             write_dst = True
-        return write_dst
+            recurse = True
+        return write_dst, recurse
 
     def _check_session_types(self, xnat_item):
         """Check for missing session datatypes, Return True to continue copy"""

@@ -25,7 +25,8 @@ class AppSettings:
                  overwrite_existing=False,
                  transfer_mode=TransferMode.file,
                  data_dir=None,
-                 verbose=False
+                 verbose=False,
+                 skip_existing=False
                  ):
         """
         Create global application settings
@@ -44,6 +45,7 @@ class AppSettings:
         @param verbose: True to show debugging output
         XNAT server
         """
+        self.skip_existing = skip_existing
         self.dry_run = dry_run
         self.fix_scan_types = fix_scan_types
         self.ignore_datatype_errors = ignore_datatype_errors
