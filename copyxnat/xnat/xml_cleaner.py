@@ -92,15 +92,6 @@ class XmlCleaner:
         self.tag_values = {}
         self.id_maps = {}
 
-    @staticmethod
-    def xml_from_string(xml_string):
-        """Convert XML string to ElementTree with XNAT namespaces"""
-
-        root = XML(xml_string)
-        for prefix, namespace in XmlCleaner.NAMESPACES.items():
-            register_namespace(prefix, namespace)
-        return root
-
     def make_project_names_unique(self, xml_root, disallowed_ids):
         """
         Update project XML tags and attributes to ensure unique values

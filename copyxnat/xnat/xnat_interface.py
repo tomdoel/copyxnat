@@ -15,6 +15,7 @@ from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
 from copyxnat.config.app_settings import TransferMode
 from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
+from copyxnat.xnat.xnat_xml import xml_from_string
 
 
 class XnatBase(abc.ABC):
@@ -302,7 +303,7 @@ class XnatParentItem(XnatItem):
 
     def get_xml(self):
         """Get an XML representation of this item"""
-        return XmlCleaner.xml_from_string(self.get_xml_string())
+        return xml_from_string(self.get_xml_string())
 
     def create(self, dst_item, xml_cleaner):
 
