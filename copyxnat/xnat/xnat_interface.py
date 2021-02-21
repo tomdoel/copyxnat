@@ -134,7 +134,12 @@ class XnatItem(XnatBase):
         :return: a new XnatItem corresponding to the duplicate item
         """
         duplicate = self.duplicate(destination_parent, app_settings, dst_label)
+        self._update_remaps(duplicate)
         return duplicate
+
+    def _update_remaps(self, duplicate):
+        """Update the ID maps are used to modify tags in child items"""
+        pass
 
     def duplicate(self, destination_parent, app_settings, dst_label=None):
         """
@@ -354,11 +359,8 @@ class XnatParentItem(XnatItem):
                               TransferMode.rsync)
         )
 
-    def copy(self, destination_parent, app_settings, dst_label=None):
-        duplicate = super().copy(destination_parent, app_settings, dst_label)
-
+    def _update_remaps(self, duplicate):
         if duplicate:
-            # Update the ID maps are used to modify tags in child items
             id_src = self.get_id()
             id_dst = duplicate.get_id()
             self.xml_cleaner.add_tag_remaps(
@@ -366,8 +368,6 @@ class XnatParentItem(XnatItem):
                 id_src=id_src,
                 id_dst=id_dst
             )
-
-        return duplicate
 
     def export(self, app_settings):
         src_xml_root = self.get_xml()
@@ -416,13 +416,6 @@ class XnatFile(XnatItem):
         if local_file:
             self._add_missing_metadata(local_file=local_file)
             os.remove(local_file)
-
-    def copy(self, destination_parent, app_settings, dst_label=None):
-        if not app_settings.transfer_mode == TransferMode.file:
-            return None
-        return super().copy(destination_parent=destination_parent,
-                            app_settings=app_settings,
-                            dst_label=dst_label)
 
     def export(self, app_settings):
         if not app_settings.transfer_mode == TransferMode.file:
