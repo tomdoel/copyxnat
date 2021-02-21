@@ -324,12 +324,12 @@ class XnatParentItem(XnatItem):
     def create(self, dst_item, xml_cleaner):
 
         # Note that cleaning will modify the xml_root object passed in
-        cleaned_xml_root = self.clean(
+        cleaned_xml_root = xml_cleaner.clean_xml(
             xml_root=self.get_xml(),
             src_item=self,
-            dst_item=dst_item,
-            xml_cleaner=xml_cleaner
+            dst_item=dst_item
         )
+
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
 
@@ -337,26 +337,6 @@ class XnatParentItem(XnatItem):
 
         if local_file:
             os.remove(local_file)
-
-    def clean(self, xml_root, src_item, dst_item, xml_cleaner):  # pylint: disable=unused-argument
-        """
-        Modify XML values for items copied between XNAT projects, to allow
-        for changes in unique identifiers.
-
-        :xml_root: parent XML node for the xml contents to be modified
-        :src_item: XNAT item on source server
-        :dst_item: XNAT item on destination server
-        :label: label for destination object
-        :return: the modified xml_root
-        """
-        return xml_cleaner.clean_xml(
-            xml_root=xml_root,
-            fix_scan_types=self.app_settings.fix_scan_types,
-            src_item=src_item,
-            dst_item=dst_item,
-            remove_files=(not self.app_settings.transfer_mode ==
-                              TransferMode.rsync)
-        )
 
     def export(self, app_settings):
         src_xml_root = self.get_xml()
