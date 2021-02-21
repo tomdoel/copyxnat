@@ -59,7 +59,6 @@ class XmlCleaner:
         'PT': '{http://nrg.wustl.edu/xnat}PETScan'
     }
 
-    def __init__(self, reporter):
     def __init__(self, app_settings, reporter):
         self._app_settings = app_settings
         self._reporter = reporter
@@ -102,7 +101,6 @@ class XmlCleaner:
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
-        @param fix_scan_types: set to True to correct ambiguous scan types
         @param src_item: XNAT item on source server
         @param dst_item: XNAT item on destination server
         @param remove_files: set to True to remove file tags. Only set to False
@@ -116,7 +114,7 @@ class XmlCleaner:
             if attr in xml_root.attrib:
                 del xml_root.attrib[attr]
 
-        if fix_scan_types:
+        if self._app_settings.fix_scan_types:
             if xml_root.tag == self.XNAT_IMAGE_SCAN_DATA_TAG:
                 new_tag = self.XNAT_OTHER_SCAN
                 modalities = [mod.text for mod in
