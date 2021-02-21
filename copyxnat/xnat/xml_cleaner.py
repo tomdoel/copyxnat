@@ -4,7 +4,6 @@
 
 
 from enum import Enum
-from xml.etree.cElementTree import register_namespace, XML
 
 
 class XnatType(Enum):
@@ -21,6 +20,7 @@ class XnatType(Enum):
     in_resource = 'in_resource'
     out_resource = 'out_resource'
     file = 'file'
+from copyxnat.xnat.xnat_xml import XNAT_NS
 
 
 class XmlCleaner:
@@ -75,16 +75,6 @@ class XmlCleaner:
         'PT': '{http://nrg.wustl.edu/xnat}PETScan'
     }
 
-    NAMESPACES = {
-        'xnat': 'http://nrg.wustl.edu/xnat',
-        'prov': 'http://www.nbirn.net/prov',
-        'xdat': 'http://nrg.wustl.edu/xdat',
-        'xs': 'http://www.w3.org/2001/XMLSchema',
-        'proc': 'http://nrg.wustl.edu/proc',
-        'fs': 'http://nrg.wustl.edu/fs',
-        'icr': 'http://icr.ac.uk/icr'
-    }
-
     def __init__(self, reporter):
     def __init__(self, app_settings, reporter):
         self._app_settings = app_settings
@@ -102,7 +92,7 @@ class XmlCleaner:
 
         # Get current values of secondary ID and name
         secondary_id = xml_root.attrib[self.ATTR_SECONDARY_PROJECT_ID]
-        name = xml_root.find(self.XNAT_PROJECT_NAME_TAG, self.NAMESPACES).text
+        name = xml_root.find(self.XNAT_PROJECT_NAME_TAG, XNAT_NS).text
 
         # Find new values that are not already present on the server, by adding
         # a " copy x" to the name and ID string. We keep the index x the
@@ -117,8 +107,7 @@ class XmlCleaner:
 
         # Update the XML values
         xml_root.attrib[self.ATTR_SECONDARY_PROJECT_ID] = new_id
-        for child in xml_root.findall(self.XNAT_PROJECT_NAME_TAG,
-                                      self.NAMESPACES):
+        for child in xml_root.findall(self.XNAT_PROJECT_NAME_TAG, XNAT_NS):
             child.text = new_name
         return xml_root
 
@@ -147,8 +136,7 @@ class XmlCleaner:
             if xml_root.tag == self.XNAT_IMAGE_SCAN_DATA_TAG:
                 new_tag = self.XNAT_OTHER_SCAN
                 modalities = [mod.text for mod in
-                              xml_root.findall(self.XNAT_MODALITY_TAG,
-                                               self.NAMESPACES)]
+                              xml_root.findall(self.XNAT_MODALITY_TAG, XNAT_NS)]
                 if len(modalities) == 1:
                     new_tag = self.MODALITY_TO_SCAN.get(modalities[0],
                                                         self.XNAT_OTHER_SCAN)
@@ -158,11 +146,11 @@ class XmlCleaner:
 
         # Remove tags to delete
         for tag in self.TAGS_TO_DELETE:
-            for child in xml_root.findall(tag, self.NAMESPACES):
+            for child in xml_root.findall(tag, XNAT_NS):
                 xml_root.remove(child)
 
         for tag, xnat_id_type in self.TAGS_TO_REMAP.items():
-            for child in xml_root.findall(tag, self.NAMESPACES):
+            for child in xml_root.findall(tag, XNAT_NS):
                 tag_remap_dict = self.id_maps[xnat_id_type]
                 src_value = child.text
                 if src_value not in tag_remap_dict:
@@ -175,8 +163,8 @@ class XmlCleaner:
 
         # File tags should be removed (if uploading files) or their paths
         # rewritten (if files are already present in the correct locations)
-        for child in xml_root.findall(self.XNAT_FILE_TAG, self.NAMESPACES):
-            if remove_files:
+        for child in xml_root.findall(self.XNAT_FILE_TAG, XNAT_NS):
+            if remove_file_tags:
                 xml_root.remove(child)
             else:
                 self._rewrite_uris(child, src_item, dst_item)
