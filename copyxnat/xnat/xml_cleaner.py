@@ -181,16 +181,16 @@ class XmlCleaner:
                                   '{}/'.format(dst_path), 1)
             child.attrib['URI'] = new
 
-    def add_tag_remaps(self, src_item, dst_item, xnat_type):
+    def add_tag_remaps(self, src_item, dst_item):
         """
         Update the remapping dictionary to add add before and after ID values
         for the tags in the map
         @param src_item: item on the source server
         @param dst_item: item on the destination server
-        @param xnat_type: Enumeration describing the type of XNAT item which the
         ID describes
         """
 
+        xnat_type = src_item._xml_id  # pylint: disable=no-member, protected-access
         if src_item and dst_item and xnat_type in self.IDS_TO_MAP:
             id_src = src_item.get_id()
             id_dst = dst_item.get_id()
