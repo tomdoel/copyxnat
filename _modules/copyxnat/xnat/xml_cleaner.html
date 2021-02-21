@@ -62,20 +62,20 @@
     <span class="n">XNAT_FILE_TAG</span> <span class="o">=</span> <span class="s1">&#39;{http://nrg.wustl.edu/xnat}file&#39;</span>
 
     <span class="n">TAGS_TO_REMAP</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;{http://icr.ac.uk/icr}subjectID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}subject_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}image_session_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageSession_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}session_id&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}scanID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">scan</span><span class="p">,</span>
-        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageScan_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">scan</span>
+        <span class="s1">&#39;{http://icr.ac.uk/icr}subjectID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">SUBJECT</span><span class="p">,</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}subject_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">SUBJECT</span><span class="p">,</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}image_session_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">EXPERIMENT</span><span class="p">,</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageSession_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">EXPERIMENT</span><span class="p">,</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}session_id&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">EXPERIMENT</span><span class="p">,</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}scanID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">SCAN</span><span class="p">,</span>
+        <span class="s1">&#39;{http://nrg.wustl.edu/xnat}imageScan_ID&#39;</span><span class="p">:</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">SCAN</span>
     <span class="p">}</span>
 
     <span class="n">IDS_TO_MAP</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">XnatType</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-        <span class="n">XnatType</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-        <span class="n">XnatType</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
-        <span class="n">XnatType</span><span class="o">.</span><span class="n">scan</span>
+        <span class="n">XnatType</span><span class="o">.</span><span class="n">PROJECT</span><span class="p">,</span>
+        <span class="n">XnatType</span><span class="o">.</span><span class="n">SUBJECT</span><span class="p">,</span>
+        <span class="n">XnatType</span><span class="o">.</span><span class="n">EXPERIMENT</span><span class="p">,</span>
+        <span class="n">XnatType</span><span class="o">.</span><span class="n">SCAN</span>
     <span class="p">}</span>
 
     <span class="n">ATTRS_TO_DELETE</span> <span class="o">=</span> <span class="p">{</span>
@@ -147,7 +147,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">remove_file_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
-                            <span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span><span class="p">,</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">meta</span><span class="p">]</span>
+                            <span class="n">TransferMode</span><span class="o">.</span><span class="n">RSYNC</span><span class="p">,</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">META</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
             <span class="c1"># Note: we do not try to remap files specified at the project level</span>

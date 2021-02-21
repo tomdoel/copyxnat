@@ -67,9 +67,9 @@
                                       <span class="n">reporter</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>
 
         <span class="n">mode</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span>
-        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">zip</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">ZIP</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatFile</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span><span class="p">,</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">meta</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TransferMode</span><span class="o">.</span><span class="n">RSYNC</span><span class="p">,</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">META</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">,</span> <span class="n">XnatInResource</span><span class="p">,</span>
                                   <span class="n">XnatOutResource</span><span class="p">]</span>
 
@@ -199,7 +199,7 @@
         <span class="k">return</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span>
 
     <span class="k">def</span> <span class="nf">_rsync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_copy</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">rsync</span> <span class="ow">and</span> \
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">RSYNC</span> <span class="ow">and</span> \
                 <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatProject</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">rsync</span><span class="o">.</span><span class="n">rsync_project_data</span><span class="p">(</span>
                 <span class="n">src_project_path</span><span class="o">=</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">project_server_path</span><span class="p">(),</span>
