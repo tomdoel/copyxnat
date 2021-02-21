@@ -402,7 +402,7 @@ class XnatFile(XnatItem):
         dst_item.create_on_server(create_params=attributes,
                                   local_file=local_file)
         if local_file:
-            self._add_missing_metadata(local_file=local_file)
+            dst_item._add_missing_metadata(local_file=local_file)
             os.remove(local_file)
 
     def export(self, app_settings):
