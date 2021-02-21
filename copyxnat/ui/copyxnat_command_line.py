@@ -70,10 +70,10 @@ def main(args=None):
                         help="File path here local cache files are to be stored"
                         )
 
-    parser.add_argument("-z", "--download-zips",
+    parser.add_argument("-n", "--skip-existing",
                         action="store_true",
-                        help="Download each resource as a zip "
-                             "instead of individual files",
+                        help="Skip session and all children if it already "
+                             "exists on the destination server",
                         )
 
     parser.add_argument("-t", "--transfer-mode",
@@ -181,7 +181,8 @@ def main(args=None):
         overwrite_existing=overwrite_existing,
         transfer_mode=transfer_mode,
         data_dir=args.cache_dir,
-        verbose=verbose
+        verbose=verbose,
+        skip_existing=args.skip_existing
     )
 
     result = run_command(command=command,
