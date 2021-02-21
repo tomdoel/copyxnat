@@ -623,23 +623,6 @@ class XnatProject(XnatParentItem):
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
-    def clean(self, xml_root, src_item, dst_item, xml_cleaner):
-        disallowed = dst_item.parent.get_disallowed_project_ids(
-            label=dst_item.label)
-        cleaned_xml_root = xml_cleaner.make_project_names_unique(
-            xml_root=xml_root,
-            disallowed_ids=disallowed
-        )
-
-        # Note: we do not try to remap files specified at the project level
-        return xml_cleaner.clean_xml(
-            xml_root=cleaned_xml_root,
-            fix_scan_types=self.app_settings.fix_scan_types,
-            src_item=src_item,
-            dst_item=dst_item,
-            remove_files=True
-        )
-
     def project_server_path(self):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
 

@@ -3,6 +3,7 @@
 """Remove and remap XML tags for xml transfer between XNAT servers"""
 
 
+from copyxnat.config.app_settings import TransferMode
 from copyxnat.xnat.xnat_interface import XnatProject, XnatType
 from copyxnat.xnat.xnat_xml import XNAT_NS
 
@@ -95,19 +96,32 @@ class XmlCleaner:
         return xml_root
 
     # pylint: disable=too-many-branches
-    def clean_xml(self, xml_root, fix_scan_types, src_item, dst_item,
-                  remove_files=True):
+    def clean_xml(self, xml_root, src_item, dst_item):
         """
         Remove or XML remap tags that change between XNAT servers
 
         @param xml_root: ElementTree root of the XML to remap
         @param src_item: XNAT item on source server
         @param dst_item: XNAT item on destination server
-        @param remove_files: set to True to remove file tags. Only set to False
-        if the files and file catalogs are already in place on the destination
-        server at the correct locations
         @return:
         """
+
+        remove_file_tags = self._app_settings.transfer_mode not in [
+                            TransferMode.rsync, TransferMode.meta]
+
+        if isinstance(src_item, XnatProject):
+            # Note: we do not try to remap files specified at the project level
+            remove_file_tags = True
+
+            # Special logic required for Project items, as none of the project
+            # labels can match those used in any other project on the server, so
+            # we ensure they have unique values.
+            disallowed = dst_item.parent.get_disallowed_project_ids(
+                label=dst_item.label)
+            xml_root = self.make_project_names_unique(
+                xml_root=xml_root,
+                disallowed_ids=disallowed
+            )
 
         # Delete all attributes that change on dest server
         for attr in self.ATTRS_TO_DELETE:
