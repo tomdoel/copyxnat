@@ -20,7 +20,7 @@ from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 class XnatBase(abc.ABC):
     """Base class for an item in the XNAT data hierarchy"""
 
-    def __init__(self, parent_cache, interface, label, read_only, xml_cleaner,
+    def __init__(self, parent_cache, interface, label, read_only,
                  app_settings, reporter, parent):
         self.parent = parent
         self.interface = interface
@@ -31,7 +31,6 @@ class XnatBase(abc.ABC):
         self.cache = parent_cache.sub_cache(self._cache_subdir_name, label)  # pylint: disable=no-member
         self.read_only = read_only
         self.full_name = self.cache.full_name
-        self.xml_cleaner = xml_cleaner
         self.reporter = reporter
         self.app_settings = app_settings
         self.label_map = {self._xml_id: label}  # pylint: disable=no-member
@@ -89,7 +88,6 @@ class XnatItem(XnatBase):
                          read_only=parent.read_only,
                          reporter=parent.reporter,
                          app_settings=parent.app_settings,
-                         xml_cleaner=parent.xml_cleaner,
                          parent=parent)
 
     def datatype(self):
@@ -123,10 +121,11 @@ class XnatItem(XnatBase):
         label = interface.get_label()
         return cls(interface=interface, label=label, parent=parent, exists=True)
 
-    def _update_remaps(self, duplicate):
+    def _update_remaps(self, duplicate, xml_cleaner):
         """Update the ID maps are used to modify tags in child items"""
 
-    def duplicate(self, destination_parent, app_settings, dst_label=None):
+    def duplicate(self, destination_parent, app_settings, xml_cleaner,
+                  dst_label=None):
         """
         Make a copy of this item on a different server, if it doesn't already
         exist, and return an XnatItem interface to the duplicate item.
@@ -156,9 +155,9 @@ class XnatItem(XnatBase):
             write_dst = True
 
         if write_dst:
-            self.create(dst_item=copied_item)
+            self.create(dst_item=copied_item, xml_cleaner=xml_cleaner)
 
-        self._update_remaps(copied_item)
+        self._update_remaps(copied_item, xml_cleaner=xml_cleaner)
 
         return copied_item
 
@@ -240,7 +239,7 @@ class XnatItem(XnatBase):
         """Save this item to the cache"""
 
     @abc.abstractmethod
-    def create(self, dst_item):
+    def create(self, dst_item, xml_cleaner):
         """
         Create a local file copy of this item, with any required
         cleaning so that it is ready for upload to the destination server
@@ -310,13 +309,14 @@ class XnatParentItem(XnatItem):
         """Get an XML representation of this item"""
         return XmlCleaner.xml_from_string(self.get_xml_string())
 
-    def create(self, dst_item):
+    def create(self, dst_item, xml_cleaner):
 
         # Note that cleaning will modify the xml_root object passed in
         cleaned_xml_root = self.clean(
             xml_root=self.get_xml(),
             destination_parent=dst_item.parent,
-            label=dst_item.label
+            label=dst_item.label,
+            xml_cleaner=xml_cleaner
         )
         local_file = self.cache.write_xml(
             cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
@@ -326,7 +326,7 @@ class XnatParentItem(XnatItem):
         if local_file:
             os.remove(local_file)
 
-    def clean(self, xml_root, destination_parent, label):  # pylint: disable=unused-argument
+    def clean(self, xml_root, destination_parent, label, xml_cleaner):  # pylint: disable=unused-argument
         """
         Modify XML values for items copied between XNAT projects, to allow
         for changes in unique identifiers.
@@ -337,7 +337,7 @@ class XnatParentItem(XnatItem):
         :label: label for destination object
         :return: the modified xml_root
         """
-        return self.xml_cleaner.clean(
+        return xml_cleaner.clean(
             xml_root=xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
             src_path=self.project_server_path(),
@@ -346,11 +346,11 @@ class XnatParentItem(XnatItem):
                               TransferMode.rsync)
         )
 
-    def _update_remaps(self, duplicate):
+    def _update_remaps(self, duplicate, xml_cleaner):
         if duplicate:
             id_src = self.get_id()
             id_dst = duplicate.get_id()
-            self.xml_cleaner.add_tag_remaps(
+            xml_cleaner.add_tag_remaps(
                 xnat_type=self._xml_id,  # pylint: disable=no-member
                 id_src=id_src,
                 id_dst=id_dst
@@ -364,7 +364,7 @@ class XnatParentItem(XnatItem):
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
-    def create(self, dst_item):
+    def create(self, dst_item, xml_cleaner):
         if self.app_settings.transfer_mode == TransferMode.zip:
             folder_path = self.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
@@ -394,7 +394,7 @@ class XnatFile(XnatItem):
     interface_method = 'files'
     _child_types = []
 
-    def create(self, dst_item):
+    def create(self, dst_item, xml_cleaner):
         folder_path = self.cache.make_output_path()
         attributes = self.interface.file_attributes()
         local_file = self.interface.download_file(folder_path, self.label)
@@ -621,15 +621,15 @@ class XnatProject(XnatParentItem):
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
-    def clean(self, xml_root, destination_parent, label):
+    def clean(self, xml_root, destination_parent, label, xml_cleaner):
         disallowed = destination_parent.get_disallowed_project_ids(label=label)
-        cleaned_xml_root = self.xml_cleaner.make_project_names_unique(
+        cleaned_xml_root = xml_cleaner.make_project_names_unique(
             xml_root=xml_root,
             disallowed_ids=disallowed
         )
 
         # Note: we do not try to remap files specified at the project level
-        return self.xml_cleaner.clean(
+        return xml_cleaner.clean(
             xml_root=cleaned_xml_root,
             fix_scan_types=self.app_settings.fix_scan_types,
             src_path=None,
@@ -678,7 +678,6 @@ class XnatServer(XnatBase):
                          label=label,
                          read_only=read_only,
                          app_settings=app_settings,
-                         xml_cleaner=XmlCleaner(reporter=reporter),
                          reporter=reporter,
                          parent=None)
 

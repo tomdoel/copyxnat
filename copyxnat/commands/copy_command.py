@@ -2,6 +2,7 @@
 
 """Command which copies XNAT projects between servers"""
 from copyxnat.config.app_settings import TransferMode
+from copyxnat.xnat.xml_cleaner import XmlCleaner
 from copyxnat.xnat.xnat_interface import XnatProject, XnatExperiment, \
     XnatFile, XnatResource, XnatOutResource, XnatInResource
 from copyxnat.xnat.commands import Command
@@ -22,6 +23,7 @@ class CopyCommand(Command):
     def __init__(self, inputs, scope):
         super().__init__(inputs, scope)
         self.dst_datatypes = inputs.dst_xnat.datatypes()
+        self.xml_cleaner = XmlCleaner(reporter=inputs.reporter)
 
         mode = inputs.app_settings.transfer_mode
         if mode == TransferMode.zip:
@@ -74,6 +76,7 @@ class CopyCommand(Command):
         dst_copy = xnat_item.duplicate(
             destination_parent=from_parent,
             app_settings=self.inputs.app_settings,
+            xml_cleaner=self.xml_cleaner,
             dst_label=dst_name)
 
         if isinstance(xnat_item, XnatProject) and \
