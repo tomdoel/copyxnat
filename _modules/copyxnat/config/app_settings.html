@@ -43,7 +43,8 @@
 <span class="sd">&quot;&quot;&quot;Wrap global settings for copyxnat&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">expanduser</span>
+
+<span class="kn">import</span> <span class="nn">appdirs</span>
 
 
 <div class="viewcode-block" id="TransferMode"><a class="viewcode-back" href="../../../copyxnat.config.app_settings.html#copyxnat.config.app_settings.TransferMode">[docs]</a><span class="k">class</span> <span class="nc">TransferMode</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
@@ -88,7 +89,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">ignore_datatype_errors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">overwrite_existing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">=</span> <span class="n">TransferMode</span><span class="p">(</span><span class="n">transfer_mode</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="ow">or</span> <span class="n">join</span><span class="p">(</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="ow">or</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">(</span><span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span></div>
 </pre></div>
 
