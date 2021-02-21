@@ -79,6 +79,12 @@ class CopyCommand(Command):
             xml_cleaner=self.xml_cleaner,
             dst_label=dst_name)
 
+        self.xml_cleaner.add_tag_remaps(
+            src_item=xnat_item,
+            dst_item=dst_copy,
+            xnat_type=xnat_item._xml_id  # pylint: disable=no-member, protected-access
+        )
+
         if isinstance(xnat_item, XnatProject) and \
                 self.inputs.app_settings.transfer_mode == TransferMode.rsync:
             self.inputs.rsync.rsync_project_data(

@@ -46,6 +46,13 @@ class XmlCleaner:
         '{http://nrg.wustl.edu/xnat}imageScan_ID': XnatType.scan
     }
 
+    IDS_TO_MAP = {
+        XnatType.project,
+        XnatType.subject,
+        XnatType.experiment,
+        XnatType.scan
+    }
+
     ATTRS_TO_DELETE = {
         'ID',
         'project'
@@ -194,16 +201,19 @@ class XmlCleaner:
                                   '{}/'.format(dst_path), 1)
             child.attrib['URI'] = new
 
-    def add_tag_remaps(self, xnat_type, id_src, id_dst):
+    def add_tag_remaps(self, src_item, dst_item, xnat_type):
         """
         Update the remapping dictionary to add add before and after ID values
         for the tags in the map
+        @param src_item: item on the source server
+        @param dst_item: item on the destination server
         @param xnat_type: Enumeration describing the type of XNAT item which the
         ID describes
-        @param id_src: ID on the source server
-        @param id_dst: ID on the destination server
         """
 
-        id_map = self.id_maps.get(xnat_type, {})
-        id_map[id_src] = id_dst
-        self.id_maps[xnat_type] = id_map
+        if src_item and dst_item and xnat_type in self.IDS_TO_MAP:
+            id_src = src_item.get_id()
+            id_dst = dst_item.get_id()
+            id_map = self.id_maps.get(xnat_type, {})
+            id_map[id_src] = id_dst
+            self.id_maps[xnat_type] = id_map

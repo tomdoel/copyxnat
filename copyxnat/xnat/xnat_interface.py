@@ -121,9 +121,6 @@ class XnatItem(XnatBase):
         label = interface.get_label()
         return cls(interface=interface, label=label, parent=parent, exists=True)
 
-    def _update_remaps(self, duplicate, xml_cleaner):
-        """Update the ID maps are used to modify tags in child items"""
-
     def duplicate(self, destination_parent, app_settings, xml_cleaner,
                   dst_label=None):
         """
@@ -156,8 +153,6 @@ class XnatItem(XnatBase):
 
         if write_dst:
             self.create(dst_item=copied_item, xml_cleaner=xml_cleaner)
-
-        self._update_remaps(copied_item, xml_cleaner=xml_cleaner)
 
         return copied_item
 
@@ -345,16 +340,6 @@ class XnatParentItem(XnatItem):
             remove_files=(not self.app_settings.transfer_mode ==
                               TransferMode.rsync)
         )
-
-    def _update_remaps(self, duplicate, xml_cleaner):
-        if duplicate:
-            id_src = self.get_id()
-            id_dst = duplicate.get_id()
-            xml_cleaner.add_tag_remaps(
-                xnat_type=self._xml_id,  # pylint: disable=no-member
-                id_src=id_src,
-                id_dst=id_dst
-            )
 
     def export(self, app_settings):
         src_xml_root = self.get_xml()
