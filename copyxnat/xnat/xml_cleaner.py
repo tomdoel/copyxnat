@@ -86,6 +86,8 @@ class XmlCleaner:
     }
 
     def __init__(self, reporter):
+    def __init__(self, app_settings, reporter):
+        self._app_settings = app_settings
         self._reporter = reporter
         self.tag_values = {}
         self.id_maps = {}

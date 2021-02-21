@@ -23,7 +23,8 @@ class CopyCommand(Command):
     def __init__(self, inputs, scope):
         super().__init__(inputs, scope)
         self.dst_datatypes = inputs.dst_xnat.datatypes()
-        self.xml_cleaner = XmlCleaner(reporter=inputs.reporter)
+        self.xml_cleaner = XmlCleaner(app_settings=inputs.app_settings,
+                                      reporter=inputs.reporter)
 
         mode = inputs.app_settings.transfer_mode
         if mode == TransferMode.zip:
