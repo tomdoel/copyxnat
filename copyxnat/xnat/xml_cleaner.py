@@ -3,23 +3,7 @@
 """Remove and remap XML tags for xml transfer between XNAT servers"""
 
 
-from enum import Enum
-
-
-class XnatType(Enum):
-    """Describe the type of XNAT item so cleaning can be performed"""
-
-    server = 'server'
-    project = 'project'
-    subject = 'subject'
-    experiment = 'experiment'
-    scan = 'scan'
-    assessor = 'assessor'
-    reconstruction = 'reconstruction'
-    resource = 'resource'
-    in_resource = 'in_resource'
-    out_resource = 'out_resource'
-    file = 'file'
+from copyxnat.xnat.xnat_interface import XnatProject, XnatType
 from copyxnat.xnat.xnat_xml import XNAT_NS
 
 

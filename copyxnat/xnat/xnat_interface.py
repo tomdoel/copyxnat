@@ -6,6 +6,7 @@
 import abc
 import os
 import re
+from enum import Enum
 
 import pydicom
 import urllib3
@@ -14,8 +15,23 @@ from pyxnat.core.errors import DatabaseError
 from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
 from copyxnat.config.app_settings import TransferMode
-from copyxnat.xnat.xml_cleaner import XmlCleaner, XnatType
 from copyxnat.xnat.xnat_xml import xml_from_string
+
+
+class XnatType(Enum):
+    """Describe the type of XNAT item so cleaning can be performed"""
+
+    server = 'server'
+    project = 'project'
+    subject = 'subject'
+    experiment = 'experiment'
+    scan = 'scan'
+    assessor = 'assessor'
+    reconstruction = 'reconstruction'
+    resource = 'resource'
+    in_resource = 'in_resource'
+    out_resource = 'out_resource'
+    file = 'file'
 
 
 class XnatBase(abc.ABC):
