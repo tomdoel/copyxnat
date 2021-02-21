@@ -22,20 +22,20 @@ class XmlCleaner:
     XNAT_FILE_TAG = '{http://nrg.wustl.edu/xnat}file'
 
     TAGS_TO_REMAP = {
-        '{http://icr.ac.uk/icr}subjectID': XnatType.subject,
-        '{http://nrg.wustl.edu/xnat}subject_ID': XnatType.subject,
-        '{http://nrg.wustl.edu/xnat}image_session_ID': XnatType.experiment,
-        '{http://nrg.wustl.edu/xnat}imageSession_ID': XnatType.experiment,
-        '{http://nrg.wustl.edu/xnat}session_id': XnatType.experiment,
-        '{http://nrg.wustl.edu/xnat}scanID': XnatType.scan,
-        '{http://nrg.wustl.edu/xnat}imageScan_ID': XnatType.scan
+        '{http://icr.ac.uk/icr}subjectID': XnatType.SUBJECT,
+        '{http://nrg.wustl.edu/xnat}subject_ID': XnatType.SUBJECT,
+        '{http://nrg.wustl.edu/xnat}image_session_ID': XnatType.EXPERIMENT,
+        '{http://nrg.wustl.edu/xnat}imageSession_ID': XnatType.EXPERIMENT,
+        '{http://nrg.wustl.edu/xnat}session_id': XnatType.EXPERIMENT,
+        '{http://nrg.wustl.edu/xnat}scanID': XnatType.SCAN,
+        '{http://nrg.wustl.edu/xnat}imageScan_ID': XnatType.SCAN
     }
 
     IDS_TO_MAP = {
-        XnatType.project,
-        XnatType.subject,
-        XnatType.experiment,
-        XnatType.scan
+        XnatType.PROJECT,
+        XnatType.SUBJECT,
+        XnatType.EXPERIMENT,
+        XnatType.SCAN
     }
 
     ATTRS_TO_DELETE = {

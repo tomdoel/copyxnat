@@ -21,17 +21,17 @@ from copyxnat.xnat.xnat_xml import xml_from_string
 class XnatType(Enum):
     """Describe the type of XNAT item so cleaning can be performed"""
 
-    server = 'server'
-    project = 'project'
-    subject = 'subject'
-    experiment = 'experiment'
-    scan = 'scan'
-    assessor = 'assessor'
-    reconstruction = 'reconstruction'
-    resource = 'resource'
-    in_resource = 'in_resource'
-    out_resource = 'out_resource'
-    file = 'file'
+    SERVER = 'server'
+    PROJECT = 'project'
+    SUBJECT = 'subject'
+    EXPERIMENT = 'experiment'
+    SCAN = 'scan'
+    ASSESSOR = 'assessor'
+    RECONSTRUCTION = 'reconstruction'
+    RESOURCE = 'resource'
+    IN_RESOURCE = 'in_resource'
+    OUT_RESOURCE = 'out_resource'
+    FILE = 'file'
 
 
 class XnatBase(abc.ABC):
@@ -335,7 +335,7 @@ class XnatFile(XnatItem):
     """Base wrapper for file items"""
 
     _name = 'File'
-    _xml_id = XnatType.file
+    _xml_id = XnatType.FILE
     _cache_subdir_name = 'files'
     interface_method = 'files'
     _child_types = []
@@ -414,7 +414,7 @@ class XnatResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'Resource'
-    _xml_id = XnatType.resource
+    _xml_id = XnatType.RESOURCE
     _cache_subdir_name = 'resources'
     interface_method = 'resources'
     _child_types = [XnatFile]
@@ -424,7 +424,7 @@ class XnatInResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'In_Resource'
-    _xml_id = XnatType.in_resource
+    _xml_id = XnatType.IN_RESOURCE
     _cache_subdir_name = 'in_resources'
     interface_method = 'in_resources'
     _child_types = [XnatFile]
@@ -434,7 +434,7 @@ class XnatOutResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'Out_Resource'
-    _xml_id = XnatType.out_resource
+    _xml_id = XnatType.OUT_RESOURCE
     _cache_subdir_name = 'out_resources'
     interface_method = 'out_resources'
     _child_types = [XnatFile]
@@ -446,7 +446,7 @@ class XnatReconstruction(XnatParentItem):
     _name = 'Reconstruction'
     _cache_subdir_name = 'reconstructions'
     _xml_filename = 'metadata_reconstruction.xml'
-    _xml_id = XnatType.reconstruction
+    _xml_id = XnatType.RECONSTRUCTION
     interface_method = 'reconstructions'
     _child_types = [XnatInResource, XnatOutResource]
 
@@ -457,7 +457,7 @@ class XnatAssessor(XnatParentItem):
     _name = 'Assessor'
     _cache_subdir_name = 'assessors'
     _xml_filename = 'metadata_assessor.xml'
-    _xml_id = XnatType.assessor
+    _xml_id = XnatType.ASSESSOR
     interface_method = 'assessors'
     _child_types = [XnatInResource, XnatOutResource]
 
@@ -479,7 +479,7 @@ class XnatScan(XnatParentItem):
     _name = 'Scan'
     _xml_filename = 'metadata_scan.xml'
     _cache_subdir_name = 'scans'
-    _xml_id = XnatType.scan
+    _xml_id = XnatType.SCAN
     interface_method = 'scans'
     _child_types = [XnatResource]
 
@@ -513,7 +513,7 @@ class XnatExperiment(XnatParentItem):
     _name = 'Experiment'
     _xml_filename = 'metadata_session.xml'
     _cache_subdir_name = 'experiments'
-    _xml_id = XnatType.experiment
+    _xml_id = XnatType.EXPERIMENT
     interface_method = 'experiments'
     _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
 
@@ -552,7 +552,7 @@ class XnatSubject(XnatParentItem):
     _name = 'Subject'
     _xml_filename = 'metadata_subject.xml'
     _cache_subdir_name = 'subjects'
-    _xml_id = XnatType.subject
+    _xml_id = XnatType.SUBJECT
     interface_method = 'subjects'
     _child_types = [XnatExperiment, XnatResource]
 
@@ -563,7 +563,7 @@ class XnatProject(XnatParentItem):
     _name = 'Project'
     _xml_filename = 'metadata_project.xml'
     _cache_subdir_name = 'projects'
-    _xml_id = XnatType.project
+    _xml_id = XnatType.PROJECT
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
@@ -580,7 +580,7 @@ class XnatServer(XnatBase):
     _name = 'Server'
     _cache_subdir_name = 'servers'
     _child_types = [XnatProject]
-    _xml_id = XnatType.server
+    _xml_id = XnatType.SERVER
 
     def __init__(self,
                  factory,
