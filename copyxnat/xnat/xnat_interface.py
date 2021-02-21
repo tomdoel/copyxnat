@@ -330,8 +330,8 @@ class XnatParentItem(XnatItem):
             dst_item=dst_item
         )
 
-        local_file = self.cache.write_xml(
-            cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
+        local_file = dst_item.cache.write_xml(
+            cleaned_xml_root, dst_item._xml_filename)  # pylint: disable=no-member
 
         dst_item.create_on_server(create_params=None, local_file=local_file)
 
@@ -348,7 +348,7 @@ class XnatFileContainerItem(XnatItem):
 
     def create(self, dst_item, xml_cleaner):
         if self.app_settings.transfer_mode == TransferMode.zip:
-            folder_path = self.cache.make_output_path()
+            folder_path = dst_item.cache.make_output_path()
             local_file = self.interface.download_zip_file(folder_path)
         else:
             local_file = None
@@ -377,7 +377,7 @@ class XnatFile(XnatItem):
     _child_types = []
 
     def create(self, dst_item, xml_cleaner):
-        folder_path = self.cache.make_output_path()
+        folder_path = dst_item.cache.make_output_path()
         attributes = self.interface.file_attributes()
         local_file = self.interface.download_file(folder_path, self.label)
         dst_item.create_on_server(create_params=attributes,
