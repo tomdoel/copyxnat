@@ -5,6 +5,7 @@
 
 from copyxnat.pyreporter.pyreporter import PyReporter, ProjectFailure
 from copyxnat.utils.rsync import ProjectRsync
+from copyxnat.utils.versioning import get_version_string
 from copyxnat.xnat.commands import CommandInputs
 from copyxnat.config.app_settings import AppSettings
 from copyxnat.xnat.copy_cache import CacheBox
@@ -41,7 +42,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     dst_xnat = None
 
     try:
-        reporter.output('Running {} command'.format(command.NAME))
+        reporter.output('{}: running {} command'.format(get_version_string(),
+                                                        command.NAME))
 
         cache_box = CacheBox(root_path=app_settings.data_dir)
         cache_type = command.CACHE_TYPE
@@ -56,6 +58,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
                               app_settings=app_settings,
                               reporter=reporter,
                               read_only=not command.MODIFY_SRC_SERVER)
+        reporter.info('Download and cache files will be stored in {}'.
+                      format(src_xnat.cache.full_path()))
 
         if dst_params and command.USE_DST_SERVER:
             dst_xnat = XnatServer(factory=factory,

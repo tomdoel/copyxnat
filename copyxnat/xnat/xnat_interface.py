@@ -615,6 +615,7 @@ class XnatExperiment(XnatParentItem):
 
     def progress_update(self, reporter):
         reporter.next_progress()
+        self.reporter.log('Completed {} {}'.format(self._name, self.full_name))
 
 
 class XnatSubject(XnatParentItem):
@@ -656,6 +657,9 @@ class XnatProject(XnatParentItem):
 
     def project_server_path(self):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
+
+    def progress_update(self, reporter):
+        self.reporter.log('Completed {} {}'.format(self._name, self.full_name))
 
 
 class XnatServer(XnatBase):
