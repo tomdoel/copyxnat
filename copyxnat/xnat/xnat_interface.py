@@ -311,7 +311,7 @@ class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
     def create_from_source(self, src_item, xml_cleaner):
-        if self.app_settings.transfer_mode == TransferMode.zip:
+        if self.app_settings.transfer_mode == TransferMode.ZIP:
             folder_path = self.cache.make_output_path()
             local_file = src_item.interface.download_zip_file(folder_path)
         else:
@@ -325,7 +325,7 @@ class XnatFileContainerItem(XnatItem):
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
 
-        if not self.app_settings.transfer_mode == TransferMode.zip:
+        if not self.app_settings.transfer_mode == TransferMode.ZIP:
             return folder_path
 
         return self.interface.download_zip_file(folder_path)
@@ -351,7 +351,7 @@ class XnatFile(XnatItem):
             os.remove(local_file)
 
     def export(self, app_settings):
-        if not app_settings.transfer_mode == TransferMode.file:
+        if not app_settings.transfer_mode == TransferMode.FILE:
             return None
 
         folder_path = self.cache.make_output_path()

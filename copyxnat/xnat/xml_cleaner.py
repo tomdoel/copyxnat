@@ -107,7 +107,7 @@ class XmlCleaner:
         """
 
         remove_file_tags = self._app_settings.transfer_mode not in [
-                            TransferMode.rsync, TransferMode.meta]
+                            TransferMode.RSYNC, TransferMode.META]
 
         if isinstance(src_item, XnatProject):
             # Note: we do not try to remap files specified at the project level

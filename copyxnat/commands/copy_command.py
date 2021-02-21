@@ -27,9 +27,9 @@ class CopyCommand(Command):
                                       reporter=inputs.reporter)
 
         mode = inputs.app_settings.transfer_mode
-        if mode == TransferMode.zip:
+        if mode == TransferMode.ZIP:
             self.ignore_filter = [XnatFile]
-        elif mode in [TransferMode.rsync, TransferMode.meta]:
+        elif mode in [TransferMode.RSYNC, TransferMode.META]:
             self.ignore_filter = [XnatResource, XnatFile, XnatInResource,
                                   XnatOutResource]
 
@@ -159,7 +159,7 @@ class CopyCommand(Command):
         return xnat_item.label
 
     def _rsync(self, dst_copy, xnat_item):
-        if self.inputs.app_settings.transfer_mode == TransferMode.rsync and \
+        if self.inputs.app_settings.transfer_mode == TransferMode.RSYNC and \
                 isinstance(xnat_item, XnatProject):
             self.inputs.rsync.rsync_project_data(
                 src_project_path=xnat_item.project_server_path(),

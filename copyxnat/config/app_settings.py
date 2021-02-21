@@ -9,10 +9,10 @@ import appdirs
 
 class TransferMode(Enum):
     """Defines how resource files (images etc) will be transferred"""
-    file = 'file'  # Transfer file-by-file
-    zip = 'zip'  # Transfer resource collections as a zip file
-    rsync = 'rsync'  # Transfer resource files using rsync
-    meta = 'meta'  # Do not transfer resource files
+    FILE = 'file'  # Transfer file-by-file
+    ZIP = 'zip'  # Transfer resource collections as a zip file
+    RSYNC = 'rsync'  # Transfer resource files using rsync
+    META = 'meta'  # Do not transfer resource files
 
 
 class AppSettings:
@@ -23,7 +23,7 @@ class AppSettings:
                  dry_run=False,
                  ignore_datatype_errors=False,
                  overwrite_existing=False,
-                 transfer_mode=TransferMode.file,
+                 transfer_mode=TransferMode.FILE,
                  data_dir=None,
                  verbose=False,
                  skip_existing=False
