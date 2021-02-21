@@ -169,7 +169,8 @@ class XnatItem(XnatBase):
             write_dst = True
 
         if write_dst:
-            self.create(dst_item=copied_item, xml_cleaner=xml_cleaner)
+            copied_item.create_from_source(src_item=self,
+                                           xml_cleaner=xml_cleaner)
 
         return copied_item
 
@@ -251,14 +252,13 @@ class XnatItem(XnatBase):
         """Save this item to the cache"""
 
     @abc.abstractmethod
-    def create(self, dst_item, xml_cleaner):
+    def create_from_source(self, src_item, xml_cleaner):
         """
-        Create a local file copy of this item, with any required
-        cleaning so that it is ready for upload to the destination server
+        Create this item on this server by fetching the item from the source and
+        applying XML cleaning where required
 
-        :destination_parent: parent XnatItem under which to make the duplicate
-        :label: The identifier used to find or create the child item
-        :return: tuple of local file path, additional creation parameters
+        :src_item: the item from which to cope the file or XML
+        :xml_cleaner: XmlCleaner to modify the XML as required
         """
 
     def ohif_generate_session(self):
@@ -321,19 +321,19 @@ class XnatParentItem(XnatItem):
         """Get an XML representation of this item"""
         return xml_from_string(self.get_xml_string())
 
-    def create(self, dst_item, xml_cleaner):
+    def create_from_source(self, src_item, xml_cleaner):
 
         # Note that cleaning will modify the xml_root object passed in
         cleaned_xml_root = xml_cleaner.clean_xml(
-            xml_root=self.get_xml(),
-            src_item=self,
-            dst_item=dst_item
+            xml_root=src_item.get_xml(),
+            src_item=src_item,
+            dst_item=self
         )
 
-        local_file = dst_item.cache.write_xml(
-            cleaned_xml_root, dst_item._xml_filename)  # pylint: disable=no-member
+        local_file = self.cache.write_xml(
+            cleaned_xml_root, self._xml_filename)  # pylint: disable=no-member
 
-        dst_item.create_on_server(create_params=None, local_file=local_file)
+        self.create_on_server(create_params=None, local_file=local_file)
 
         if local_file:
             os.remove(local_file)
@@ -346,14 +346,14 @@ class XnatParentItem(XnatItem):
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
-    def create(self, dst_item, xml_cleaner):
+    def create_from_source(self, src_item, xml_cleaner):
         if self.app_settings.transfer_mode == TransferMode.zip:
-            folder_path = dst_item.cache.make_output_path()
-            local_file = self.interface.download_zip_file(folder_path)
+            folder_path = self.cache.make_output_path()
+            local_file = src_item.interface.download_zip_file(folder_path)
         else:
             local_file = None
 
-        dst_item.create_on_server(create_params=None, local_file=local_file)
+        self.create_on_server(create_params=None, local_file=local_file)
 
         if local_file:
             os.remove(local_file)
@@ -376,14 +376,14 @@ class XnatFile(XnatItem):
     interface_method = 'files'
     _child_types = []
 
-    def create(self, dst_item, xml_cleaner):
-        folder_path = dst_item.cache.make_output_path()
-        attributes = self.interface.file_attributes()
-        local_file = self.interface.download_file(folder_path, self.label)
-        dst_item.create_on_server(create_params=attributes,
-                                  local_file=local_file)
+    def create_from_source(self, src_item, xml_cleaner):
+        folder_path = self.cache.make_output_path()
+        attributes = src_item.interface.file_attributes()
+        local_file = src_item.interface.download_file(folder_path, self.label)
+        self.create_on_server(create_params=attributes,
+                              local_file=local_file)
         if local_file:
-            dst_item.add_missing_metadata(local_file=local_file)
+            self.add_missing_metadata(local_file=local_file)
             os.remove(local_file)
 
     def export(self, app_settings):
