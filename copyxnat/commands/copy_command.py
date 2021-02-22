@@ -54,6 +54,12 @@ class CopyCommand(Command):
         dst_copy = xnat_item.get_or_create_child(parent=from_parent,
                                                  label=label)
 
+        if not dst_copy:
+            self.inputs.reporter.log(
+                'Skipping {} because no destination item could be '
+                'created.'.format(xnat_item.full_name))
+            return
+
         already_exists = dst_copy.exists_on_server()
 
         # Create the item on the destination server
@@ -80,8 +86,7 @@ class CopyCommand(Command):
 
         # Tasks that are run after the item is created and after recursion to
         # child items
-        if dst_copy:
-            dst_copy.post_create()
+        dst_copy.post_create()
 
     def _should_create(self, already_exists, xnat_item, label):
 

@@ -429,6 +429,13 @@ class XnatInResource(XnatFileContainerItem):
     interface_method = 'in_resources'
     _child_types = [XnatFile]
 
+    def get_or_create_child(self, parent, label):
+
+        self.reporter.warning('CopyXnat is not able to copy in-resources. This '
+                              'in-resource item {} will be '
+                              'skipped.'.format(label))
+        return None
+
 
 class XnatOutResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
