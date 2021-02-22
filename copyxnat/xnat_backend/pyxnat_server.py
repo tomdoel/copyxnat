@@ -140,9 +140,10 @@ class PyXnatItem(abc.ABC):
         return self.fetch_interface().exists()
 
     def get_label(self):
-        """Return the XNAT label of this item"""
+        """Return the XNAT label of this item, or ID if the label is empty"""
         if self._label is None:
-            self._label = self.fetch_interface().label()
+            self._label = self.fetch_interface().label() or \
+                             self.fetch_interface().id()
         return self._label
 
     def get_id(self):
