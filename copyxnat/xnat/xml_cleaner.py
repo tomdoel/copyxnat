@@ -49,6 +49,7 @@ class XmlCleaner:
         '{http://nrg.wustl.edu/xnat}scans',
         '{http://nrg.wustl.edu/xnat}resources',
         '{http://nrg.wustl.edu/xnat}assessors',
+        '{http://nrg.wustl.edu/xnat}reconstructions',
         '{http://nrg.wustl.edu/xnat}prearchivePath',
         '{http://nrg.wustl.edu/xnat}sharing'
     }
