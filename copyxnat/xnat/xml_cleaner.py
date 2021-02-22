@@ -44,6 +44,7 @@ class XmlCleaner:
     }
 
     TAGS_TO_DELETE = {
+        '{http://nrg.wustl.edu/xnat}in',
         '{http://nrg.wustl.edu/xnat}out',
         '{http://nrg.wustl.edu/xnat}experiments',
         '{http://nrg.wustl.edu/xnat}scans',
