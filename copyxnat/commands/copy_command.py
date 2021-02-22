@@ -86,7 +86,8 @@ class CopyCommand(Command):
 
         # Tasks that are run after the item is created and after recursion to
         # child items
-        dst_copy.post_create()
+        if should_create:
+            dst_copy.post_create()
 
     def _should_create(self, already_exists, xnat_item, label):
 
