@@ -130,7 +130,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         src_params=src_xnat_server.params,
         dst_params=dst_xnat_server.params,
         dry_run=app_settings.dry_run,
-        reporter=reporter)
+        reporter=reporter) if dst_xnat_server else None
 
     global_results = {}
 
