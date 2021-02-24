@@ -133,5 +133,5 @@ Copyright 2021 Tom Doel
 
 ## License
 
-This project is released under the MIT License. Please see the [license file](LICENSE) for details.
+This project is released under the MIT License. Please see the [license file](https://github.com/tomdoel/copyxnat/blob/main/LICENSE) for details.
 
