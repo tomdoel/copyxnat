@@ -48,6 +48,13 @@ prompted.
     copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" show
     ```
 
+- #### Show differences between two projects
+
+    ```
+    copyxnat --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE" --project "PROJECT-NAME-SRC:PROJECT-NAME-DST" compare --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
+    ```
+
+
 ### Download projects
 
 - #### Download XNAT projects onto your computer
@@ -82,6 +89,19 @@ prompted.
     copyxnat --src-host "https://SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst-host "https://SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
+### Maintenance
+
+- #### Rebuild catalog for all experiments
+
+    ```
+    copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" rebuild-catalog
+    ```
+
+- #### Reset OHIF viewer for all experiments
+
+    ```
+    copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" ohif
+    ```
 
 
 ## Using CopyXnat in your own code
