@@ -2,6 +2,7 @@
 
 """Commands defining actions that can be performed with copyxnat"""
 from copyxnat.commands.check_datatypes_command import CheckDatatypesCommand
+from copyxnat.commands.compare_command import CompareCommand
 from copyxnat.commands.copy_command import CopyCommand
 from copyxnat.commands.export_command import ExportCommand
 from copyxnat.commands.show_command import ShowCommand
@@ -24,5 +25,6 @@ def commands():
             CopyCommand,
             CheckDatatypesCommand,
             OhifCommand,
-            RebuildCatalogCommand
+            RebuildCatalogCommand,
+            CompareCommand
             ]
