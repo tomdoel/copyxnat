@@ -1,0 +1,7 @@
+copyxnat.commands.compare\_command module
+=========================================
+
+.. automodule:: copyxnat.commands.compare_command
+   :members:
+   :undoc-members:
+   :show-inheritance:

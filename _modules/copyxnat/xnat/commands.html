@@ -52,10 +52,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_from_parent</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Command.run"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Command.run"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run this command recursively on the xnat_item and its children</span>
+
+<span class="sd">        :xnat_item: The source server XnatItem to process</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_from_parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_progress</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Command.run_next"><a class="viewcode-back" href="../../../copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command.run_next">[docs]</a>    <span class="k">def</span> <span class="nf">run_next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run this command recursively on the xnat_item and its children.</span>
+<span class="sd">        This method is called recursively from within the _run() method</span>
 
 <span class="sd">        :xnat_item: The source server XnatItem to process</span>
 <span class="sd">        :from_parent: The value returned by this function when it was run on</span>
@@ -66,7 +77,7 @@
 
     <span class="k">def</span> <span class="nf">_recurse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">to_children</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">from_parent</span><span class="o">=</span><span class="n">to_children</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">run_next</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">from_parent</span><span class="o">=</span><span class="n">to_children</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">):</span>
         <span class="n">xnat_item</span><span class="o">.</span><span class="n">progress_update</span><span class="p">(</span><span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>

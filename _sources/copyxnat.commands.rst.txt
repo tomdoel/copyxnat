@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    copyxnat.commands.check_datatypes_command
+   copyxnat.commands.compare_command
    copyxnat.commands.copy_command
    copyxnat.commands.export_command
    copyxnat.commands.find_commands

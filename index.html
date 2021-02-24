@@ -84,6 +84,11 @@ prompted.</p>
 </pre></div>
 </div>
 </li>
+<li><p>#### Show differences between two projects</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">copyxnat</span> <span class="o">--</span><span class="n">src</span><span class="o">-</span><span class="n">host</span> <span class="s2">&quot;https://SOURCE-SERVER-URL&quot;</span> <span class="o">--</span><span class="n">src</span><span class="o">-</span><span class="n">user</span> <span class="s2">&quot;XNAT-USER-SOURCE&quot;</span> <span class="o">--</span><span class="n">project</span> <span class="s2">&quot;PROJECT-NAME-SRC:PROJECT-NAME-DST&quot;</span> <span class="n">compare</span> <span class="o">--</span><span class="n">dst</span><span class="o">-</span><span class="n">host</span> <span class="s2">&quot;https://DEST-SERVER-URL&quot;</span> <span class="o">--</span><span class="n">dst</span><span class="o">-</span><span class="n">user</span> <span class="s2">&quot;XNAT-USER-DEST&quot;</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </div>
 <div class="section" id="download-projects">
@@ -116,6 +121,21 @@ prompted.</p>
 </li>
 <li><p>#### Duplicate a project on the same server (with a new name)</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">copyxnat</span> <span class="o">--</span><span class="n">src</span><span class="o">-</span><span class="n">host</span> <span class="s2">&quot;https://SERVER-URL&quot;</span> <span class="o">--</span><span class="n">src</span><span class="o">-</span><span class="n">user</span> <span class="s2">&quot;XNAT-USER-SOURCE&quot;</span>  <span class="o">--</span><span class="n">project</span> <span class="s2">&quot;PROJECT-NAME:NEW-PROJECT-NAME&quot;</span> <span class="n">copy</span> <span class="o">--</span><span class="n">dst</span><span class="o">-</span><span class="n">host</span> <span class="s2">&quot;https://SERVER-URL&quot;</span> <span class="o">--</span><span class="n">dst</span><span class="o">-</span><span class="n">user</span> <span class="s2">&quot;XNAT-USER-DEST&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="maintenance">
+<h3>Maintenance<a class="headerlink" href="#maintenance" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>#### Rebuild catalog for all experiments</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">copyxnat</span> <span class="o">-</span><span class="n">s</span> <span class="s2">&quot;https://YOUR-SERVER-URL&quot;</span> <span class="o">-</span><span class="n">u</span> <span class="s2">&quot;YOUR-USER-NAME&quot;</span> <span class="n">rebuild</span><span class="o">-</span><span class="n">catalog</span>
+</pre></div>
+</div>
+</li>
+<li><p>#### Reset OHIF viewer for all experiments</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">copyxnat</span> <span class="o">-</span><span class="n">s</span> <span class="s2">&quot;https://YOUR-SERVER-URL&quot;</span> <span class="o">-</span><span class="n">u</span> <span class="s2">&quot;YOUR-USER-NAME&quot;</span> <span class="n">ohif</span>
 </pre></div>
 </div>
 </li>
@@ -242,6 +262,7 @@ prompted.</p>
 <li><a class="reference internal" href="#show-project-contents">Show project contents</a></li>
 <li><a class="reference internal" href="#download-projects">Download projects</a></li>
 <li><a class="reference internal" href="#copy-projects-from-one-xnat-server-to-another">Copy projects from one XNAT server to another</a></li>
+<li><a class="reference internal" href="#maintenance">Maintenance</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#using-copyxnat-in-your-own-code">Using CopyXnat in your own code</a><ul>

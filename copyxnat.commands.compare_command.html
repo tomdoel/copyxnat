@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.commands.compare_command module &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="copyxnat.commands.copy_command module" href="copyxnat.commands.copy_command.html" />
+    <link rel="prev" title="copyxnat.commands.check_datatypes_command module" href="copyxnat.commands.check_datatypes_command.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.commands.copy_command.html" title="copyxnat.commands.copy_command module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.commands.check_datatypes_command.html" title="copyxnat.commands.check_datatypes_command module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.commands.html" accesskey="U">copyxnat.commands package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.compare_command module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-copyxnat.commands.compare_command">
+<span id="copyxnat-commands-compare-command-module"></span><h1>copyxnat.commands.compare_command module<a class="headerlink" href="#module-copyxnat.commands.compare_command" title="Permalink to this headline">¶</a></h1>
+<p>Command which compares contents of XNAT projects</p>
+<dl class="py class">
+<dt id="copyxnat.commands.compare_command.CompareCommand">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.commands.compare_command.</span></code><code class="sig-name descname"><span class="pre">CompareCommand</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/compare_command.html#CompareCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command" title="copyxnat.xnat.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.commands.Command</span></code></a></p>
+<p>Command which displays contents of XNAT projects</p>
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.CACHE_TYPE">
+<code class="sig-name descname"><span class="pre">CACHE_TYPE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'cache'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.COMMAND_LINE">
+<code class="sig-name descname"><span class="pre">COMMAND_LINE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.HELP">
+<code class="sig-name descname"><span class="pre">HELP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Compare</span> <span class="pre">XNAT</span> <span class="pre">projects'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.HELP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.MODIFY_DST_SERVER">
+<code class="sig-name descname"><span class="pre">MODIFY_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.MODIFY_SRC_SERVER">
+<code class="sig-name descname"><span class="pre">MODIFY_SRC_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.MODIFY_SRC_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.NAME">
+<code class="sig-name descname"><span class="pre">NAME</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.USE_DST_SERVER">
+<code class="sig-name descname"><span class="pre">USE_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="copyxnat.commands.compare_command.CompareCommand.VERB">
+<code class="sig-name descname"><span class="pre">VERB</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.VERB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.commands.compare_command.CompareCommand.print_results">
+<code class="sig-name descname"><span class="pre">print_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/compare_command.html#CompareCommand.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.print_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output results to user</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/project-icon.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyxnat.commands.check_datatypes_command.html"
+                        title="previous chapter">copyxnat.commands.check_datatypes_command module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyxnat.commands.copy_command.html"
+                        title="next chapter">copyxnat.commands.copy_command module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/copyxnat.commands.compare_command.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.commands.copy_command.html" title="copyxnat.commands.copy_command module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.commands.check_datatypes_command.html" title="copyxnat.commands.check_datatypes_command module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.commands.html" >copyxnat.commands package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.commands.compare_command module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+  </body>
+</html>
