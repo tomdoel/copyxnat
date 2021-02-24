@@ -22,6 +22,7 @@ class CopyCommand(Command):
 
     def __init__(self, inputs, scope):
         super().__init__(inputs, scope)
+        self.initial_from_parent = inputs.dst_xnat
         self.dst_datatypes = inputs.dst_xnat.datatypes()
         self.xml_cleaner = XmlCleaner(app_settings=inputs.app_settings,
                                       reporter=inputs.reporter)

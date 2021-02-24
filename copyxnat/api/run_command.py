@@ -152,7 +152,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                     server_project.label, num_sessions, command.VERB),
                 max_iter=num_sessions)
 
-            project_command.run(server_project, dst_xnat_server)
+            project_command.run(server_project)
 
             reporter.complete_progress()
 

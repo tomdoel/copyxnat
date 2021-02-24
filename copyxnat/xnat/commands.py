@@ -12,10 +12,21 @@ class Command:
         self.inputs = inputs
         self.outputs = None
         self.ignore_filter = []
+        self.initial_from_parent = None
 
-    def run(self, xnat_item, from_parent=None):
+    def run(self, xnat_item):
         """
         Run this command recursively on the xnat_item and its children
+
+        :xnat_item: The source server XnatItem to process
+        """
+        self._run(xnat_item=xnat_item, from_parent=self.initial_from_parent)
+        self._update_progress(xnat_item=xnat_item)
+
+    def run_next(self, xnat_item, from_parent=None):
+        """
+        Run this command recursively on the xnat_item and its children.
+        This method is called recursively from within the _run() method
 
         :xnat_item: The source server XnatItem to process
         :from_parent: The value returned by this function when it was run on
@@ -26,7 +37,7 @@ class Command:
 
     def _recurse(self, xnat_item, to_children=None):
         for child in xnat_item.get_children(self.ignore_filter):
-            self.run(xnat_item=child, from_parent=to_children)
+            self.run_next(xnat_item=child, from_parent=to_children)
 
     def _update_progress(self, xnat_item):
         xnat_item.progress_update(reporter=self.inputs.reporter)
