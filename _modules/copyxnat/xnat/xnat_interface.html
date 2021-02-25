@@ -317,7 +317,7 @@
     <span class="k">def</span> <span class="nf">_metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">_provide_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+    <span class="k">def</span> <span class="nf">_provide_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="XnatItem.project_server_path"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.project_server_path">[docs]</a>    <span class="k">def</span> <span class="nf">project_server_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -444,7 +444,7 @@
         <span class="k">if</span> <span class="n">tmp_local_file</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_local_file</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_parse_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+    <span class="k">def</span> <span class="nf">_parse_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">):</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">is_dicom</span><span class="p">(</span><span class="n">local_file</span><span class="p">):</span>
@@ -772,10 +772,10 @@
                         <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span></div>
 
-<div class="viewcode-block" id="XnatServer.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+<div class="viewcode-block" id="XnatServer.metadata_missing"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.metadata_missing">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="XnatServer.provide_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.provide_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">provide_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+<div class="viewcode-block" id="XnatServer.provide_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.provide_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">provide_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="XnatServer.get_server"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.get_server">[docs]</a>    <span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

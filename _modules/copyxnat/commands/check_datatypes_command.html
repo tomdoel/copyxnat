@@ -88,7 +88,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">,</span>
                               <span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">,</span> <span class="n">XnatFile</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
 
         <span class="n">datatype</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">datatype</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
@@ -137,37 +137,40 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CheckDatatypesCommand.print_results"><a class="viewcode-back" href="../../../copyxnat.commands.check_datatypes_command.html#copyxnat.commands.check_datatypes_command.CheckDatatypesCommand.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;Project </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
         <span class="n">empty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;ids_with_empty_datatypes&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">empty</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Some items on the source server have an undefined &quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot; - Some items on the source server have an undefined &quot;</span>
                   <span class="s2">&quot;datatype. This might indicate a problem with the source data&quot;</span>
                   <span class="s2">&quot; or the source server datatype configuration:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">empty</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
 
         <span class="n">missing_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_session_datatypes&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing_session</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Session datatypes need to be added to destination &quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot; - Session datatypes need to be added to destination &quot;</span>
                   <span class="s2">&quot;server:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing_session</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">[</span><span class="n">datatype</span><span class="p">]))</span>
 
         <span class="n">missing_assessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;missing_assessor_datatypes&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing_assessor</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Assessor datatypes need to be added to destination &quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot; - Assessor datatypes need to be added to destination &quot;</span>
                   <span class="s2">&quot;server:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="n">missing_assessor</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;   - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datatype</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">datatype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;    - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">SUPPLEMENTAL_DATATYPE_INFO</span><span class="p">[</span><span class="n">datatype</span><span class="p">]))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">missing_session</span> <span class="ow">or</span> <span class="n">missing_assessor</span> <span class="ow">or</span> <span class="n">empty</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - OK&quot;</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot; - OK&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

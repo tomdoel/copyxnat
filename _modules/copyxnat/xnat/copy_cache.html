@@ -50,23 +50,26 @@
 
 <div class="viewcode-block" id="CacheBox"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CacheBox">[docs]</a><span class="k">class</span> <span class="nc">CacheBox</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Controls caches on disk&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span> <span class="o">=</span> <span class="n">reporter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="n">root_path</span>
 
 <div class="viewcode-block" id="CacheBox.new_cache"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CacheBox.new_cache">[docs]</a>    <span class="k">def</span> <span class="nf">new_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new cache within the main cache&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">CopyCache</span><span class="p">(</span><span class="n">cache_type</span><span class="o">=</span><span class="n">cache_type</span><span class="p">,</span>
                          <span class="n">root_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span>
+                         <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span>
                          <span class="n">name</span><span class="o">=</span><span class="s1">&#39;current&#39;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="CopyCache"><a class="viewcode-back" href="../../../copyxnat.xnat.copy_cache.html#copyxnat.xnat.copy_cache.CopyCache">[docs]</a><span class="k">class</span> <span class="nc">CopyCache</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstraction of disk cache used to store XNAT files&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">root_path</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_type</span><span class="p">,</span> <span class="n">root_path</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">parent_rel_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">cache_level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">base_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span> <span class="o">=</span> <span class="n">reporter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="n">read_only</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="n">root_path</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -97,8 +100,9 @@
 <span class="sd">        @return:a new :class:`CopyCache` for this XNAT level</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">CopyCache</span><span class="p">(</span><span class="n">cache_type</span><span class="o">=</span><span class="n">cache_type</span><span class="p">,</span>
-                         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                          <span class="n">root_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_path</span><span class="p">,</span>
+                         <span class="n">reporter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                          <span class="n">parent_rel_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rel_path</span><span class="p">,</span>
                          <span class="n">read_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">,</span>
                          <span class="n">cache_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
@@ -116,8 +120,8 @@
         <span class="sd">&quot;&quot;&quot;Write to file to this cache&quot;&quot;&quot;</span>
         <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_path</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not making directory </span><span class="si">{}</span><span class="s1"> due to read-only mode&#39;</span><span class="o">.</span>
-                  <span class="nb">format</span><span class="p">(</span><span class="n">full_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Not making directory </span><span class="si">{}</span><span class="s1"> due to read-only &#39;</span>
+                                  <span class="s1">&#39;mode&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">full_path</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
                 <span class="n">makedirs</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
