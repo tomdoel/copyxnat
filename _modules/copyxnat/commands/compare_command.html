@@ -63,34 +63,31 @@
         <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_from_parent</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;Comparing </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scope</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
-        <span class="c1"># self.outputs += xnat_item.user_visible_info() + os.linesep</span>
-        <span class="c1"># self.inputs.reporter.output(xnat_item.user_visible_info())</span>
-        <span class="c1"># self._recurse(xnat_item=xnat_item)</span>
-
-        <span class="n">src_children</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="o">.</span><span class="n">label</span><span class="p">:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
+        <span class="n">src_children</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">):</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
                         <span class="n">xnat_item</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span><span class="p">)}</span>
-        <span class="n">dst_children</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="o">.</span><span class="n">label</span><span class="p">:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
+        <span class="n">dst_children</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">):</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
                         <span class="n">from_parent</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_filter</span><span class="p">)}</span>
 
         <span class="n">both</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">src_children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">dst_children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">only_src</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">src_children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">dst_children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">only_dst</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dst_children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">src_children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">only_src</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Missing from dst: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">src_children</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">only_src</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Missing from dst: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">src_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">+=</span> <span class="n">text</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">only_dst</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Missing from src: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">dst_children</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">only_dst</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Missing from src: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">dst_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">+=</span> <span class="n">text</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">both</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Present in both: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">src_children</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">both</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Present in both: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">src_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">child_label</span> <span class="ow">in</span> <span class="n">both</span><span class="p">:</span>
@@ -98,10 +95,17 @@
             <span class="n">dst_child</span> <span class="o">=</span> <span class="n">dst_children</span><span class="p">[</span><span class="n">child_label</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_next</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">src_child</span><span class="p">,</span> <span class="n">from_parent</span><span class="o">=</span><span class="n">dst_child</span><span class="p">)</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="n">xnat_item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">xnat_type</span><span class="p">)</span> <span class="o">+</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">label</span>
+
 <div class="viewcode-block" id="CompareCommand.print_results"><a class="viewcode-back" href="../../../copyxnat.commands.compare_command.html#copyxnat.commands.compare_command.CompareCommand.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Output results to user&quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Differences between projects </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - no differences found&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
