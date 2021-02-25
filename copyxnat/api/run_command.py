@@ -45,7 +45,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         reporter.output('{}: running {} command'.format(get_version_string(),
                                                         command.NAME))
 
-        cache_box = CacheBox(root_path=app_settings.data_dir)
+        cache_box = CacheBox(root_path=app_settings.data_dir, reporter=reporter)
         cache_type = command.CACHE_TYPE
 
         base_cache = cache_box.new_cache(cache_type=cache_type)

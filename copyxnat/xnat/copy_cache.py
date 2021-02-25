@@ -10,23 +10,26 @@ from shutil import rmtree
 
 class CacheBox(object):
     """Controls caches on disk"""
-    def __init__(self, root_path):
+    def __init__(self, root_path, reporter):
+        self.reporter = reporter
         self.root_path = root_path
 
     def new_cache(self, cache_type):
         """Create a new cache within the main cache"""
         return CopyCache(cache_type=cache_type,
                          root_path=self.root_path,
+                         reporter=self.reporter,
                          name='current')
 
 
 class CopyCache(object):
     """Abstraction of disk cache used to store XNAT files"""
 
-    def __init__(self, cache_type, root_path, name=None,
+    def __init__(self, cache_type, root_path, reporter, name=None,
                  parent_rel_path='', read_only=False,
                  cache_level=0,
                  base_name=None):
+        self.reporter = reporter
         self._read_only = read_only
         self.root_path = root_path
         if name is None:
@@ -57,8 +60,9 @@ class CopyCache(object):
         @return:a new :class:`CopyCache` for this XNAT level
         """
         return CopyCache(cache_type=cache_type,
-                         name=name,
                          root_path=self.root_path,
+                         reporter=self.reporter,
+                         name=name,
                          parent_rel_path=self.rel_path,
                          read_only=self._read_only,
                          cache_level=self.cache_level + 1,
@@ -76,8 +80,8 @@ class CopyCache(object):
         """Write to file to this cache"""
         full_path = self.full_path()
         if self._read_only:
-            print('Not making directory {} due to read-only mode'.
-                  format(full_path))
+            self.reporter.warning('Not making directory {} due to read-only '
+                                  'mode'.format(full_path))
         else:
             if not exists(full_path):
                 makedirs(full_path)
