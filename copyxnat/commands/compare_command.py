@@ -23,34 +23,31 @@ class CompareCommand(Command):
         label = self.inputs.dst_project
         self.initial_from_parent = inputs.dst_xnat.project(label)
         self.outputs = ''
+        self.inputs.reporter.output('Comparing {}'.format(scope))
 
-    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
-        # self.outputs += xnat_item.user_visible_info() + os.linesep
-        # self.inputs.reporter.output(xnat_item.user_visible_info())
-        # self._recurse(xnat_item=xnat_item)
-
-        src_children = {item.label: item for item in
+    def _run(self, xnat_item, from_parent):
+        src_children = {self._key(item): item for item in
                         xnat_item.get_children(self.ignore_filter)}
-        dst_children = {item.label: item for item in
+        dst_children = {self._key(item): item for item in
                         from_parent.get_children(self.ignore_filter)}
 
         both = set(src_children.keys()).intersection(dst_children.keys())
         only_src = set(src_children.keys()).difference(dst_children.keys())
         only_dst = set(dst_children.keys()).difference(src_children.keys())
 
-        for label in only_src:
-            text = 'Missing from dst: {}'.format(
-                src_children[label].user_visible_info())
+        for key in only_src:
+            text = ' - Missing from dst: {}'.format(
+                src_children[key].user_visible_info())
             self.outputs += text + os.linesep
             self.inputs.reporter.output(text)
-        for label in only_dst:
-            text = 'Missing from src: {}'.format(
-                dst_children[label].user_visible_info())
+        for key in only_dst:
+            text = ' - Missing from src: {}'.format(
+                dst_children[key].user_visible_info())
             self.outputs += text + os.linesep
             self.inputs.reporter.output(text)
-        for label in both:
-            text = 'Present in both: {}'.format(
-                src_children[label].user_visible_info())
+        for key in both:
+            text = ' - Present in both: {}'.format(
+                src_children[key].user_visible_info())
             self.inputs.reporter.debug(text)
 
         for child_label in both:
@@ -58,7 +55,14 @@ class CompareCommand(Command):
             dst_child = dst_children[child_label]
             self.run_next(xnat_item=src_child, from_parent=dst_child)
 
+    @staticmethod
+    def _key(xnat_item):
+        return str(xnat_item.xnat_type) + xnat_item.label
+
     def print_results(self):
         """Output results to user"""
         print("Differences between projects {}:".format(self.scope))
-        print(self.outputs)
+        if self.outputs:
+            print(self.outputs)
+        else:
+            print(' - no differences found')
