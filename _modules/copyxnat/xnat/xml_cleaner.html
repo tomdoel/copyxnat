@@ -232,7 +232,7 @@
 <span class="sd">        ID describes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">xnat_type</span> <span class="o">=</span> <span class="n">src_item</span><span class="o">.</span><span class="n">_xml_id</span>  <span class="c1"># pylint: disable=no-member, protected-access</span>
+        <span class="n">xnat_type</span> <span class="o">=</span> <span class="n">src_item</span><span class="o">.</span><span class="n">xnat_type</span>
         <span class="k">if</span> <span class="n">src_item</span> <span class="ow">and</span> <span class="n">dst_item</span> <span class="ow">and</span> <span class="n">xnat_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">IDS_TO_MAP</span><span class="p">:</span>
             <span class="n">id_src</span> <span class="o">=</span> <span class="n">src_item</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
             <span class="n">id_dst</span> <span class="o">=</span> <span class="n">dst_item</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
