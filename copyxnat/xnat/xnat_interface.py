@@ -50,7 +50,7 @@ class XnatBase(abc.ABC):
         self.full_name = self.cache.full_name
         self.reporter = reporter
         self.app_settings = app_settings
-        self.label_map = {self._xml_id: label}  # pylint: disable=no-member
+        self.label_map = {self.xnat_type: label}
         if parent:
             for item_tag, item_label in parent.label_map.items():
                 self.label_map[item_tag] = item_label
@@ -74,6 +74,12 @@ class XnatBase(abc.ABC):
             # wrap each in an XnatItem
             for item in getattr(self.interface, child_class.interface_method)():
                 yield child_class.get_existing(interface=item, parent=self)
+
+    @property
+    @abc.abstractmethod
+    def xnat_type(self) -> XnatType:
+        """Return the XnatType of this class"""
+        raise NotImplementedError
 
     @abc.abstractmethod
     def get_server(self):
@@ -335,7 +341,7 @@ class XnatFile(XnatItem):
     """Base wrapper for file items"""
 
     _name = 'File'
-    _xml_id = XnatType.FILE
+    xnat_type = XnatType.FILE
     _cache_subdir_name = 'files'
     interface_method = 'files'
     _child_types = []
@@ -414,7 +420,7 @@ class XnatResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'Resource'
-    _xml_id = XnatType.RESOURCE
+    xnat_type = XnatType.RESOURCE
     _cache_subdir_name = 'resources'
     interface_method = 'resources'
     _child_types = [XnatFile]
@@ -424,7 +430,7 @@ class XnatInResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'In_Resource'
-    _xml_id = XnatType.IN_RESOURCE
+    xnat_type = XnatType.IN_RESOURCE
     _cache_subdir_name = 'in_resources'
     interface_method = 'in_resources'
     _child_types = [XnatFile]
@@ -440,7 +446,7 @@ class XnatOutResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
     _name = 'Out_Resource'
-    _xml_id = XnatType.OUT_RESOURCE
+    xnat_type = XnatType.OUT_RESOURCE
     _cache_subdir_name = 'out_resources'
     interface_method = 'out_resources'
     _child_types = [XnatFile]
@@ -452,7 +458,7 @@ class XnatReconstruction(XnatParentItem):
     _name = 'Reconstruction'
     _cache_subdir_name = 'reconstructions'
     _xml_filename = 'metadata_reconstruction.xml'
-    _xml_id = XnatType.RECONSTRUCTION
+    xnat_type = XnatType.RECONSTRUCTION
     interface_method = 'reconstructions'
     _child_types = [XnatInResource, XnatOutResource]
 
@@ -463,7 +469,7 @@ class XnatAssessor(XnatParentItem):
     _name = 'Assessor'
     _cache_subdir_name = 'assessors'
     _xml_filename = 'metadata_assessor.xml'
-    _xml_id = XnatType.ASSESSOR
+    xnat_type = XnatType.ASSESSOR
     interface_method = 'assessors'
     _child_types = [XnatInResource, XnatOutResource]
 
@@ -471,8 +477,8 @@ class XnatAssessor(XnatParentItem):
         uri = 'data/services/refresh/catalog?' \
               'options=populateStats%2Cappend%2Cdelete%2Cchecksum&' \
               'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
-                self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
-                self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
+                self.label_map[XnatProject.xnat_type],
+                self.label_map[XnatSubject.xnat_type],
                 self.get_id())
         if not self.get_server().does_request_succeed(uri=uri, method='POST'):
             self.reporter.warning(
@@ -485,7 +491,7 @@ class XnatScan(XnatParentItem):
     _name = 'Scan'
     _xml_filename = 'metadata_scan.xml'
     _cache_subdir_name = 'scans'
-    _xml_id = XnatType.SCAN
+    xnat_type = XnatType.SCAN
     interface_method = 'scans'
     _child_types = [XnatResource]
 
@@ -519,7 +525,7 @@ class XnatExperiment(XnatParentItem):
     _name = 'Experiment'
     _xml_filename = 'metadata_session.xml'
     _cache_subdir_name = 'experiments'
-    _xml_id = XnatType.EXPERIMENT
+    xnat_type = XnatType.EXPERIMENT
     interface_method = 'experiments'
     _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
 
@@ -529,7 +535,7 @@ class XnatExperiment(XnatParentItem):
     def ohif_generate_session(self):
         if self.get_server().ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
-                self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
+                self.label_map[XnatProject.xnat_type],
                 self.get_id())
             if not self.get_server().does_request_succeed(uri=uri,
                                                           method='POST'):
@@ -540,8 +546,8 @@ class XnatExperiment(XnatParentItem):
         uri = 'data/services/refresh/catalog?' \
               'options=populateStats%2Cappend%2Cdelete%2Cchecksum&' \
               'resource=/archive/projects/{}/subjects/{}/experiments/{}'.format(
-                self.label_map[XnatProject._xml_id],  # pylint: disable=protected-access
-                self.label_map[XnatSubject._xml_id],  # pylint: disable=protected-access
+                self.label_map[XnatProject.xnat_type],
+                self.label_map[XnatSubject.xnat_type],
                 self.get_id())
         if not self.get_server().does_request_succeed(uri=uri, method='POST'):
             self.reporter.warning(
@@ -558,7 +564,7 @@ class XnatSubject(XnatParentItem):
     _name = 'Subject'
     _xml_filename = 'metadata_subject.xml'
     _cache_subdir_name = 'subjects'
-    _xml_id = XnatType.SUBJECT
+    xnat_type = XnatType.SUBJECT
     interface_method = 'subjects'
     _child_types = [XnatExperiment, XnatResource]
 
@@ -569,7 +575,7 @@ class XnatProject(XnatParentItem):
     _name = 'Project'
     _xml_filename = 'metadata_project.xml'
     _cache_subdir_name = 'projects'
-    _xml_id = XnatType.PROJECT
+    xnat_type = XnatType.PROJECT
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
@@ -586,7 +592,7 @@ class XnatServer(XnatBase):
     _name = 'Server'
     _cache_subdir_name = 'servers'
     _child_types = [XnatProject]
-    _xml_id = XnatType.SERVER
+    xnat_type = XnatType.SERVER
 
     def __init__(self,
                  factory,

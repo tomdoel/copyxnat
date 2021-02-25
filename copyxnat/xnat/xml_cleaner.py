@@ -192,7 +192,7 @@ class XmlCleaner:
         ID describes
         """
 
-        xnat_type = src_item._xml_id  # pylint: disable=no-member, protected-access
+        xnat_type = src_item.xnat_type
         if src_item and dst_item and xnat_type in self.IDS_TO_MAP:
             id_src = src_item.get_id()
             id_dst = dst_item.get_id()

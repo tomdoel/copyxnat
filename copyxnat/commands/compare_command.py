@@ -60,5 +60,5 @@ class CompareCommand(Command):
 
     def print_results(self):
         """Output results to user"""
-        print("Differences between projects {}:".format(self.scope))  ## pylint:disable=no-member
+        print("Differences between projects {}:".format(self.scope))
         print(self.outputs)

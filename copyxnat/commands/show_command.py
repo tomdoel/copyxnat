@@ -29,5 +29,5 @@ class ShowCommand(Command):
 
     def print_results(self):
         """Output results to user"""
-        print("Contents of {}:".format(self.scope))  ## pylint:disable=no-member
+        print("Contents of {}:".format(self.scope))
         print(self.outputs)
