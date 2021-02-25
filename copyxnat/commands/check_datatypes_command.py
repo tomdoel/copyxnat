@@ -81,12 +81,12 @@ class CheckDatatypesCommand(Command):
 
         if datatype:
             self.inputs.reporter.debug(
-                'Known datatype for {} {} {}'.format(xnat_item._name,  # pylint: disable=protected-access
+                'Known datatype for {} {} {}'.format(xnat_item.visible_name,
                                                      xnat_item.label,
                                                      xnat_item.full_name))
 
         else:
-            item_id = '{} {} {}'.format(xnat_item._name,  # pylint: disable=protected-access
+            item_id = '{} {} {}'.format(xnat_item.visible_name,
                                         xnat_item.label,
                                         xnat_item.full_name)
 

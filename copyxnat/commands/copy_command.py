@@ -102,7 +102,7 @@ class CopyCommand(Command):
                 not isinstance(xnat_item, (XnatProject, XnatSubject)):
             self.inputs.reporter.info(
                 "Skipping existing {} {} and all of its child items".format(
-                    xnat_item._name, label))  # pylint: disable=no-member, protected-access
+                    xnat_item.visible_name, label))
             return False
 
         # Do not overwrite unless overwrite flag is set
@@ -112,12 +112,12 @@ class CopyCommand(Command):
                 "server. Existing data will not be "
                 "modified. Use the --overwrite_existing "
                 "option to allow updating of existing "
-                "data".format(xnat_item._name, label))  # pylint: disable=no-member, protected-access
+                "data".format(xnat_item.visible_name, label))
             return False
 
         # Overwrite
         self.inputs.reporter.info(
-            "Updating existing {} {}".format(xnat_item._name, label))  # pylint: disable=no-member, protected-access
+            "Updating existing {} {}".format(xnat_item.visible_name, label))
         return True
 
     def _should_recurse(self, already_exists, xnat_item, label):
@@ -129,8 +129,8 @@ class CopyCommand(Command):
         if already_exists and self.inputs.app_settings.skip_existing and \
                 not isinstance(xnat_item, (XnatProject, XnatSubject)):
             self.inputs.reporter.log(
-                "Skipping children of existing {} {} becaue of skip-existing "
-                "flag".format(xnat_item._name, label))  # pylint: disable=no-member, protected-access
+                "Skipping children of existing {} {} because of skip-existing "
+                "flag".format(xnat_item.visible_name, label))
             return False
 
         return True
@@ -143,7 +143,8 @@ class CopyCommand(Command):
             missing_session_type = datatype not in self.dst_datatypes
 
             if missing_session_type:
-                item_id = '{} {}'.format(xnat_item._name, xnat_item.full_name)  # pylint: disable=protected-access
+                item_id = '{} {}'.format(xnat_item.visible_name,
+                                         xnat_item.full_name)
 
                 if self.inputs.app_settings.ignore_datatype_errors:
                     self.inputs.reporter.warning(

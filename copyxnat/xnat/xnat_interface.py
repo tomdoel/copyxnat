@@ -43,7 +43,7 @@ class XnatBase(abc.ABC):
         self.interface = interface
         if not label:
             reporter.warning("An empty label was found for a {} type".
-                             format(self._name))  # pylint: disable=no-member
+                             format(self.visible_name))
         self.label = label or "unknown"
         self.cache = parent_cache.sub_cache(self._cache_subdir_name, label)  # pylint: disable=no-member
         self.read_only = read_only
@@ -58,7 +58,7 @@ class XnatBase(abc.ABC):
     def user_visible_info(self):
         """String representation of this object that can be shown to user"""
         level = self.cache.cache_level
-        return '  '*level + '-({}) {}'.format(self._name, self.label)  # pylint: disable=no-member
+        return '  '*level + '-({}) {}'.format(self.visible_name, self.label)
 
     def get_children(self, ignore_filter) -> list:
         """Return XNAT child objects of this XNAT object"""
@@ -78,6 +78,12 @@ class XnatBase(abc.ABC):
     @property
     @abc.abstractmethod
     def xnat_type(self) -> XnatType:
+        """Return the XnatType of this class"""
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
+    def visible_name(self) -> str:
         """Return the XnatType of this class"""
         raise NotImplementedError
 
@@ -198,7 +204,9 @@ class XnatItem(XnatBase):
 
         if self.app_settings.dry_run:
             self.reporter.warning('DRY RUN: did not create {} {} with file {}'.
-                                  format(self._name, self.label, local_file))  # pylint: disable=protected-access, no-member
+                                  format(self.visible_name,
+                                         self.label,
+                                         local_file))
         else:
             self.interface.create_on_server(
                 local_file=local_file,
@@ -340,7 +348,7 @@ class XnatFileContainerItem(XnatItem):
 class XnatFile(XnatItem):
     """Base wrapper for file items"""
 
-    _name = 'File'
+    visible_name = 'File'
     xnat_type = XnatType.FILE
     _cache_subdir_name = 'files'
     interface_method = 'files'
@@ -419,7 +427,7 @@ class XnatFile(XnatItem):
 class XnatResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
-    _name = 'Resource'
+    visible_name = 'Resource'
     xnat_type = XnatType.RESOURCE
     _cache_subdir_name = 'resources'
     interface_method = 'resources'
@@ -429,7 +437,7 @@ class XnatResource(XnatFileContainerItem):
 class XnatInResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
-    _name = 'In_Resource'
+    visible_name = 'In_Resource'
     xnat_type = XnatType.IN_RESOURCE
     _cache_subdir_name = 'in_resources'
     interface_method = 'in_resources'
@@ -445,7 +453,7 @@ class XnatInResource(XnatFileContainerItem):
 class XnatOutResource(XnatFileContainerItem):
     """Wrapper for access to an XNAT resource"""
 
-    _name = 'Out_Resource'
+    visible_name = 'Out_Resource'
     xnat_type = XnatType.OUT_RESOURCE
     _cache_subdir_name = 'out_resources'
     interface_method = 'out_resources'
@@ -455,8 +463,8 @@ class XnatOutResource(XnatFileContainerItem):
 class XnatReconstruction(XnatParentItem):
     """Wrapper for access to an XNAT assessor"""
 
-    _name = 'Reconstruction'
     _cache_subdir_name = 'reconstructions'
+    visible_name = 'Reconstruction'
     _xml_filename = 'metadata_reconstruction.xml'
     xnat_type = XnatType.RECONSTRUCTION
     interface_method = 'reconstructions'
@@ -466,7 +474,7 @@ class XnatReconstruction(XnatParentItem):
 class XnatAssessor(XnatParentItem):
     """Wrapper for access to an XNAT assessor"""
 
-    _name = 'Assessor'
+    visible_name = 'Assessor'
     _cache_subdir_name = 'assessors'
     _xml_filename = 'metadata_assessor.xml'
     xnat_type = XnatType.ASSESSOR
@@ -488,7 +496,7 @@ class XnatAssessor(XnatParentItem):
 class XnatScan(XnatParentItem):
     """Wrapper for access to an XNAT scan"""
 
-    _name = 'Scan'
+    visible_name = 'Scan'
     _xml_filename = 'metadata_scan.xml'
     _cache_subdir_name = 'scans'
     xnat_type = XnatType.SCAN
@@ -522,7 +530,7 @@ class XnatScan(XnatParentItem):
 class XnatExperiment(XnatParentItem):
     """Wrapper for access to an XNAT experiment"""
 
-    _name = 'Experiment'
+    visible_name = 'Experiment'
     _xml_filename = 'metadata_session.xml'
     _cache_subdir_name = 'experiments'
     xnat_type = XnatType.EXPERIMENT
@@ -555,13 +563,14 @@ class XnatExperiment(XnatParentItem):
 
     def progress_update(self, reporter):
         reporter.next_progress()
-        self.reporter.log('Completed {} {}'.format(self._name, self.full_name))
+        self.reporter.log('Completed {} {}'.format(self.visible_name,
+                                                   self.full_name))
 
 
 class XnatSubject(XnatParentItem):
     """Wrapper for access to an XNAT subject"""
 
-    _name = 'Subject'
+    visible_name = 'Subject'
     _xml_filename = 'metadata_subject.xml'
     _cache_subdir_name = 'subjects'
     xnat_type = XnatType.SUBJECT
@@ -572,7 +581,7 @@ class XnatSubject(XnatParentItem):
 class XnatProject(XnatParentItem):
     """Wrapper for access to an XNAT project"""
 
-    _name = 'Project'
+    visible_name = 'Project'
     _xml_filename = 'metadata_project.xml'
     _cache_subdir_name = 'projects'
     xnat_type = XnatType.PROJECT
@@ -583,13 +592,14 @@ class XnatProject(XnatParentItem):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
 
     def progress_update(self, reporter):
-        self.reporter.log('Completed {} {}'.format(self._name, self.full_name))
+        self.reporter.log('Completed {} {}'.format(self.visible_name,
+                                                   self.full_name))
 
 
 class XnatServer(XnatBase):
     """Access an XNAT server"""
 
-    _name = 'Server'
+    visible_name = 'Server'
     _cache_subdir_name = 'servers'
     _child_types = [XnatProject]
     xnat_type = XnatType.SERVER
