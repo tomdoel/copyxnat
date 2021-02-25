@@ -185,12 +185,9 @@ def main(args=None):
         skip_existing=args.skip_existing
     )
 
-    result = run_command(command=command,
-                         src_params=src_params,
-                         dst_params=dst_params,
-                         project_filter=project_list,
-                         app_settings=app_settings
-                         )
-
-    if verbose:
-        print(result)
+    run_command(command=command,
+                src_params=src_params,
+                dst_params=dst_params,
+                project_filter=project_list,
+                app_settings=app_settings
+                )

@@ -93,6 +93,8 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         if dst_xnat:
             dst_xnat.logout()
 
+    reporter.debug('Output from run_command:{} '.format(str(result)))
+
     return result
 
 

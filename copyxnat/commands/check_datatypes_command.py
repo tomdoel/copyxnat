@@ -97,34 +97,37 @@ class CheckDatatypesCommand(Command):
         self._recurse(xnat_item=xnat_item)
 
     def print_results(self):
-        print("Project {}:".format(self.scope))
+        self._print("Project {}:".format(self.scope))
         empty = self.outputs['ids_with_empty_datatypes']
         if empty:
-            print(" - Some items on the source server have an undefined "
+            self._print(" - Some items on the source server have an undefined "
                   "datatype. This might indicate a problem with the source data"
                   " or the source server datatype configuration:")
             for item in empty:
-                print('   - {}'.format(item))
+                self._print('   - {}'.format(item))
 
         missing_session = self.outputs['missing_session_datatypes']
         if missing_session:
-            print(" - Session datatypes need to be added to destination "
+            self._print(" - Session datatypes need to be added to destination "
                   "server:")
             for datatype in missing_session:
-                print('   - {}'.format(datatype))
+                self._print('   - {}'.format(datatype))
                 if datatype in self.SUPPLEMENTAL_DATATYPE_INFO:
-                    print('    - {}'.format(
+                    self._print('    - {}'.format(
                         self.SUPPLEMENTAL_DATATYPE_INFO[datatype]))
 
         missing_assessor = self.outputs['missing_assessor_datatypes']
         if missing_assessor:
-            print(" - Assessor datatypes need to be added to destination "
+            self._print(" - Assessor datatypes need to be added to destination "
                   "server:")
             for datatype in missing_assessor:
-                print('   - {}'.format(datatype))
+                self._print('   - {}'.format(datatype))
                 if datatype in self.SUPPLEMENTAL_DATATYPE_INFO:
-                    print('    - {}'.format(
+                    self._print('    - {}'.format(
                         self.SUPPLEMENTAL_DATATYPE_INFO[datatype]))
 
         if not (missing_session or missing_assessor or empty):
-            print(" - OK")
+            self._print(" - OK")
+
+    def _print(self, string):
+        self.inputs.reporter.output(string)

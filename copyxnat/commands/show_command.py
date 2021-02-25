@@ -29,5 +29,5 @@ class ShowCommand(Command):
 
     def print_results(self):
         """Output results to user"""
-        print("Contents of {}:".format(self.scope))
-        print(self.outputs)
+        self.inputs.reporter.output("Contents of {}:".format(self.scope))
+        self.inputs.reporter.output(str(self.outputs))

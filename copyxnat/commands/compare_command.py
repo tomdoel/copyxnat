@@ -61,8 +61,9 @@ class CompareCommand(Command):
 
     def print_results(self):
         """Output results to user"""
-        print("Differences between projects {}:".format(self.scope))
+        self.inputs.reporter.output("Differences between projects "
+                                    "{}:".format(self.scope))
         if self.outputs:
-            print(self.outputs)
+            self.inputs.reporter.output(str(self.outputs))
         else:
-            print(' - no differences found')
+            self.inputs.reporter.output(' - no differences found')
