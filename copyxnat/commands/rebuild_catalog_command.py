@@ -19,6 +19,6 @@ class RebuildCatalogCommand(Command):
     CACHE_TYPE = 'cache'
     HELP = 'Request a rebuild of the XNAT catalog to fix data issues'
 
-    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):
         xnat_item.rebuild_catalog()
         self._recurse(xnat_item=xnat_item)

@@ -277,7 +277,7 @@ class XnatItem(XnatBase):
     def _metadata_missing(self):  # pylint: disable=no-self-use
         return False
 
-    def _provide_metadata(self, metadata):  # pylint: disable=no-self-use
+    def _provide_metadata(self, metadata):
         pass
 
     def project_server_path(self):
@@ -404,7 +404,7 @@ class XnatFile(XnatItem):
         if tmp_local_file:
             os.remove(tmp_local_file)
 
-    def _parse_metadata(self, local_file):  # pylint: disable=no-self-use
+    def _parse_metadata(self, local_file):
         metadata = {}
         try:
             if pydicom.misc.is_dicom(local_file):
@@ -732,10 +732,10 @@ class XnatServer(XnatBase):
                         reporter=self.reporter)
         return self._archive_path
 
-    def metadata_missing(self):  # pylint: disable=no-self-use
+    def metadata_missing(self):
         return False
 
-    def provide_metadata(self, metadata):  # pylint: disable=no-self-use
+    def provide_metadata(self, metadata):
         pass
 
     def get_server(self):

@@ -48,7 +48,7 @@ class CheckDatatypesCommand(Command):
         self.ignore_filter = [XnatScan, XnatResource,
                               XnatInResource, XnatOutResource, XnatFile]
 
-    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):
 
         datatype = xnat_item.datatype()
         if isinstance(xnat_item, XnatExperiment):

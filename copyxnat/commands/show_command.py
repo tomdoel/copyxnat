@@ -22,7 +22,7 @@ class ShowCommand(Command):
         super().__init__(inputs, scope)
         self.outputs = ''
 
-    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):
         self.outputs += xnat_item.user_visible_info() + os.linesep
         self.inputs.reporter.output(xnat_item.user_visible_info())
         self._recurse(xnat_item=xnat_item)

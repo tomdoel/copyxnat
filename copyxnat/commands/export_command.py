@@ -17,6 +17,6 @@ class ExportCommand(Command):
     CACHE_TYPE = 'downloads'
     HELP = 'Export XNAT projects to disk'
 
-    def _run(self, xnat_item, from_parent):  # pylint: disable=unused-argument
+    def _run(self, xnat_item, from_parent):
         xnat_item.export(self.inputs.app_settings)
         self._recurse(xnat_item=xnat_item)
