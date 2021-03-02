@@ -508,7 +508,13 @@
     <span class="n">_xml_filename</span> <span class="o">=</span> <span class="s1">&#39;metadata_reconstruction.xml&#39;</span>
     <span class="n">xnat_type</span> <span class="o">=</span> <span class="n">XnatType</span><span class="o">.</span><span class="n">RECONSTRUCTION</span>
     <span class="n">interface_method</span> <span class="o">=</span> <span class="s1">&#39;reconstructions&#39;</span>
-    <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">]</span></div>
+    <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatInResource</span><span class="p">,</span> <span class="n">XnatOutResource</span><span class="p">]</span>
+
+<div class="viewcode-block" id="XnatReconstruction.get_or_create_child"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatReconstruction.get_or_create_child">[docs]</a>    <span class="k">def</span> <span class="nf">get_or_create_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>  <span class="c1"># pylint: disable=useless-return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;CopyXnat is not able to copy reconstructions. &#39;</span>
+                              <span class="s1">&#39;This reconstruction item </span><span class="si">{}</span><span class="s1"> will be &#39;</span>
+                              <span class="s1">&#39;skipped.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 <div class="viewcode-block" id="XnatAssessor"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatAssessor">[docs]</a><span class="k">class</span> <span class="nc">XnatAssessor</span><span class="p">(</span><span class="n">XnatParentItem</span><span class="p">):</span>

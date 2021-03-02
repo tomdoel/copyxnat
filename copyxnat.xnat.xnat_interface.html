@@ -571,6 +571,37 @@ applying XML cleaning where required</p>
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.xnat.xnat_interface.</span></code><code class="sig-name descname"><span class="pre">XnatReconstruction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatReconstruction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatReconstruction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat.xnat_interface.XnatParentItem" title="copyxnat.xnat.xnat_interface.XnatParentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.xnat_interface.XnatParentItem</span></code></a></p>
 <p>Wrapper for access to an XNAT assessor</p>
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatReconstruction.get_or_create_child">
+<code class="sig-name descname"><span class="pre">get_or_create_child</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatReconstruction.get_or_create_child"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatReconstruction.get_or_create_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an XNAT item under the specified parent if it does not already
+exist, and return an XnatItem wrapper that can be used to access this
+item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parent</dt>
+<dd class="field-odd"><p>The XnatItem under which the child will be created if it does
+not already exist</p>
+</dd>
+<dt class="field-even">Label</dt>
+<dd class="field-even"><p>The identifier used to find or create the child item</p>
+</dd>
+<dt class="field-odd">Create_params</dt>
+<dd class="field-odd"><p>Additional parameters needed to create child item</p>
+</dd>
+<dt class="field-even">Local_file</dt>
+<dd class="field-even"><p>path to a local file containing the resource or XML data
+that should be used to create this object on the server if
+it doesn’t already exist</p>
+</dd>
+<dt class="field-odd">Dry_run</dt>
+<dd class="field-odd"><p>if True then no change will be made on the destination server</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new XnatItem wrapping the item fetched or created</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt id="copyxnat.xnat.xnat_interface.XnatReconstruction.interface_method">
 <code class="sig-name descname"><span class="pre">interface_method</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'reconstructions'</span></em><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatReconstruction.interface_method" title="Permalink to this definition">¶</a></dt>

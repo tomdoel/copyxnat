@@ -324,7 +324,11 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No file label!&#39;</span><span class="p">)</span>
-        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+        <span class="c1"># If label is a path, extract out only the name to be used for the file</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;file&#39;</span>
+
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">file_path</span></div>
 

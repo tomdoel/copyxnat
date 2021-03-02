@@ -142,6 +142,51 @@ prompted.</p>
 </ul>
 </div>
 </div>
+<div class="section" id="supported-xnat-data-levels">
+<h2>Supported XNAT data levels<a class="headerlink" href="#supported-xnat-data-levels" title="Permalink to this headline">¶</a></h2>
+<p>CopyXnat can process the following XNAT data hierarchies.</p>
+<ul class="simple">
+<li><p>Projects</p>
+<ul>
+<li><p>Project Resources</p></li>
+<li><p>Subjects</p>
+<ul>
+<li><p>Subject Resources</p></li>
+<li><p>Experiments</p>
+<ul>
+<li><p>Experiment Resources</p></li>
+<li><p>Scans</p>
+<ul>
+<li><p>Scan Resources</p></li>
+</ul>
+</li>
+<li><p>Assessors</p>
+<ul>
+<li><p>Assessor In-Resources (copy not supported)</p></li>
+<li><p>Assessor Out-Resources</p></li>
+</ul>
+</li>
+<li><p>Reconstructions (copy not supported)</p>
+<ul>
+<li><p>Reconstruction In-Resources</p></li>
+<li><p>Reconstruction Out-Resources</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="current-limitations">
+<h3>Current limitations<a class="headerlink" href="#current-limitations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Reconstructions can be downloaded but cannot be copied to another server</p></li>
+<li><p>Assessor In-Resources can be downloaded but cannot be copied to another server</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="using-copyxnat-in-your-own-code">
 <h2>Using CopyXnat in your own code<a class="headerlink" href="#using-copyxnat-in-your-own-code" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="importing-via-pip">
@@ -263,6 +308,10 @@ prompted.</p>
 <li><a class="reference internal" href="#download-projects">Download projects</a></li>
 <li><a class="reference internal" href="#copy-projects-from-one-xnat-server-to-another">Copy projects from one XNAT server to another</a></li>
 <li><a class="reference internal" href="#maintenance">Maintenance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#supported-xnat-data-levels">Supported XNAT data levels</a><ul>
+<li><a class="reference internal" href="#current-limitations">Current limitations</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#using-copyxnat-in-your-own-code">Using CopyXnat in your own code</a><ul>
