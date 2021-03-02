@@ -103,6 +103,34 @@ prompted.
     copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" ohif
     ```
 
+## Supported XNAT data levels
+
+CopyXnat can process the following XNAT data hierarchies.
+
+- Projects
+  - Project Resources
+  - Subjects
+    - Subject Resources
+    - Experiments
+      - Experiment Resources
+      - Scans
+        - Scan Resources
+      - Assessors
+        - Assessor In-Resources (copy not supported)
+        - Assessor Out-Resources
+      - Reconstructions (copy not supported)
+        - Reconstruction In-Resources
+        - Reconstruction Out-Resources
+
+
+### Current limitations
+
+ - Reconstructions can be downloaded but cannot be copied to another server
+ - Assessor In-Resources can be downloaded but cannot be copied to another server
+
+
+
+
 
 ## Using CopyXnat in your own code
 
