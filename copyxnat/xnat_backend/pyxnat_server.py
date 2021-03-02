@@ -284,7 +284,11 @@ class PyXnatFile(PyXnatItem):
 
         if not label:
             raise ValueError('No file label!')
-        file_path = os.path.join(save_dir, label)
+
+        # If label is a path, extract out only the name to be used for the file
+        _, name = os.path.split(label) or 'file'
+
+        file_path = os.path.join(save_dir, name)
         self.fetch_interface().get(file_path)
         return file_path
 
