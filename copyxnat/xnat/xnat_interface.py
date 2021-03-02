@@ -470,6 +470,12 @@ class XnatReconstruction(XnatParentItem):
     interface_method = 'reconstructions'
     _child_types = [XnatInResource, XnatOutResource]
 
+    def get_or_create_child(self, parent, label):  # pylint: disable=useless-return
+        self.reporter.warning('CopyXnat is not able to copy reconstructions. '
+                              'This reconstruction item {} will be '
+                              'skipped.'.format(label))
+        return None
+
 
 class XnatAssessor(XnatParentItem):
     """Wrapper for access to an XNAT assessor"""
