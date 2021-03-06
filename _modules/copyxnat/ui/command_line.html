@@ -85,56 +85,60 @@
 
     <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
-        <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
+        <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span><span class="p">,</span>
+                                           <span class="n">help</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
 
-    <span class="c1"># Arguments common to all commands</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--dry_run&quot;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the destination&quot;</span><span class="p">,</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="s2">&quot;--insecure&quot;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not enforce strict SSL certificate checks&quot;</span><span class="p">,</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show verbose output&quot;</span><span class="p">,</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--src-host&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the XNAT server containing the data&quot;</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--src-user&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;User name for accessing XNAT server containing &quot;</span>
-                             <span class="s2">&quot;the data&quot;</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--rsync-src-user&quot;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;When using rsync transfer, ssh username for &quot;</span>
-                             <span class="s2">&quot;source server (this is not the XNAT username)&quot;</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--project&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of project containing the data&quot;</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--skip-existing&quot;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Skip session and all children if it already &quot;</span>
-                             <span class="s2">&quot;exists on the destination server&quot;</span><span class="p">,</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--transfer-mode&quot;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;file&#39;</span><span class="p">,</span>
-                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rsync&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">],</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Choose how resource files will be transferred. &quot;</span>
-                             <span class="s2">&quot;The file method is the safest and copies files&quot;</span>
-                             <span class="s2">&quot;individually and maintains their attributes.&quot;</span>
-                             <span class="s2">&quot;The zip method copies each resource folder as a &quot;</span>
-                             <span class="s2">&quot;zip archive. The rsync option is a more &quot;</span>
-                             <span class="s2">&quot;experimental approach which should be used with &quot;</span>
-                             <span class="s2">&quot;caution. It requires you to have ssh keys set up &quot;</span>
-                             <span class="s2">&quot;and you must supply the account usernames. The &quot;</span>
-                             <span class="s2">&quot;meta option only copies metadata and requires you&quot;</span>
-                             <span class="s2">&quot; to have manually transferred the files over &quot;</span>
-                             <span class="s2">&quot;first.&quot;</span>
-                        <span class="p">)</span>
+        <span class="c1"># Arguments common to all commands</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--dry_run&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not modify the destination&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="s2">&quot;--insecure&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not enforce strict SSL certificate checks&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show verbose output&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--src-host&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Host name of the XNAT server containing the data&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--src-user&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;User name for accessing XNAT server containing the data&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--rsync-src-user&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;When using rsync transfer, ssh username for source server &quot;</span>
+                 <span class="s2">&quot;(this is not the XNAT username)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--project&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of project containing the data&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--skip-existing&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Skip session and all children if it already exists on the &quot;</span>
+                 <span class="s2">&quot;destination server&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--transfer-mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;file&#39;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rsync&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">],</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Choose how resource files will be transferred. &quot;</span>
+                 <span class="s2">&quot;The file method is the safest and copies files&quot;</span>
+                 <span class="s2">&quot;individually and maintains their attributes. &quot;</span>
+                 <span class="s2">&quot;The zip method copies each resource folder as a &quot;</span>
+                 <span class="s2">&quot;zip archive. The rsync option is a more &quot;</span>
+                 <span class="s2">&quot;experimental approach which should be used with &quot;</span>
+                 <span class="s2">&quot;caution. It requires you to have ssh keys set up &quot;</span>
+                 <span class="s2">&quot;and you must supply the account usernames. The &quot;</span>
+                 <span class="s2">&quot;meta option only copies metadata and requires you&quot;</span>
+                 <span class="s2">&quot; to have manually transferred the files over &quot;</span>
+                 <span class="s2">&quot;first.&quot;</span>
+        <span class="p">)</span>
+
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
         <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="n">command_key</span><span class="p">]</span>
