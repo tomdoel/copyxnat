@@ -45,13 +45,13 @@ prompted.
 - #### Print a list of projects, subjects etc on an XNAT server
 
     ```
-    copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" show
+    copyxnat show -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME"
     ```
 
 - #### Show differences between two projects
 
     ```
-    copyxnat --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE" --project "PROJECT-NAME-SRC:PROJECT-NAME-DST" compare --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
+    copyxnat compare --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE" --project "PROJECT-NAME-SRC:PROJECT-NAME-DST" --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 
@@ -60,13 +60,13 @@ prompted.
 - #### Download XNAT projects onto your computer
 
     ```
-    copyxnat --src-host "https://YOUR-SERVER-URL" --src-user "YOUR-USER-NAME" --project "PROJECT1,PROJECT2" export
+    copyxnat export --src-host "https://YOUR-SERVER-URL" --src-user "YOUR-USER-NAME" --project "PROJECT1,PROJECT2"
     ```
 
 - #### Download all projects you have access to onto your computer
 
     ```
-    copyxnat --src-host "https://YOUR-SERVER-URL" --src-user "YOUR-XNAT-USER-NAME" export
+    copyxnat export --src-host "https://YOUR-SERVER-URL" --src-user "YOUR-XNAT-USER-NAME"
     ```
 
 ### Copy projects from one XNAT server to another 
@@ -74,19 +74,19 @@ prompted.
 - #### Duplicate a project on a destination server
 
     ```
-    copyxnat --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE" --project "PROJECT-NAME" copy --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
+    copyxnat copy --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE" --project "PROJECT-NAME" --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 - #### Duplicate a project and rename
 
     ```
-    copyxnat --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
+    copyxnat copy --src-host "https://SOURCE-SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" --dst-host "https://DEST-SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 - #### Duplicate a project on the same server (with a new name)
 
     ```
-    copyxnat --src-host "https://SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" copy --dst-host "https://SERVER-URL" --dst-user "XNAT-USER-DEST"
+    copyxnat copy --src-host "https://SERVER-URL" --src-user "XNAT-USER-SOURCE"  --project "PROJECT-NAME:NEW-PROJECT-NAME" --dst-host "https://SERVER-URL" --dst-user "XNAT-USER-DEST"
     ```
 
 ### Maintenance
@@ -94,13 +94,13 @@ prompted.
 - #### Rebuild catalog for all experiments
 
     ```
-    copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" rebuild-catalog
+    copyxnat rebuild-catalog -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME"
     ```
 
 - #### Reset OHIF viewer for all experiments
 
     ```
-    copyxnat -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" ohif
+    copyxnat ohif -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" 
     ```
 
 ## Supported XNAT data levels

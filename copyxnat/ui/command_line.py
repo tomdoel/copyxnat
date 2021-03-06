@@ -45,56 +45,60 @@ def _parse_command_line(args):
 
     subparsers = parser.add_subparsers(dest='command')
     for command in find_commands.commands():
-        subparsers.add_parser(command.COMMAND_LINE, help=command.HELP)
+        sub_parser = subparsers.add_parser(command.COMMAND_LINE,
+                                           help=command.HELP)
 
-    # Arguments common to all commands
-    parser.add_argument("-y", "--dry_run",
-                        action="store_true",
-                        help="Do not modify the destination",
-                        )
-    parser.add_argument("-k", "--insecure",
-                        action="store_true",
-                        help="Do not enforce strict SSL certificate checks",
-                        )
-    parser.add_argument("-v", "--verbose",
-                        action="store_true",
-                        help="Show verbose output",
-                        )
-    parser.add_argument("-s", "--src-host", required=True,
-                        help="Host name of the XNAT server containing the data"
-                        )
-    parser.add_argument("-u", "--src-user", required=True,
-                        help="User name for accessing XNAT server containing "
-                             "the data"
-                        )
-    parser.add_argument("-i", "--rsync-src-user",
-                        default=None,
-                        help="When using rsync transfer, ssh username for "
-                             "source server (this is not the XNAT username)"
-                        )
-    parser.add_argument("-p", "--project", default=None,
-                        help="Name of project containing the data"
-                        )
-    parser.add_argument("-n", "--skip-existing",
-                        action="store_true",
-                        help="Skip session and all children if it already "
-                             "exists on the destination server",
-                        )
-    parser.add_argument("-t", "--transfer-mode",
-                        default='file',
-                        choices=['file', 'zip', 'rsync', 'meta'],
-                        help="Choose how resource files will be transferred. "
-                             "The file method is the safest and copies files"
-                             "individually and maintains their attributes."
-                             "The zip method copies each resource folder as a "
-                             "zip archive. The rsync option is a more "
-                             "experimental approach which should be used with "
-                             "caution. It requires you to have ssh keys set up "
-                             "and you must supply the account usernames. The "
-                             "meta option only copies metadata and requires you"
-                             " to have manually transferred the files over "
-                             "first."
-                        )
+        # Arguments common to all commands
+        sub_parser.add_argument(
+            "-y", "--dry_run", action="store_true",
+            help="Do not modify the destination"
+        )
+        sub_parser.add_argument(
+            "-k", "--insecure", action="store_true",
+            help="Do not enforce strict SSL certificate checks"
+        )
+        sub_parser.add_argument(
+            "-v", "--verbose", action="store_true",
+            help="Show verbose output"
+        )
+        sub_parser.add_argument(
+            "-s", "--src-host", required=True,
+            help="Host name of the XNAT server containing the data"
+        )
+        sub_parser.add_argument(
+            "-u", "--src-user", required=True,
+            help="User name for accessing XNAT server containing the data"
+        )
+        sub_parser.add_argument(
+            "-i", "--rsync-src-user", default=None,
+            help="When using rsync transfer, ssh username for source server "
+                 "(this is not the XNAT username)"
+        )
+        sub_parser.add_argument(
+            "-p", "--project", default=None,
+            help="Name of project containing the data"
+        )
+        sub_parser.add_argument(
+            "-n", "--skip-existing", action="store_true",
+            help="Skip session and all children if it already exists on the "
+                 "destination server"
+        )
+        sub_parser.add_argument(
+            "-t", "--transfer-mode", default='file',
+            choices=['file', 'zip', 'rsync', 'meta'],
+            help="Choose how resource files will be transferred. "
+                 "The file method is the safest and copies files"
+                 "individually and maintains their attributes. "
+                 "The zip method copies each resource folder as a "
+                 "zip archive. The rsync option is a more "
+                 "experimental approach which should be used with "
+                 "caution. It requires you to have ssh keys set up "
+                 "and you must supply the account usernames. The "
+                 "meta option only copies metadata and requires you"
+                 " to have manually transferred the files over "
+                 "first."
+        )
+
     for command in find_commands.commands():
         command_key = command.COMMAND_LINE
         sub_parser = subparsers.choices[command_key]
