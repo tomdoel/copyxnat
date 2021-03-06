@@ -1,6 +1,7 @@
 # coding=utf-8
 
 """Logging and user I/O"""
+from getpass import getpass
 from copyxnat.pyreporter.console import Console
 from copyxnat.pyreporter.console_logger import ConsoleLogger
 from copyxnat.pyreporter.file_logger import FileLogger
@@ -58,6 +59,10 @@ class PyReporter:
         """Print text to the console without a message prefix"""
         for handler in self._log_handlers:
             handler.output(message)
+
+    def get_password(self, message):  # pylint:disable=no-self-use
+        """Obtain a password"""
+        return getpass(message)
 
     def log(self, message):
         """Message which should always be written to the log but not shown

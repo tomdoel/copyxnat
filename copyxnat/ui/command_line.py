@@ -138,9 +138,6 @@ def run_command_line(args=None):
 
     command = find_command(args.command)
 
-    src_pw = getpass("Please enter the password for {}@{}:".
-                     format(args.src_user, args.src_host))
-
     src_rsync = args.rsync_src_user if 'rsync_src_user' in args else None
 
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
@@ -157,7 +154,6 @@ def run_command_line(args=None):
 
     src_params = XnatServerParams(host=args.src_host,
                                   user=args.src_user,
-                                  pwd=src_pw,
                                   rsync_user=src_rsync,
                                   insecure=args.insecure)
 
@@ -165,12 +161,8 @@ def run_command_line(args=None):
         dst_host = args.dst_host if 'dst_host' in args else None
         dst_user = args.dst_user if 'dst_user' in args else None
         dst_rsync = args.rsync_dst_user if 'rsync_dst_user' in args else None
-        dst_pw = getpass("Please enter the password for {}@{}:".
-                         format(args.dst_user, args.dst_host))
-
         dst_params = XnatServerParams(host=dst_host,
                                       user=dst_user,
-                                      pwd=dst_pw,
                                       rsync_user=dst_rsync,
                                       insecure=args.insecure)
     else:

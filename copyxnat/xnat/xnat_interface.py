@@ -623,6 +623,11 @@ class XnatServer(XnatBase):
         if params.insecure:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+        if params.authenticate and not params.pwd:
+            params.pwd = reporter.get_password(
+                "Please enter the password for {}@{}:".format(params.user,
+                                                              params.host))
+
         interface = factory.create(params=params)
 
         self.ohif = None
