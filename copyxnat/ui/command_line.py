@@ -3,7 +3,6 @@
 """Command line processing"""
 
 import argparse
-from getpass import getpass
 
 from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
