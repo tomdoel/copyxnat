@@ -58,9 +58,6 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
                               app_settings=app_settings,
                               reporter=reporter,
                               read_only=not command.MODIFY_SRC_SERVER)
-        reporter.info('Download and cache files will be stored in {}'.
-                      format(src_xnat.cache.full_path()))
-
         if dst_params and command.USE_DST_SERVER:
             dst_xnat = XnatServer(factory=factory,
                                   params=dst_params,
@@ -70,6 +67,9 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
                                   read_only=not command.MODIFY_DST_SERVER)
         else:
             dst_xnat = None
+
+        reporter.info('Download and cache files will be stored in {}'.
+                      format(src_xnat.cache.full_path()))
 
         result = run_command_on_servers(command=command,
                                         src_xnat_server=src_xnat,
