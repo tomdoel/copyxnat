@@ -8,7 +8,7 @@ class XnatServerParams:
 
     def __init__(self, host, user, pwd=None, rsync_user=None, insecure=False,
                  authenticate=True):
-        if '://' not in host:
+        if host and '://' not in host:
             host = 'https://' + host
         self.host = host
         self.user = user
