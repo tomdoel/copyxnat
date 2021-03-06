@@ -4,8 +4,8 @@ COPY /dist /packages
 
 RUN pip install --find-links=/packages copyxnat
 
-ENTRYPOINT ["copyxnat"]
+ENTRYPOINT ["copyxnat --cache-dir /copyxnat"]
 
 CMD ["--help"]
 
-VOLUME ["/root/CopyXnat"]
+VOLUME ["/copyxnat"]
