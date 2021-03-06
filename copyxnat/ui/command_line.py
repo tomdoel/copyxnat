@@ -138,15 +138,6 @@ def _parse_command_line(args):
     command = find_command(args.command)
 
     src_rsync = args.rsync_src_user if 'rsync_src_user' in args else None
-    fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
-    verbose = args.verbose if 'verbose' in args else False
-    overwrite_existing = args.overwrite_existing if \
-        'overwrite_existing' in args else False
-    ignore_datatype_errors = args.ignore_datatype_errors if \
-        'ignore_datatype_errors' in args else False
-    transfer_mode = args.transfer_mode
-    project_list = args.project.split(',') if 'project' in args and \
-                                              args.project else None
     src_params = XnatServerParams(host=args.src_host,
                                   user=args.src_user,
                                   rsync_user=src_rsync,
@@ -165,7 +156,17 @@ def _parse_command_line(args):
         dst_params = None
 
     # Project list
+    project_list = args.project.split(',') if 'project' in args and \
+                                              args.project else None
+
     # Application settings
+    fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
+    ignore_datatype_errors = args.ignore_datatype_errors if \
+        'ignore_datatype_errors' in args else False
+    overwrite_existing = args.overwrite_existing if \
+        'overwrite_existing' in args else False
+    transfer_mode = args.transfer_mode
+    verbose = args.verbose if 'verbose' in args else False
     app_settings = AppSettings(
         fix_scan_types=fix_scan_types,
         ignore_datatype_errors=ignore_datatype_errors,
