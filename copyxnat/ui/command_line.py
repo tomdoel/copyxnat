@@ -38,6 +38,11 @@ def _parse_command_line(args):
         action='version',
         version=friendly_version_string
     )
+
+    parser.add_argument("-c", "--cache-dir",
+                        help="File path here local cache files are to be stored"
+                        )
+
     subparsers = parser.add_subparsers(dest='command')
     for command in find_commands.commands():
         subparsers.add_parser(command.COMMAND_LINE, help=command.HELP)
@@ -69,9 +74,6 @@ def _parse_command_line(args):
                         )
     parser.add_argument("-p", "--project", default=None,
                         help="Name of project containing the data"
-                        )
-    parser.add_argument("-c", "--cache-dir",
-                        help="File path here local cache files are to be stored"
                         )
     parser.add_argument("-n", "--skip-existing",
                         action="store_true",
