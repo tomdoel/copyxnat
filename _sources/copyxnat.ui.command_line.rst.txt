@@ -1,0 +1,7 @@
+copyxnat.ui.command\_line module
+================================
+
+.. automodule:: copyxnat.ui.command_line
+   :members:
+   :undoc-members:
+   :show-inheritance:

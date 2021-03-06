@@ -7,7 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   copyxnat.ui.copyxnat_command_line
+   copyxnat.ui.command_line
 
 Module contents
 ---------------
