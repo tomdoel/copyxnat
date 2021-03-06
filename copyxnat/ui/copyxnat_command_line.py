@@ -13,7 +13,7 @@ from copyxnat.config.server_params import XnatServerParams
 from copyxnat.config.app_settings import AppSettings
 
 
-def main(args=None):
+def run_command_line(args=None):
     """Entry point for copyxnat application"""
 
     parser = argparse.ArgumentParser(

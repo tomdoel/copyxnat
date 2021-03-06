@@ -2,7 +2,7 @@
 #  -*- coding: utf-8 -*-
 import sys
 
-from copyxnat.ui.copyxnat_command_line import main
+from copyxnat.ui.copyxnat_command_line import run_command_line
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(run_command_line(sys.argv[1:]))
