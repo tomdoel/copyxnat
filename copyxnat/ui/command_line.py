@@ -139,6 +139,7 @@ def _parse_command_line(args):
     # Command class
     command = find_command(args.command)
 
+    # Source server parameters object
     src_rsync = args.rsync_src_user if 'rsync_src_user' in args else None
     src_params = XnatServerParams(host=args.src_host,
                                   user=args.src_user,
@@ -162,22 +163,19 @@ def _parse_command_line(args):
                                               args.project else None
 
     # Application settings
-    fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
-    ignore_datatype_errors = args.ignore_datatype_errors if \
-        'ignore_datatype_errors' in args else False
-    overwrite_existing = args.overwrite_existing if \
-        'overwrite_existing' in args else False
-    transfer_mode = args.transfer_mode
-    verbose = args.verbose if 'verbose' in args else False
     app_settings = AppSettings(
-        fix_scan_types=fix_scan_types,
-        ignore_datatype_errors=ignore_datatype_errors,
+        fix_scan_types=_optional(args, 'fix_scan_types', False),
+        ignore_datatype_errors=_optional(args, 'ignore_datatype_errors', False),
         dry_run=args.dry_run,
-        overwrite_existing=overwrite_existing,
-        transfer_mode=transfer_mode,
+        overwrite_existing=_optional(args, 'overwrite_existing', False),
+        transfer_mode=args.transfer_mode,
         data_dir=args.cache_dir,
-        verbose=verbose,
+        verbose=args.verbose,
         skip_existing=args.skip_existing
     )
 
     return command, src_params, dst_params, project_list, app_settings
+
+
+def _optional(args, param, default):
+    return getattr(args, param) if param in args else default
