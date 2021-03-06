@@ -57,7 +57,7 @@ class CopyCommand(Command):
 
         if not dst_copy:
             self.inputs.reporter.log(
-                'Skipping {} because no destination item could be '
+                'Skipping {} because no destination item was '
                 'created.'.format(xnat_item.full_name))
             return
 
