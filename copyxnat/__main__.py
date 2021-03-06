@@ -14,7 +14,7 @@ if __name__ == "__main__" and not __package__:
     sys.path.append(path.dirname(path.dirname(__file__)))
 
 # pylint: disable=wrong-import-position
-from copyxnat.ui.copyxnat_command_line import run_command_line
+from copyxnat.ui.command_line import run_command_line
 
 if __name__ == "__main__":
     sys.exit(run_command_line(sys.argv[1:]))
