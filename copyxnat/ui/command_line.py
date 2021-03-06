@@ -32,6 +32,7 @@ def _parse_command_line(args):
                     'between XNAT servers')
     version_string = get_version_string()
     friendly_version_string = version_string if version_string else 'unknown'
+
     parser.add_argument(
         "--version",
         action='version',
@@ -40,6 +41,7 @@ def _parse_command_line(args):
     subparsers = parser.add_subparsers(dest='command')
     for command in find_commands.commands():
         subparsers.add_parser(command.COMMAND_LINE, help=command.HELP)
+
     # Arguments common to all commands
     parser.add_argument("-y", "--dry_run",
                         action="store_true",
@@ -131,7 +133,10 @@ def _parse_command_line(args):
                                          "destination server"
                                     )
     args = parser.parse_args(args)
+
+    # Command class
     command = find_command(args.command)
+
     src_rsync = args.rsync_src_user if 'rsync_src_user' in args else None
     fix_scan_types = args.fix_scan_types if 'fix_scan_types' in args else False
     verbose = args.verbose if 'verbose' in args else False
@@ -146,6 +151,8 @@ def _parse_command_line(args):
                                   user=args.src_user,
                                   rsync_user=src_rsync,
                                   insecure=args.insecure)
+
+    # Destination server parameters object
     if command.USE_DST_SERVER:
         dst_host = args.dst_host if 'dst_host' in args else None
         dst_user = args.dst_user if 'dst_user' in args else None
@@ -157,6 +164,8 @@ def _parse_command_line(args):
     else:
         dst_params = None
 
+    # Project list
+    # Application settings
     app_settings = AppSettings(
         fix_scan_types=fix_scan_types,
         ignore_datatype_errors=ignore_datatype_errors,
