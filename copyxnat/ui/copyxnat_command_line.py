@@ -16,7 +16,9 @@ from copyxnat.config.app_settings import AppSettings
 def main(args=None):
     """Entry point for copyxnat application"""
 
-    parser = argparse.ArgumentParser(description='copyxnat')
+    parser = argparse.ArgumentParser(
+        description='CopyXnat: Utility for downloading or copying projects '
+                    'between XNAT servers')
 
     version_string = get_version_string()
     friendly_version_string = version_string if version_string else 'unknown'
