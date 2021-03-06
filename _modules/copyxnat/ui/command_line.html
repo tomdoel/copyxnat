@@ -72,14 +72,21 @@
                     <span class="s1">&#39;between XNAT servers&#39;</span><span class="p">)</span>
     <span class="n">version_string</span> <span class="o">=</span> <span class="n">get_version_string</span><span class="p">()</span>
     <span class="n">friendly_version_string</span> <span class="o">=</span> <span class="n">version_string</span> <span class="k">if</span> <span class="n">version_string</span> <span class="k">else</span> <span class="s1">&#39;unknown&#39;</span>
+
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s1">&#39;version&#39;</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="n">friendly_version_string</span>
     <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--cache-dir&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
+                        <span class="p">)</span>
+
     <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
+
     <span class="c1"># Arguments common to all commands</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--dry_run&quot;</span><span class="p">,</span>
                         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
@@ -107,9 +114,6 @@
                         <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--project&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of project containing the data&quot;</span>
-                        <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--cache-dir&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
                         <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--skip-existing&quot;</span><span class="p">,</span>
                         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
@@ -171,21 +175,18 @@
                                          <span class="s2">&quot;destination server&quot;</span>
                                     <span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># Command class</span>
     <span class="n">command</span> <span class="o">=</span> <span class="n">find_command</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">command</span><span class="p">)</span>
+
+    <span class="c1"># Source server parameters object</span>
     <span class="n">src_rsync</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">rsync_src_user</span> <span class="k">if</span> <span class="s1">&#39;rsync_src_user&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
-    <span class="n">fix_scan_types</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fix_scan_types</span> <span class="k">if</span> <span class="s1">&#39;fix_scan_types&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
-    <span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
-    <span class="n">overwrite_existing</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">overwrite_existing</span> <span class="k">if</span> \
-        <span class="s1">&#39;overwrite_existing&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
-    <span class="n">ignore_datatype_errors</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">ignore_datatype_errors</span> <span class="k">if</span> \
-        <span class="s1">&#39;ignore_datatype_errors&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">False</span>
-    <span class="n">transfer_mode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">transfer_mode</span>
-    <span class="n">project_list</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> \
-                                              <span class="n">args</span><span class="o">.</span><span class="n">project</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="n">src_params</span> <span class="o">=</span> <span class="n">XnatServerParams</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">src_host</span><span class="p">,</span>
                                   <span class="n">user</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">src_user</span><span class="p">,</span>
                                   <span class="n">rsync_user</span><span class="o">=</span><span class="n">src_rsync</span><span class="p">,</span>
                                   <span class="n">insecure</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">insecure</span><span class="p">)</span>
+
+    <span class="c1"># Destination server parameters object</span>
     <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
         <span class="n">dst_host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_host</span> <span class="k">if</span> <span class="s1">&#39;dst_host&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">dst_user</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dst_user</span> <span class="k">if</span> <span class="s1">&#39;dst_user&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="kc">None</span>
@@ -197,18 +198,27 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dst_params</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1"># Project list</span>
+    <span class="n">project_list</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> \
+                                              <span class="n">args</span><span class="o">.</span><span class="n">project</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="c1"># Application settings</span>
     <span class="n">app_settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">(</span>
-        <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">fix_scan_types</span><span class="p">,</span>
-        <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">ignore_datatype_errors</span><span class="p">,</span>
+        <span class="n">fix_scan_types</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;fix_scan_types&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+        <span class="n">ignore_datatype_errors</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;ignore_datatype_errors&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
         <span class="n">dry_run</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
-        <span class="n">overwrite_existing</span><span class="o">=</span><span class="n">overwrite_existing</span><span class="p">,</span>
-        <span class="n">transfer_mode</span><span class="o">=</span><span class="n">transfer_mode</span><span class="p">,</span>
+        <span class="n">overwrite_existing</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;overwrite_existing&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+        <span class="n">transfer_mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">transfer_mode</span><span class="p">,</span>
         <span class="n">data_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
         <span class="n">skip_existing</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">skip_existing</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="p">,</span> <span class="n">project_list</span><span class="p">,</span> <span class="n">app_settings</span>
+
+
+<span class="k">def</span> <span class="nf">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span> <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">else</span> <span class="n">default</span>
 </pre></div>
 
             <div class="clearer"></div>
