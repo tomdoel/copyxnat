@@ -4,3 +4,4 @@ dist
 local_testing
 .idea
 __pycache__
+*.pyc
