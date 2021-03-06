@@ -104,7 +104,7 @@ def _parse_command_line(args):
         sub_parser = subparsers.choices[command_key]
 
         if command.USE_DST_SERVER:
-            sub_parser.add_argument("-d", "--dst-host",
+            sub_parser.add_argument("-d", "--dst-host", required=True,
                                     help="Host name of the destination XNAT "
                                          "server"
                                     )
