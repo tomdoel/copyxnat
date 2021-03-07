@@ -42,12 +42,7 @@ setup(
 
     keywords='medical imaging',
 
-    packages=find_packages(
-        exclude=[
-            'docs',
-            'tests',
-        ]
-    ),
+    packages=find_packages(include=['copyxnat', 'copyxnat.*']),
 
     install_requires=[
         'pyxnat>=1.4',
