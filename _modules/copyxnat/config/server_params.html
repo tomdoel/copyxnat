@@ -48,7 +48,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">pwd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rsync_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insecure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">authenticate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">host</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">and</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">host</span><span class="p">:</span>
             <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;https://&#39;</span> <span class="o">+</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
