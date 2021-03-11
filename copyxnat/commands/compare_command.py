@@ -4,6 +4,7 @@
 import os
 
 from copyxnat.xnat.commands import Command
+from copyxnat.xnat.xml_compare import xml_compare
 
 
 class CompareCommand(Command):
@@ -26,10 +27,24 @@ class CompareCommand(Command):
         self.inputs.reporter.output('Comparing {}'.format(scope))
 
     def _run(self, xnat_item, from_parent):
+        self._compare(src_item=xnat_item, dst_item=from_parent)
+        self._check_children_and_recurse(src_item=xnat_item,
+                                         dst_item=from_parent)
+
+    def _compare(self, src_item, dst_item):
+        if getattr(src_item, "get_xml_string", None) and getattr(
+                dst_item, "get_xml", None):
+            print('Comparing {} vs {}'.format(src_item.user_visible_info(),
+                                              dst_item.user_visible_info()))
+            src_xml = src_item.get_xml_string()
+            dst_xml = dst_item.get_xml_string()
+            xml_compare(src_string=src_xml, dst_string=dst_xml)
+
+    def _check_children_and_recurse(self, src_item, dst_item):
         src_children = {self._key(item): item for item in
-                        xnat_item.get_children(self.ignore_filter)}
+                        src_item.get_children(self.ignore_filter)}
         dst_children = {self._key(item): item for item in
-                        from_parent.get_children(self.ignore_filter)}
+                        dst_item.get_children(self.ignore_filter)}
 
         both = set(src_children.keys()).intersection(dst_children.keys())
         only_src = set(src_children.keys()).difference(dst_children.keys())

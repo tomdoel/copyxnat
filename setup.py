@@ -49,7 +49,9 @@ setup(
         'configparser>=5.0.1',
         'urllib3>=1.26.3',
         'pydicom>=2.1.2',
-        'appdirs>=1.4.4'
+        'appdirs>=1.4.4',
+        'lxml>=4.6.2',
+        'xmltodict>=0.12.0'
     ],
 
     entry_points={
