@@ -65,7 +65,6 @@ class XmlCleaner:
     def __init__(self, app_settings, reporter):
         self._app_settings = app_settings
         self._reporter = reporter
-        self.tag_values = {}
         self.id_maps = {}
 
     def make_project_names_unique(self, xml_root, disallowed_ids):
