@@ -4,7 +4,7 @@
 import os
 
 from copyxnat.xnat.commands import Command
-from copyxnat.xnat.xml_compare import xml_compare
+from copyxnat.xnat.xml_cleaner import XmlCleaner
 
 
 class CompareCommand(Command):
@@ -24,6 +24,8 @@ class CompareCommand(Command):
         label = self.inputs.dst_project
         self.initial_from_parent = inputs.dst_xnat.project(label)
         self.outputs = ''
+        self.xml_cleaner = XmlCleaner(app_settings=inputs.app_settings,
+                                      reporter=inputs.reporter)
         self.inputs.reporter.output('Comparing {}'.format(scope))
 
     def _run(self, xnat_item, from_parent):
@@ -38,7 +40,7 @@ class CompareCommand(Command):
                                               dst_item.user_visible_info()))
             src_xml = src_item.get_xml_string()
             dst_xml = dst_item.get_xml_string()
-            xml_compare(src_string=src_xml, dst_string=dst_xml)
+            self.xml_cleaner.xml_compare(src_string=src_xml, dst_string=dst_xml)
 
     def _check_children_and_recurse(self, src_item, dst_item):
         src_children = {self._key(item): item for item in
