@@ -634,11 +634,12 @@ class XnatServer(XnatBase):
         self._project_name_metadata = None
         self._archive_path = None
 
-        label = get_host(params.host)
+        host = get_host(params.host)
+        self.host = host
         self._projects = None
         super().__init__(parent_cache=base_cache,
                          interface=interface,
-                         label=label,
+                         label=host,
                          read_only=read_only,
                          app_settings=app_settings,
                          reporter=reporter,
