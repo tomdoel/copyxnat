@@ -227,8 +227,8 @@ class XmlCleaner:
                     dst_item=dst_item,
                     nesting=nesting+1)
             elif isinstance(src_value, list):
-                next_src = self.list_to_dict(src_value)
-                next_dst = self.list_to_dict(dst_value)
+                next_src = self._list_to_dict(src_value)
+                next_dst = self._list_to_dict(dst_value)
                 self._compare_dicts(
                     src=next_src,
                     dst=next_dst,
@@ -308,7 +308,7 @@ class XmlCleaner:
         return src_value == dst_value
 
     @staticmethod
-    def list_to_dict(list_to_convert):
+    def _list_to_dict(list_to_convert):
         dict_out = {}
         for item in list_to_convert:
             if isinstance(item, OrderedDict):
