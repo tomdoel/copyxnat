@@ -34,10 +34,12 @@ class XmlCleaner:
     }
 
     IDS_TO_MAP = {
-        XnatType.PROJECT,
-        XnatType.SUBJECT,
-        XnatType.EXPERIMENT,
-        XnatType.SCAN
+        XnatType.PROJECT: XnatType.PROJECT,
+        XnatType.SUBJECT: XnatType.SUBJECT,
+        XnatType.EXPERIMENT: XnatType.EXPERIMENT,
+        XnatType.ASSESSOR: XnatType.EXPERIMENT,
+        XnatType.RECONSTRUCTION: XnatType.RECONSTRUCTION,
+        XnatType.SCAN: XnatType.SCAN
     }
 
     ATTRS_TO_DELETE = {
@@ -150,7 +152,7 @@ class XmlCleaner:
 
         for tag, xnat_id_type in self.TAGS_TO_REMAP.items():
             for child in xml_root.findall(tag, XNAT_NS):
-                tag_remap_dict = self.id_maps[xnat_id_type]
+                tag_remap_dict = self._get_map_for_type(xnat_id_type)
                 src_value = child.text
                 if src_value not in tag_remap_dict:
                     raise ValueError('Tag {}: no new value for {} found'.format(
@@ -286,9 +288,9 @@ class XmlCleaner:
         if src_item and dst_item and xnat_type in self.IDS_TO_MAP:
             id_src = src_item.get_id()
             id_dst = dst_item.get_id()
-            id_map = self.id_maps.get(xnat_type, {})
+            id_map = self._get_map_for_type(xnat_type)
             id_map[id_src] = id_dst
-            self.id_maps[xnat_type] = id_map
+
     @staticmethod
     def _convert_key_ns(key):
         for _, ns in XNAT_NS.items():
@@ -297,3 +299,14 @@ class XmlCleaner:
             if old_ns in key:
                 key = key.replace(old_ns, new_ns, 1)
         return key
+
+    def _get_map_for_type(self, xnat_type):
+        # Find the correct dictionary
+        map_id = self.IDS_TO_MAP[xnat_type]
+
+        # Create empty dictionary if one does not exist
+        if map_id not in self.id_maps:
+            self.id_maps[map_id] = {}
+
+        # Return reference to dictionary
+        return self.id_maps[map_id]
