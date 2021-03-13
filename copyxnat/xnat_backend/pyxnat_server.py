@@ -208,7 +208,12 @@ class PyXnatResourceBase(PyXnatItem):
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         interface = self.fetch_interface()
         if not interface.exists():
-            interface.create()
+            interface.create(
+                params={'content':create_params["resource_content"],
+                        'format':create_params["resource_format"],
+                        'tags':create_params["resource_tags"],
+                        'event_reason': ''})
+
         if local_file:
             interface.put_zip(
                 zip_location=local_file,
@@ -233,6 +238,14 @@ class PyXnatResourceBase(PyXnatItem):
         """Return item's files as an array of PyXnatFile wrappers"""
         for file in self.fetch_interface().files():
             yield PyXnatFile(interface=file)
+
+    def resource_attributes(self):
+        """Get file from server and save to disk"""
+
+        attrs = self.fetch_interface().attributes()
+        return {'resource_content': attrs.get('content'),
+                'resource_format': attrs.get('format'),
+                'resource_tags': attrs.get('tags')}
 
 
 class PyXnatResource(PyXnatResourceBase):

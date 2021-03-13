@@ -331,7 +331,8 @@ class XnatFileContainerItem(XnatItem):
         else:
             local_file = None
 
-        self.create_on_server(create_params=None, local_file=local_file)
+        attributes = src_item.interface.resource_attributes()
+        self.create_on_server(create_params=attributes, local_file=local_file)
 
         if local_file:
             os.remove(local_file)
