@@ -185,9 +185,9 @@ class XmlCleaner:
             child.attrib['URI'] = new
 
     def xml_compare(self, src_string, dst_string):
-        src_d = xmltodict.parse(src_string)
-        dst_d = xmltodict.parse(dst_string)
         self._compare_dicts(src_d, dst_d)
+        src_d = xmltodict.parse(src_string, process_namespaces=True)
+        dst_d = xmltodict.parse(dst_string, process_namespaces=True)
 
     def _compare_dicts(self, src, dst):
         both = set(src.keys()).intersection(dst.keys())
