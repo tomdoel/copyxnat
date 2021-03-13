@@ -66,7 +66,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span> <span class="o">=</span> <span class="n">XmlCleaner</span><span class="p">(</span><span class="n">app_settings</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
                                       <span class="n">reporter</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;Comparing </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scope</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Comparing </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scope</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">from_parent</span><span class="p">):</span>
         <span class="c1"># Add the before and after IDs so they won&#39;t be included in differences</span>
@@ -105,12 +105,12 @@
             <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Missing from dst: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">src_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">+=</span> <span class="n">text</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">only_dst</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Missing from src: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">dst_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">+=</span> <span class="n">text</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">both</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Present in both: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">src_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
@@ -127,12 +127,15 @@
 
 <div class="viewcode-block" id="CompareCommand.print_results"><a class="viewcode-back" href="../../../copyxnat.commands.compare_command.html#copyxnat.commands.compare_command.CompareCommand.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Output results to user&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Differences between projects &quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Differences between project structure &quot;</span>
                                     <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39; - no differences found&#39;</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39; - project structure matches&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">+=</span> <span class="n">text</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span></div>
 </pre></div>
 
             <div class="clearer"></div>
