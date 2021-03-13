@@ -253,11 +253,58 @@ class XmlCleaner:
                                                                    dst_value)
                     print(text)
 
-    @staticmethod
-    def _compare_values(key, src_value, dst_value):
-        if key == '@xsi:schemaLocation':
-            return src_value.replace('web.xnat.local',
-                                     'web2.xnat.local') == dst_value
+    def _compare_values(self, key, src_value, dst_value, src_item, dst_item,
+                        nesting):
+
+        if key == '@ID':
+            # The ID in the root element maps to the XNAT level
+            if nesting <= 2:
+                xnat_id_type = src_item.xnat_type
+                if xnat_id_type in self.IDS_TO_MAP:
+                    tag_remap_dict = self._get_map_for_type(xnat_id_type)
+                    if src_value in tag_remap_dict:
+                        print("Changing {} {}->{}".format(key, src_value,
+                                                          dst_value))
+                        src_value = tag_remap_dict[src_value]
+            else:
+                # IDs in other elements could map to experiments, scans etc.
+                tag_remap_dict = self._get_map_for_type(XnatType.EXPERIMENT)
+                if src_value in tag_remap_dict:
+                    print("Changing {} {}->{}".format(key, src_value,
+                                                      dst_value))
+                    src_value = tag_remap_dict[src_value]
+
+        if key == '@project':
+            project_remap_dict = self._get_map_for_type(XnatType.PROJECT)
+            if src_value in project_remap_dict:
+                print("Changing {} {}->{}".format(key, src_value, dst_value))
+                src_value = project_remap_dict[src_value]
+
+        # if key == '@xsi:schemaLocation':
+        if key == '@http://www.w3.org/2001/XMLSchema-instance:schemaLocation':
+            src_host = src_item.get_server().host
+            dst_host = dst_item.get_server().host
+            src_value = src_value.replace(src_host, dst_host)
+            print("Changing {} {}->{}".format(key, src_host, dst_host))
+
+        key_converted = self._convert_key_ns(key)
+
+        if key_converted in self.TAGS_TO_REMAP:
+            map_id = self.TAGS_TO_REMAP[key_converted]
+            tag_remap_dict = self.id_maps[map_id]
+            if src_value in tag_remap_dict:
+                print("Changing {} {}->{}".format(key_converted, src_value,
+                                                  dst_value))
+                src_value = tag_remap_dict[src_value]
+
+        if key == '@URI':
+            src_path = src_item.project_server_path()
+            dst_path = dst_item.project_server_path()
+            src_value = src_value.replace(src_path, dst_path, 1)
+            print("Changing {}->{}".format(src_path, dst_path))
+
+        if src_value != dst_value:
+            print("Mismatch in {}: {}:{}".format(key, src_value, dst_value))
         return src_value == dst_value
 
     @staticmethod
@@ -293,9 +340,9 @@ class XmlCleaner:
 
     @staticmethod
     def _convert_key_ns(key):
-        for _, ns in XNAT_NS.items():
-            old_ns = "{}:".format(ns)
-            new_ns = "{{{}}}".format(ns)
+        for _, namespaces in XNAT_NS.items():
+            old_ns = "{}:".format(namespaces)
+            new_ns = "{{{}}}".format(namespaces)
             if old_ns in key:
                 key = key.replace(old_ns, new_ns, 1)
         return key
