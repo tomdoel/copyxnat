@@ -184,12 +184,13 @@ class XmlCleaner:
                                   '{}/'.format(dst_path), 1)
             child.attrib['URI'] = new
 
-    def xml_compare(self, src_string, dst_string):
-        self._compare_dicts(src_d, dst_d)
+    def xml_compare(self, src_string, dst_string, src_item, dst_item):
+        """Report comparison of XML strings"""
         src_d = xmltodict.parse(src_string, process_namespaces=True)
         dst_d = xmltodict.parse(dst_string, process_namespaces=True)
+        self._compare_dicts(src_d, dst_d, src_item, dst_item)
 
-    def _compare_dicts(self, src, dst):
+    def _compare_dicts(self, src, dst, src_item, dst_item, nesting=0):
         both = set(src.keys()).intersection(dst.keys())
         only_src = set(src.keys()).difference(dst.keys())
         only_dst = set(dst.keys()).difference(src.keys())
@@ -217,13 +218,29 @@ class XmlCleaner:
             dst_value = dst[key]
             if isinstance(src_value, dict):
                 # print('Comparing elements {}'.format(key))
-                self._compare_dicts(src_value, dst_value)
+                self._compare_dicts(
+                    src=src_value,
+                    dst=dst_value,
+                    src_item=src_item,
+                    dst_item=dst_item,
+                    nesting=nesting+1)
             elif isinstance(src_value, list):
                 next_src = self.list_to_dict(src_value)
                 next_dst = self.list_to_dict(dst_value)
-                self._compare_dicts(next_src, next_dst)
+                self._compare_dicts(
+                    src=next_src,
+                    dst=next_dst,
+                    src_item=src_item,
+                    dst_item=dst_item,
+                    nesting=nesting+1)
             else:
-                if self._compare_values(key, src_value, dst_value):
+                if self._compare_values(
+                        key=key,
+                        src_value=src_value,
+                        dst_value=dst_value,
+                        src_item=src_item,
+                        dst_item=dst_item,
+                        nesting=nesting):
                     text = ' - Attribute {} matches: {}:{}'.format(key,
                                                                    src_value,
                                                                    dst_value)
