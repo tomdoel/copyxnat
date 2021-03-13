@@ -272,3 +272,11 @@ class XmlCleaner:
             id_map = self.id_maps.get(xnat_type, {})
             id_map[id_src] = id_dst
             self.id_maps[xnat_type] = id_map
+    @staticmethod
+    def _convert_key_ns(key):
+        for _, ns in XNAT_NS.items():
+            old_ns = "{}:".format(ns)
+            new_ns = "{{{}}}".format(ns)
+            if old_ns in key:
+                key = key.replace(old_ns, new_ns, 1)
+        return key
