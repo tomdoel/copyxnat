@@ -29,9 +29,16 @@ class CompareCommand(Command):
         self.inputs.reporter.output('Comparing {}'.format(scope))
 
     def _run(self, xnat_item, from_parent):
-        self._compare(src_item=xnat_item, dst_item=from_parent)
+        # Add the before and after IDs so they won't be included in differences
+        self.xml_cleaner.add_tag_remaps(src_item=xnat_item,
+                                        dst_item=from_parent)
+
+        # Recurse to children before checking item itself, so that child ID
+        # remappings are added before the parent XML is processed
         self._check_children_and_recurse(src_item=xnat_item,
                                          dst_item=from_parent)
+
+        self._compare(src_item=xnat_item, dst_item=from_parent)
 
     def _compare(self, src_item, dst_item):
         if getattr(src_item, "get_xml_string", None) and getattr(
@@ -40,7 +47,9 @@ class CompareCommand(Command):
                                               dst_item.user_visible_info()))
             src_xml = src_item.get_xml_string()
             dst_xml = dst_item.get_xml_string()
-            self.xml_cleaner.xml_compare(src_string=src_xml, dst_string=dst_xml)
+            self.xml_cleaner.xml_compare(
+                src_string=src_xml, dst_string=dst_xml, src_item=src_item,
+                dst_item=dst_item)
 
     def _check_children_and_recurse(self, src_item, dst_item):
         src_children = {self._key(item): item for item in
