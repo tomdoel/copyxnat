@@ -248,7 +248,12 @@
 <div class="viewcode-block" id="PyXnatResourceBase.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_content&quot;</span><span class="p">],</span>
+                        <span class="s1">&#39;format&#39;</span><span class="p">:</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_format&quot;</span><span class="p">],</span>
+                        <span class="s1">&#39;tags&#39;</span><span class="p">:</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_tags&quot;</span><span class="p">],</span>
+                        <span class="s1">&#39;event_reason&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})</span>
+
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">put_zip</span><span class="p">(</span>
                 <span class="n">zip_location</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
@@ -272,7 +277,15 @@
 <div class="viewcode-block" id="PyXnatResourceBase.files"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.files">[docs]</a>    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return item&#39;s files as an array of PyXnatFile wrappers&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">files</span><span class="p">():</span>
-            <span class="k">yield</span> <span class="n">PyXnatFile</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">file</span><span class="p">)</span></div></div>
+            <span class="k">yield</span> <span class="n">PyXnatFile</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyXnatResourceBase.resource_attributes"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.resource_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">resource_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get file from server and save to disk&quot;&quot;&quot;</span>
+
+        <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">attributes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resource_content&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;resource_format&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;format&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;resource_tags&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tags&#39;</span><span class="p">)}</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatResource"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResource">[docs]</a><span class="k">class</span> <span class="nc">PyXnatResource</span><span class="p">(</span><span class="n">PyXnatResourceBase</span><span class="p">):</span>

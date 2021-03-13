@@ -371,7 +371,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">local_file</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_on_server</span><span class="p">(</span><span class="n">create_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">)</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">src_item</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">resource_attributes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_on_server</span><span class="p">(</span><span class="n">create_params</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span> <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span></div>
@@ -674,11 +675,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_archive_path</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">label</span> <span class="o">=</span> <span class="n">get_host</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">get_host</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projects</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
                          <span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
-                         <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                         <span class="n">label</span><span class="o">=</span><span class="n">host</span><span class="p">,</span>
                          <span class="n">read_only</span><span class="o">=</span><span class="n">read_only</span><span class="p">,</span>
                          <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                          <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">,</span>
