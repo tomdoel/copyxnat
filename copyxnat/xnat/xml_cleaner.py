@@ -203,23 +203,24 @@ class XmlCleaner:
                 item = 'Element'
             else:
                 item = 'Attribute'
-            text = ' - {} {} missing from dst: {}:{}'.format(item, key,
-                                                             src_value, '')
-            print(text)
+            text = ' - {} {} missing from dst: {}->{}'.format(item, key,
+                                                              src_value, '')
+            self._reporter.output(text)
+
         for key in only_dst:
             dst_value = dst[key]
             if isinstance(dst_value, dict):
                 item = 'Element'
             else:
                 item = 'Attribute'
-            text = ' - {} {} added to dst: {}:{}'.format(item, key, '',
-                                                         dst_value)
-            print(text)
+            text = ' - {} {} added to dst: {}->{}'.format(item, key, '',
+                                                          dst_value)
+            self._reporter.output(text)
+
         for key in both:
             src_value = src[key]
             dst_value = dst[key]
             if isinstance(src_value, dict):
-                # print('Comparing elements {}'.format(key))
                 self._compare_dicts(
                     src=src_value,
                     dst=dst_value,
@@ -243,15 +244,15 @@ class XmlCleaner:
                         src_item=src_item,
                         dst_item=dst_item,
                         nesting=nesting):
-                    text = ' - Attribute {} matches: {}:{}'.format(key,
-                                                                   src_value,
-                                                                   dst_value)
-                    # print(text)
+                    text = ' - Attribute {} matches: {}->{}'.format(key,
+                                                                    src_value,
+                                                                    dst_value)
+                    self._reporter.debug(text)
                 else:
-                    text = ' - Attribute {} differs: {}:{}'.format(key,
-                                                                   src_value,
-                                                                   dst_value)
-                    print(text)
+                    text = ' - Attribute {} differs: {}->{}'.format(key,
+                                                                    src_value,
+                                                                    dst_value)
+                    self._reporter.output(text)
 
     def _compare_values(self, key, src_value, dst_value, src_item, dst_item,
                         nesting):
@@ -263,29 +264,30 @@ class XmlCleaner:
                 if xnat_id_type in self.IDS_TO_MAP:
                     tag_remap_dict = self._get_map_for_type(xnat_id_type)
                     if src_value in tag_remap_dict:
-                        print("Changing {} {}->{}".format(key, src_value,
-                                                          dst_value))
+                        self._reporter.debug("Compare: remapping {} {}->{}".
+                                             format(key, src_value, dst_value))
                         src_value = tag_remap_dict[src_value]
             else:
                 # IDs in other elements could map to experiments, scans etc.
                 tag_remap_dict = self._get_map_for_type(XnatType.EXPERIMENT)
                 if src_value in tag_remap_dict:
-                    print("Changing {} {}->{}".format(key, src_value,
-                                                      dst_value))
+                    self._reporter.debug("Compare: remapping {} {}->{}".
+                                         format(key, src_value, dst_value))
                     src_value = tag_remap_dict[src_value]
 
         if key == '@project':
             project_remap_dict = self._get_map_for_type(XnatType.PROJECT)
             if src_value in project_remap_dict:
-                print("Changing {} {}->{}".format(key, src_value, dst_value))
+                self._reporter.debug("Compare: remapping {} {}->{}".
+                                     format(key, src_value, dst_value))
                 src_value = project_remap_dict[src_value]
 
-        # if key == '@xsi:schemaLocation':
         if key == '@http://www.w3.org/2001/XMLSchema-instance:schemaLocation':
             src_host = src_item.get_server().host
             dst_host = dst_item.get_server().host
             src_value = src_value.replace(src_host, dst_host)
-            print("Changing {} {}->{}".format(key, src_host, dst_host))
+            self._reporter.debug("Compare: remapping {} {}->{}".
+                                 format(key, src_value, dst_value))
 
         key_converted = self._convert_key_ns(key)
 
@@ -293,18 +295,18 @@ class XmlCleaner:
             map_id = self.TAGS_TO_REMAP[key_converted]
             tag_remap_dict = self.id_maps[map_id]
             if src_value in tag_remap_dict:
-                print("Changing {} {}->{}".format(key_converted, src_value,
-                                                  dst_value))
+                self._reporter.debug("Compare: remapping {} {}->{}".
+                                     format(key_converted, src_value,
+                                            dst_value))
                 src_value = tag_remap_dict[src_value]
 
         if key == '@URI':
             src_path = src_item.project_server_path()
             dst_path = dst_item.project_server_path()
             src_value = src_value.replace(src_path, dst_path, 1)
-            print("Changing {}->{}".format(src_path, dst_path))
+            self._reporter.debug("Compare: remapping {} {}->{}".
+                                 format(key, src_value, dst_value))
 
-        if src_value != dst_value:
-            print("Mismatch in {}: {}:{}".format(key, src_value, dst_value))
         return src_value == dst_value
 
     @staticmethod

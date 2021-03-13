@@ -26,7 +26,7 @@ class CompareCommand(Command):
         self.outputs = ''
         self.xml_cleaner = XmlCleaner(app_settings=inputs.app_settings,
                                       reporter=inputs.reporter)
-        self.inputs.reporter.output('Comparing {}'.format(scope))
+        self.inputs.reporter.debug('Comparing {}'.format(scope))
 
     def _run(self, xnat_item, from_parent):
         # Add the before and after IDs so they won't be included in differences
@@ -65,12 +65,12 @@ class CompareCommand(Command):
             text = ' - Missing from dst: {}'.format(
                 src_children[key].user_visible_info())
             self.outputs += text + os.linesep
-            self.inputs.reporter.output(text)
+            self._output(text)
         for key in only_dst:
             text = ' - Missing from src: {}'.format(
                 dst_children[key].user_visible_info())
             self.outputs += text + os.linesep
-            self.inputs.reporter.output(text)
+            self._output(text)
         for key in both:
             text = ' - Present in both: {}'.format(
                 src_children[key].user_visible_info())
@@ -87,9 +87,12 @@ class CompareCommand(Command):
 
     def print_results(self):
         """Output results to user"""
-        self.inputs.reporter.output("Differences between projects "
+        self.inputs.reporter.output("Differences between project structure "
                                     "{}:".format(self.scope))
         if self.outputs:
             self.inputs.reporter.output(str(self.outputs))
         else:
-            self.inputs.reporter.output(' - no differences found')
+            self.inputs.reporter.output(' - project structure matches')
+
+    def _output(self, text):
+        self.outputs += text + os.linesep
