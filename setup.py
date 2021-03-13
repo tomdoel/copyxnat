@@ -25,6 +25,7 @@ setup(
     url='https://github.com/tomdoel/copyxnat',
     author='Tom Doel',
     license='MIT License',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 3 - Alpha',
 
