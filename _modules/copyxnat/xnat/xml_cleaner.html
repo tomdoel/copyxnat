@@ -243,8 +243,9 @@
                 <span class="n">item</span> <span class="o">=</span> <span class="s1">&#39;Element&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">item</span> <span class="o">=</span> <span class="s1">&#39;Attribute&#39;</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> missing from dst: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
-                                                              <span class="n">src_value</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> missing from dst: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1"> (location: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">item</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">src_value</span><span class="p">,</span> <span class="s1">&#39;(not present)&#39;</span><span class="p">,</span>
+                <span class="n">src_item</span><span class="o">.</span><span class="n">full_name_label</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">only_dst</span><span class="p">:</span>
@@ -253,8 +254,9 @@
                 <span class="n">item</span> <span class="o">=</span> <span class="s1">&#39;Element&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">item</span> <span class="o">=</span> <span class="s1">&#39;Attribute&#39;</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> added to dst: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-                                                          <span class="n">dst_value</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> added to dst: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1"> (location: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">item</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s1">&#39;(not present)&#39;</span><span class="p">,</span> <span class="n">dst_value</span><span class="p">,</span>
+                <span class="n">dst_item</span><span class="o">.</span><span class="n">full_name_label</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">both</span><span class="p">:</span>
@@ -284,14 +286,14 @@
                         <span class="n">src_item</span><span class="o">=</span><span class="n">src_item</span><span class="p">,</span>
                         <span class="n">dst_item</span><span class="o">=</span><span class="n">dst_item</span><span class="p">,</span>
                         <span class="n">nesting</span><span class="o">=</span><span class="n">nesting</span><span class="p">):</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Attribute </span><span class="si">{}</span><span class="s1"> matches: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span>
-                                                                    <span class="n">src_value</span><span class="p">,</span>
-                                                                    <span class="n">dst_value</span><span class="p">)</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Attribute </span><span class="si">{}</span><span class="s1"> matches: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1"> (location: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span>\
+                        <span class="nb">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">src_value</span><span class="p">,</span> <span class="n">dst_value</span><span class="p">,</span>
+                               <span class="n">src_item</span><span class="o">.</span><span class="n">full_name_label</span><span class="p">())</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Attribute </span><span class="si">{}</span><span class="s1"> differs: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span>
-                                                                    <span class="n">src_value</span><span class="p">,</span>
-                                                                    <span class="n">dst_value</span><span class="p">)</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; - Attribute </span><span class="si">{}</span><span class="s1"> differs: </span><span class="si">{}</span><span class="s1">-&gt;</span><span class="si">{}</span><span class="s1"> (location: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span>\
+                        <span class="nb">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">src_value</span><span class="p">,</span> <span class="n">dst_value</span><span class="p">,</span>
+                               <span class="n">src_item</span><span class="o">.</span><span class="n">full_name_label</span><span class="p">())</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_compare_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">src_value</span><span class="p">,</span> <span class="n">dst_value</span><span class="p">,</span> <span class="n">src_item</span><span class="p">,</span> <span class="n">dst_item</span><span class="p">,</span>
@@ -440,7 +442,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
     </div>
   </body>
 </html>

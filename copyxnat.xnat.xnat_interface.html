@@ -84,6 +84,18 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for an item in the XNAT data hierarchy</p>
 <dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.full_label">
+<code class="sig-name descname"><span class="pre">full_label</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.full_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.full_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>The full data hierarchy and label of this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.full_name_label">
+<code class="sig-name descname"><span class="pre">full_name_label</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.full_name_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.full_name_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full data hierarchy of this item plus type</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="copyxnat.xnat.xnat_interface.XnatBase.get_children">
 <code class="sig-name descname"><span class="pre">get_children</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_filter</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.get_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.get_children" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return XNAT child objects of this XNAT object</p>
@@ -100,6 +112,12 @@
 <em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">metadata_missing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.metadata_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.metadata_missing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if this item or any parent requires metadata which could
 be found from the child Files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="copyxnat.xnat.xnat_interface.XnatBase.name_label">
+<code class="sig-name descname"><span class="pre">name_label</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat/xnat_interface.html#XnatBase.name_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat.xnat_interface.XnatBase.name_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name and type of this object formatted for display to user</p>
 </dd></dl>
 
 <dl class="py method">
@@ -924,7 +942,7 @@ be found from the child Files</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
     </div>
   </body>
 </html>
