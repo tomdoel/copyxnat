@@ -43,8 +43,6 @@ class CompareCommand(Command):
     def _compare(self, src_item, dst_item):
         if getattr(src_item, "get_xml_string", None) and getattr(
                 dst_item, "get_xml", None):
-            print('Comparing {} vs {}'.format(src_item.user_visible_info(),
-                                              dst_item.user_visible_info()))
             src_xml = src_item.get_xml_string()
             dst_xml = dst_item.get_xml_string()
             self.xml_cleaner.xml_compare(
@@ -63,17 +61,15 @@ class CompareCommand(Command):
 
         for key in only_src:
             text = ' - Missing from dst: {}'.format(
-                src_children[key].user_visible_info())
-            self.outputs += text + os.linesep
+                src_children[key].full_name_label())
             self._output(text)
         for key in only_dst:
             text = ' - Missing from src: {}'.format(
-                dst_children[key].user_visible_info())
-            self.outputs += text + os.linesep
+                dst_children[key].full_name_label())
             self._output(text)
         for key in both:
             text = ' - Present in both: {}'.format(
-                src_children[key].user_visible_info())
+                src_children[key].full_name_label())
             self.inputs.reporter.debug(text)
 
         for child_label in both:
@@ -87,7 +83,7 @@ class CompareCommand(Command):
 
     def print_results(self):
         """Output results to user"""
-        self.inputs.reporter.output("Differences between project structure "
+        self.inputs.reporter.output("Differences between project structure for "
                                     "{}:".format(self.scope))
         if self.outputs:
             self.inputs.reporter.output(str(self.outputs))
@@ -95,4 +91,4 @@ class CompareCommand(Command):
             self.inputs.reporter.output(' - project structure matches')
 
     def _output(self, text):
-        self.outputs += text + os.linesep
+        self.outputs = self.outputs + text + os.linesep

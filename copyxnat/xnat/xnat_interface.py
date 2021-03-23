@@ -55,10 +55,24 @@ class XnatBase(abc.ABC):
             for item_tag, item_label in parent.label_map.items():
                 self.label_map[item_tag] = item_label
 
+    def full_label(self):
+        """The full data hierarchy and label of this item"""
+        if self.parent:
+            return "{}/{}".format(self.parent.full_label(), self.label)
+        return self.label
+
+    def full_name_label(self):
+        """Full data hierarchy of this item plus type"""
+        return '({}) {}'.format(self.visible_name, self.full_label())
+
+    def name_label(self):
+        """Name and type of this object formatted for display to user"""
+        return '({}) {}'.format(self.visible_name, self.label)
+
     def user_visible_info(self):
         """String representation of this object that can be shown to user"""
         level = self.cache.cache_level
-        return '  '*level + '-({}) {}'.format(self.visible_name, self.label)
+        return '  '*level + '-' + self.name_label()
 
     def get_children(self, ignore_filter) -> list:
         """Return XNAT child objects of this XNAT object"""

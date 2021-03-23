@@ -203,8 +203,9 @@ class XmlCleaner:
                 item = 'Element'
             else:
                 item = 'Attribute'
-            text = ' - {} {} missing from dst: {}->{}'.format(item, key,
-                                                              src_value, '')
+            text = ' - {} {} missing from dst: {}->{} (location: {})'.format(
+                item, key, src_value, '(not present)',
+                src_item.full_name_label())
             self._reporter.output(text)
 
         for key in only_dst:
@@ -213,8 +214,9 @@ class XmlCleaner:
                 item = 'Element'
             else:
                 item = 'Attribute'
-            text = ' - {} {} added to dst: {}->{}'.format(item, key, '',
-                                                          dst_value)
+            text = ' - {} {} added to dst: {}->{} (location: {})'.format(
+                item, key, '(not present)', dst_value,
+                dst_item.full_name_label())
             self._reporter.output(text)
 
         for key in both:
@@ -244,14 +246,14 @@ class XmlCleaner:
                         src_item=src_item,
                         dst_item=dst_item,
                         nesting=nesting):
-                    text = ' - Attribute {} matches: {}->{}'.format(key,
-                                                                    src_value,
-                                                                    dst_value)
+                    text = ' - Attribute {} matches: {}->{} (location: {})'.\
+                        format(key, src_value, dst_value,
+                               src_item.full_name_label())
                     self._reporter.debug(text)
                 else:
-                    text = ' - Attribute {} differs: {}->{}'.format(key,
-                                                                    src_value,
-                                                                    dst_value)
+                    text = ' - Attribute {} differs: {}->{} (location: {})'.\
+                        format(key, src_value, dst_value,
+                               src_item.full_name_label())
                     self._reporter.output(text)
 
     def _compare_values(self, key, src_value, dst_value, src_item, dst_item,
