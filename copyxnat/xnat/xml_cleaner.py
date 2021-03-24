@@ -222,16 +222,17 @@ class XmlCleaner:
         for key in both:
             src_value = src[key]
             dst_value = dst[key]
-            if isinstance(src_value, dict):
+            if isinstance(src_value, dict) and isinstance(dst_value, dict):
                 self._compare_dicts(
                     src=src_value,
                     dst=dst_value,
                     src_item=src_item,
                     dst_item=dst_item,
                     nesting=nesting+1)
-            elif isinstance(src_value, list):
-                next_src = self._list_to_dict(src_value)
-                next_dst = self._list_to_dict(dst_value)
+            elif isinstance(src_value, (list, dict)) and \
+                    isinstance(dst_value, (list, dict)):
+                next_src = self._nest_dicts(src_value)
+                next_dst = self._nest_dicts(dst_value)
                 self._compare_dicts(
                     src=next_src,
                     dst=next_dst,
@@ -312,19 +313,35 @@ class XmlCleaner:
         return src_value == dst_value
 
     @staticmethod
+    def _nest_dicts(list_or_dict):
+        if isinstance(list_or_dict, dict):
+            return {XmlCleaner._choose_key(list_or_dict): list_or_dict}
+        if isinstance(list_or_dict, list):
+            return XmlCleaner._list_to_dict(list_or_dict)
+        raise RuntimeError
+
+    @staticmethod
     def _list_to_dict(list_to_convert):
         dict_out = {}
         for item in list_to_convert:
             if isinstance(item, OrderedDict):
-                if '@label' in item:
-                    dict_out[item['@label']] = item
-                elif '@ID' in item:
-                    dict_out[item['@ID']] = item
-                else:
-                    raise RuntimeError
+                key = XmlCleaner._choose_key(item)
+                dict_out[key] = item
             else:
-                raise RuntimeError
+                raise RuntimeError('Unable to compare the XML data because the'
+                                   'structure was unexpected.')
         return dict_out
+
+    @staticmethod
+    def _choose_key(item):
+        if '@label' in item:
+            return item['@label']
+        if '@ID' in item:
+            return item['@ID']
+        if '@name' in item:
+            return item['@name']
+        raise RuntimeError('Unable to compare the XML data because the'
+                           'dictionary did not contain a standard key.')
 
     def add_tag_remaps(self, src_item, dst_item):
         """
