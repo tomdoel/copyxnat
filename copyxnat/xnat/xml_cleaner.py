@@ -208,9 +208,9 @@ class XmlCleaner:
                     item = 'Element'
                 else:
                     item = 'Attribute'
-                text = ' - {} {} missing from dst: {}->{} (location: {})'.format(
-                    item, key, src_value, '(not present)',
-                    src_item.full_name_label())
+                text = ' - {} {} missing from dst: {}->{} (location: {})'.\
+                    format(item, key, src_value, '(not present)',
+                           src_item.full_name_label())
                 self._reporter.output(text)
 
         for key in only_dst:
@@ -263,17 +263,18 @@ class XmlCleaner:
                             src_item=src_item,
                             dst_item=dst_item,
                             nesting=nesting):
-                        text = ' - Attribute {} matches: {}->{} (location: {})'.\
-                            format(key, src_value, dst_value,
-                                   src_item.full_name_label())
+                        text = ' - Attribute {} matches: {}->{} (location: {}' \
+                               ')'.format(key, src_value, dst_value,
+                                          src_item.full_name_label())
                         self._reporter.debug(text)
                     else:
-                        text = ' - Attribute {} differs: {}->{} (location: {})'.\
-                            format(key, src_value, dst_value,
-                                   src_item.full_name_label())
+                        text = ' - Attribute {} differs: {}->{} (location: {}' \
+                               ')'.format(key, src_value, dst_value,
+                                          src_item.full_name_label())
                         self._reporter.output(text)
 
-    def _skip_compare(self, key):
+    @staticmethod
+    def _skip_compare(key):
         if key == '@http://www.w3.org/2001/XMLSchema-instance:schemaLocation':
             return True
         if key == '@URI':
