@@ -199,63 +199,88 @@ class XmlCleaner:
 
         for key in only_src:
             src_value = src[key]
-            if isinstance(src_value, dict):
-                item = 'Element'
+            if self._skip_compare(key=key):
+                self._reporter.debug(
+                    "Skipping comparison of {} {}->{}".format(
+                        key, src_value, '(not present)'))
             else:
-                item = 'Attribute'
-            text = ' - {} {} missing from dst: {}->{} (location: {})'.format(
-                item, key, src_value, '(not present)',
-                src_item.full_name_label())
-            self._reporter.output(text)
+                if isinstance(src_value, dict):
+                    item = 'Element'
+                else:
+                    item = 'Attribute'
+                text = ' - {} {} missing from dst: {}->{} (location: {})'.format(
+                    item, key, src_value, '(not present)',
+                    src_item.full_name_label())
+                self._reporter.output(text)
 
         for key in only_dst:
             dst_value = dst[key]
-            if isinstance(dst_value, dict):
-                item = 'Element'
+            if self._skip_compare(key=key):
+                self._reporter.debug(
+                    "Skipping comparison of {} {}->{}".format(
+                        key, '(not present)', dst_value))
             else:
-                item = 'Attribute'
-            text = ' - {} {} added to dst: {}->{} (location: {})'.format(
-                item, key, '(not present)', dst_value,
-                dst_item.full_name_label())
-            self._reporter.output(text)
+                if isinstance(dst_value, dict):
+                    item = 'Element'
+                else:
+                    item = 'Attribute'
+                text = ' - {} {} added to dst: {}->{} (location: {})'.format(
+                    item, key, '(not present)', dst_value,
+                    dst_item.full_name_label())
+                self._reporter.output(text)
 
         for key in both:
             src_value = src[key]
             dst_value = dst[key]
-            if isinstance(src_value, dict) and isinstance(dst_value, dict):
-                self._compare_dicts(
-                    src=src_value,
-                    dst=dst_value,
-                    src_item=src_item,
-                    dst_item=dst_item,
-                    nesting=nesting+1)
-            elif isinstance(src_value, (list, dict)) and \
-                    isinstance(dst_value, (list, dict)):
-                next_src = self._nest_dicts(src_value)
-                next_dst = self._nest_dicts(dst_value)
-                self._compare_dicts(
-                    src=next_src,
-                    dst=next_dst,
-                    src_item=src_item,
-                    dst_item=dst_item,
-                    nesting=nesting+1)
+
+            if self._skip_compare(key=key):
+                self._reporter.debug(
+                    "Skipping comparison of {} {}->{}".format(
+                        key, src_value, dst_value))
             else:
-                if self._compare_values(
-                        key=key,
-                        src_value=src_value,
-                        dst_value=dst_value,
+                if isinstance(src_value, dict) and isinstance(dst_value, dict):
+                    self._compare_dicts(
+                        src=src_value,
+                        dst=dst_value,
                         src_item=src_item,
                         dst_item=dst_item,
-                        nesting=nesting):
-                    text = ' - Attribute {} matches: {}->{} (location: {})'.\
-                        format(key, src_value, dst_value,
-                               src_item.full_name_label())
-                    self._reporter.debug(text)
+                        nesting=nesting+1)
+                elif isinstance(src_value, (list, dict)) and \
+                        isinstance(dst_value, (list, dict)):
+                    next_src = self._nest_dicts(src_value)
+                    next_dst = self._nest_dicts(dst_value)
+                    self._compare_dicts(
+                        src=next_src,
+                        dst=next_dst,
+                        src_item=src_item,
+                        dst_item=dst_item,
+                        nesting=nesting+1)
                 else:
-                    text = ' - Attribute {} differs: {}->{} (location: {})'.\
-                        format(key, src_value, dst_value,
-                               src_item.full_name_label())
-                    self._reporter.output(text)
+                    if self._compare_values(
+                            key=key,
+                            src_value=src_value,
+                            dst_value=dst_value,
+                            src_item=src_item,
+                            dst_item=dst_item,
+                            nesting=nesting):
+                        text = ' - Attribute {} matches: {}->{} (location: {})'.\
+                            format(key, src_value, dst_value,
+                                   src_item.full_name_label())
+                        self._reporter.debug(text)
+                    else:
+                        text = ' - Attribute {} differs: {}->{} (location: {})'.\
+                            format(key, src_value, dst_value,
+                                   src_item.full_name_label())
+                        self._reporter.output(text)
+
+    def _skip_compare(self, key):
+        if key == '@http://www.w3.org/2001/XMLSchema-instance:schemaLocation':
+            return True
+        if key == '@URI':
+            return True
+        if key.startswith('@xmlns'):
+            return True
+        return False
 
     def _compare_values(self, key, src_value, dst_value, src_item, dst_item,
                         nesting):
