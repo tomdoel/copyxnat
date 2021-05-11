@@ -98,6 +98,10 @@ def _parse_command_line(args):
                  " to have manually transferred the files over "
                  "first."
         )
+        sub_parser.add_argument(
+            "-l", "--limit-subjects", type=int, default=None,
+            help="Limit number of new subjects to transfer"
+        )
 
     for command in find_commands.commands():
         command_key = command.COMMAND_LINE
@@ -175,7 +179,8 @@ def _parse_command_line(args):
         transfer_mode=args.transfer_mode,
         data_dir=args.cache_dir,
         verbose=args.verbose,
-        skip_existing=args.skip_existing
+        skip_existing=_optional(args, 'skip_existing', None),
+        subject_limit=args.subject_limit
     )
 
     return command, src_params, dst_params, project_list, app_settings

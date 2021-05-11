@@ -26,7 +26,8 @@ class AppSettings:
                  transfer_mode=TransferMode.FILE,
                  data_dir=None,
                  verbose=False,
-                 skip_existing=False
+                 skip_existing=False,
+                 subject_limit=None
                  ):
         """
         Create global application settings
@@ -42,6 +43,7 @@ class AppSettings:
         overwritten
         @param transfer_mode: See TransferMode enum
         @param data_dir: Local directory for logs, downloads, cache files
+        @param subject_limit: Maximum number of new subjects to process
         @param verbose: True to show debugging output
         XNAT server
         """
@@ -53,3 +55,4 @@ class AppSettings:
         self.transfer_mode = TransferMode(transfer_mode)
         self.data_dir = data_dir or appdirs.user_data_dir('copyxnat')
         self.verbose = verbose
+        self.subject_limit = subject_limit
