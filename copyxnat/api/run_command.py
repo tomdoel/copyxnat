@@ -167,6 +167,13 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
 
             # Aggregate results across all projects
             global_results[project] = project_results
+            if project_command.limit_reached:
+                reporter.warning(
+                    'The maximum allowed number of subjects to process has '
+                    'been reached. There may be more projects and subjects '
+                    'left to process. To allow processing of more subjects, '
+                    'modify the --limit-subjects parameter.')
+                break
         except ProjectFailure as project_exception:
             reporter.warning('Failed to copy project {}. Error:{}'.format(
                 src_project, str(project_exception)))
