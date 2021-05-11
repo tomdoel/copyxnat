@@ -135,6 +135,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
         reporter=reporter) if dst_xnat_server else None
 
     global_results = {}
+    processed_counts = {}
 
     for project in projects_list:
         try:
@@ -143,6 +144,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                                    dst_project=dst_project,
                                    app_settings=app_settings,
                                    rsync=rsync,
+                                   processed_counts=processed_counts,
                                    reporter=reporter)
             project_command = command(inputs=inputs, scope=project)
 
@@ -161,6 +163,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
             # Output results for current project
             project_results = project_command.outputs
             project_command.print_results()
+            processed_counts = project_command.processed_counts
 
             # Aggregate results across all projects
             global_results[project] = project_results

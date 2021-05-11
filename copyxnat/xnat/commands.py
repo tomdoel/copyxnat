@@ -13,6 +13,7 @@ class Command:
         self.outputs = None
         self.ignore_filter = []
         self.initial_from_parent = None
+        self.processed_counts = inputs.processed_counts
 
     def run(self, xnat_item):
         """
@@ -63,10 +64,11 @@ class Command:
 
 class CommandInputs:
     """Wrap global input variables for a command"""
-    def __init__(self, dst_xnat, reporter, app_settings, rsync,
+    def __init__(self, dst_xnat, reporter, app_settings, rsync, processed_counts,
                  dst_project=None):
         self.dst_project = dst_project
         self.app_settings = app_settings
         self.reporter = reporter
         self.dst_xnat = dst_xnat
+        self.processed_counts = processed_counts
         self.rsync = rsync
