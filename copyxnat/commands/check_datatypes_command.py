@@ -95,6 +95,7 @@ class CheckDatatypesCommand(Command):
             self.outputs['ids_with_empty_datatypes'].add(item_id)
 
         self._recurse(xnat_item=xnat_item)
+        return True
 
     def print_results(self):
         self._print("Project {}:".format(self.scope))

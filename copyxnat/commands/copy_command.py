@@ -48,7 +48,7 @@ class CopyCommand(Command):
 
         # Check for missing session types and decide whether to continue
         if not self._check_session_types(xnat_item=xnat_item):
-            return
+            return False
 
         # Create the interface to the destination item. At this point the item
         # may already exist on the server but if not, it will not be created
@@ -59,9 +59,10 @@ class CopyCommand(Command):
             self.inputs.reporter.log(
                 'Skipping {} because no destination item was '
                 'created.'.format(xnat_item.full_name))
-            return
+            return False
 
         already_exists = dst_copy.exists_on_server()
+        processed = not already_exists
 
         # Create the item on the destination server
         should_create = self._should_create(
@@ -83,12 +84,16 @@ class CopyCommand(Command):
             already_exists=already_exists, xnat_item=xnat_item, label=label)
 
         if should_recurse:
-            self._recurse(xnat_item=xnat_item, to_children=dst_copy)
+            children_processed = self._recurse(xnat_item=xnat_item,
+                                             to_children=dst_copy)
+            processed = children_processed or processed
 
         # Tasks that are run after the item is created and after recursion to
         # child items
         if should_create:
             dst_copy.post_create()
+
+        return processed
 
     def _should_create(self, already_exists, xnat_item, label):
 

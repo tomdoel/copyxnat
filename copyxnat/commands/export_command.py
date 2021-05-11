@@ -20,3 +20,4 @@ class ExportCommand(Command):
     def _run(self, xnat_item, from_parent):
         xnat_item.export(self.inputs.app_settings)
         self._recurse(xnat_item=xnat_item)
+        return True

@@ -26,6 +26,7 @@ class ShowCommand(Command):
         self.outputs += xnat_item.user_visible_info() + os.linesep
         self.inputs.reporter.output(xnat_item.user_visible_info())
         self._recurse(xnat_item=xnat_item)
+        return True
 
     def print_results(self):
         """Output results to user"""

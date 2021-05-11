@@ -20,3 +20,4 @@ class OhifCommand(Command):
     def _run(self, xnat_item, from_parent):
         self._recurse(xnat_item=xnat_item)
         xnat_item.ohif_generate_session()
+        return True

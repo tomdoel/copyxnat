@@ -22,3 +22,4 @@ class RebuildCatalogCommand(Command):
     def _run(self, xnat_item, from_parent):
         xnat_item.rebuild_catalog()
         self._recurse(xnat_item=xnat_item)
+        return True

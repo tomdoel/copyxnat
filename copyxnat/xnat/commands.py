@@ -20,9 +20,12 @@ class Command:
         Run this command recursively on the xnat_item and its children
 
         :xnat_item: The source server XnatItem to process
+        :returns: True if the command was actually run on any item
         """
-        self._run(xnat_item=xnat_item, from_parent=self.initial_from_parent)
+        processed = self._run(xnat_item=xnat_item,
+                              from_parent=self.initial_from_parent)
         self._update_progress(xnat_item=xnat_item)
+        return processed
 
     def run_next(self, xnat_item, from_parent=None):
         """
@@ -32,13 +35,24 @@ class Command:
         :xnat_item: The source server XnatItem to process
         :from_parent: The value returned by this function when it was run on
         this xnat_item's parent
+        :returns: True if the command was actually run on any item
         """
-        self._run(xnat_item=xnat_item, from_parent=from_parent)
+        processed = self._run(xnat_item=xnat_item, from_parent=from_parent)
         self._update_progress(xnat_item=xnat_item)
+        return processed
 
     def _recurse(self, xnat_item, to_children=None):
+        any_processed = False
         for child in xnat_item.get_children(self.ignore_filter):
-            self.run_next(xnat_item=child, from_parent=to_children)
+
+            processed = self.run_next(xnat_item=child, from_parent=to_children)
+
+            if processed:
+                any_processed = True
+                self.processed_counts[child.xnat_type] = \
+                    self.processed_counts.get(child.xnat_type, 0) + 1
+
+        return any_processed
 
     def _update_progress(self, xnat_item):
         xnat_item.progress_update(reporter=self.inputs.reporter)
@@ -53,6 +67,8 @@ class Command:
         :xnat_item: The source server XnatItem to process
         :from_parent: The value returned by this function when it was run on
         this xnat_item's parent
+
+        :returns: True if the command was actually run on any item
         """
 
     def print_results(self):

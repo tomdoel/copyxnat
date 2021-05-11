@@ -39,6 +39,7 @@ class CompareCommand(Command):
                                          dst_item=from_parent)
 
         self._compare(src_item=xnat_item, dst_item=from_parent)
+        return True
 
     def _compare(self, src_item, dst_item):
         if getattr(src_item, "get_xml_string", None) and getattr(
