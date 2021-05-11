@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>copyxnat.commands.copy_command module &#8212; CopyXnat  documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -51,48 +51,48 @@
 <span id="copyxnat-commands-copy-command-module"></span><h1>copyxnat.commands.copy_command module<a class="headerlink" href="#module-copyxnat.commands.copy_command" title="Permalink to this headline">¶</a></h1>
 <p>Command which copies XNAT projects between servers</p>
 <dl class="py class">
-<dt id="copyxnat.commands.copy_command.CopyCommand">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.commands.copy_command.</span></code><code class="sig-name descname"><span class="pre">CopyCommand</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/copy_command.html#CopyCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.commands.copy_command.</span></span><span class="sig-name descname"><span class="pre">CopyCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/copy_command.html#CopyCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command" title="copyxnat.xnat.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.commands.Command</span></code></a></p>
 <p>Command which copies XNAT projects between servers</p>
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.CACHE_TYPE">
-<code class="sig-name descname"><span class="pre">CACHE_TYPE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'cache'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.CACHE_TYPE">
+<span class="sig-name descname"><span class="pre">CACHE_TYPE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'cache'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.COMMAND_LINE">
-<code class="sig-name descname"><span class="pre">COMMAND_LINE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'copy'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.COMMAND_LINE">
+<span class="sig-name descname"><span class="pre">COMMAND_LINE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'copy'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.HELP">
-<code class="sig-name descname"><span class="pre">HELP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Copy</span> <span class="pre">projects</span> <span class="pre">between</span> <span class="pre">server,</span> <span class="pre">or</span> <span class="pre">duplicate</span> <span class="pre">on</span> <span class="pre">same</span> <span class="pre">server'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.HELP" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.HELP">
+<span class="sig-name descname"><span class="pre">HELP</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Copy</span> <span class="pre">projects</span> <span class="pre">between</span> <span class="pre">server,</span> <span class="pre">or</span> <span class="pre">duplicate</span> <span class="pre">on</span> <span class="pre">same</span> <span class="pre">server'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.HELP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.MODIFY_DST_SERVER">
-<code class="sig-name descname"><span class="pre">MODIFY_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.MODIFY_DST_SERVER">
+<span class="sig-name descname"><span class="pre">MODIFY_DST_SERVER</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.MODIFY_SRC_SERVER">
-<code class="sig-name descname"><span class="pre">MODIFY_SRC_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.MODIFY_SRC_SERVER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.MODIFY_SRC_SERVER">
+<span class="sig-name descname"><span class="pre">MODIFY_SRC_SERVER</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.MODIFY_SRC_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.NAME">
-<code class="sig-name descname"><span class="pre">NAME</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Copy'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.NAME" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Copy'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.NAME" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.USE_DST_SERVER">
-<code class="sig-name descname"><span class="pre">USE_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.USE_DST_SERVER">
+<span class="sig-name descname"><span class="pre">USE_DST_SERVER</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.copy_command.CopyCommand.VERB">
-<code class="sig-name descname"><span class="pre">VERB</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'copy'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.VERB" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.copy_command.CopyCommand.VERB">
+<span class="sig-name descname"><span class="pre">VERB</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'copy'</span></em><a class="headerlink" href="#copyxnat.commands.copy_command.CopyCommand.VERB" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -160,7 +160,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>

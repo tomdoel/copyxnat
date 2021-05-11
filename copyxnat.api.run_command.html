@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>copyxnat.api.run_command module &#8212; CopyXnat  documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -51,14 +51,14 @@
 <span id="copyxnat-api-run-command-module"></span><h1>copyxnat.api.run_command module<a class="headerlink" href="#module-copyxnat.api.run_command" title="Permalink to this headline">¶</a></h1>
 <p>API for running the specified command on XNAT servers</p>
 <dl class="py function">
-<dt id="copyxnat.api.run_command.resolve_projects">
-<code class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></code><code class="sig-name descname"><span class="pre">resolve_projects</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_project_filter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#resolve_projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.resolve_projects" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.api.run_command.resolve_projects">
+<span class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></span><span class="sig-name descname"><span class="pre">resolve_projects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_project_filter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#resolve_projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.resolve_projects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return source and destination project names from a src:dst string</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="copyxnat.api.run_command.run_command">
-<code class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></code><code class="sig-name descname"><span class="pre">run_command</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pyxnat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#run_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.run_command" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.api.run_command.run_command">
+<span class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></span><span class="sig-name descname"><span class="pre">run_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pyxnat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#run_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.run_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the command on the specified XNAT servers</p>
 <p>&#64;param command: the command class to run
 &#64;param src_params: XnatServerParams for source server
@@ -74,8 +74,8 @@ servers. Defaults to <cite>pyxnat</cite>
 </dd></dl>
 
 <dl class="py function">
-<dt id="copyxnat.api.run_command.run_command_on_servers">
-<code class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></code><code class="sig-name descname"><span class="pre">run_command_on_servers</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_xnat_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_xnat_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#run_command_on_servers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.run_command_on_servers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.api.run_command.run_command_on_servers">
+<span class="sig-prename descclassname"><span class="pre">copyxnat.api.run_command.</span></span><span class="sig-name descname"><span class="pre">run_command_on_servers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_xnat_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_xnat_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/api/run_command.html#run_command_on_servers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.api.run_command.run_command_on_servers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the specified command on the specified XnatServer objects</p>
 <p>&#64;param command: command class
 &#64;param src_xnat_server: Source XnatServer
@@ -151,7 +151,7 @@ src_project_name:dst_project_name</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>

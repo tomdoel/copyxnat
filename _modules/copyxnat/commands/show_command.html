@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>copyxnat.commands.show_command &#8212; CopyXnat  documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -66,6 +66,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">+=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">()</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_recurse</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="ShowCommand.print_results"><a class="viewcode-back" href="../../../copyxnat.commands.show_command.html#copyxnat.commands.show_command.ShowCommand.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Output results to user&quot;&quot;&quot;</span>
@@ -112,7 +113,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>

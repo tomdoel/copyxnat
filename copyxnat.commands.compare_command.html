@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>copyxnat.commands.compare_command module &#8212; CopyXnat  documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -51,53 +51,53 @@
 <span id="copyxnat-commands-compare-command-module"></span><h1>copyxnat.commands.compare_command module<a class="headerlink" href="#module-copyxnat.commands.compare_command" title="Permalink to this headline">¶</a></h1>
 <p>Command which compares contents of XNAT projects</p>
 <dl class="py class">
-<dt id="copyxnat.commands.compare_command.CompareCommand">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">copyxnat.commands.compare_command.</span></code><code class="sig-name descname"><span class="pre">CompareCommand</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/compare_command.html#CompareCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.commands.compare_command.</span></span><span class="sig-name descname"><span class="pre">CompareCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/compare_command.html#CompareCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="copyxnat.xnat.commands.html#copyxnat.xnat.commands.Command" title="copyxnat.xnat.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat.commands.Command</span></code></a></p>
 <p>Command which displays contents of XNAT projects</p>
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.CACHE_TYPE">
-<code class="sig-name descname"><span class="pre">CACHE_TYPE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'cache'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.CACHE_TYPE">
+<span class="sig-name descname"><span class="pre">CACHE_TYPE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'cache'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.CACHE_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.COMMAND_LINE">
-<code class="sig-name descname"><span class="pre">COMMAND_LINE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.COMMAND_LINE">
+<span class="sig-name descname"><span class="pre">COMMAND_LINE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.COMMAND_LINE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.HELP">
-<code class="sig-name descname"><span class="pre">HELP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Compare</span> <span class="pre">XNAT</span> <span class="pre">projects'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.HELP" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.HELP">
+<span class="sig-name descname"><span class="pre">HELP</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Compare</span> <span class="pre">XNAT</span> <span class="pre">projects'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.HELP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.MODIFY_DST_SERVER">
-<code class="sig-name descname"><span class="pre">MODIFY_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.MODIFY_DST_SERVER">
+<span class="sig-name descname"><span class="pre">MODIFY_DST_SERVER</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.MODIFY_DST_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.MODIFY_SRC_SERVER">
-<code class="sig-name descname"><span class="pre">MODIFY_SRC_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.MODIFY_SRC_SERVER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.MODIFY_SRC_SERVER">
+<span class="sig-name descname"><span class="pre">MODIFY_SRC_SERVER</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.MODIFY_SRC_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.NAME">
-<code class="sig-name descname"><span class="pre">NAME</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.NAME" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.NAME" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.USE_DST_SERVER">
-<code class="sig-name descname"><span class="pre">USE_DST_SERVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.USE_DST_SERVER">
+<span class="sig-name descname"><span class="pre">USE_DST_SERVER</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.USE_DST_SERVER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="copyxnat.commands.compare_command.CompareCommand.VERB">
-<code class="sig-name descname"><span class="pre">VERB</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.VERB" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.VERB">
+<span class="sig-name descname"><span class="pre">VERB</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'compare'</span></em><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.VERB" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="copyxnat.commands.compare_command.CompareCommand.print_results">
-<code class="sig-name descname"><span class="pre">print_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/compare_command.html#CompareCommand.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.print_results" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.commands.compare_command.CompareCommand.print_results">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/commands/compare_command.html#CompareCommand.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.commands.compare_command.CompareCommand.print_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output results to user</p>
 </dd></dl>
 
@@ -166,7 +166,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
     </div>
   </body>
 </html>
