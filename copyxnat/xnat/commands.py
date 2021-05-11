@@ -3,6 +3,8 @@
 """Commands defining actions that can be performed with copyxnat"""
 from abc import abstractmethod
 
+from copyxnat.xnat.xnat_interface import XnatSubject
+
 
 class Command:
     """Wraps a command function and its input variables"""
@@ -50,10 +52,26 @@ class Command:
 
             if processed:
                 any_processed = True
+
+                # Update counts for number of items processed of each type
                 self.processed_counts[child.xnat_type] = \
                     self.processed_counts.get(child.xnat_type, 0) + 1
 
+                # If maximum processed items limit exceeded, exit early
+                if self._limit_exceeded(child):
+                    self.limit_reached = True
+                    self.inputs.reporter.log(
+                        'Skipping further subject processing as subject limit '
+                        'has been exceeded.')
+                    break
+
         return any_processed
+
+    def _limit_exceeded(self, child):
+        return self.inputs.app_settings.subject_limit is not None and \
+          isinstance(child, XnatSubject) and \
+          self.processed_counts.get(child.xnat_type, 0) >= \
+          self.inputs.app_settings.subject_limit
 
     def _update_progress(self, xnat_item):
         xnat_item.progress_update(reporter=self.inputs.reporter)
