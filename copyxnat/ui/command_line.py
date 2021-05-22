@@ -180,7 +180,7 @@ def _parse_command_line(args):
         data_dir=args.cache_dir,
         verbose=args.verbose,
         skip_existing=_optional(args, 'skip_existing', None),
-        subject_limit=args.subject_limit
+        subject_limit=args.limit_subjects
     )
 
     return command, src_params, dst_params, project_list, app_settings
