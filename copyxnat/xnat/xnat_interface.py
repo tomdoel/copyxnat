@@ -6,6 +6,7 @@
 import abc
 import os
 import re
+from datetime import time
 from enum import Enum
 
 import pydicom
@@ -546,6 +547,10 @@ class XnatScan(XnatParentItem):
             else:
                 self.reporter.warning('Setting Scan UID to {}'.format(uid))
                 self.interface.set_attribute('UID', uid)
+
+    def post_create(self):
+        # Give XNAT a little buffer time to process the scan
+        time.sleep(2)
 
 
 class XnatExperiment(XnatParentItem):
