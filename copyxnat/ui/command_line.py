@@ -41,7 +41,7 @@ def _parse_command_line(args):
         version=friendly_version_string
     )
 
-    if len(args) == 0:
+    if not args:
         parser.print_help()
         sys.exit(0)
 
