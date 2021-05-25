@@ -6,7 +6,7 @@
 import abc
 import os
 import re
-from datetime import time
+import time
 from enum import Enum
 
 import pydicom
