@@ -43,7 +43,6 @@
 <span class="sd">&quot;&quot;&quot;Command line processing&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">from</span> <span class="nn">copyxnat.commands.find_commands</span> <span class="kn">import</span> <span class="n">find_command</span>
 <span class="kn">from</span> <span class="nn">copyxnat.commands</span> <span class="kn">import</span> <span class="n">find_commands</span>
@@ -80,10 +79,6 @@
         <span class="n">action</span><span class="o">=</span><span class="s1">&#39;version&#39;</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="n">friendly_version_string</span>
     <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--cache-dir&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
