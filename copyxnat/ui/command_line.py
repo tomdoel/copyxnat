@@ -3,6 +3,7 @@
 """Command line processing"""
 
 import argparse
+import sys
 
 from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
@@ -27,6 +28,7 @@ def run_command_line(args=None):
 
 
 def _parse_command_line(args):
+
     parser = argparse.ArgumentParser(
         description='CopyXnat: Utility for downloading or copying projects '
                     'between XNAT servers')
@@ -38,6 +40,10 @@ def _parse_command_line(args):
         action='version',
         version=friendly_version_string
     )
+
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(0)
 
     parser.add_argument("-c", "--cache-dir",
                         help="File path here local cache files are to be stored"
