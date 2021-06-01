@@ -57,7 +57,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'copyxnat=copyxnat.ui.command_line:run_command_line',
+            'copyxnat=copyxnat.ui.command_line:run_entry_point',
         ],
     },
 )

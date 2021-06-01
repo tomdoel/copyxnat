@@ -16,6 +16,6 @@ if __name__ == "__main__":
         sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
         sys.path.append(path.dirname(path.dirname(__file__)))
 
-    from copyxnat.ui.command_line import run_command_line
+    from copyxnat.ui.command_line import run_entry_point
 
-    sys.exit(run_command_line(sys.argv[1:]))
+    sys.exit(run_entry_point())

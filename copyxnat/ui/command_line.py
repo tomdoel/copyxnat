@@ -3,6 +3,8 @@
 """Command line processing"""
 
 import argparse
+import sys
+import traceback
 
 from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
@@ -12,18 +14,38 @@ from copyxnat.config.server_params import XnatServerParams
 from copyxnat.config.app_settings import AppSettings
 
 
-def run_command_line(args=None):
-    """Entry point for copyxnat application"""
+def run_command_line(args):
+    """Run the copyxnat with the specified command-line arguments"""
 
     command, src_params, dst_params, project_list, app_settings = \
         _parse_command_line(args)
 
-    run_command(command=command,
-                src_params=src_params,
-                dst_params=dst_params,
-                project_filter=project_list,
-                app_settings=app_settings
-                )
+    return run_command(command=command,
+                       src_params=src_params,
+                       dst_params=dst_params,
+                       project_filter=project_list,
+                       app_settings=app_settings
+                       )
+
+
+def run_entry_point():
+    """Entry point for copyxnat application where parameters are parsed from
+    the command-line
+
+    :returns: status code 0=success, 1=failure
+    """
+
+    try:
+        run_command_line(sys.argv[1:])
+        return 0
+
+    except Exception as exc:  # pylint: disable=broad-except
+        print("CopyXnat failed with error {}".format(str(exc)), file=sys.stderr)
+        print("If you think this may be a bug, please create an issue at "
+              "https://github.com/tomdoel/copyxnat/issues and include "
+              "the following error details:", file=sys.stderr)
+        traceback.print_exc()
+        return 1
 
 
 def _parse_command_line(args):
