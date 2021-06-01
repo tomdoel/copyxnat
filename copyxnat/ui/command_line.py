@@ -66,7 +66,7 @@ def _parse_command_line(args):
                         help="File path here local cache files are to be stored"
                         )
 
-    subparsers = parser.add_subparsers(dest='command')
+    subparsers = parser.add_subparsers(dest='command', required=True)
     for command in find_commands.commands():
         sub_parser = subparsers.add_parser(command.COMMAND_LINE,
                                            help=command.HELP)
