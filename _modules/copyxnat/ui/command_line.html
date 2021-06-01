@@ -43,6 +43,8 @@
 <span class="sd">&quot;&quot;&quot;Command line processing&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
 
 <span class="kn">from</span> <span class="nn">copyxnat.commands.find_commands</span> <span class="kn">import</span> <span class="n">find_command</span>
 <span class="kn">from</span> <span class="nn">copyxnat.commands</span> <span class="kn">import</span> <span class="n">find_commands</span>
@@ -52,18 +54,38 @@
 <span class="kn">from</span> <span class="nn">copyxnat.config.app_settings</span> <span class="kn">import</span> <span class="n">AppSettings</span>
 
 
-<div class="viewcode-block" id="run_command_line"><a class="viewcode-back" href="../../../copyxnat.ui.command_line.html#copyxnat.ui.command_line.run_command_line">[docs]</a><span class="k">def</span> <span class="nf">run_command_line</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Entry point for copyxnat application&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="run_command_line"><a class="viewcode-back" href="../../../copyxnat.ui.command_line.html#copyxnat.ui.command_line.run_command_line">[docs]</a><span class="k">def</span> <span class="nf">run_command_line</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the copyxnat with the specified command-line arguments&quot;&quot;&quot;</span>
 
     <span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="p">,</span> <span class="n">project_list</span><span class="p">,</span> <span class="n">app_settings</span> <span class="o">=</span> \
         <span class="n">_parse_command_line</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
-                <span class="n">src_params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
-                <span class="n">dst_params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
-                <span class="n">project_filter</span><span class="o">=</span><span class="n">project_list</span><span class="p">,</span>
-                <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span>
-                <span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
+                       <span class="n">src_params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>
+                       <span class="n">dst_params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
+                       <span class="n">project_filter</span><span class="o">=</span><span class="n">project_list</span><span class="p">,</span>
+                       <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span>
+                       <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run_entry_point"><a class="viewcode-back" href="../../../copyxnat.ui.command_line.html#copyxnat.ui.command_line.run_entry_point">[docs]</a><span class="k">def</span> <span class="nf">run_entry_point</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Entry point for copyxnat application where parameters are parsed from</span>
+<span class="sd">    the command-line</span>
+
+<span class="sd">    :returns: status code 0=success, 1=failure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">run_command_line</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CopyXnat failed with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If you think this may be a bug, please create an issue at &quot;</span>
+              <span class="s2">&quot;https://github.com/tomdoel/copyxnat/issues and include &quot;</span>
+              <span class="s2">&quot;the following error details:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
 
 
 <span class="k">def</span> <span class="nf">_parse_command_line</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
@@ -84,7 +106,7 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
                         <span class="p">)</span>
 
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span><span class="p">,</span>
                                            <span class="n">help</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
