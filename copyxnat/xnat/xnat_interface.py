@@ -548,10 +548,6 @@ class XnatScan(XnatParentItem):
                 self.reporter.warning('Setting Scan UID to {}'.format(uid))
                 self.interface.set_attribute('UID', uid)
 
-    def post_create(self):
-        # Give XNAT a little buffer time to process the scan
-        time.sleep(2)
-
 
 class XnatExperiment(XnatParentItem):
     """Wrapper for access to an XNAT experiment"""
@@ -565,6 +561,10 @@ class XnatExperiment(XnatParentItem):
 
     def post_create(self):
         self.ohif_generate_session()
+
+        # Give XNAT a little buffer time to process the session
+        time.sleep(30)
+
 
     def ohif_generate_session(self):
         if self.get_server().ohif_present():
