@@ -565,7 +565,6 @@ class XnatExperiment(XnatParentItem):
         # Give XNAT a little buffer time to process the session
         time.sleep(30)
 
-
     def ohif_generate_session(self):
         if self.get_server().ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(

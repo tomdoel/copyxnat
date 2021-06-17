@@ -209,9 +209,9 @@ class PyXnatResourceBase(PyXnatItem):
         interface = self.fetch_interface()
         if not interface.exists():
             interface.create(
-                params={'content':create_params["resource_content"],
-                        'format':create_params["resource_format"],
-                        'tags':create_params["resource_tags"],
+                params={'content': create_params["resource_content"],
+                        'format': create_params["resource_format"],
+                        'tags': create_params["resource_tags"],
                         'event_reason': ''})
 
         if local_file:
