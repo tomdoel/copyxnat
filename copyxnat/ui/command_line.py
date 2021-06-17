@@ -73,7 +73,7 @@ def _parse_command_line(args):
 
         # Arguments common to all commands
         sub_parser.add_argument(
-            "-y", "--dry_run", action="store_true",
+            "-y", "--dry-run", action="store_true",
             help="Do not modify the destination"
         )
         sub_parser.add_argument(
