@@ -151,11 +151,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interface</span></div>
 
 <div class="viewcode-block" id="PyXnatItem.create"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_pyxnatitem</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new child item of this class type from given parent&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">interface</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">create_interface</span><span class="p">(</span>
-                <span class="n">parent</span><span class="o">=</span><span class="n">parent_pyxnatitem</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">(),</span>
+                <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">(),</span>
                 <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">),</span>
             <span class="n">label</span><span class="o">=</span><span class="n">label</span>
         <span class="p">)</span></div>
@@ -249,9 +249,9 @@
         <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">interface</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_content&quot;</span><span class="p">],</span>
-                        <span class="s1">&#39;format&#39;</span><span class="p">:</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_format&quot;</span><span class="p">],</span>
-                        <span class="s1">&#39;tags&#39;</span><span class="p">:</span><span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_tags&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_content&quot;</span><span class="p">],</span>
+                        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_format&quot;</span><span class="p">],</span>
+                        <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_tags&quot;</span><span class="p">],</span>
                         <span class="s1">&#39;event_reason&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})</span>
 
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
@@ -280,7 +280,7 @@
             <span class="k">yield</span> <span class="n">PyXnatFile</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">file</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyXnatResourceBase.resource_attributes"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResourceBase.resource_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">resource_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get file from server and save to disk&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return dict of resource attributes&quot;&quot;&quot;</span>
 
         <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">attributes</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resource_content&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">),</span>
@@ -346,12 +346,13 @@
         <span class="k">return</span> <span class="n">file_path</span></div>
 
 <div class="viewcode-block" id="PyXnatFile.file_attributes"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.file_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">file_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get file from server and save to disk&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return dict of file attributes&quot;&quot;&quot;</span>
 
         <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">attributes</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;file_content&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_content&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;file_format&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_format&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;file_tags&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">)}</span></div></div>
+                <span class="s1">&#39;file_tags&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;file_size&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Size&#39;</span><span class="p">)}</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatProject"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject">[docs]</a><span class="k">class</span> <span class="nc">PyXnatProject</span><span class="p">(</span><span class="n">PyXnatItemWithResources</span><span class="p">):</span>

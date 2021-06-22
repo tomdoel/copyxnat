@@ -200,7 +200,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return XnatItem for the provided interface which must represent an</span>
 <span class="sd">        item that already exists on the server. Error if it does not exist.</span>
-<span class="sd">        :return: a new XnatItem corresponding to the inteerface</span>
+<span class="sd">        :return: a new XnatItem corresponding to the interface</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
@@ -235,7 +235,7 @@
         <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">valid_label</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid XNAT label. Substituting &#39;</span>
                                   <span class="s1">&#39;with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">valid_label</span><span class="p">))</span>
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">parent_pyxnatitem</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span>
+        <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span>
                                           <span class="n">label</span><span class="o">=</span><span class="n">valid_label</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
@@ -398,7 +398,22 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">transfer_mode</span> <span class="o">==</span> <span class="n">TransferMode</span><span class="o">.</span><span class="n">ZIP</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">folder_path</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_zip_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">download_zip_file</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XnatFileContainerItem.user_visible_info"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFileContainerItem.user_visible_info">[docs]</a>    <span class="k">def</span> <span class="nf">user_visible_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">base_string</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">()</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">resource_attributes</span><span class="p">()</span>
+        <span class="n">attr_string</span> <span class="o">=</span> <span class="s1">&#39; (content:</span><span class="si">{}</span><span class="s1">, format:</span><span class="si">{}</span><span class="s1">, tags:</span><span class="si">{}</span><span class="s1">, category: </span><span class="si">{}</span><span class="s1">, &#39;</span> \
+                      <span class="s1">&#39;file count:</span><span class="si">{}</span><span class="s1"> size:</span><span class="si">{}</span><span class="s1"> bytes)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                        <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource_content&#39;</span><span class="p">),</span>
+                                        <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource_format&#39;</span><span class="p">),</span>
+                                        <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource_tags&#39;</span><span class="p">),</span>
+                                        <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource_category&#39;</span><span class="p">),</span>
+                                        <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource_file_count&#39;</span><span class="p">),</span>
+                                        <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource_size&#39;</span><span class="p">)</span>
+                                    <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">base_string</span> <span class="o">+</span> <span class="n">attr_string</span></div></div>
 
 
 <div class="viewcode-block" id="XnatFile"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile">[docs]</a><span class="k">class</span> <span class="nc">XnatFile</span><span class="p">(</span><span class="n">XnatItem</span><span class="p">):</span>
@@ -430,10 +445,13 @@
 <div class="viewcode-block" id="XnatFile.user_visible_info"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.user_visible_info">[docs]</a>    <span class="k">def</span> <span class="nf">user_visible_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">base_string</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">()</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">file_attributes</span><span class="p">()</span>
-        <span class="n">attr_string</span> <span class="o">=</span> <span class="s1">&#39; (content:</span><span class="si">{}</span><span class="s1">, format:</span><span class="si">{}</span><span class="s1">, tags:</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">attr_string</span> <span class="o">=</span> <span class="s1">&#39; (content:</span><span class="si">{}</span><span class="s1">, format:</span><span class="si">{}</span><span class="s1">, collection:</span><span class="si">{}</span><span class="s1">, tags:</span><span class="si">{}</span><span class="s1">, size:</span><span class="si">{}</span><span class="s1"> bytes)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_content&#39;</span><span class="p">),</span>
             <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_format&#39;</span><span class="p">),</span>
-            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">))</span>
+            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_collection&#39;</span><span class="p">),</span>
+            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">),</span>
+            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_size&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">base_string</span> <span class="o">+</span> <span class="n">attr_string</span></div>
 
@@ -604,7 +622,6 @@
 
         <span class="c1"># Give XNAT a little buffer time to process the session</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="XnatExperiment.ohif_generate_session"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.ohif_generate_session">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_generate_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">ohif_present</span><span class="p">():</span>
