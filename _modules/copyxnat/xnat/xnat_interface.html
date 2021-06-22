@@ -445,12 +445,13 @@
 <div class="viewcode-block" id="XnatFile.user_visible_info"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatFile.user_visible_info">[docs]</a>    <span class="k">def</span> <span class="nf">user_visible_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">base_string</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">user_visible_info</span><span class="p">()</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">file_attributes</span><span class="p">()</span>
-        <span class="n">attr_string</span> <span class="o">=</span> <span class="s1">&#39; (content:</span><span class="si">{}</span><span class="s1">, format:</span><span class="si">{}</span><span class="s1">, collection:</span><span class="si">{}</span><span class="s1">, tags:</span><span class="si">{}</span><span class="s1">, size:</span><span class="si">{}</span><span class="s1"> bytes)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_content&#39;</span><span class="p">),</span>
-            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_format&#39;</span><span class="p">),</span>
-            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_collection&#39;</span><span class="p">),</span>
-            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">),</span>
-            <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_size&#39;</span><span class="p">),</span>
+        <span class="n">attr_string</span> <span class="o">=</span> <span class="s1">&#39; (content:</span><span class="si">{}</span><span class="s1">, format:</span><span class="si">{}</span><span class="s1">, collection:</span><span class="si">{}</span><span class="s1">, &#39;</span> \
+                      <span class="s1">&#39;tags:</span><span class="si">{}</span><span class="s1">, size:</span><span class="si">{}</span><span class="s1"> bytes)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                      <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_content&#39;</span><span class="p">),</span>
+                      <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_format&#39;</span><span class="p">),</span>
+                      <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_collection&#39;</span><span class="p">),</span>
+                      <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">),</span>
+                      <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_size&#39;</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">base_string</span> <span class="o">+</span> <span class="n">attr_string</span></div>
