@@ -63,6 +63,12 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
         <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dst_project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_from_parent</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">dst_xnat</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_from_parent</span><span class="o">.</span><span class="n">exists_on_server</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1"> does not exist on destination server&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ProjectFailure</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span> <span class="o">=</span> <span class="n">XmlCleaner</span><span class="p">(</span><span class="n">app_settings</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="p">,</span>
                                       <span class="n">reporter</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="p">)</span>
