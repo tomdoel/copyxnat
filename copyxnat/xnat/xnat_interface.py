@@ -160,7 +160,7 @@ class XnatItem(XnatBase):
         """
         Return XnatItem for the provided interface which must represent an
         item that already exists on the server. Error if it does not exist.
-        :return: a new XnatItem corresponding to the inteerface
+        :return: a new XnatItem corresponding to the interface
         """
         label = interface.get_label()
         return cls(interface=interface, label=label, parent=parent, exists=True)

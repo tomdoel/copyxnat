@@ -240,7 +240,7 @@ class PyXnatResourceBase(PyXnatItem):
             yield PyXnatFile(interface=file)
 
     def resource_attributes(self):
-        """Get file from server and save to disk"""
+        """Return dict of resource attributes"""
 
         attrs = self.fetch_interface().attributes()
         return {'resource_content': attrs.get('content'),
@@ -306,7 +306,7 @@ class PyXnatFile(PyXnatItem):
         return file_path
 
     def file_attributes(self):
-        """Get file from server and save to disk"""
+        """Return dict of file attributes"""
 
         attrs = self.fetch_interface().attributes()
         return {'file_content': attrs.get('file_content'),

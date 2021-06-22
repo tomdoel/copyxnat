@@ -85,7 +85,7 @@ class CopyCommand(Command):
 
         if should_recurse:
             children_processed = self._recurse(xnat_item=xnat_item,
-                                             to_children=dst_copy)
+                                               to_children=dst_copy)
             processed = children_processed or processed
 
         # Tasks that are run after the item is created and after recursion to
