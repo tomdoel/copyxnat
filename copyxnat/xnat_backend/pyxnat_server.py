@@ -111,11 +111,11 @@ class PyXnatItem(abc.ABC):
         return self._interface
 
     @classmethod
-    def create(cls, parent_pyxnatitem, label):
+    def create(cls, parent, label):
         """Create a new child item of this class type from given parent"""
         return cls(
             interface=cls.create_interface(
-                parent=parent_pyxnatitem.fetch_interface(),
+                parent=parent.fetch_interface(),
                 label=label),
             label=label
         )

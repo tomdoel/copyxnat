@@ -195,7 +195,7 @@ class XnatItem(XnatBase):
         if label != valid_label:
             self.reporter.warning('{} is not a valid XNAT label. Substituting '
                                   'with {}'.format(label, valid_label))
-        interface = self.interface.create(parent_pyxnatitem=parent.interface,
+        interface = self.interface.create(parent=parent.interface,
                                           label=valid_label)
 
         return cls(interface=interface,
