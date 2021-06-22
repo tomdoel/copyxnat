@@ -3,6 +3,7 @@
 """Command which compares contents of XNAT projects"""
 import os
 
+from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.xnat.commands import Command
 from copyxnat.xnat.xml_cleaner import XmlCleaner
 
