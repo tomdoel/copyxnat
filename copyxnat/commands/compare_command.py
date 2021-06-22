@@ -23,6 +23,12 @@ class CompareCommand(Command):
         super().__init__(inputs, scope)
         label = self.inputs.dst_project
         self.initial_from_parent = inputs.dst_xnat.project(label)
+        if not self.initial_from_parent.exists_on_server():
+            message = 'Project {} does not exist on destination server'.format(
+                label)
+            self.inputs.reporter.error(message)
+            raise ProjectFailure(message)
+
         self.outputs = ''
         self.xml_cleaner = XmlCleaner(app_settings=inputs.app_settings,
                                       reporter=inputs.reporter)
