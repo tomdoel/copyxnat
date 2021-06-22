@@ -311,7 +311,8 @@ class PyXnatFile(PyXnatItem):
         attrs = self.fetch_interface().attributes()
         return {'file_content': attrs.get('file_content'),
                 'file_format': attrs.get('file_format'),
-                'file_tags': attrs.get('file_tags')}
+                'file_tags': attrs.get('file_tags'),
+                'file_size': attrs.get('Size')}
 
 
 class PyXnatProject(PyXnatItemWithResources):
