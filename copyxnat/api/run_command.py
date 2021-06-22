@@ -175,7 +175,7 @@ def run_command_on_servers(command, src_xnat_server, dst_xnat_server,
                     'modify the --limit-subjects parameter.')
                 break
         except ProjectFailure as project_exception:
-            reporter.warning('Failed to copy project {}. Error:{}'.format(
+            reporter.warning('Failed to process project {}. Error:{}'.format(
                 src_project, str(project_exception)))
 
     return global_results
