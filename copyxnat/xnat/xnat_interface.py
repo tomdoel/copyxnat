@@ -694,9 +694,8 @@ class XnatServer(XnatBase):
 
     def project(self, label):
         """Return XnatProject for this project id"""
-        return XnatProject.get_existing(
-            interface=self.interface.project(label),
-            parent=self)
+        interface = self.interface.project(label)
+        return XnatProject(interface=interface, label=label, parent=self)
 
     def logout(self):
         """Disconnect from this server"""
