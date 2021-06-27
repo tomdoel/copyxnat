@@ -46,6 +46,7 @@
 <span class="kn">from</span> <span class="nn">copyxnat.pyreporter.pyreporter</span> <span class="kn">import</span> <span class="n">ProjectFailure</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.commands</span> <span class="kn">import</span> <span class="n">Command</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xml_cleaner</span> <span class="kn">import</span> <span class="n">XmlCleaner</span>
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 
 
 <div class="viewcode-block" id="CompareCommand"><a class="viewcode-back" href="../../../copyxnat.commands.compare_command.html#copyxnat.commands.compare_command.CompareCommand">[docs]</a><span class="k">class</span> <span class="nc">CompareCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
@@ -88,11 +89,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_compare</span><span class="p">(</span><span class="n">src_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">dst_item</span><span class="o">=</span><span class="n">from_parent</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 
+<div class="viewcode-block" id="CompareCommand.get_xml"><a class="viewcode-back" href="../../../copyxnat.commands.compare_command.html#copyxnat.commands.compare_command.CompareCommand.get_xml">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_xml</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">get_xml_string</span><span class="p">()</span></div>
+
     <span class="k">def</span> <span class="nf">_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_item</span><span class="p">,</span> <span class="n">dst_item</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">src_item</span><span class="p">,</span> <span class="s2">&quot;get_xml_string&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span>
                 <span class="n">dst_item</span><span class="p">,</span> <span class="s2">&quot;get_xml&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="n">src_xml</span> <span class="o">=</span> <span class="n">src_item</span><span class="o">.</span><span class="n">get_xml_string</span><span class="p">()</span>
-            <span class="n">dst_xml</span> <span class="o">=</span> <span class="n">dst_item</span><span class="o">.</span><span class="n">get_xml_string</span><span class="p">()</span>
+
+            <span class="n">pool</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">src_future</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">,</span> <span class="p">(</span><span class="n">src_item</span><span class="p">))</span>
+            <span class="n">dst_future</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">,</span> <span class="p">(</span><span class="n">dst_item</span><span class="p">))</span>
+            <span class="n">src_xml</span> <span class="o">=</span> <span class="n">src_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="n">dst_xml</span> <span class="o">=</span> <span class="n">dst_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="o">.</span><span class="n">xml_compare</span><span class="p">(</span>
                 <span class="n">src_string</span><span class="o">=</span><span class="n">src_xml</span><span class="p">,</span> <span class="n">dst_string</span><span class="o">=</span><span class="n">dst_xml</span><span class="p">,</span> <span class="n">src_item</span><span class="o">=</span><span class="n">src_item</span><span class="p">,</span>
                 <span class="n">dst_item</span><span class="o">=</span><span class="n">dst_item</span><span class="p">)</span>
