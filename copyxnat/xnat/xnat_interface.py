@@ -177,11 +177,6 @@ class XnatItem(XnatBase):
         :parent: The XnatItem under which the child will be created if it does
             not already exist
         :label: The identifier used to find or create the child item
-        :create_params: Additional parameters needed to create child item
-        :local_file: path to a local file containing the resource or XML data
-            that should be used to create this object on the server if
-            it doesn't already exist
-        :dry_run: if True then no change will be made on the destination server
         :return: new XnatItem wrapping the item fetched or created
 
         """
