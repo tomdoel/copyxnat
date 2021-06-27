@@ -21,7 +21,7 @@ class CompareCommand(Command):
     HELP = 'Compare XNAT projects'
 
     def __init__(self, inputs, scope):
-        super().__init__(inputs, scope)
+        super(CompareCommand, self).__init__(inputs, scope)
         label = self.inputs.dst_project
         self.initial_from_parent = inputs.dst_xnat.project(label)
         if not self.initial_from_parent.exists_on_server():

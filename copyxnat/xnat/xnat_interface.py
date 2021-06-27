@@ -126,13 +126,14 @@ class XnatItem(XnatBase):
         self._id = None
         self._exists_on_server = exists
 
-        super().__init__(parent_cache=parent.cache,
-                         interface=interface,
-                         label=label,
-                         read_only=parent.read_only,
-                         reporter=parent.reporter,
-                         app_settings=parent.app_settings,
-                         parent=parent)
+        super(XnatItem, self).__init__(
+            parent_cache=parent.cache,
+            interface=interface,
+            label=label,
+            read_only=parent.read_only,
+            reporter=parent.reporter,
+            app_settings=parent.app_settings,
+            parent=parent)
 
     def datatype(self):
         """Return datatype name of the underlying XNAT item"""
@@ -356,7 +357,7 @@ class XnatFileContainerItem(XnatItem):
         return self.interface.download_zip_file(folder_path)
 
     def user_visible_info(self):
-        base_string = super().user_visible_info()
+        base_string = super(XnatFileContainerItem, self).user_visible_info()
         attrs = self.interface.resource_attributes()
         attr_string = ' (content:{}, format:{}, tags:{}, category: {}, ' \
                       'file count:{} size:{} bytes)'.format(
@@ -398,7 +399,7 @@ class XnatFile(XnatItem):
         return self.interface.download_file(folder_path, self.label)
 
     def user_visible_info(self):
-        base_string = super().user_visible_info()
+        base_string = super(XnatFile, self).user_visible_info()
         attrs = self.interface.file_attributes()
         attr_string = ' (content:{}, format:{}, collection:{}, ' \
                       'tags:{}, size:{} bytes)'.format(
@@ -541,7 +542,7 @@ class XnatScan(XnatParentItem):
 
     def __init__(self, interface, label, parent, exists=None):
         self._metadata = {'UID': None}
-        super().__init__(interface, label, parent, exists)
+        super(XnatScan, self).__init__(interface, label, parent, exists)
 
     def _metadata_missing(self):
         if not self._metadata['UID']:
@@ -629,7 +630,7 @@ class XnatProject(XnatParentItem):
 
     def __init__(self, interface, label, parent, exists=None):
         self._cached_experiment_list = None
-        super().__init__(interface, label, parent, exists)
+        super(XnatProject, self).__init__(interface, label, parent, exists)
 
     def project_server_path(self):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
@@ -679,13 +680,13 @@ class XnatServer(XnatBase):
         host = get_host(params.host)
         self.host = host
         self._projects = None
-        super().__init__(parent_cache=base_cache,
-                         interface=interface,
-                         label=host,
-                         read_only=read_only,
-                         app_settings=app_settings,
-                         reporter=reporter,
-                         parent=None)
+        super(XnatServer, self).__init__(parent_cache=base_cache,
+                                         interface=interface,
+                                         label=host,
+                                         read_only=read_only,
+                                         app_settings=app_settings,
+                                         reporter=reporter,
+                                         parent=None)
 
     def datatypes(self):
         """Return all the session datatypes in use on this server"""
