@@ -9,6 +9,7 @@ Submodules
 
    copyxnat.xnat_backend.pyxnat_server
    copyxnat.xnat_backend.server_factory
+   copyxnat.xnat_backend.xnatpy_server
 
 Module contents
 ---------------

@@ -1,0 +1,7 @@
+copyxnat.xnat\_backend.xnatpy\_server module
+============================================
+
+.. automodule:: copyxnat.xnat_backend.xnatpy_server
+   :members:
+   :undoc-members:
+   :show-inheritance:
