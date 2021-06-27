@@ -52,7 +52,8 @@ setup(
         'pydicom>=2.1.2',
         'appdirs>=1.4.4',
         'lxml>=4.6.2',
-        'xmltodict>=0.12.0'
+        'xmltodict>=0.12.0',
+        'six>=1.16.0'
     ],
 
     entry_points={

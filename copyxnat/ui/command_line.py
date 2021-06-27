@@ -6,6 +6,8 @@ import argparse
 import sys
 import traceback
 
+import six
+
 from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
 from copyxnat.api.run_command import run_command
@@ -40,8 +42,9 @@ def run_entry_point():
         return 0
 
     except Exception as exc:  # pylint: disable=broad-except
-        print("CopyXnat failed with error {}".format(str(exc)), file=sys.stderr)
-        print("If you think this may be a bug, please create an issue at "
+        six._print("CopyXnat failed with error {}".format(str(exc)),
+                   file=sys.stderr)
+        six._print("If you think this may be a bug, please create an issue at "
               "https://github.com/tomdoel/copyxnat/issues and include "
               "the following error details:", file=sys.stderr)
         traceback.print_exc()

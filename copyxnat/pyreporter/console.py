@@ -1,6 +1,7 @@
 # coding=utf-8
 
 """Output text to the console"""
+import six
 
 
 class AnsiCodes:
@@ -28,7 +29,7 @@ class Console:
     def end_sticky(self):
         """Clear sticky text, but keep previous sticky text in console"""
         if self._last_sticky_text:
-            print()
+            six._print()
         self._last_sticky_text = None
 
     def text(self, message, color=None):
@@ -37,7 +38,7 @@ class Console:
             text = color + message + AnsiCodes.END
         else:
             text = message
-        print('\r' + text + AnsiCodes.CLEAR)
+        six._print('\r' + text + AnsiCodes.CLEAR)
         self._reprint_sticky()
 
     def _reprint_sticky(self):
