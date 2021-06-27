@@ -6,6 +6,7 @@
 import abc
 import os
 import re
+import threading
 import time
 from enum import Enum
 
@@ -334,6 +335,12 @@ class XnatParentItem(XnatItem):
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
+    @staticmethod
+    def create_file_thread(item, attributes, local_file):
+        item.create_on_server(create_params=attributes, local_file=local_file)
+        if local_file:
+            os.remove(local_file)
+
     def create_from_source(self, src_item, xml_cleaner):
         if self.app_settings.transfer_mode == TransferMode.ZIP:
             folder_path = self.cache.make_output_path()
@@ -342,10 +349,9 @@ class XnatFileContainerItem(XnatItem):
             local_file = None
 
         attributes = src_item.interface.resource_attributes()
-        self.create_on_server(create_params=attributes, local_file=local_file)
-
-        if local_file:
-            os.remove(local_file)
+        thread = threading.Thread(target=self.create_file_thread,
+                                  args=(self, attributes, local_file))
+        thread.start()
 
     def export(self, app_settings):
         folder_path = self.cache.make_output_path()
