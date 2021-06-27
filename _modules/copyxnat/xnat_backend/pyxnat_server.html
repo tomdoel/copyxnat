@@ -103,6 +103,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">_get_json</span><span class="p">(</span><span class="s1">&#39;/REST/projects/</span><span class="si">{}</span><span class="s1">/experiments&#39;</span><span class="o">.</span>  <span class="c1"># pylint: disable=protected-access</span>
                 <span class="nb">format</span><span class="p">(</span><span class="n">project</span><span class="p">)))</span></div>
 
+<div class="viewcode-block" id="PyXnatServer.experiment_list"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatServer.experiment_list">[docs]</a>    <span class="k">def</span> <span class="nf">experiment_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return number of experiments in this project&quot;&quot;&quot;</span>
+
+        <span class="n">exps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">_get_json</span><span class="p">(</span><span class="s1">&#39;/REST/projects/</span><span class="si">{}</span><span class="s1">/experiments&#39;</span><span class="o">.</span>  <span class="c1"># pylint: disable=protected-access</span>
+                <span class="nb">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">exp</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">exps</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="PyXnatServer.does_request_succeed"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatServer.does_request_succeed">[docs]</a>    <span class="k">def</span> <span class="nf">does_request_succeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return True if it succeeds&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -142,27 +149,21 @@
 
 <div class="viewcode-block" id="PyXnatItem"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem">[docs]</a><span class="k">class</span> <span class="nc">PyXnatItem</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstraction of wrappers around pyXnat interfaces&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">label</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interface</span> <span class="o">=</span> <span class="n">interface</span>
 
 <div class="viewcode-block" id="PyXnatItem.fetch_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.fetch_interface">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the pyxnat interface to this item&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interface</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Parent must not be empty if no interface&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_interface</span><span class="p">(</span>
-                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
-                <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interface</span></div>
 
 <div class="viewcode-block" id="PyXnatItem.create"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatItem.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new child item of this class type from given parent&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">interface</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">interface</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">create_interface</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">(),</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">),</span>
             <span class="n">label</span><span class="o">=</span><span class="n">label</span>
         <span class="p">)</span></div>
 
@@ -299,7 +300,7 @@
 
 <div class="viewcode-block" id="PyXnatResource.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatResource.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatInResource"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource">[docs]</a><span class="k">class</span> <span class="nc">PyXnatInResource</span><span class="p">(</span><span class="n">PyXnatResourceBase</span><span class="p">):</span>
@@ -307,7 +308,7 @@
 
 <div class="viewcode-block" id="PyXnatInResource.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatInResource.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">in_resource</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">in_resource</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatOutResource"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource">[docs]</a><span class="k">class</span> <span class="nc">PyXnatOutResource</span><span class="p">(</span><span class="n">PyXnatResourceBase</span><span class="p">):</span>
@@ -315,7 +316,7 @@
 
 <div class="viewcode-block" id="PyXnatOutResource.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatOutResource.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">out_resource</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">out_resource</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatFile"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile">[docs]</a><span class="k">class</span> <span class="nc">PyXnatFile</span><span class="p">(</span><span class="n">PyXnatItem</span><span class="p">):</span>
@@ -323,7 +324,7 @@
 
 <div class="viewcode-block" id="PyXnatFile.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">file</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">file</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyXnatFile.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatFile.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
@@ -366,7 +367,7 @@
 
 <div class="viewcode-block" id="PyXnatProject.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;/project/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;/project/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PyXnatProject.subjects"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatProject.subjects">[docs]</a>    <span class="k">def</span> <span class="nf">subjects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of PyXnatSubject wrappers for this project&quot;&quot;&quot;</span>
@@ -415,7 +416,7 @@
 
 <div class="viewcode-block" id="PyXnatScan.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatScan.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatAssessor"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor">[docs]</a><span class="k">class</span> <span class="nc">PyXnatAssessor</span><span class="p">(</span><span class="n">PyXnatItemWithInOutResources</span><span class="p">):</span>
@@ -423,7 +424,7 @@
 
 <div class="viewcode-block" id="PyXnatAssessor.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatAssessor.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">assessor</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">assessor</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PyXnatReconstruction"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction">[docs]</a><span class="k">class</span> <span class="nc">PyXnatReconstruction</span><span class="p">(</span><span class="n">PyXnatItemWithInOutResources</span><span class="p">):</span>
@@ -431,7 +432,7 @@
 
 <div class="viewcode-block" id="PyXnatReconstruction.create_interface"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.pyxnat_server.html#copyxnat.xnat_backend.pyxnat_server.PyXnatReconstruction.create_interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">fetch_interface</span><span class="p">()</span><span class="o">.</span><span class="n">reconstruction</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">reconstruction</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

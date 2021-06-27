@@ -90,6 +90,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_session_types</span><span class="p">(</span><span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quick_skip</span><span class="p">(</span><span class="n">src_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span>
+                            <span class="n">dst_parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
+                            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
         <span class="c1"># Create the interface to the destination item. At this point the item</span>
         <span class="c1"># may already exist on the server but if not, it will not be created</span>
         <span class="n">dst_copy</span> <span class="o">=</span> <span class="n">xnat_item</span><span class="o">.</span><span class="n">get_or_create_child</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">from_parent</span><span class="p">,</span>
@@ -134,6 +139,16 @@
             <span class="n">dst_copy</span><span class="o">.</span><span class="n">post_create</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">processed</span>
+
+    <span class="k">def</span> <span class="nf">_quick_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_item</span><span class="p">,</span> <span class="n">dst_parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">skip_existing</span> <span class="ow">and</span> \
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">src_item</span><span class="p">,</span> <span class="n">XnatExperiment</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dst_parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">experiment_in_cache</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;Skipping existing </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> and all of its child items&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">src_item</span><span class="o">.</span><span class="n">visible_name</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+                <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_should_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">already_exists</span><span class="p">,</span> <span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 
