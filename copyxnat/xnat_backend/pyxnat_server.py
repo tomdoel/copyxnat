@@ -63,6 +63,13 @@ class PyXnatServer(object):
             self.fetch_interface()._get_json('/REST/projects/{}/experiments'.  # pylint: disable=protected-access
                 format(project)))
 
+    def experiment_list(self, project):
+        """Return number of experiments in this project"""
+
+        exps = self.fetch_interface()._get_json('/REST/projects/{}/experiments'.  # pylint: disable=protected-access
+                format(project))
+        return [exp['label'] for exp in exps]
+
     def does_request_succeed(self, uri, reporter, method):
         """Execute a REST call on the server and return True if it succeeds"""
         try:

@@ -50,6 +50,11 @@ class CopyCommand(Command):
         if not self._check_session_types(xnat_item=xnat_item):
             return False
 
+        if self._quick_skip(src_item=xnat_item,
+                            dst_parent=from_parent,
+                            label=label):
+            return False
+
         # Create the interface to the destination item. At this point the item
         # may already exist on the server but if not, it will not be created
         dst_copy = xnat_item.get_or_create_child(parent=from_parent,
@@ -94,6 +99,16 @@ class CopyCommand(Command):
             dst_copy.post_create()
 
         return processed
+
+    def _quick_skip(self, src_item, dst_parent, label):
+        if self.inputs.app_settings.skip_existing and \
+                isinstance(src_item, XnatExperiment):
+            if dst_parent.parent.experiment_in_cache(label):
+                self.inputs.reporter.info(
+                    "Skipping existing {} {} and all of its child items".format(
+                        src_item.visible_name, label))
+
+                return True
 
     def _should_create(self, already_exists, xnat_item, label):
 

@@ -627,12 +627,21 @@ class XnatProject(XnatParentItem):
     interface_method = 'projects'
     _child_types = [XnatSubject, XnatResource]
 
+    def __init__(self, interface, label, parent, exists=None):
+        self._cached_experiment_list = None
+        super().__init__(interface, label, parent, exists)
+
     def project_server_path(self):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
 
     def progress_update(self, reporter):
         self.reporter.log('Completed {} {}'.format(self.visible_name,
                                                    self.full_name))
+
+    def experiment_in_cache(self, label):
+        if self._cached_experiment_list is None:
+            self._cached_experiment_list = self.get_server().interface.experiment_list(self.label)
+        return label in self._cached_experiment_list
 
 
 class XnatServer(XnatBase):
