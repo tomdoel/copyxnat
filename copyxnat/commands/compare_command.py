@@ -6,6 +6,7 @@ import os
 from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.xnat.commands import Command
 from copyxnat.xnat.xml_cleaner import XmlCleaner
+from concurrent.futures import ThreadPoolExecutor
 
 
 class CompareCommand(Command):
@@ -48,11 +49,20 @@ class CompareCommand(Command):
         self._compare(src_item=xnat_item, dst_item=from_parent)
         return True
 
+    @staticmethod
+    def get_xml(item):
+        return item.get_xml_string()
+
     def _compare(self, src_item, dst_item):
         if getattr(src_item, "get_xml_string", None) and getattr(
                 dst_item, "get_xml", None):
-            src_xml = src_item.get_xml_string()
-            dst_xml = dst_item.get_xml_string()
+
+            pool = ThreadPoolExecutor(3)
+            src_future = pool.submit(self.get_xml, (src_item))
+            dst_future = pool.submit(self.get_xml, (dst_item))
+            src_xml = src_future.result()
+            dst_xml = dst_future.result()
+
             self.xml_cleaner.xml_compare(
                 src_string=src_xml, dst_string=dst_xml, src_item=src_item,
                 dst_item=dst_item)
