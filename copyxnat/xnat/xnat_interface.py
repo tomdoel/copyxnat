@@ -75,7 +75,7 @@ class XnatBase(abc.ABC):
         level = self.cache.cache_level
         return '  '*level + '-' + self.name_label()
 
-    def get_children(self, ignore_filter) -> list:
+    def get_children(self, ignore_filter):
         """Return XNAT child objects of this XNAT object"""
 
         # Iterate through XnatItem classes that are child types of this class,
@@ -92,13 +92,13 @@ class XnatBase(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def xnat_type(self) -> XnatType:
+    def xnat_type(self):
         """Return the XnatType of this class"""
         raise NotImplementedError
 
     @property
     @abc.abstractmethod
-    def visible_name(self) -> str:
+    def visible_name(self):
         """Return the XnatType of this class"""
         raise NotImplementedError
 
@@ -237,7 +237,7 @@ class XnatItem(XnatBase):
         return self._exists_on_server
 
     @abc.abstractmethod
-    def export(self, app_settings) -> str:
+    def export(self, app_settings):
         """Save this item to the cache"""
 
     @abc.abstractmethod
