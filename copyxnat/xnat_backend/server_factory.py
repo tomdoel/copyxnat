@@ -19,4 +19,5 @@ class ServerFactory(object):
         """
         if self._backend.lower() == 'pyxnat':
             return PyXnatServer(params=params)
-        raise ValueError('Unknown backend {}'.format(self._backend))
+        else:
+            raise ValueError('Unknown backend {}'.format(self._backend))

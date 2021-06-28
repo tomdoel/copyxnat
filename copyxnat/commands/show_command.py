@@ -19,7 +19,7 @@ class ShowCommand(Command):
     HELP = 'Show information about XNAT projects'
 
     def __init__(self, inputs, scope):
-        super().__init__(inputs, scope)
+        super(ShowCommand, self).__init__(inputs, scope)
         self.outputs = ''
 
     def _run(self, xnat_item, from_parent):

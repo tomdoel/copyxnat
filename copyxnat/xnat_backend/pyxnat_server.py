@@ -6,6 +6,7 @@ import abc
 import json
 import os
 
+import six
 from pyxnat import Interface
 
 
@@ -107,7 +108,8 @@ class PyXnatServer(object):
             raise exc
 
 
-class PyXnatItem(abc.ABC):
+@six.add_metaclass(abc.ABCMeta)
+class PyXnatItem(object):
     """Abstraction of wrappers around pyXnat interfaces"""
     def __init__(self, interface, label=None):
         self._label = label

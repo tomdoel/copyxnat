@@ -6,7 +6,7 @@ from abc import abstractmethod
 from copyxnat.xnat.xnat_interface import XnatSubject
 
 
-class Command:
+class Command(object):
     """Wraps a command function and its input variables"""
 
     def __init__(self, inputs, scope):

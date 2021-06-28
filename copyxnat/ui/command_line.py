@@ -6,6 +6,8 @@ import argparse
 import sys
 import traceback
 
+import six
+
 from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
 from copyxnat.api.run_command import run_command
@@ -40,8 +42,9 @@ def run_entry_point():
         return 0
 
     except Exception as exc:  # pylint: disable=broad-except
-        print("CopyXnat failed with error {}".format(str(exc)), file=sys.stderr)
-        print("If you think this may be a bug, please create an issue at "
+        six.print_("CopyXnat failed with error {}".format(str(exc)),
+                   file=sys.stderr)
+        six.print_("If you think this may be a bug, please create an issue at "
               "https://github.com/tomdoel/copyxnat/issues and include "
               "the following error details:", file=sys.stderr)
         traceback.print_exc()
@@ -66,7 +69,8 @@ def _parse_command_line(args):
                         help="File path here local cache files are to be stored"
                         )
 
-    subparsers = parser.add_subparsers(dest='command', required=True)
+    subparsers = parser.add_subparsers(dest='command')
+    subparsers.required = True
     for command in find_commands.commands():
         sub_parser = subparsers.add_parser(command.COMMAND_LINE,
                                            help=command.HELP)

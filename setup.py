@@ -12,7 +12,7 @@ version_git = get_version()
 
 # Get the long description
 this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+with open(path.join(this_directory, 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(
@@ -25,7 +25,7 @@ setup(
     url='https://github.com/tomdoel/copyxnat',
     author='Tom Doel',
     license='MIT License',
-    python_requires='>=3.6',
+    python_requires='>=2.7',
     classifiers=[
         'Development Status :: 3 - Alpha',
 
@@ -35,6 +35,7 @@ setup(
         'Intended Audience :: Science/Research',
 
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
 
         'Topic :: Scientific/Engineering :: Information Analysis',
@@ -47,12 +48,13 @@ setup(
 
     install_requires=[
         'pyxnat>=1.4',
-        'configparser>=5.0.1',
+        'configparser==4.0.2',
         'urllib3>=1.26.3',
-        'pydicom>=2.1.2',
+        'pydicom==1.4.2',
         'appdirs>=1.4.4',
         'lxml>=4.6.2',
-        'xmltodict>=0.12.0'
+        'xmltodict>=0.12.0',
+        'six>=1.16.0'
     ],
 
     entry_points={

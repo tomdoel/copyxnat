@@ -7,11 +7,12 @@ import abc
 import os
 import re
 import time
-from enum import Enum
 
+from enum import Enum
+from pyxnat.core.errors import DatabaseError
+import six
 import pydicom
 import urllib3
-from pyxnat.core.errors import DatabaseError
 
 from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
@@ -35,7 +36,8 @@ class XnatType(Enum):
     FILE = 'file'
 
 
-class XnatBase(abc.ABC):
+@six.add_metaclass(abc.ABCMeta)
+class XnatBase(object):
     """Base class for an item in the XNAT data hierarchy"""
 
     def __init__(self, parent_cache, interface, label, read_only,
@@ -75,7 +77,7 @@ class XnatBase(abc.ABC):
         level = self.cache.cache_level
         return '  '*level + '-' + self.name_label()
 
-    def get_children(self, ignore_filter) -> list:
+    def get_children(self, ignore_filter):
         """Return XNAT child objects of this XNAT object"""
 
         # Iterate through XnatItem classes that are child types of this class,
@@ -92,13 +94,13 @@ class XnatBase(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def xnat_type(self) -> XnatType:
+    def xnat_type(self):
         """Return the XnatType of this class"""
         raise NotImplementedError
 
     @property
     @abc.abstractmethod
-    def visible_name(self) -> str:
+    def visible_name(self):
         """Return the XnatType of this class"""
         raise NotImplementedError
 
@@ -126,13 +128,14 @@ class XnatItem(XnatBase):
         self._id = None
         self._exists_on_server = exists
 
-        super().__init__(parent_cache=parent.cache,
-                         interface=interface,
-                         label=label,
-                         read_only=parent.read_only,
-                         reporter=parent.reporter,
-                         app_settings=parent.app_settings,
-                         parent=parent)
+        super(XnatItem, self).__init__(
+            parent_cache=parent.cache,
+            interface=interface,
+            label=label,
+            read_only=parent.read_only,
+            reporter=parent.reporter,
+            app_settings=parent.app_settings,
+            parent=parent)
 
     def datatype(self):
         """Return datatype name of the underlying XNAT item"""
@@ -236,7 +239,7 @@ class XnatItem(XnatBase):
         return self._exists_on_server
 
     @abc.abstractmethod
-    def export(self, app_settings) -> str:
+    def export(self, app_settings):
         """Save this item to the cache"""
 
     @abc.abstractmethod
@@ -295,6 +298,7 @@ class XnatItem(XnatBase):
         return self.parent.project_server_path()
 
 
+@six.add_metaclass(abc.ABCMeta)
 class XnatParentItem(XnatItem):
     """
     Base class for item in the XNAT data hierarchy which can contain
@@ -331,6 +335,7 @@ class XnatParentItem(XnatItem):
         return self.cache.write_xml(src_xml_root, self._xml_filename)  # pylint: disable=no-member
 
 
+@six.add_metaclass(abc.ABCMeta)
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
@@ -356,7 +361,7 @@ class XnatFileContainerItem(XnatItem):
         return self.interface.download_zip_file(folder_path)
 
     def user_visible_info(self):
-        base_string = super().user_visible_info()
+        base_string = super(XnatFileContainerItem, self).user_visible_info()
         attrs = self.interface.resource_attributes()
         attr_string = ' (content:{}, format:{}, tags:{}, category: {}, ' \
                       'file count:{} size:{} bytes)'.format(
@@ -398,7 +403,7 @@ class XnatFile(XnatItem):
         return self.interface.download_file(folder_path, self.label)
 
     def user_visible_info(self):
-        base_string = super().user_visible_info()
+        base_string = super(XnatFile, self).user_visible_info()
         attrs = self.interface.file_attributes()
         attr_string = ' (content:{}, format:{}, collection:{}, ' \
                       'tags:{}, size:{} bytes)'.format(
@@ -541,7 +546,7 @@ class XnatScan(XnatParentItem):
 
     def __init__(self, interface, label, parent, exists=None):
         self._metadata = {'UID': None}
-        super().__init__(interface, label, parent, exists)
+        super(XnatScan, self).__init__(interface, label, parent, exists)
 
     def _metadata_missing(self):
         if not self._metadata['UID']:
@@ -629,7 +634,7 @@ class XnatProject(XnatParentItem):
 
     def __init__(self, interface, label, parent, exists=None):
         self._cached_experiment_list = None
-        super().__init__(interface, label, parent, exists)
+        super(XnatProject, self).__init__(interface, label, parent, exists)
 
     def project_server_path(self):
         return "{}/{}".format(self.parent.get_archive_path(), self.label)
@@ -639,8 +644,16 @@ class XnatProject(XnatParentItem):
                                                    self.full_name))
 
     def experiment_in_cache(self, label):
+        """Return True if this experiment label is in the cached list of
+        existing experiment labels for this project. The list will be created
+        on first access. True indicates an experiment already exists (assuming
+        no experiment deletion), but False does not necessarily indicate a
+        experiment does not exist (as it may have been created since the list
+        was populated)
+        """
         if self._cached_experiment_list is None:
-            self._cached_experiment_list = self.get_server().interface.experiment_list(self.label)
+            self._cached_experiment_list = \
+                self.get_server().interface.experiment_list(self.label)
         return label in self._cached_experiment_list
 
 
@@ -679,13 +692,13 @@ class XnatServer(XnatBase):
         host = get_host(params.host)
         self.host = host
         self._projects = None
-        super().__init__(parent_cache=base_cache,
-                         interface=interface,
-                         label=host,
-                         read_only=read_only,
-                         app_settings=app_settings,
-                         reporter=reporter,
-                         parent=None)
+        super(XnatServer, self).__init__(parent_cache=base_cache,
+                                         interface=interface,
+                                         label=host,
+                                         read_only=read_only,
+                                         app_settings=app_settings,
+                                         reporter=reporter,
+                                         parent=None)
 
     def datatypes(self):
         """Return all the session datatypes in use on this server"""

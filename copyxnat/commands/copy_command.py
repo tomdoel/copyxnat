@@ -21,7 +21,7 @@ class CopyCommand(Command):
     HELP = 'Copy projects between server, or duplicate on same server'
 
     def __init__(self, inputs, scope):
-        super().__init__(inputs, scope)
+        super(CopyCommand, self).__init__(inputs, scope)
         self.initial_from_parent = inputs.dst_xnat
         self.dst_datatypes = inputs.dst_xnat.datatypes()
         self.xml_cleaner = XmlCleaner(app_settings=inputs.app_settings,
@@ -109,6 +109,7 @@ class CopyCommand(Command):
                         src_item.visible_name, label))
 
                 return True
+        return False
 
     def _should_create(self, already_exists, xnat_item, label):
 
