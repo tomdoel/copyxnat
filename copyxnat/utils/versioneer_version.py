@@ -10,6 +10,8 @@
 
 """Git implementation of _version.py."""
 
+# pylint: disable-all
+
 import errno
 import os
 import re
