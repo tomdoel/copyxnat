@@ -640,8 +640,16 @@ class XnatProject(XnatParentItem):
                                                    self.full_name))
 
     def experiment_in_cache(self, label):
+        """Return True if this experiment label is in the cached list of
+        existing experiment labels for this project. The list will be created
+        on first access. True indicates an experiment already exists (assuming
+        no experiment deletion), but False does not necessarily indicate a
+        experiment does not exist (as it may have been created since the list
+        was populated)
+        """
         if self._cached_experiment_list is None:
-            self._cached_experiment_list = self.get_server().interface.experiment_list(self.label)
+            self._cached_experiment_list = \
+                self.get_server().interface.experiment_list(self.label)
         return label in self._cached_experiment_list
 
 
