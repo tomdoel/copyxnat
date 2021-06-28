@@ -85,7 +85,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         reporter.debug('Output files are in {}'.format(output_path))
         reporter.output('Completed running {} command'.format(command.NAME))
 
-    except Exception as exc:
+    except Exception as exc:  # pylint: disable=broad-except
         reporter.error('Command {} failed due to error {}'.format(command.NAME,
                                                                   str(exc)))
         six.reraise(*sys.exc_info())
