@@ -109,6 +109,7 @@ class CopyCommand(Command):
                         src_item.visible_name, label))
 
                 return True
+        return False
 
     def _should_create(self, already_exists, xnat_item, label):
 
