@@ -39,7 +39,7 @@
             
   <h1>Source code for versioneer</h1><div class="highlight"><pre>
 <span></span>
-<span class="c1"># Version: 0.19</span>
+<span class="c1"># Version: 0.18</span>
 
 <span class="sd">&quot;&quot;&quot;The Versioneer - like a rocketeer, but for versions.</span>
 
@@ -47,12 +47,16 @@
 <span class="sd">==============</span>
 
 <span class="sd">* like a rocketeer, but for versions!</span>
-<span class="sd">* https://github.com/python-versioneer/python-versioneer</span>
+<span class="sd">* https://github.com/warner/python-versioneer</span>
 <span class="sd">* Brian Warner</span>
 <span class="sd">* License: Public Domain</span>
-<span class="sd">* Compatible with: Python 3.6, 3.7, 3.8, 3.9 and pypy3</span>
-<span class="sd">* [![Latest Version][pypi-image]][pypi-url]</span>
-<span class="sd">* [![Build Status][travis-image]][travis-url]</span>
+<span class="sd">* Compatible With: python2.6, 2.7, 3.2, 3.3, 3.4, 3.5, 3.6, and pypy</span>
+<span class="sd">* [![Latest Version]</span>
+<span class="sd">(https://pypip.in/version/versioneer/badge.svg?style=flat)</span>
+<span class="sd">](https://pypi.python.org/pypi/versioneer/)</span>
+<span class="sd">* [![Build Status]</span>
+<span class="sd">(https://travis-ci.org/warner/python-versioneer.png?branch=master)</span>
+<span class="sd">](https://travis-ci.org/warner/python-versioneer)</span>
 
 <span class="sd">This is a tool for managing a recorded version number in distutils-based</span>
 <span class="sd">python projects. The goal is to remove the tedious and error-prone &quot;update</span>
@@ -63,10 +67,9 @@
 
 <span class="sd">## Quick Install</span>
 
-<span class="sd">* `pip install versioneer` to somewhere in your $PATH</span>
-<span class="sd">* add a `[versioneer]` section to your setup.cfg (see [Install](INSTALL.md))</span>
+<span class="sd">* `pip install versioneer` to somewhere to your $PATH</span>
+<span class="sd">* add a `[versioneer]` section to your setup.cfg (see below)</span>
 <span class="sd">* run `versioneer install` in your source tree, commit the results</span>
-<span class="sd">* Verify version information with `python setup.py version`</span>
 
 <span class="sd">## Version Identifiers</span>
 
@@ -98,7 +101,7 @@
 <span class="sd">for example `git describe --tags --dirty --always` reports things like</span>
 <span class="sd">&quot;0.7-1-g574ab98-dirty&quot; to indicate that the checkout is one revision past the</span>
 <span class="sd">0.7 tag, has a unique revision id of &quot;574ab98&quot;, and is &quot;dirty&quot; (it has</span>
-<span class="sd">uncommitted changes).</span>
+<span class="sd">uncommitted changes.</span>
 
 <span class="sd">The version identifier is used for multiple purposes:</span>
 
@@ -203,7 +206,7 @@
 
 <span class="sd">Some situations are known to cause problems for Versioneer. This details the</span>
 <span class="sd">most significant ones. More can be found on Github</span>
-<span class="sd">[issues page](https://github.com/python-versioneer/python-versioneer/issues).</span>
+<span class="sd">[issues page](https://github.com/warner/python-versioneer/issues).</span>
 
 <span class="sd">### Subprojects</span>
 
@@ -217,7 +220,7 @@
 <span class="sd">  `setup.cfg`, and `tox.ini`. Projects like these produce multiple PyPI</span>
 <span class="sd">  distributions (and upload multiple independently-installable tarballs).</span>
 <span class="sd">* Source trees whose main purpose is to contain a C library, but which also</span>
-<span class="sd">  provide bindings to Python (and perhaps other languages) in subdirectories.</span>
+<span class="sd">  provide bindings to Python (and perhaps other langauges) in subdirectories.</span>
 
 <span class="sd">Versioneer will look for `.git` in parent directories, and most operations</span>
 <span class="sd">should get the right version string. However `pip` and `setuptools` have bugs</span>
@@ -231,9 +234,9 @@
 <span class="sd">Pip-8.1.1 is known to have this problem, but hopefully it will get fixed in</span>
 <span class="sd">some later version.</span>
 
-<span class="sd">[Bug #38](https://github.com/python-versioneer/python-versioneer/issues/38) is tracking</span>
+<span class="sd">[Bug #38](https://github.com/warner/python-versioneer/issues/38) is tracking</span>
 <span class="sd">this issue. The discussion in</span>
-<span class="sd">[PR #61](https://github.com/python-versioneer/python-versioneer/pull/61) describes the</span>
+<span class="sd">[PR #61](https://github.com/warner/python-versioneer/pull/61) describes the</span>
 <span class="sd">issue from the Versioneer side in more detail.</span>
 <span class="sd">[pip PR#3176](https://github.com/pypa/pip/pull/3176) and</span>
 <span class="sd">[pip PR#3615](https://github.com/pypa/pip/pull/3615) contain work to improve</span>
@@ -261,9 +264,21 @@
 <span class="sd">cause egg_info to be rebuilt (including `sdist`, `wheel`, and installing into</span>
 <span class="sd">a different virtualenv), so this can be surprising.</span>
 
-<span class="sd">[Bug #83](https://github.com/python-versioneer/python-versioneer/issues/83) describes</span>
+<span class="sd">[Bug #83](https://github.com/warner/python-versioneer/issues/83) describes</span>
 <span class="sd">this one, but upgrading to a newer version of setuptools should probably</span>
 <span class="sd">resolve it.</span>
+
+<span class="sd">### Unicode version strings</span>
+
+<span class="sd">While Versioneer works (and is continually tested) with both Python 2 and</span>
+<span class="sd">Python 3, it is not entirely consistent with bytes-vs-unicode distinctions.</span>
+<span class="sd">Newer releases probably generate unicode version strings on py2. It&#39;s not</span>
+<span class="sd">clear that this is wrong, but it may be surprising for applications when then</span>
+<span class="sd">write these strings to a network connection or include them in bytes-oriented</span>
+<span class="sd">APIs like cryptographic checksums.</span>
+
+<span class="sd">[Bug #71](https://github.com/warner/python-versioneer/issues/71) investigates</span>
+<span class="sd">this question.</span>
 
 
 <span class="sd">## Updating Versioneer</span>
@@ -290,12 +305,6 @@
 <span class="sd">direction and include code from all supported VCS systems, reducing the</span>
 <span class="sd">number of intermediate scripts.</span>
 
-<span class="sd">## Similar projects</span>
-
-<span class="sd">* [setuptools_scm](https://github.com/pypa/setuptools_scm/) - a non-vendored build-time</span>
-<span class="sd">  dependency</span>
-<span class="sd">* [minver](https://github.com/jbweston/miniver) - a lightweight reimplementation of</span>
-<span class="sd">  versioneer</span>
 
 <span class="sd">## License</span>
 
@@ -305,15 +314,13 @@
 <span class="sd">Dedication&quot; license (CC0-1.0), as described in</span>
 <span class="sd">https://creativecommons.org/publicdomain/zero/1.0/ .</span>
 
-<span class="sd">[pypi-image]: https://img.shields.io/pypi/v/versioneer.svg</span>
-<span class="sd">[pypi-url]: https://pypi.python.org/pypi/versioneer/</span>
-<span class="sd">[travis-image]:</span>
-<span class="sd">https://img.shields.io/travis/com/python-versioneer/python-versioneer.svg</span>
-<span class="sd">[travis-url]: https://travis-ci.com/github/python-versioneer/python-versioneer</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">configparser</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">ConfigParser</span> <span class="k">as</span> <span class="nn">configparser</span>
 <span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -372,9 +379,9 @@
     <span class="c1"># configparser.NoOptionError (if it lacks &quot;VCS=&quot;). See the docstring at</span>
     <span class="c1"># the top of versioneer.py for instructions on writing your setup.cfg .</span>
     <span class="n">setup_cfg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">SafeConfigParser</span><span class="p">()</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">setup_cfg</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">readfp</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="n">VCS</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;versioneer&quot;</span><span class="p">,</span> <span class="s2">&quot;VCS&quot;</span><span class="p">)</span>  <span class="c1"># mandatory</span>
 
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -404,7 +411,7 @@
 
 
 <div class="viewcode-block" id="register_vcs_handler"><a class="viewcode-back" href="../versioneer.html#versioneer.register_vcs_handler">[docs]</a><span class="k">def</span> <span class="nf">register_vcs_handler</span><span class="p">(</span><span class="n">vcs</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>  <span class="c1"># decorator</span>
-    <span class="sd">&quot;&quot;&quot;Create decorator to mark a method as the handler of a VCS.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Decorator to mark a method as the handler for a particular VCS.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Store f in HANDLERS[vcs][method].&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">vcs</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">HANDLERS</span><span class="p">:</span>
@@ -440,7 +447,9 @@
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unable to find command, tried </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">commands</span><span class="p">,))</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="n">stdout</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">stdout</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unable to run </span><span class="si">%s</span><span class="s2"> (error)&quot;</span> <span class="o">%</span> <span class="n">dispcmd</span><span class="p">)</span>
@@ -449,7 +458,7 @@
     <span class="k">return</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span></div>
 
 
-<span class="n">LONG_VERSION_PY</span><span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="n">LONG_VERSION_PY</span><span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1"># This file helps to compute a version number in source trees obtained from</span>
 <span class="s1"># git-archive tarball (such as those provided by githubs download-from-tag</span>
 <span class="s1"># feature). Distribution tarballs (built by setup.py sdist) and build</span>
@@ -457,7 +466,7 @@
 <span class="s1"># that just contains the computed version number.</span>
 
 <span class="s1"># This file is released into the public domain. Generated by</span>
-<span class="s1"># versioneer-0.19 (https://github.com/python-versioneer/python-versioneer)</span>
+<span class="s1"># versioneer-0.18 (https://github.com/warner/python-versioneer)</span>
 
 <span class="s1">&quot;&quot;&quot;Git implementation of _version.py.&quot;&quot;&quot;</span>
 
@@ -508,7 +517,7 @@
 
 
 <span class="s1">def register_vcs_handler(vcs, method):  # decorator</span>
-<span class="s1">    &quot;&quot;&quot;Create decorator to mark a method as the handler of a VCS.&quot;&quot;&quot;</span>
+<span class="s1">    &quot;&quot;&quot;Decorator to mark a method as the handler for a particular VCS.&quot;&quot;&quot;</span>
 <span class="s1">    def decorate(f):</span>
 <span class="s1">        &quot;&quot;&quot;Store f in HANDLERS[vcs][method].&quot;&quot;&quot;</span>
 <span class="s1">        if vcs not in HANDLERS:</span>
@@ -544,7 +553,9 @@
 <span class="s1">        if verbose:</span>
 <span class="s1">            print(&quot;unable to find command, tried </span><span class="si">%%</span><span class="s1">s&quot; </span><span class="si">%%</span><span class="s1"> (commands,))</span>
 <span class="s1">        return None, None</span>
-<span class="s1">    stdout = p.communicate()[0].strip().decode()</span>
+<span class="s1">    stdout = p.communicate()[0].strip()</span>
+<span class="s1">    if sys.version_info[0] &gt;= 3:</span>
+<span class="s1">        stdout = stdout.decode()</span>
 <span class="s1">    if p.returncode != 0:</span>
 <span class="s1">        if verbose:</span>
 <span class="s1">            print(&quot;unable to run </span><span class="si">%%</span><span class="s1">s (error)&quot; </span><span class="si">%%</span><span class="s1"> dispcmd)</span>
@@ -614,10 +625,6 @@
 <span class="s1">        raise NotThisMethod(&quot;no keywords at all, weird&quot;)</span>
 <span class="s1">    date = keywords.get(&quot;date&quot;)</span>
 <span class="s1">    if date is not None:</span>
-<span class="s1">        # Use only the last line.  Previous lines may contain GPG signature</span>
-<span class="s1">        # information.</span>
-<span class="s1">        date = date.splitlines()[-1]</span>
-
 <span class="s1">        # git-2.2.0 added &quot;</span><span class="si">%%</span><span class="s1">cI&quot;, which expands to an ISO-8601 -compliant</span>
 <span class="s1">        # datestamp. However we prefer &quot;</span><span class="si">%%</span><span class="s1">ci&quot; (which expands to an &quot;ISO-8601</span>
 <span class="s1">        # -like&quot; string, which we must then edit to make compliant), because</span>
@@ -753,9 +760,6 @@
 <span class="s1">    # commit date: see ISO-8601 comment in git_versions_from_keywords()</span>
 <span class="s1">    date = run_command(GITS, [&quot;show&quot;, &quot;-s&quot;, &quot;--format=</span><span class="si">%%</span><span class="s1">ci&quot;, &quot;HEAD&quot;],</span>
 <span class="s1">                       cwd=root)[0].strip()</span>
-<span class="s1">    # Use only the last line.  Previous lines may contain GPG signature</span>
-<span class="s1">    # information.</span>
-<span class="s1">    date = date.splitlines()[-1]</span>
 <span class="s1">    pieces[&quot;date&quot;] = date.strip().replace(&quot; &quot;, &quot;T&quot;, 1).replace(&quot; &quot;, &quot;&quot;, 1)</span>
 
 <span class="s1">    return pieces</span>
@@ -794,18 +798,18 @@
 
 
 <span class="s1">def render_pep440_pre(pieces):</span>
-<span class="s1">    &quot;&quot;&quot;TAG[.post0.devDISTANCE] -- No -dirty.</span>
+<span class="s1">    &quot;&quot;&quot;TAG[.post.devDISTANCE] -- No -dirty.</span>
 
 <span class="s1">    Exceptions:</span>
-<span class="s1">    1: no tags. 0.post0.devDISTANCE</span>
+<span class="s1">    1: no tags. 0.post.devDISTANCE</span>
 <span class="s1">    &quot;&quot;&quot;</span>
 <span class="s1">    if pieces[&quot;closest-tag&quot;]:</span>
 <span class="s1">        rendered = pieces[&quot;closest-tag&quot;]</span>
 <span class="s1">        if pieces[&quot;distance&quot;]:</span>
-<span class="s1">            rendered += &quot;.post0.dev</span><span class="si">%%</span><span class="s1">d&quot; </span><span class="si">%%</span><span class="s1"> pieces[&quot;distance&quot;]</span>
+<span class="s1">            rendered += &quot;.post.dev</span><span class="si">%%</span><span class="s1">d&quot; </span><span class="si">%%</span><span class="s1"> pieces[&quot;distance&quot;]</span>
 <span class="s1">    else:</span>
 <span class="s1">        # exception #1</span>
-<span class="s1">        rendered = &quot;0.post0.dev</span><span class="si">%%</span><span class="s1">d&quot; </span><span class="si">%%</span><span class="s1"> pieces[&quot;distance&quot;]</span>
+<span class="s1">        rendered = &quot;0.post.dev</span><span class="si">%%</span><span class="s1">d&quot; </span><span class="si">%%</span><span class="s1"> pieces[&quot;distance&quot;]</span>
 <span class="s1">    return rendered</span>
 
 
@@ -841,7 +845,7 @@
 
 <span class="s1">    The &quot;.dev0&quot; means dirty.</span>
 
-<span class="s1">    Exceptions:</span>
+<span class="s1">    Eexceptions:</span>
 <span class="s1">    1: no tags. 0.postDISTANCE[.dev0]</span>
 <span class="s1">    &quot;&quot;&quot;</span>
 <span class="s1">    if pieces[&quot;closest-tag&quot;]:</span>
@@ -1013,10 +1017,6 @@
         <span class="k">raise</span> <span class="n">NotThisMethod</span><span class="p">(</span><span class="s2">&quot;no keywords at all, weird&quot;</span><span class="p">)</span>
     <span class="n">date</span> <span class="o">=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Use only the last line.  Previous lines may contain GPG signature</span>
-        <span class="c1"># information.</span>
-        <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
         <span class="c1"># git-2.2.0 added &quot;%cI&quot;, which expands to an ISO-8601 -compliant</span>
         <span class="c1"># datestamp. However we prefer &quot;%ci&quot; (which expands to an &quot;ISO-8601</span>
         <span class="c1"># -like&quot; string, which we must then edit to make compliant), because</span>
@@ -1152,9 +1152,6 @@
     <span class="c1"># commit date: see ISO-8601 comment in git_versions_from_keywords()</span>
     <span class="n">date</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">GITS</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=</span><span class="si">%c</span><span class="s2">i&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">],</span>
                        <span class="n">cwd</span><span class="o">=</span><span class="n">root</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="c1"># Use only the last line.  Previous lines may contain GPG signature</span>
-    <span class="c1"># information.</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pieces</span></div>
@@ -1224,7 +1221,7 @@
 
 
 <span class="n">SHORT_VERSION_PY</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2"># This file was generated by &#39;versioneer.py&#39; (0.19) from</span>
+<span class="s2"># This file was generated by &#39;versioneer.py&#39; (0.18) from</span>
 <span class="s2"># revision-control system data, or from the parent directory name of an</span>
 <span class="s2"># unpacked source archive. Distribution tarballs contain a pre-generated copy</span>
 <span class="s2"># of this file.</span>
@@ -1302,18 +1299,18 @@
 
 
 <div class="viewcode-block" id="render_pep440_pre"><a class="viewcode-back" href="../versioneer.html#versioneer.render_pep440_pre">[docs]</a><span class="k">def</span> <span class="nf">render_pep440_pre</span><span class="p">(</span><span class="n">pieces</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;TAG[.post0.devDISTANCE] -- No -dirty.</span>
+    <span class="sd">&quot;&quot;&quot;TAG[.post.devDISTANCE] -- No -dirty.</span>
 
 <span class="sd">    Exceptions:</span>
-<span class="sd">    1: no tags. 0.post0.devDISTANCE</span>
+<span class="sd">    1: no tags. 0.post.devDISTANCE</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;closest-tag&quot;</span><span class="p">]:</span>
         <span class="n">rendered</span> <span class="o">=</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;closest-tag&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]:</span>
-            <span class="n">rendered</span> <span class="o">+=</span> <span class="s2">&quot;.post0.dev</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
+            <span class="n">rendered</span> <span class="o">+=</span> <span class="s2">&quot;.post.dev</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># exception #1</span>
-        <span class="n">rendered</span> <span class="o">=</span> <span class="s2">&quot;0.post0.dev</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
+        <span class="n">rendered</span> <span class="o">=</span> <span class="s2">&quot;0.post.dev</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">rendered</span></div>
 
 
@@ -1349,7 +1346,7 @@
 
 <span class="sd">    The &quot;.dev0&quot; means dirty.</span>
 
-<span class="sd">    Exceptions:</span>
+<span class="sd">    Eexceptions:</span>
 <span class="sd">    1: no tags. 0.postDISTANCE[.dev0]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">pieces</span><span class="p">[</span><span class="s2">&quot;closest-tag&quot;</span><span class="p">]:</span>
@@ -1523,12 +1520,8 @@
     <span class="k">return</span> <span class="n">get_versions</span><span class="p">()[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="get_cmdclass"><a class="viewcode-back" href="../versioneer.html#versioneer.get_cmdclass">[docs]</a><span class="k">def</span> <span class="nf">get_cmdclass</span><span class="p">(</span><span class="n">cmdclass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the custom setuptools/distutils subclasses used by Versioneer.</span>
-
-<span class="sd">    If the package uses a different cmdclass (e.g. one from numpy), it</span>
-<span class="sd">    should be provide as an argument.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="get_cmdclass"><a class="viewcode-back" href="../versioneer.html#versioneer.get_cmdclass">[docs]</a><span class="k">def</span> <span class="nf">get_cmdclass</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get the custom setuptools/distutils subclasses used by Versioneer.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s2">&quot;versioneer&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
         <span class="k">del</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;versioneer&quot;</span><span class="p">]</span>
         <span class="c1"># this fixes the &quot;python setup.py develop&quot; case (also &#39;install&#39; and</span>
@@ -1542,9 +1535,9 @@
         <span class="c1"># parent is protected against the child&#39;s &quot;import versioneer&quot;. By</span>
         <span class="c1"># removing ourselves from sys.modules here, before the child build</span>
         <span class="c1"># happens, we protect the child from the parent&#39;s versioneer too.</span>
-        <span class="c1"># Also see https://github.com/python-versioneer/python-versioneer/issues/52</span>
+        <span class="c1"># Also see https://github.com/warner/python-versioneer/issues/52</span>
 
-    <span class="n">cmds</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">cmdclass</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cmdclass</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">cmds</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># we add &quot;version&quot; to both distutils and setuptools</span>
     <span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">Command</span>
@@ -1586,9 +1579,7 @@
     <span class="c1">#  setup.py egg_info -&gt; ?</span>
 
     <span class="c1"># we override different &quot;build_py&quot; commands for both environments</span>
-    <span class="k">if</span> <span class="s1">&#39;build_py&#39;</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
-        <span class="n">_build_py</span> <span class="o">=</span> <span class="n">cmds</span><span class="p">[</span><span class="s1">&#39;build_py&#39;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="s2">&quot;setuptools&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;setuptools&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">setuptools.command.build_py</span> <span class="kn">import</span> <span class="n">build_py</span> <span class="k">as</span> <span class="n">_build_py</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">distutils.command.build_py</span> <span class="kn">import</span> <span class="n">build_py</span> <span class="k">as</span> <span class="n">_build_py</span>
@@ -1607,31 +1598,6 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;UPDATING </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">target_versionfile</span><span class="p">)</span>
                 <span class="n">write_to_version_file</span><span class="p">(</span><span class="n">target_versionfile</span><span class="p">,</span> <span class="n">versions</span><span class="p">)</span>
     <span class="n">cmds</span><span class="p">[</span><span class="s2">&quot;build_py&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd_build_py</span>
-
-    <span class="k">if</span> <span class="s2">&quot;setuptools&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">setuptools.command.build_ext</span> <span class="kn">import</span> <span class="n">build_ext</span> <span class="k">as</span> <span class="n">_build_ext</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">distutils.command.build_ext</span> <span class="kn">import</span> <span class="n">build_ext</span> <span class="k">as</span> <span class="n">_build_ext</span>
-
-    <span class="k">class</span> <span class="nc">cmd_build_ext</span><span class="p">(</span><span class="n">_build_ext</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="n">root</span> <span class="o">=</span> <span class="n">get_root</span><span class="p">()</span>
-            <span class="n">cfg</span> <span class="o">=</span> <span class="n">get_config_from_root</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
-            <span class="n">versions</span> <span class="o">=</span> <span class="n">get_versions</span><span class="p">()</span>
-            <span class="n">_build_ext</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inplace</span><span class="p">:</span>
-                <span class="c1"># build_ext --inplace will only build extensions in</span>
-                <span class="c1"># build/lib&lt;..&gt; dir with no _version.py to write to.</span>
-                <span class="c1"># As in place builds will already have a _version.py</span>
-                <span class="c1"># in the module dir, we do not need to write one.</span>
-                <span class="k">return</span>
-            <span class="c1"># now locate _version.py in the new build/ directory and replace</span>
-            <span class="c1"># it with an updated value</span>
-            <span class="n">target_versionfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_lib</span><span class="p">,</span>
-                                              <span class="n">cfg</span><span class="o">.</span><span class="n">versionfile_source</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;UPDATING </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">target_versionfile</span><span class="p">)</span>
-            <span class="n">write_to_version_file</span><span class="p">(</span><span class="n">target_versionfile</span><span class="p">,</span> <span class="n">versions</span><span class="p">)</span>
-    <span class="n">cmds</span><span class="p">[</span><span class="s2">&quot;build_ext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd_build_ext</span>
 
     <span class="k">if</span> <span class="s2">&quot;cx_Freeze&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>  <span class="c1"># cx_freeze enabled?</span>
         <span class="kn">from</span> <span class="nn">cx_Freeze.dist</span> <span class="kn">import</span> <span class="n">build_exe</span> <span class="k">as</span> <span class="n">_build_exe</span>
@@ -1666,7 +1632,10 @@
         <span class="k">del</span> <span class="n">cmds</span><span class="p">[</span><span class="s2">&quot;build_py&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="s1">&#39;py2exe&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>  <span class="c1"># py2exe enabled?</span>
-        <span class="kn">from</span> <span class="nn">py2exe.distutils_buildexe</span> <span class="kn">import</span> <span class="n">py2exe</span> <span class="k">as</span> <span class="n">_py2exe</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">py2exe.distutils_buildexe</span> <span class="kn">import</span> <span class="n">py2exe</span> <span class="k">as</span> <span class="n">_py2exe</span>  <span class="c1"># py3</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">py2exe.build_exe</span> <span class="kn">import</span> <span class="n">py2exe</span> <span class="k">as</span> <span class="n">_py2exe</span>  <span class="c1"># py2</span>
 
         <span class="k">class</span> <span class="nc">cmd_py2exe</span><span class="p">(</span><span class="n">_py2exe</span><span class="p">):</span>
             <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1691,9 +1660,7 @@
         <span class="n">cmds</span><span class="p">[</span><span class="s2">&quot;py2exe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd_py2exe</span>
 
     <span class="c1"># we override different &quot;sdist&quot; commands for both environments</span>
-    <span class="k">if</span> <span class="s1">&#39;sdist&#39;</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
-        <span class="n">_sdist</span> <span class="o">=</span> <span class="n">cmds</span><span class="p">[</span><span class="s1">&#39;sdist&#39;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="s2">&quot;setuptools&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;setuptools&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">setuptools.command.sdist</span> <span class="kn">import</span> <span class="n">sdist</span> <span class="k">as</span> <span class="n">_sdist</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">distutils.command.sdist</span> <span class="kn">import</span> <span class="n">sdist</span> <span class="k">as</span> <span class="n">_sdist</span>
@@ -1768,7 +1735,7 @@
 
 
 <div class="viewcode-block" id="do_setup"><a class="viewcode-back" href="../versioneer.html#versioneer.do_setup">[docs]</a><span class="k">def</span> <span class="nf">do_setup</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Do main VCS-independent setup function for installing Versioneer.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Main VCS-independent setup function for installing Versioneer.&quot;&quot;&quot;</span>
     <span class="n">root</span> <span class="o">=</span> <span class="n">get_root</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">get_config_from_root</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>

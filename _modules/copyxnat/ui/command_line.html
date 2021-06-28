@@ -82,9 +82,9 @@
         <span class="k">return</span> <span class="mi">0</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
-        <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;CopyXnat failed with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)),</span>  <span class="c1"># pylint: disable=protected-access</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">print_</span><span class="p">(</span><span class="s2">&quot;CopyXnat failed with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)),</span>
                    <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;If you think this may be a bug, please create an issue at &quot;</span>  <span class="c1"># pylint: disable=protected-access</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">print_</span><span class="p">(</span><span class="s2">&quot;If you think this may be a bug, please create an issue at &quot;</span>
               <span class="s2">&quot;https://github.com/tomdoel/copyxnat/issues and include &quot;</span>
               <span class="s2">&quot;the following error details:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>

@@ -48,13 +48,17 @@
 <h2>The Versioneer<a class="headerlink" href="#the-versioneer" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>like a rocketeer, but for versions!</p></li>
-<li><p><a class="reference external" href="https://github.com/python-versioneer/python-versioneer">https://github.com/python-versioneer/python-versioneer</a></p></li>
+<li><p><a class="reference external" href="https://github.com/warner/python-versioneer">https://github.com/warner/python-versioneer</a></p></li>
 <li><p>Brian Warner</p></li>
 <li><p>License: Public Domain</p></li>
-<li><p>Compatible with: Python 3.6, 3.7, 3.8, 3.9 and pypy3</p></li>
-<li><p>[![Latest Version][pypi-image]][pypi-url]</p></li>
-<li><p>[![Build Status][travis-image]][travis-url]</p></li>
+<li><p>Compatible With: python2.6, 2.7, 3.2, 3.3, 3.4, 3.5, 3.6, and pypy</p></li>
+<li><p>[![Latest Version]</p></li>
 </ul>
+<p>(<a class="reference external" href="https://pypip.in/version/versioneer/badge.svg?style=flat">https://pypip.in/version/versioneer/badge.svg?style=flat</a>)
+](<a class="reference external" href="https://pypi.python.org/pypi/versioneer/">https://pypi.python.org/pypi/versioneer/</a>)
+* [![Build Status]
+(<a class="reference external" href="https://travis-ci.org/warner/python-versioneer.png?branch=master">https://travis-ci.org/warner/python-versioneer.png?branch=master</a>)
+](<a class="reference external" href="https://travis-ci.org/warner/python-versioneer">https://travis-ci.org/warner/python-versioneer</a>)</p>
 <p>This is a tool for managing a recorded version number in distutils-based
 python projects. The goal is to remove the tedious and error-prone “update
 the embedded version string” step from your release process. Making a new
@@ -62,10 +66,9 @@ release should be as easy as recording a new tag in your version-control
 system, and maybe making new tarballs.</p>
 <p>## Quick Install</p>
 <ul class="simple">
-<li><p><cite>pip install versioneer</cite> to somewhere in your $PATH</p></li>
-<li><p>add a <cite>[versioneer]</cite> section to your setup.cfg (see [Install](INSTALL.md))</p></li>
+<li><p><cite>pip install versioneer</cite> to somewhere to your $PATH</p></li>
+<li><p>add a <cite>[versioneer]</cite> section to your setup.cfg (see below)</p></li>
 <li><p>run <cite>versioneer install</cite> in your source tree, commit the results</p></li>
-<li><p>Verify version information with <cite>python setup.py version</cite></p></li>
 </ul>
 <p>## Version Identifiers</p>
 <p>Source trees come from a variety of places:</p>
@@ -96,7 +99,7 @@ version 1.3). Many VCS systems can report a description that captures this,
 for example <cite>git describe –tags –dirty –always</cite> reports things like
 “0.7-1-g574ab98-dirty” to indicate that the checkout is one revision past the
 0.7 tag, has a unique revision id of “574ab98”, and is “dirty” (it has
-uncommitted changes).</p>
+uncommitted changes.</p>
 <p>The version identifier is used for multiple purposes:</p>
 <ul class="simple">
 <li><p>to allow the module to self-identify its version: <cite>myproject.__version__</cite></p></li>
@@ -180,7 +183,7 @@ which may help identify what went wrong).</p>
 <p>## Known Limitations</p>
 <p>Some situations are known to cause problems for Versioneer. This details the
 most significant ones. More can be found on Github
-[issues page](<a class="reference external" href="https://github.com/python-versioneer/python-versioneer/issues">https://github.com/python-versioneer/python-versioneer/issues</a>).</p>
+[issues page](<a class="reference external" href="https://github.com/warner/python-versioneer/issues">https://github.com/warner/python-versioneer/issues</a>).</p>
 <p>### Subprojects</p>
 <p>Versioneer has limited support for source trees in which <cite>setup.py</cite> is not in
 the root directory (e.g. <cite>setup.py</cite> and <cite>.git/</cite> are <em>not</em> siblings). The are
@@ -192,7 +195,7 @@ two common reasons why <cite>setup.py</cite> might not be in the root:</p>
 <cite>setup.cfg</cite>, and <cite>tox.ini</cite>. Projects like these produce multiple PyPI
 distributions (and upload multiple independently-installable tarballs).</p></li>
 <li><p>Source trees whose main purpose is to contain a C library, but which also
-provide bindings to Python (and perhaps other languages) in subdirectories.</p></li>
+provide bindings to Python (and perhaps other langauges) in subdirectories.</p></li>
 </ul>
 <p>Versioneer will look for <cite>.git</cite> in parent directories, and most operations
 should get the right version string. However <cite>pip</cite> and <cite>setuptools</cite> have bugs
@@ -203,9 +206,9 @@ defaults to <cite>0+unknown</cite>).</p>
 work too.</p>
 <p>Pip-8.1.1 is known to have this problem, but hopefully it will get fixed in
 some later version.</p>
-<p>[Bug #38](<a class="reference external" href="https://github.com/python-versioneer/python-versioneer/issues/38">https://github.com/python-versioneer/python-versioneer/issues/38</a>) is tracking
+<p>[Bug #38](<a class="reference external" href="https://github.com/warner/python-versioneer/issues/38">https://github.com/warner/python-versioneer/issues/38</a>) is tracking
 this issue. The discussion in
-[PR #61](<a class="reference external" href="https://github.com/python-versioneer/python-versioneer/pull/61">https://github.com/python-versioneer/python-versioneer/pull/61</a>) describes the
+[PR #61](<a class="reference external" href="https://github.com/warner/python-versioneer/pull/61">https://github.com/warner/python-versioneer/pull/61</a>) describes the
 issue from the Versioneer side in more detail.
 [pip PR#3176](<a class="reference external" href="https://github.com/pypa/pip/pull/3176">https://github.com/pypa/pip/pull/3176</a>) and
 [pip PR#3615](<a class="reference external" href="https://github.com/pypa/pip/pull/3615">https://github.com/pypa/pip/pull/3615</a>) contain work to improve
@@ -227,9 +230,18 @@ when the install happens with one version, then the egg_info data is
 regenerated while a different version is checked out. Many setup.py commands
 cause egg_info to be rebuilt (including <cite>sdist</cite>, <cite>wheel</cite>, and installing into
 a different virtualenv), so this can be surprising.</p>
-<p>[Bug #83](<a class="reference external" href="https://github.com/python-versioneer/python-versioneer/issues/83">https://github.com/python-versioneer/python-versioneer/issues/83</a>) describes
+<p>[Bug #83](<a class="reference external" href="https://github.com/warner/python-versioneer/issues/83">https://github.com/warner/python-versioneer/issues/83</a>) describes
 this one, but upgrading to a newer version of setuptools should probably
 resolve it.</p>
+<p>### Unicode version strings</p>
+<p>While Versioneer works (and is continually tested) with both Python 2 and
+Python 3, it is not entirely consistent with bytes-vs-unicode distinctions.
+Newer releases probably generate unicode version strings on py2. It’s not
+clear that this is wrong, but it may be surprising for applications when then
+write these strings to a network connection or include them in bytes-oriented
+APIs like cryptographic checksums.</p>
+<p>[Bug #71](<a class="reference external" href="https://github.com/warner/python-versioneer/issues/71">https://github.com/warner/python-versioneer/issues/71</a>) investigates
+this question.</p>
 <p>## Updating Versioneer</p>
 <p>To upgrade your project to a new release of Versioneer, do the following:</p>
 <ul class="simple">
@@ -251,24 +263,12 @@ configuration arguments that are currently provided manually during
 installation by editing setup.py . Alternatively, it might go the other
 direction and include code from all supported VCS systems, reducing the
 number of intermediate scripts.</p>
-<p>## Similar projects</p>
-<ul class="simple">
-<li><p>[setuptools_scm](<a class="reference external" href="https://github.com/pypa/setuptools_scm/">https://github.com/pypa/setuptools_scm/</a>) - a non-vendored build-time
-dependency</p></li>
-<li><p>[minver](<a class="reference external" href="https://github.com/jbweston/miniver">https://github.com/jbweston/miniver</a>) - a lightweight reimplementation of
-versioneer</p></li>
-</ul>
 <p>## License</p>
 <p>To make Versioneer easier to embed, all its code is dedicated to the public
 domain. The <cite>_version.py</cite> that it creates is also in the public domain.
 Specifically, both are released under the Creative Commons “Public Domain
 Dedication” license (CC0-1.0), as described in
 <a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">https://creativecommons.org/publicdomain/zero/1.0/</a> .</p>
-<p>[pypi-image]: <a class="reference external" href="https://img.shields.io/pypi/v/versioneer.svg">https://img.shields.io/pypi/v/versioneer.svg</a>
-[pypi-url]: <a class="reference external" href="https://pypi.python.org/pypi/versioneer/">https://pypi.python.org/pypi/versioneer/</a>
-[travis-image]:
-<a class="reference external" href="https://img.shields.io/travis/com/python-versioneer/python-versioneer.svg">https://img.shields.io/travis/com/python-versioneer/python-versioneer.svg</a>
-[travis-url]: <a class="reference external" href="https://travis-ci.com/github/python-versioneer/python-versioneer">https://travis-ci.com/github/python-versioneer/python-versioneer</a></p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="versioneer.NotThisMethod">
 <em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">NotThisMethod</span></span><a class="reference internal" href="_modules/versioneer.html#NotThisMethod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.NotThisMethod" title="Permalink to this definition">¶</a></dt>
@@ -293,7 +293,7 @@ Dedication” license (CC0-1.0), as described in
 <dl class="py function">
 <dt class="sig sig-object py" id="versioneer.do_setup">
 <span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">do_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/versioneer.html#do_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.do_setup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Do main VCS-independent setup function for installing Versioneer.</p>
+<dd><p>Main VCS-independent setup function for installing Versioneer.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -306,10 +306,8 @@ for export-subst keyword substitution.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="versioneer.get_cmdclass">
-<span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">get_cmdclass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmdclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/versioneer.html#get_cmdclass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.get_cmdclass" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">get_cmdclass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/versioneer.html#get_cmdclass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.get_cmdclass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the custom setuptools/distutils subclasses used by Versioneer.</p>
-<p>If the package uses a different cmdclass (e.g. one from numpy), it
-should be provide as an argument.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -369,7 +367,7 @@ version string, meaning we’re inside a checked out source tree.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="versioneer.register_vcs_handler">
 <span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">register_vcs_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/versioneer.html#register_vcs_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.register_vcs_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create decorator to mark a method as the handler of a VCS.</p>
+<dd><p>Decorator to mark a method as the handler for a particular VCS.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -412,7 +410,7 @@ get a tagged build and then dirty it, you’ll get TAG+0.gHEX.dirty</p>
 <span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">render_pep440_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pieces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/versioneer.html#render_pep440_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.render_pep440_old" title="Permalink to this definition">¶</a></dt>
 <dd><p>TAG[.postDISTANCE[.dev0]] .</p>
 <p>The “.dev0” means dirty.</p>
-<p>Exceptions:
+<p>Eexceptions:
 1: no tags. 0.postDISTANCE[.dev0]</p>
 </dd></dl>
 
@@ -430,9 +428,9 @@ but you shouldn’t be releasing software with -dirty anyways.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="versioneer.render_pep440_pre">
 <span class="sig-prename descclassname"><span class="pre">versioneer.</span></span><span class="sig-name descname"><span class="pre">render_pep440_pre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pieces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/versioneer.html#render_pep440_pre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#versioneer.render_pep440_pre" title="Permalink to this definition">¶</a></dt>
-<dd><p>TAG[.post0.devDISTANCE] – No -dirty.</p>
+<dd><p>TAG[.post.devDISTANCE] – No -dirty.</p>
 <p>Exceptions:
-1: no tags. 0.post0.devDISTANCE</p>
+1: no tags. 0.post.devDISTANCE</p>
 </dd></dl>
 
 <dl class="py function">

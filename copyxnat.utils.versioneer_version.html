@@ -112,7 +112,7 @@ version string, meaning we’re inside a checked out source tree.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="copyxnat.utils.versioneer_version.register_vcs_handler">
 <span class="sig-prename descclassname"><span class="pre">copyxnat.utils.versioneer_version.</span></span><span class="sig-name descname"><span class="pre">register_vcs_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/utils/versioneer_version.html#register_vcs_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.utils.versioneer_version.register_vcs_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create decorator to mark a method as the handler of a VCS.</p>
+<dd><p>Decorator to mark a method as the handler for a particular VCS.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -155,7 +155,7 @@ get a tagged build and then dirty it, you’ll get TAG+0.gHEX.dirty</p>
 <span class="sig-prename descclassname"><span class="pre">copyxnat.utils.versioneer_version.</span></span><span class="sig-name descname"><span class="pre">render_pep440_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pieces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/utils/versioneer_version.html#render_pep440_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.utils.versioneer_version.render_pep440_old" title="Permalink to this definition">¶</a></dt>
 <dd><p>TAG[.postDISTANCE[.dev0]] .</p>
 <p>The “.dev0” means dirty.</p>
-<p>Exceptions:
+<p>Eexceptions:
 1: no tags. 0.postDISTANCE[.dev0]</p>
 </dd></dl>
 
@@ -173,9 +173,9 @@ but you shouldn’t be releasing software with -dirty anyways.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="copyxnat.utils.versioneer_version.render_pep440_pre">
 <span class="sig-prename descclassname"><span class="pre">copyxnat.utils.versioneer_version.</span></span><span class="sig-name descname"><span class="pre">render_pep440_pre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pieces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/utils/versioneer_version.html#render_pep440_pre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.utils.versioneer_version.render_pep440_pre" title="Permalink to this definition">¶</a></dt>
-<dd><p>TAG[.post0.devDISTANCE] – No -dirty.</p>
+<dd><p>TAG[.post.devDISTANCE] – No -dirty.</p>
 <p>Exceptions:
-1: no tags. 0.post0.devDISTANCE</p>
+1: no tags. 0.post.devDISTANCE</p>
 </dd></dl>
 
 <dl class="py function">
