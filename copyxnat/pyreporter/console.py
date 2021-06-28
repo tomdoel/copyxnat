@@ -31,7 +31,7 @@ class Console:
     def end_sticky(self):
         """Clear sticky text, but keep previous sticky text in console"""
         if self._last_sticky_text:
-            six._print()  # pylint: disable=protected-access
+            six.print_()
         self._last_sticky_text = None
 
     def text(self, message, color=None):
@@ -40,12 +40,12 @@ class Console:
             text = color + message + AnsiCodes.END
         else:
             text = message
-        six._print('\r' + text + AnsiCodes.CLEAR)  # pylint: disable=protected-access
+        six.print_('\r' + text + AnsiCodes.CLEAR)
         self._reprint_sticky()
 
     def _reprint_sticky(self):
         """Re-print sticky text"""
         if self._last_sticky_text:
             text = AnsiCodes.CYAN + self._last_sticky_text + AnsiCodes.END
-            six._print('\r' + text, end='')  # pylint: disable=protected-access
+            six.print_('\r' + text, end='')
             sys.stdout.flush()
