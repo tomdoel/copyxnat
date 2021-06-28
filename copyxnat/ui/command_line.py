@@ -42,9 +42,9 @@ def run_entry_point():
         return 0
 
     except Exception as exc:  # pylint: disable=broad-except
-        six._print("CopyXnat failed with error {}".format(str(exc)),
+        six._print("CopyXnat failed with error {}".format(str(exc)),  # pylint: disable=protected-access
                    file=sys.stderr)
-        six._print("If you think this may be a bug, please create an issue at "
+        six._print("If you think this may be a bug, please create an issue at "  # pylint: disable=protected-access
               "https://github.com/tomdoel/copyxnat/issues and include "
               "the following error details:", file=sys.stderr)
         traceback.print_exc()

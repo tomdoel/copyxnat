@@ -40,8 +40,8 @@ class Console:
             text = color + message + AnsiCodes.END
         else:
             text = message
-        six._print('\r' + text + AnsiCodes.CLEAR)
-        self._reprint_sticky()  # pylint: disable=protected-access
+        six._print('\r' + text + AnsiCodes.CLEAR)  # pylint: disable=protected-access
+        self._reprint_sticky()
 
     def _reprint_sticky(self):
         """Re-print sticky text"""

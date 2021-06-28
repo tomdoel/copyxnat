@@ -8,12 +8,11 @@ import os
 import re
 import time
 
-import six
 from enum import Enum
-
+from pyxnat.core.errors import DatabaseError
+import six
 import pydicom
 import urllib3
-from pyxnat.core.errors import DatabaseError
 
 from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
@@ -299,6 +298,7 @@ class XnatItem(XnatBase):
         return self.parent.project_server_path()
 
 
+@six.add_metaclass(abc.ABCMeta)
 class XnatParentItem(XnatItem):
     """
     Base class for item in the XNAT data hierarchy which can contain
@@ -335,6 +335,7 @@ class XnatParentItem(XnatItem):
         return self.cache.write_xml(src_xml_root, self._xml_filename)  # pylint: disable=no-member
 
 
+@six.add_metaclass(abc.ABCMeta)
 class XnatFileContainerItem(XnatItem):
     """Base wrapper for resource items"""
 
