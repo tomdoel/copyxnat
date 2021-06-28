@@ -7,6 +7,8 @@ import abc
 import os
 import re
 import time
+
+import six
 from enum import Enum
 
 import pydicom
@@ -35,7 +37,8 @@ class XnatType(Enum):
     FILE = 'file'
 
 
-class XnatBase(abc.ABC):
+@six.add_metaclass(abc.ABCMeta)
+class XnatBase(object):
     """Base class for an item in the XNAT data hierarchy"""
 
     def __init__(self, parent_cache, interface, label, read_only,
