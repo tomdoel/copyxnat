@@ -18,9 +18,9 @@ Please make sure your XNAT archive and PostgreSQL database are fully backed up b
 CopyXnat on a real XNAT server. CopyXnat may modify and overwrite your data.
 
 
-### Install and run using pip (Python 3.6+)
+### Install and run using pip (Python 2.7 and 3.6+)
 
-You need Python 3.6 or later. It is recommended that you do not modify your system Python installation. You can use tools such
+You need Python 2.7 or Python 3.6 or later. It is recommended that you do not modify your system Python installation. You can use tools such
 as Homebrew (macOS) to install the latest python version without affecting your system python.
 
 ```
