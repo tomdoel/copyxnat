@@ -5,6 +5,8 @@ Execute rsync command
 import getpass
 import subprocess
 
+import six
+
 from copyxnat.pyreporter.pyreporter import ProjectFailure
 from copyxnat.utils.network_utils import get_host
 
@@ -82,4 +84,4 @@ class ProjectRsync:
                                 '{}. The error was :{}'.format(string_command,
                                                                str(exc))
                 self.reporter.error(error_message)
-                raise ProjectFailure(error_message) from exc
+                six.raise_from(ProjectFailure(error_message), exc)
