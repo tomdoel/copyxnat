@@ -46,6 +46,8 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+
 <span class="kn">from</span> <span class="nn">copyxnat.commands.find_commands</span> <span class="kn">import</span> <span class="n">find_command</span>
 <span class="kn">from</span> <span class="nn">copyxnat.commands</span> <span class="kn">import</span> <span class="n">find_commands</span>
 <span class="kn">from</span> <span class="nn">copyxnat.api.run_command</span> <span class="kn">import</span> <span class="n">run_command</span>
@@ -80,8 +82,9 @@
         <span class="k">return</span> <span class="mi">0</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CopyXnat failed with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If you think this may be a bug, please create an issue at &quot;</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;CopyXnat failed with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)),</span>  <span class="c1"># pylint: disable=protected-access</span>
+                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s2">&quot;If you think this may be a bug, please create an issue at &quot;</span>  <span class="c1"># pylint: disable=protected-access</span>
               <span class="s2">&quot;https://github.com/tomdoel/copyxnat/issues and include &quot;</span>
               <span class="s2">&quot;the following error details:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
@@ -106,7 +109,8 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File path here local cache files are to be stored&quot;</span>
                         <span class="p">)</span>
 
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+    <span class="n">subparsers</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">sub_parser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span><span class="p">,</span>
                                            <span class="n">help</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>

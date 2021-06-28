@@ -41,6 +41,9 @@
 <span></span><span class="c1"># coding=utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;Output text to the console&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
 
 
 <div class="viewcode-block" id="AnsiCodes"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.AnsiCodes">[docs]</a><span class="k">class</span> <span class="nc">AnsiCodes</span><span class="p">:</span>
@@ -68,7 +71,7 @@
 <div class="viewcode-block" id="Console.end_sticky"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.Console.end_sticky">[docs]</a>    <span class="k">def</span> <span class="nf">end_sticky</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear sticky text, but keep previous sticky text in console&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">()</span>
+            <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">()</span>  <span class="c1"># pylint: disable=protected-access</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="Console.text"><a class="viewcode-back" href="../../../copyxnat.pyreporter.console.html#copyxnat.pyreporter.console.Console.text">[docs]</a>    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -77,14 +80,15 @@
             <span class="n">text</span> <span class="o">=</span> <span class="n">color</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">END</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">message</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">CLEAR</span><span class="p">)</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">CLEAR</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reprint_sticky</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_reprint_sticky</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Re-print sticky text&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">CYAN</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_sticky_text</span> <span class="o">+</span> <span class="n">AnsiCodes</span><span class="o">.</span><span class="n">END</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+            <span class="n">six</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 </pre></div>
 
             <div class="clearer"></div>
