@@ -579,7 +579,8 @@ class XnatExperiment(XnatParentItem):
     _child_types = [XnatScan, XnatAssessor, XnatReconstruction, XnatResource]
 
     def post_create(self):
-        self.ohif_generate_session()
+        if self.app_settings.ohif_rebuild:
+            self.ohif_generate_session()
 
         # Give XNAT a little buffer time to process the session
         time.sleep(30)

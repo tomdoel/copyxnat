@@ -169,6 +169,13 @@ def _parse_command_line(args):
                                     help="Overwrite existing data on the"
                                          "destination server"
                                     )
+
+            sub_parser.add_argument("-g", "--ohif-rebuild",
+                                    action="store_true",
+                                    help="Ask the OHIF viewer to regenerate "
+                                         "experiment metadata "
+                                         "after an experiment modification."
+                                    )
     args = parser.parse_args(args)
 
     # Command class
@@ -207,7 +214,8 @@ def _parse_command_line(args):
         data_dir=args.cache_dir,
         verbose=args.verbose,
         skip_existing=_optional(args, 'skip_existing', None),
-        subject_limit=args.limit_subjects
+        subject_limit=args.limit_subjects,
+        ohif_rebuild=args.ohif_rebuild
     )
 
     return command, src_params, dst_params, project_list, app_settings

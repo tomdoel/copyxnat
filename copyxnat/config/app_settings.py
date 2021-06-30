@@ -27,7 +27,8 @@ class AppSettings:
                  data_dir=None,
                  verbose=False,
                  skip_existing=False,
-                 subject_limit=None
+                 subject_limit=None,
+                 ohif_rebuild=False
                  ):
         """
         Create global application settings
@@ -44,6 +45,9 @@ class AppSettings:
         @param transfer_mode: See TransferMode enum
         @param data_dir: Local directory for logs, downloads, cache files
         @param subject_limit: Maximum number of new subjects to process
+        @param ohif_rebuild: if True then the an API call willbe made to the
+        OHIF viewer after an experiment modification to request rebuild of the
+        experiment metadata
         @param verbose: True to show debugging output
         XNAT server
         """
@@ -56,3 +60,4 @@ class AppSettings:
         self.data_dir = data_dir or appdirs.user_data_dir('copyxnat')
         self.verbose = verbose
         self.subject_limit = subject_limit
+        self.ohif_rebuild = ohif_rebuild
