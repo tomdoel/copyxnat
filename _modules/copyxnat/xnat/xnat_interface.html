@@ -619,7 +619,8 @@
     <span class="n">_child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">XnatScan</span><span class="p">,</span> <span class="n">XnatAssessor</span><span class="p">,</span> <span class="n">XnatReconstruction</span><span class="p">,</span> <span class="n">XnatResource</span><span class="p">]</span>
 
 <div class="viewcode-block" id="XnatExperiment.post_create"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.post_create">[docs]</a>    <span class="k">def</span> <span class="nf">post_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ohif_rebuild</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span>
 
         <span class="c1"># Give XNAT a little buffer time to process the session</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span></div>

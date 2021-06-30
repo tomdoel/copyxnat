@@ -209,6 +209,13 @@
                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Overwrite existing data on the&quot;</span>
                                          <span class="s2">&quot;destination server&quot;</span>
                                     <span class="p">)</span>
+
+            <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--ohif-rebuild&quot;</span><span class="p">,</span>
+                                    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Ask the OHIF viewer to regenerate &quot;</span>
+                                         <span class="s2">&quot;experiment metadata &quot;</span>
+                                         <span class="s2">&quot;after an experiment modification.&quot;</span>
+                                    <span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
     <span class="c1"># Command class</span>
@@ -247,7 +254,8 @@
         <span class="n">data_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
         <span class="n">skip_existing</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;skip_existing&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-        <span class="n">subject_limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">limit_subjects</span>
+        <span class="n">subject_limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">limit_subjects</span><span class="p">,</span>
+        <span class="n">ohif_rebuild</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ohif_rebuild</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="p">,</span> <span class="n">project_list</span><span class="p">,</span> <span class="n">app_settings</span>
