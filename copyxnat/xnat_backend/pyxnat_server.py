@@ -65,7 +65,7 @@ class PyXnatServer(object):
                 format(project)))
 
     def experiment_list(self, project):
-        """Return number of experiments in this project"""
+        """Return list of experiments in this project"""
 
         exps = self.fetch_interface()._get_json('/REST/projects/{}/experiments'.  # pylint: disable=protected-access
                 format(project))
