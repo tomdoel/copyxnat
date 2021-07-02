@@ -230,8 +230,7 @@ class PyXnatResourceBase(PyXnatItem):
                 overwrite=overwrite
             )
         else:
-            reporter.debug("Resource is empty or zip download is "
-                                 "disabled")
+            reporter.debug("Resource is empty or zip upload is disabled")
 
     def download_zip_file(self, save_dir):
         """Get zip file from server and save to disk"""
@@ -298,8 +297,7 @@ class PyXnatFile(PyXnatItem):
                 overwrite=overwrite
             )
         else:
-            reporter.log_verbose("Resource is empty or zip download is "
-                                 "disabled")
+            reporter.log_verbose("Resource is empty or upload is by zip")
 
     def download_file(self, save_dir, label):
         """Get file from server and save to disk"""
