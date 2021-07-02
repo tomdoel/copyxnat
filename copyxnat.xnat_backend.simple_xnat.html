@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat_backend.simple_xnat module &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="copyxnat.xnat_backend.xnat_rest_client module" href="copyxnat.xnat_backend.xnat_rest_client.html" />
+    <link rel="prev" title="copyxnat.xnat_backend.server_factory module" href="copyxnat.xnat_backend.server_factory.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.xnat_rest_client.html" title="copyxnat.xnat_backend.xnat_rest_client module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.server_factory.html" title="copyxnat.xnat_backend.server_factory module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat_backend.html" accesskey="U">copyxnat.xnat_backend package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat_backend.simple_xnat module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-copyxnat.xnat_backend.simple_xnat">
+<span id="copyxnat-xnat-backend-simple-xnat-module"></span><h1>copyxnat.xnat_backend.simple_xnat module<a class="headerlink" href="#module-copyxnat.xnat_backend.simple_xnat" title="Permalink to this headline">¶</a></h1>
+<p>SimpleXnat wrappers for the XNAT REST API</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">LazyList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrapper_cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Smart list of SimpleXnat items which will auto-populate when required</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.add_new">
+<span class="sig-name descname"><span class="pre">add_new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.add_new"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.add_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a label to the list of recently created labels.
+The added label will be included in label key lists and item counts.
+If the metadata are requested for the new item then a refetch will be
+triggered when that happens</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if item exists with label</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of items, including cached and newly created items</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.get_all_metadata">
+<span class="sig-name descname"><span class="pre">get_all_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.get_all_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.get_all_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch metadata for all items. If items have been create since the
+previous cache of metadata, a new fetch will be triggered</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.get_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch labels for all items including newly created items</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.get_metadata">
+<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.get_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.get_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return metadata for item with label, or None if it does not exist</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.yield_items">
+<span class="sig-name descname"><span class="pre">yield_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.yield_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.yield_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazily populate the dictionary and yield in wrapper objects</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatAssessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatAssessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources</span></code></a></p>
+<p>Wrapper around a pyxnat assessor interface</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'assessor_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'assessors'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatBase</span></span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for an item in the XNAT REST hierarchy</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatBase.read_uri">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">read_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatBase.read_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatBase.read_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return URI of this XNAT item relative to the XNAT REST interface as
+used for read operations</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatBase.write_uri">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">write_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatBase.write_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatBase.write_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return URI of this XNAT item relative to the XNAT REST interface as
+used for write operations</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatExperiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatExperiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources</span></code></a></p>
+<p>Wrapper around an XNAT experiment interface</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.assessors">
+<span class="sig-name descname"><span class="pre">assessors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatExperiment.assessors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.assessors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatAssessors for this experiment</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'experiment_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.reconstructions">
+<span class="sig-name descname"><span class="pre">reconstructions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatExperiment.reconstructions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.reconstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatReconstructions for this experiment</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'experiments'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.scans">
+<span class="sig-name descname"><span class="pre">scans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatExperiment.scans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.scans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatScans for this experiment</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItem</span></code></a></p>
+<p>Wrapper around an XNAT file interface</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.create_on_server">
+<span class="sig-name descname"><span class="pre">create_on_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatFile.create_on_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.create_on_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on the XNAT server if it does not already exist</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.download_file">
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatFile.download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file from server and save to disk</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.file_attributes">
+<span class="sig-name descname"><span class="pre">file_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatFile.file_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.file_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file from server and save to disk</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Name'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'file_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['Name']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'files'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatInResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatInResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase</span></code></a></p>
+<p>Wrapper around an XNAT in-resource</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'in_resource_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'in/resources'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatInResource.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatBase" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatBase</span></code></a></p>
+<p>Abstraction of wrappers around XNAT REST API interfaces</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.add_to_parent">
+<span class="sig-name descname"><span class="pre">add_to_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.add_to_parent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.add_to_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update parent’s metadata to show existance of new item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.create">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new child item of this class type from given parent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.create_on_server">
+<span class="sig-name descname"><span class="pre">create_on_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.create_on_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.create_on_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on the XNAT server if it does not already exist</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.datatype">
+<span class="sig-name descname"><span class="pre">datatype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.datatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the XNAT datatype of this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.exists">
+<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the item already exists on the server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_attribute">
+<span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_attribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the specified attribute from this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_existing">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">get_existing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_existing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_existing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new child item of this class type from given parent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_id">
+<span class="sig-name descname"><span class="pre">get_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the XNAT ID of this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_label">
+<span class="sig-name descname"><span class="pre">get_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the XNAT label of this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_metadata">
+<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return XNAT metadata for this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_xml_string">
+<span class="sig-name descname"><span class="pre">get_xml_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_xml_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_xml_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return XML representation of this XNAT item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the XNAT label of this item</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label_key">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">label_key</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the dictionary key in the item’s metadata dict which will be
+used to match items between servers. In most cases <cite>label</cite> is
+appropriate if it exists for this item’s metadata</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.metadata_from_parent">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">metadata_from_parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.metadata_from_parent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.metadata_from_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return metadata for existing item or None if it does not exist</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.optional">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">optional</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.optional" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if this type is not guaranteed to exist in its parent’s schema.
+For example, some experiment types might not include scans, so querying
+for scans might return a 404 error. If this property is set to True,
+then a 404 error will be returned as en empty array.</p>
+<p>For example, experiments derive from type subjectAssessorData. This
+does not itself have scans, but many experiments derive from the subtype
+imageSessionData which does include scans. But another experiment type
+derived from subjectAssessorData might not have scans. This flag allows
+us to process experiments with and without scans without having to
+parse the schema.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.parent_container_list">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">parent_container_list</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the parent property which contains the LazyList object which
+can be queried to get the metadata for this item.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.read_uri">
+<span class="sig-name descname"><span class="pre">read_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.read_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.read_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return URI of this XNAT item relative to the XNAT REST interface as
+used for read operations</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.rest_id_keys">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">rest_id_keys</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of the dictionary keys in the item’s metadata dict which can be
+used to as part of the REST URI to fetch a resource or metadata. The
+first key in the list which has a non-empty value in the dict will be
+used. In most cases <cite>ID</cite> is appropriate, but does not exist for all
+items. <cite>label</cite> can often be used if it exists but may be empty for some
+types of resource collections.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.rest_type">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">rest_type</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the type specifier used in the REST URL</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.write_uri">
+<span class="sig-name descname"><span class="pre">write_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.write_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.write_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return URI of this XNAT item relative to the XNAT REST interface as
+used for write operations</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatItemWithInOutResources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItemWithInOutResources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItem</span></code></a></p>
+<p>Wrapper around an XNAT interface that can contain resources</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources.in_resources">
+<span class="sig-name descname"><span class="pre">in_resources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItemWithInOutResources.in_resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources.in_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatInResources for this item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources.out_resources">
+<span class="sig-name descname"><span class="pre">out_resources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItemWithInOutResources.out_resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources.out_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatOutResources for this item</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatItemWithResources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItemWithResources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItem</span></code></a></p>
+<p>Wrapper around a XNAT REST API interface that can contain resources</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources.resources">
+<span class="sig-name descname"><span class="pre">resources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItemWithResources.resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources.resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return item’s resources as an array of SimpleXnatResources</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatOutResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatOutResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase</span></code></a></p>
+<p>Wrapper around an XNAT out-resource</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'out_resource_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'out/resources'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatOutResource.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatProject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatProject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources</span></code></a></p>
+<p>Wrapper around an XNAT project interface</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'ID'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'cached_project_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'projects'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.subjects">
+<span class="sig-name descname"><span class="pre">subjects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatProject.subjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.subjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatSubjects for this project</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatReconstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatReconstruction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources</span></code></a></p>
+<p>Wrapper around an XNAT reconstruction</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'ID'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'reconstruction_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'reconstructions'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase</span></code></a></p>
+<p>Wrapper around an XNAT resource interface</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResource.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResource.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResource.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'resource_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResource.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResource.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'resources'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResource.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatResourceBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatResourceBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItem</span></code></a></p>
+<p>Wrapper around an XNAT resource interface</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.create_on_server">
+<span class="sig-name descname"><span class="pre">create_on_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatResourceBase.create_on_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.create_on_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create this item on the XNAT server if it does not already exist</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.download_zip_file">
+<span class="sig-name descname"><span class="pre">download_zip_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatResourceBase.download_zip_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.download_zip_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get zip file from server and save to disk</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.files">
+<span class="sig-name descname"><span class="pre">files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatResourceBase.files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatFiles for this resource container</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.resource_attributes">
+<span class="sig-name descname"><span class="pre">resource_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatResourceBase.resource_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.resource_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dict or resource attributes</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['label',</span> <span class="pre">'xnat_abstractresource_id']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatScan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources</span></code></a></p>
+<p>Wrapper around an XNAT interface for items which can contain resources</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'ID'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'scan_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'scans'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatBase" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatBase</span></code></a></p>
+<p>Interface to XNAT REST API</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.datatypes">
+<span class="sig-name descname"><span class="pre">datatypes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.datatypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.datatypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return datatypes on this server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.does_request_succeed">
+<span class="sig-name descname"><span class="pre">does_request_succeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.does_request_succeed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.does_request_succeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return True if it succeeds</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.experiment_list">
+<span class="sig-name descname"><span class="pre">experiment_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.experiment_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.experiment_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of experiments in this project</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect from server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.num_experiments">
+<span class="sig-name descname"><span class="pre">num_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.num_experiments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.num_experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of experiments in this project</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return SimpleXnatProject project</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project_list">
+<span class="sig-name descname"><span class="pre">project_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.project_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of project ids</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project_name_metadata">
+<span class="sig-name descname"><span class="pre">project_name_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.project_name_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project_name_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of dictionaries containing project name metadata</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.projects">
+<span class="sig-name descname"><span class="pre">projects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.projects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return item’s projects as an array of SimpleXnatProjects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.read_uri">
+<span class="sig-name descname"><span class="pre">read_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.read_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.read_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return URI of this XNAT item relative to the XNAT REST interface as
+used for read operations</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property">
+<span class="sig-name descname"><span class="pre">request_json_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request_json_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string">
+<span class="sig-name descname"><span class="pre">request_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_on_failure</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.write_uri">
+<span class="sig-name descname"><span class="pre">write_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.write_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.write_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return URI of this XNAT item relative to the XNAT REST interface as
+used for write operations</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatSubject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatSubject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources</span></code></a></p>
+<p>Wrapper around an XNAT subject interface</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.experiments">
+<span class="sig-name descname"><span class="pre">experiments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatSubject.experiments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of SimpleXnatExperiments for this subject</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.label_key">
+<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.label_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.optional">
+<span class="sig-name descname"><span class="pre">optional</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.parent_container_list">
+<span class="sig-name descname"><span class="pre">parent_container_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'subject_list'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.parent_container_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.rest_id_keys">
+<span class="sig-name descname"><span class="pre">rest_id_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.rest_id_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.rest_type">
+<span class="sig-name descname"><span class="pre">rest_type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'subjects'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.rest_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/project-icon.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyxnat.xnat_backend.server_factory.html"
+                        title="previous chapter">copyxnat.xnat_backend.server_factory module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyxnat.xnat_backend.xnat_rest_client.html"
+                        title="next chapter">copyxnat.xnat_backend.xnat_rest_client module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/copyxnat.xnat_backend.simple_xnat.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.xnat_rest_client.html" title="copyxnat.xnat_backend.xnat_rest_client module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.server_factory.html" title="copyxnat.xnat_backend.server_factory module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat_backend.html" >copyxnat.xnat_backend package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat_backend.simple_xnat module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    </div>
+  </body>
+</html>
