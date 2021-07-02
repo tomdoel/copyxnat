@@ -3,6 +3,7 @@
 """Factory for creating backend objects for XNAT communication"""
 
 from copyxnat.xnat_backend.pyxnat_server import PyXnatServer
+from copyxnat.xnat_backend.simple_xnat import SimpleXnatServer
 
 
 class ServerFactory(object):
@@ -19,5 +20,7 @@ class ServerFactory(object):
         """
         if self._backend.lower() == 'pyxnat':
             return PyXnatServer(params=params)
+        elif self._backend.lower() == 'simplexnat':
+            return SimpleXnatServer(params=params)
         else:
             raise ValueError('Unknown backend {}'.format(self._backend))
