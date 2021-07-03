@@ -8,7 +8,7 @@ from mockito import when, mock
 
 from copyxnat.config.server_params import XnatServerParams
 
-from copyxnat.xnat_backend.xnat_session import SessionId, RestWrapper
+from copyxnat.xnat_backend.xnat_session import SessionId, RestWrapper, Utils
 
 
 @pytest.mark.usefixtures('unstub')

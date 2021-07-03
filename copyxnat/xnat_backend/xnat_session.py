@@ -4,6 +4,8 @@
 import requests
 from requests.auth import HTTPBasicAuth
 
+from copyxnat.xnat_backend.utis import Utils
+
 
 class XnatSession(object):
     """
