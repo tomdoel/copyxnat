@@ -45,6 +45,7 @@
 <a class="reference external image-reference" href="https://github.com/tomdoel/copyxnat/workflows/test/badge.svg"><img alt="test" src="https://github.com/tomdoel/copyxnat/workflows/test/badge.svg" /></a>
 <a class="reference external image-reference" href="https://tomdoel.github.io/copyxnat/"><img alt="docs" src="https://github.com/tomdoel/copyxnat/workflows/docs/badge.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/copyxnat"><img alt="package" src="https://github.com/tomdoel/copyxnat/workflows/package/badge.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/tomdoel/copyxnat"><img alt="Python" src="https://shields.io/pypi/pyversions/copyxnat" /></a>
 <a class="reference external image-reference" href="https://github.com/tomdoel/copyxnat/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/tomdoel/copyxnat" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/copyxnat/"><img alt="PyPI" src="https://img.shields.io/pypi/v/copyxnat" /></a>
 <a class="reference external image-reference" href="https://hub.docker.com/r/tomdoel/copyxnat"><img alt="DockerHub" src="https://img.shields.io/docker/v/tomdoel/copyxnat?sort=semver&amp;label=docker" /></a>
@@ -55,14 +56,19 @@ Please use caution when running on production servers</p>
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
 <p>Please make sure your XNAT archive and PostgreSQL database are fully backed up before running
 CopyXnat on a real XNAT server. CopyXnat may modify and overwrite your data.</p>
-<div class="section" id="install-and-run-using-pip-python-2-7-and-3-6">
-<h3>Install and run using pip (Python 2.7 and 3.6+)<a class="headerlink" href="#install-and-run-using-pip-python-2-7-and-3-6" title="Permalink to this headline">¶</a></h3>
-<p>You need Python 2.7 or Python 3.6 or later. It is recommended that you do not modify your system Python installation. You can use tools such
-as Homebrew (macOS) to install the latest python version without affecting your system python.</p>
+<div class="section" id="install-and-run-using-pip">
+<h3>Install and run using pip<a class="headerlink" href="#install-and-run-using-pip" title="Permalink to this headline">¶</a></h3>
+<p>Python 2.7 or 3.6+ is required, and pip should be installed.</p>
+<p>It is recommended that you do not modify your system Python installation. Use a tool such
+as Homebrew (macOS) to install the latest python version without affecting your system python.
+Then, create a dedicated virtual python environment using virtualenv and virtualenvwrapper or
+similar tools.</p>
+<p>Once you have a suitable python environment set up, install with pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">copyxnat</span> <span class="o">--</span><span class="n">upgrade</span>
 <span class="n">copyxnat</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
+<p>You can use pip’s <code class="docutils literal notranslate"><span class="pre">--user</span></code> flag to install dependencies in the user space instead of globally.</p>
 </div>
 <div class="section" id="install-and-run-using-docker">
 <h3>Install and run using Docker<a class="headerlink" href="#install-and-run-using-docker" title="Permalink to this headline">¶</a></h3>
@@ -299,7 +305,7 @@ prompted.</p>
   <ul>
 <li><a class="reference internal" href="#">CopyXnat</a><ul>
 <li><a class="reference internal" href="#quick-start">Quick start</a><ul>
-<li><a class="reference internal" href="#install-and-run-using-pip-python-2-7-and-3-6">Install and run using pip (Python 2.7 and 3.6+)</a></li>
+<li><a class="reference internal" href="#install-and-run-using-pip">Install and run using pip</a></li>
 <li><a class="reference internal" href="#install-and-run-using-docker">Install and run using Docker</a></li>
 </ul>
 </li>
