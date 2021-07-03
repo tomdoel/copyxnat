@@ -50,7 +50,8 @@ class XnatSession(object):
                 method=method,
                 uri=uri,
                 qs_params=qs_params,
-                headers=self._session_id.add_session_header(headers=headers),
+                headers=Utils.combine_dicts(headers,
+                                            self._session_id.session_header()),
                 body=body,
                 stream=stream
             )
@@ -81,7 +82,7 @@ class XnatSession(object):
             self._rest.request(
                 method='delete',
                 uri='JSESSION',
-                headers=self._session_id.add_session_header()
+                headers=self._session_id.session_header()
             )
             self._session_id.reset()
 
@@ -103,6 +104,12 @@ class SessionId(object):
     def reset(self):
         """Indicate the current session IF is no longer valid"""
         self._session_id = None
+
+    def session_header(self):
+        """Return XNAT session ID header for REST authentication"""
+        if not self._session_id:
+            raise ValueError('No session cookie present')
+        return {'Cookie': 'JSESSIONID={}'.format(self._session_id)}
 
     def add_session_header(self, headers=None):
         """Return dictionary of REST headers which includes any specified

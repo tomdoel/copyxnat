@@ -79,7 +79,7 @@ class TestRestWrapper(object):
         assert actual_response == response
 
 
-class TestSession(object):
+class TestSessionId(object):
 
     def test_exists_reset(self):
         session_id = SessionId()
@@ -89,6 +89,21 @@ class TestSession(object):
         assert session_id.exists()
         session_id.reset()
         assert not session_id.exists()
+
+    def test_session_header(self):
+        session_id = SessionId()
+
+        with pytest.raises(Exception) as e_info:
+            session_id.add_session_header()
+
+        session_id.set('abcde')
+        assert session_id.session_header() == {'Cookie': 'JSESSIONID=abcde'}
+        session_id.set('fghij')
+        assert session_id.add_session_header() == {'Cookie': 'JSESSIONID=fghij'}
+
+        session_id.reset()
+        with pytest.raises(Exception) as e_info:
+            session_id.add_session_header()
 
     def test_add_session_header(self):
         session_id = SessionId()
