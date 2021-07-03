@@ -3,6 +3,7 @@
 ![test](https://github.com/tomdoel/copyxnat/workflows/test/badge.svg)
 [![docs](https://github.com/tomdoel/copyxnat/workflows/docs/badge.svg)](https://tomdoel.github.io/copyxnat/)
 [![package](https://github.com/tomdoel/copyxnat/workflows/package/badge.svg)](https://pypi.org/project/copyxnat)
+[![Python](https://shields.io/pypi/pyversions/copyxnat)](https://github.com/tomdoel/copyxnat)
 [![license](https://img.shields.io/github/license/tomdoel/copyxnat)](https://github.com/tomdoel/copyxnat/blob/main/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/copyxnat)](https://pypi.org/project/copyxnat/)
 [![DockerHub](https://img.shields.io/docker/v/tomdoel/copyxnat?sort=semver&label=docker)](https://hub.docker.com/r/tomdoel/copyxnat)
@@ -17,16 +18,24 @@ Please use caution when running on production servers
 Please make sure your XNAT archive and PostgreSQL database are fully backed up before running
 CopyXnat on a real XNAT server. CopyXnat may modify and overwrite your data.
 
+### Install and run using pip
 
-### Install and run using pip (Python 2.7 and 3.6+)
+Python 2.7 or 3.6+ is required, and pip should be installed.
 
-You need Python 2.7 or Python 3.6 or later. It is recommended that you do not modify your system Python installation. You can use tools such
+It is recommended that you do not modify your system Python installation. Use a tool such
 as Homebrew (macOS) to install the latest python version without affecting your system python.
+Then, create a dedicated virtual python environment using virtualenv and virtualenvwrapper or 
+similar tools.
+
+Once you have a suitable python environment set up, install with pip: 
 
 ```
     pip install copyxnat --upgrade
     copyxnat --help
 ```
+
+You can use pip's `--user` flag to install dependencies in the user space instead of globally.
+
 
 ### Install and run using Docker
 
