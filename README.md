@@ -112,6 +112,40 @@ prompted.
     copyxnat ohif -s "https://YOUR-SERVER-URL" -u "YOUR-USER-NAME" 
     ```
 
+## Command-line parameters
+
+The parameters vary depending which command you are running.
+To see help for a particular command, run with the command name and `--help`, for example:
+
+    ```
+    copyxnat copy --help
+    ```
+
+
+| Parameter | Short form | Default | Description | Notes |
+|---|---|---|---|---|
+| --help  | -h  | - | Shows general help |  |
+| _command_ --help  | _command_ -h  | - | Shows detailed help for this command |  |
+| --version  | | - | Shows version number |  |
+| _command_  | | - | Command to run. One of `copy`, `export`, `show`, `compare`, `check-datatypes`, `ohif`, `rebuild-catalog` | See above for examples of each command. |
+| --src-host _hostname_  | -s  | - | hostname of source XNAT server |  |
+| --src-user _username_  | -u  | - | XNAT username for source server |  |
+| --project _project_string_  | -p  | all projects | list of project IDs to process | Use a colon if you want to rename project IDs between source and destination servers, eg `srcId:dstId`. To process multiple projects, separate the IDs with commas, eg `proj1,proj2`. Do not include any spaces. You can do both, e.g. `prj1,prj2:dst2,prj3`  |
+| --dst-host _hostname_  | -d  | - | hostname of destination XNAT server | Only for some commands |
+| --dst-user _username_  | -w  | - | XNAT username for destination server | Only for some commands |
+| --fix-scan-types  | -f  | False | Fix undefined scan types on the copy | If the source server does not correctly specify the scan type, CopyXnat will attempt to determine the scan type and set it on the destination server |
+| --transfer-mode _mode_  | -t  | file | Specifies how files will be copied or downloaded. One of `file`, `zip`, `meta`, `rsync` | `file` to copy one file at a time. `zip` to zip up each resource collection as a zip file (generally faster). `meta` to transfer metadata only, not resource files. `rsync` to transfer files using rsync (experimental) |
+| --limit-subjects _limit_  | -l  | no limit | Process a maximum number of subjects specified by the integer _limit_. | During a copy, the limit will exclude subjects which already exist on the destination and have not changed. |
+| --skip-existing  | -n  | False | Only copy new experiments; do not synchronise existing experiments | Speeds up copying process when some experiments have already been copied to the destination server. However will not copy over new scans and resources that have been added to existing experiments. |
+| --verbose  | -v  | False | Output additional information | For debugging and for providing additional information about what the command is doing. |
+| --insecure | -k  | False | Do not verify server certificates | Do not use in production as is vulnerable to MITM. For testing or working with self-signed certificates within a secure private network. |
+| --dry-run  | -y  | False | Do not make changes on the destination server | Useful for seeing what changes a command may make before running it for real. May cause errors in some commands because the expected changes on the destination server didn't happen. |
+| --overwrite-existing  | -o  | False | Overwrite existing data on the destination server | When copying, will modify and overwrite existing data |
+| --ohif-rebuild  | -g  | False | When copying, trigger an OHIF viewer rebuild after each experiment copy. | The OHIF Viewer does not always detect new data being added to existing experiments. This will cause a session rebuild when data are copied, but this will take additional time. |
+| --rsync-src-user  | -i  | - | ssh source server username for copy via rsync | Experimental. Only used for copy using `--transfer-mode rsync` |
+| --rsync-dst-user  | -w  | - | ssh destination server username for copy via rsync | Experimental. Only used for copy using `--transfer-mode rsync` |
+
+
 ## Supported XNAT data levels
 
 CopyXnat can process the following XNAT data hierarchies.
