@@ -127,15 +127,6 @@ class SessionId(object):
             raise ValueError('No session cookie present')
         return {'Cookie': 'JSESSIONID={}'.format(self._session_id)}
 
-    def add_session_header(self, headers=None):
-        """Return dictionary of REST headers which includes any specified
-        headers and adds a cookie header containing the Session ID"""
-        if not self._session_id:
-            raise ValueError('No session cookie present')
-        rest_headers = headers if headers is not None else {}
-        rest_headers['Cookie'] = 'JSESSIONID={}'.format(self._session_id)
-        return rest_headers
-
 
 class RestWrapper(object):
     """

@@ -271,10 +271,10 @@ class TestXnatSession(object):
         # Set dummy parameters where not specified by the caller
         api = 'my-method' if api is None else api
         method = 'my-method' if method is None else method
-        qs_params = {'first': 'value1', 'second': 'value2'} if \
+        qs_params = {'song': 'yesterday', 'opera': 'carmen'} if \
             qs_params is None else qs_params
         body = 'ABCDEFG' if body is None else body
-        headers = {'hfirst': 'hvalue1', 'hsecond': 'hvalue2'} if \
+        headers = {'book': '1984', 'film': 'casablanca'} if \
             body is None else headers
         stream = True if stream is None else stream
         dummy_response = 'OK'
@@ -328,50 +328,36 @@ class TestSessionId(object):
         session_id = SessionId()
 
         with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
+            session_id.session_header('')
+
+        with pytest.raises(Exception) as e_info:
+            session_id.set('')
 
         session_id.set('abcde')
         assert session_id.session_header() == {'Cookie': 'JSESSIONID=abcde'}
+
         session_id.set('fghij')
-        assert session_id.add_session_header() == {'Cookie': 'JSESSIONID=fghij'}
+        assert session_id.session_header() == {'Cookie': 'JSESSIONID=fghij'}
 
         session_id.reset()
         with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
+            session_id.session_header()
 
-    def test_add_session_header(self):
-        session_id = SessionId()
-
-        with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
-
-        session_id.set('abcde')
-        assert session_id.add_session_header() == {'Cookie': 'JSESSIONID=abcde'}
-        assert session_id.add_session_header({'book': '1984', 'film': 'casablanca'}) == {'Cookie': 'JSESSIONID=abcde', 'book': '1984', 'film': 'casablanca'}
-        session_id.set('fghij')
-        assert session_id.add_session_header() == {'Cookie': 'JSESSIONID=fghij'}
-        assert session_id.add_session_header({'book': '1984', 'film': 'casablanca'}) == {'Cookie': 'JSESSIONID=fghij', 'book': '1984', 'film': 'casablanca'}
-
-        session_id.reset()
-        with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
+        session_id.set('hijkl')
+        assert session_id.session_header() == {'Cookie': 'JSESSIONID=hijkl'}
 
     def test_fails_for_empty_id(self):
         session_id = SessionId()
 
         with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
+            session_id.session_header()
+
+        with pytest.raises(Exception) as e_info:
+            session_id.set('')
 
         session_id.set('abcde')
-        assert session_id.add_session_header() == {'Cookie': 'JSESSIONID=abcde'}
+        assert session_id.session_header() == {'Cookie': 'JSESSIONID=abcde'}
 
         session_id.reset()
         with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
-
-        session_id.set('fghij')
-        assert session_id.add_session_header() == {'Cookie': 'JSESSIONID=fghij'}
-
-        session_id.reset()
-        with pytest.raises(Exception) as e_info:
-            session_id.add_session_header()
+            session_id.session_header()
