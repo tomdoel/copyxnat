@@ -4,7 +4,7 @@
 
 import pytest
 import requests as requests
-from mockito import when, mock, ANY, expect, verifyNoUnwantedInteractions
+from mockito import mock, ANY, expect, verifyNoUnwantedInteractions
 from requests.auth import HTTPBasicAuth
 
 from copyxnat.config.server_params import XnatServerParams
@@ -141,11 +141,16 @@ class TestXnatSession(object):
                        auth=None, response_text='OK', params=None,
                        expect_raise_for_status=False, body=None, stream=None):
         mock_args = {
-            'status_code': 200,
-            'text': response_text,
+            'status_code': 200 if success else 401,
+            'text': response_text if success else 'TEST AUTH FAILURE RESPONSE',
         }
+
         if expect_raise_for_status:
-            mock_args['raise_for_status'] = lambda: None
+            if success:
+                mock_args['raise_for_status'] = lambda: None
+            else:
+                mock_args['raise_for_status'] = \
+                    TestXnatSession._raise_for_status
 
         auth_response = mock(mock_args, spec=requests.Response)
 
@@ -153,6 +158,10 @@ class TestXnatSession(object):
             url=url, method=method, auth=auth, headers=headers,
             params=params, data=body, verify=verify, stream=stream
         ).thenReturn(auth_response)
+
+    @staticmethod
+    def _raise_for_status():
+        raise MockHttpError()
 
     @pytest.mark.parametrize("login_first", [True, False])
     @pytest.mark.parametrize("logout_last", [True, False])
@@ -229,6 +238,123 @@ class TestXnatSession(object):
             session.__del__()
             verifyNoUnwantedInteractions()
 
+    def test_reauth_success(self):
+        # Tests when a REST call fails with authentication error, so
+        # a new session is created and the REST call retries and succeeds
+
+        host = 'http://test.server'
+        params = XnatServerParams(host=host, user='fred', insecure=False)
+        session = XnatSession(params)
+
+        # First request
+        cookie1 = 'first_session_id'
+        with self._mock_auth_login(expected_host=host, success=True,
+                                   verify=True, cookie=cookie1):
+            api1 = 'my-api/call1'
+            expected_url1 = host + '/data/' + api1
+            self._do_request(session=session, cookie=cookie1,
+                             api=api1,
+                             expected_url=expected_url1,
+                             expected_verify=True
+                             )
+            verifyNoUnwantedInteractions()
+
+        # Trigger an authentication failure on new rest call but let reauth
+        # succeed
+        cookie2 = 'second_session_id'
+        with self._mock_auth_login(
+                expected_host=host, success=True, verify=True, cookie=cookie2
+        ):
+            api2 = 'my-api/call2'
+            expected_url2 = host + '/data/' + api2
+            self._do_request(session=session, cookie=cookie1, api=api2,
+                             retry_cookie=cookie2,
+                             expected_url=expected_url2, expected_verify=True,
+                             success_first=False, success_second=True)
+
+        # New session is valid so logout
+        with self._mock_auth_logout(expected_host=host, success=True,
+                                    verify=True, cookie=cookie2):
+            session.__del__()
+            verifyNoUnwantedInteractions()
+
+    def test_reauth_failure(self):
+        # Tests when a REST call fails with authentication error, try to create
+        # a new session but this fails
+
+        host = 'http://test.server'
+        params = XnatServerParams(host=host, user='fred', insecure=False)
+        session = XnatSession(params)
+
+        # First request
+        cookie1 = 'first_session_id'
+        with self._mock_auth_login(expected_host=host, success=True,
+                                   verify=True, cookie=cookie1):
+            api1 = 'my-api/call1'
+            expected_url1 = host + '/data/' + api1
+            self._do_request(session=session, cookie=cookie1,
+                             api=api1,
+                             expected_url=expected_url1,
+                             expected_verify=True
+                             )
+            verifyNoUnwantedInteractions()
+
+        # Trigger an authentication failure on rest call, let the reauth fail
+        cookie2 = 'fourth_session_id'
+        with self._mock_auth_login(
+                expected_host=host, success=False, verify=True, cookie=cookie2
+        ):
+            api2 = 'my-api/call2'
+            expected_url2 = host + '/data/' + api2
+            with pytest.raises(MockHttpError) as e_info:
+                self._do_request(session=session, cookie=cookie1, api=api2,
+                                 retry_cookie=None,
+                                 expected_url=expected_url2, expected_verify=True,
+                                 success_first=False, success_second=False)
+
+        # Should be no sessions remaining due to failure
+        session.__del__()
+        verifyNoUnwantedInteractions()
+
+    def test_reauth_retry_failure(self):
+        # This captures the case where user credentials succeed but the
+        # subsequent REST call still returns an unauthorised error. In this
+        # case a response is returned to the rest client rather than
+        # raising an exception as it suggests some other access issue rather
+        # than user credentials.
+
+        host = 'http://test.server'
+        params = XnatServerParams(host=host, user='fred', insecure=False)
+        session = XnatSession(params)
+
+        # First request
+        cookie1 = 'first_session_id'
+        with self._mock_auth_login(expected_host=host, success=True,
+                                   verify=True, cookie=cookie1):
+            api1 = 'my-api/call1'
+            expected_url1 = host + '/data/' + api1
+            self._do_request(session=session, cookie=cookie1,
+                             api=api1,
+                             expected_url=expected_url1,
+                             expected_verify=True
+                             )
+            verifyNoUnwantedInteractions()
+
+        # Trigger an authentication failure on rest call, let the reauth
+        # succeed but make the request retry fail
+        cookie2 = 'second_session_id'
+        with self._mock_auth_login(
+                expected_host=host, success=True, verify=True,
+                cookie=cookie2
+        ):
+            api2 = 'my-api/call2'
+            expected_url2 = host + '/data/' + api2
+            self._do_request(session=session, cookie=cookie1, api=api2,
+                             retry_cookie=cookie2,
+                             expected_url=expected_url2,
+                             expected_verify=True,
+                             success_first=False, success_second=False)
+
     @pytest.mark.parametrize(
         "host, api, expected_host, expected_url", [
             ('http://test.server/', 'my-api/call', 'http://test.server', 'http://test.server/data/my-api/call'),
@@ -266,7 +392,8 @@ class TestXnatSession(object):
     def _do_request(
             self, session, cookie, expected_url, expected_verify,
             api=None, method=None, qs_params=None, body=None, headers=None,
-            stream=None
+            stream=None, success_first=True, success_second=True,
+            retry_cookie=None
     ):
         # Set dummy parameters where not specified by the caller
         api = 'my-method' if api is None else api
@@ -275,17 +402,29 @@ class TestXnatSession(object):
             qs_params is None else qs_params
         body = 'ABCDEFG' if body is None else body
         headers = {'book': '1984', 'film': 'casablanca'} if \
-            body is None else headers
+            headers is None else headers
         stream = True if stream is None else stream
         dummy_response = 'OK'
+        expected_response = dummy_response if success_first or success_second \
+            else 'TEST AUTH FAILURE RESPONSE'
 
-        with self._mock_request(method=method, url=expected_url,
-                                success=True, verify=expected_verify,
-                                cookie=cookie,
-                                qs_params=qs_params, body=body,
-                                headers=headers,
-                                response_text=dummy_response,
-                                stream=stream):
+        with self._mock_request(
+            method=method, url=expected_url, verify=expected_verify,
+            qs_params=qs_params, body=body, headers=headers,
+            response_text=dummy_response, stream=stream,
+            success=success_first, cookie=cookie,
+        ):
+            # If the first call fails then we expect the request to
+            # reauthenticate and request again with a new session ID
+            if retry_cookie:
+                # Note: no with, so we must call verifyNoUnwantedInteractions()
+                # later on
+                self._mock_request(
+                    method=method, url=expected_url, verify=expected_verify,
+                    success=success_second, cookie=retry_cookie,
+                    qs_params=qs_params, body=body, headers=headers,
+                    response_text=dummy_response, stream=stream)
+
             assert session.request(
                 method=method,
                 uri=api,
@@ -293,7 +432,11 @@ class TestXnatSession(object):
                 body=body,
                 headers=headers,
                 stream=stream
-            ).text == dummy_response
+            ).text == expected_response
+
+            # Important do verify here because the second mock request
+            # expectation does not have a with
+            verifyNoUnwantedInteractions()
 
 
 @pytest.mark.usefixtures('unstub')
@@ -311,6 +454,10 @@ class TestRestWrapper(object):
         server_params = XnatServerParams(host=host, user='fred', insecure=False)
         rest_wrapper = RestWrapper(server_params)
         assert rest_wrapper.get_url(api) == url
+
+
+class MockHttpError(Exception):
+    pass
 
 
 class TestSessionId(object):
