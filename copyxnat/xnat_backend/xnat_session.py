@@ -113,6 +113,8 @@ class SessionId(object):
 
     def set(self, new_id):
         """Set a new session ID"""
+        if not new_id:
+            raise ValueError('No session ID specified')
         self._session_id = new_id
 
     def reset(self):
