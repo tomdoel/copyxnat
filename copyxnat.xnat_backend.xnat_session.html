@@ -57,26 +57,9 @@
 <p>Wrapper around the XNAT REST API which automatically assembles the URL
 from the server name in the provided params and REST API URI</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_session.RestWrapper.request">
-<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_session.html#RestWrapper.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_session.RestWrapper.request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Send a REST call to an XNAT server. The URL of the call will be
-assembled from the server host and the URI</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> – Request method (eg get, put, post)</p></li>
-<li><p><strong>uri</strong> – XNAT REST API string (excluding <a class="reference external" href="https://server/data/">https://server/data/</a>)</p></li>
-<li><p><strong>qs_params</strong> – dictionary of querystring parameters for the request</p></li>
-<li><p><strong>body</strong> – request body</p></li>
-<li><p><strong>headers</strong> – dictionary of headers for the request</p></li>
-<li><p><strong>auth</strong> – Authentication object for the requests library</p></li>
-<li><p><strong>stream</strong> – True if content is streamed</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>requests.Response</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_session.RestWrapper.get_url">
+<span class="sig-name descname"><span class="pre">get_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_session.html#RestWrapper.get_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_session.RestWrapper.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return full REST URL for the given URI</p>
 </dd></dl>
 
 </dd></dl>
@@ -87,13 +70,6 @@ assembled from the server host and the URI</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Wrapper around an XNAT session ID cookie</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_session.SessionId.add_session_header">
-<span class="sig-name descname"><span class="pre">add_session_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_session.html#SessionId.add_session_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_session.SessionId.add_session_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return dictionary of REST headers which includes any specified
-headers and adds a cookie header containing the Session ID</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_session.SessionId.exists">
 <span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_session.html#SessionId.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_session.SessionId.exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if there is an existing session ID</p>
@@ -103,6 +79,12 @@ headers and adds a cookie header containing the Session ID</p>
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_session.SessionId.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_session.html#SessionId.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_session.SessionId.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicate the current session IF is no longer valid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_session.SessionId.session_header">
+<span class="sig-name descname"><span class="pre">session_header</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_session.html#SessionId.session_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_session.SessionId.session_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return XNAT session ID header for REST authentication</p>
 </dd></dl>
 
 <dl class="py method">
