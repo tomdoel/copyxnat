@@ -312,57 +312,6 @@ class TestRestWrapper(object):
         rest_wrapper = RestWrapper(server_params)
         assert rest_wrapper.get_url(api) == url
 
-    @pytest.mark.parametrize(
-        "host, api, url", [
-            ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server', 'my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', '/my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', 'my-api/call/', 'http://test.server/data/my-api/call/')
-        ])
-    @pytest.mark.parametrize("insecure, verify", [(True, False), (False, True)])
-    @pytest.mark.parametrize("stream", [True, False, None])
-    def test_rest_wrapper(self, host, api, url, insecure, verify, stream):
-        server_params = XnatServerParams(host=host,
-                                         user='fred',
-                                         insecure=insecure)
-
-        # These parameters are passed through so just check they are unaltered
-        dummy_method = 'my-method'
-        dummy_qs_params = {'first': 'value1', 'second': 'value2'}
-        dummy_headers = {'hfirst': 'hvalue1', 'hsecond': 'hvalue2'}
-        dummy_body = 'ABCDEFG'
-        dummy_auth = object()
-
-        response = mock({
-            'status_code': 200,
-            'text': 'OK'
-        }, spec=requests.Response)
-
-        rest_wrapper = RestWrapper(server_params)
-
-        when(requests).request(
-            url=url,
-            method=dummy_method,
-            auth=dummy_auth,
-            params=dummy_qs_params,
-            headers=dummy_headers,
-            data=dummy_body,
-            verify=verify,
-            stream=stream
-        ).thenReturn(response)
-
-        actual_response = rest_wrapper.request(
-            method=dummy_method,
-            uri=api,
-            qs_params=dummy_qs_params,
-            body=dummy_body,
-            headers=dummy_headers,
-            auth=dummy_auth,
-            stream=stream
-        )
-        assert actual_response == response
-
 
 class TestSessionId(object):
 

@@ -144,32 +144,6 @@ class RestWrapper(object):
         self._host = params.host.strip()
         self._verify = not params.insecure
 
-    def request(self, method, uri, qs_params=None, body=None, headers=None,
-                auth=None, stream=None):
-        """
-        Send a REST call to an XNAT server. The URL of the call will be
-        assembled from the server host and the URI
-
-        :param method: Request method (eg get, put, post)
-        :param uri: XNAT REST API string (excluding https://server/data/)
-        :param qs_params: dictionary of querystring parameters for the request
-        :param body: request body
-        :param headers: dictionary of headers for the request
-        :param auth: Authentication object for the requests library
-        :param stream: True if content is streamed
-        :return: requests.Response
-        """
-        return requests.request(
-            method=method,
-            url=self.get_url(uri),
-            auth=auth,
-            params=qs_params,
-            headers=headers,
-            data=body,
-            verify=self._verify,
-            stream=stream
-        )
-
     def get_url(self, uri):
         """Return full REST URL for the given URI"""
         return '{}/data/{}'.format(self._host.rstrip('/'), uri.lstrip('/'))
