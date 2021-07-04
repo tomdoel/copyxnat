@@ -17,6 +17,7 @@ class XnatSession(object):
         self._params = params
         self._rest = RestWrapper(params=params)
         self._session_id = SessionId()
+        self._verify = not params.insecure
 
     def __del__(self):
         self.logout()
@@ -46,7 +47,7 @@ class XnatSession(object):
             # Create session if it does not yet exist
             self.login()
 
-            response = self._rest.request(
+            response = self._request(
                 method=method,
                 uri=uri,
                 qs_params=qs_params,
@@ -67,7 +68,7 @@ class XnatSession(object):
         """Create this XNAT session if it does not already exist"""
 
         if not self._session_id.exists():
-            response = self._rest.request(
+            response = self._request(
                 method='post',
                 uri='JSESSION',
                 auth=HTTPBasicAuth(self._params.user, self._params.pwd)
@@ -79,12 +80,25 @@ class XnatSession(object):
         """End this XNAT session"""
 
         if self._session_id.exists():
-            self._rest.request(
+            self._request(
                 method='delete',
                 uri='JSESSION',
                 headers=self._session_id.session_header()
             )
             self._session_id.reset()
+
+    def _request(self, method, uri, qs_params=None, body=None, headers=None,
+                 auth=None, stream=None):
+        return requests.request(
+            method=method,
+            url=self._rest.get_url(uri),
+            auth=auth,
+            params=qs_params,
+            headers=headers,
+            data=body,
+            verify=self._verify,
+            stream=stream
+        )
 
 
 class SessionId(object):
