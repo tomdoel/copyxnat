@@ -22,6 +22,19 @@ class TestRestWrapper(object):
             ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
             ('http://test.server/', 'my-api/call/', 'http://test.server/data/my-api/call/')
         ])
+    def test_get_url(self, host, api, url):
+        server_params = XnatServerParams(host=host, user='fred', insecure=False)
+        rest_wrapper = RestWrapper(server_params)
+        assert rest_wrapper.get_url(api) == url
+
+    @pytest.mark.parametrize(
+        "host, api, url", [
+            ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
+            ('http://test.server', 'my-api/call', 'http://test.server/data/my-api/call'),
+            ('http://test.server/', '/my-api/call', 'http://test.server/data/my-api/call'),
+            ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
+            ('http://test.server/', 'my-api/call/', 'http://test.server/data/my-api/call/')
+        ])
     @pytest.mark.parametrize("insecure, verify", [(True, False), (False, True)])
     @pytest.mark.parametrize("stream", [True, False, None])
     def test_rest_wrapper(self, host, api, url, insecure, verify, stream):

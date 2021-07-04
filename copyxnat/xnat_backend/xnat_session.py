@@ -140,7 +140,7 @@ class RestWrapper(object):
         """
         return requests.request(
             method=method,
-            url=self._get_url(uri),
+            url=self.get_url(uri),
             auth=auth,
             params=qs_params,
             headers=headers,
@@ -149,5 +149,6 @@ class RestWrapper(object):
             stream=stream
         )
 
-    def _get_url(self, uri):
+    def get_url(self, uri):
+        """Return full REST URL for the given URI"""
         return '{}/data/{}'.format(self._host.rstrip('/'), uri.lstrip('/'))
