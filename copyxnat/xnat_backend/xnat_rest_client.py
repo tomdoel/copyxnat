@@ -4,7 +4,7 @@
 
 import os
 
-
+from copyxnat.xnat_backend.utis import Utils
 from copyxnat.xnat_backend.xnat_session import XnatSession
 
 
@@ -39,15 +39,18 @@ class XnatRestClient(object):
     def file_attributes(self, parent_uri, label):
         """Return standard attributes for this file"""
         items = self.request_json_property(
-            '{}/files?Name={}'.format(parent_uri, label))
         return items[0]
+            uri='{}/files'.format(parent_uri),
+            qs_params={'Name': label}
+        )
 
     def resource_attributes(self, parent_uri, label):
         """Return standard attributes for this resource"""
         items = self.request_json_property(
-            '{}/resources?xnat_abstractresource_id={}'.format(parent_uri,
-                                                              label))
         return items[0]
+            uri='{}/resources'.format(parent_uri),
+            qs_params={'xnat_abstractresource_id': label}
+        )
 
     def experiment_list(self, project):
         """Return list of experiments in this project"""
@@ -139,14 +142,14 @@ class XnatRestClient(object):
                 body=file_data)
             response.raise_for_status()
 
-    def request_json_property(self, uri, optional=False):
+    def request_json_property(self, uri, optional=False, qs_params=None):
         """Execute a REST call on the server and return result as list
 
         If optional is True, then a 404 response will yield an empty list"""
         response = self._session.request(
             method='GET',
             uri=uri,
-            qs_params={'format': 'json'}
+            qs_params=Utils.combine_dicts(qs_params, {'format': 'json'})
         )
         if optional and response.status_code == 404:
             return []
