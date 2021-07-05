@@ -70,7 +70,7 @@ class XnatSession(object):
         if not self._session_id.exists():
             response = self._request(
                 method='post',
-                uri='JSESSION',
+                uri='data/JSESSION',
                 auth=HTTPBasicAuth(self._params.user, self._params.pwd)
             )
             response.raise_for_status()
@@ -82,7 +82,7 @@ class XnatSession(object):
         if self._session_id.exists():
             self._request(
                 method='delete',
-                uri='JSESSION',
+                uri='data/JSESSION',
                 headers=self._session_id.session_header()
             )
             self._session_id.reset()
@@ -139,4 +139,4 @@ class RestWrapper(object):
 
     def get_url(self, uri):
         """Return full REST URL for the given URI"""
-        return '{}/data/{}'.format(self._host.rstrip('/'), uri.lstrip('/'))
+        return '{}/{}'.format(self._host.rstrip('/'), uri.lstrip('/'))

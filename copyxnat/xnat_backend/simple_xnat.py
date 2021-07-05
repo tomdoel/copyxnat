@@ -110,10 +110,10 @@ class SimpleXnatServer(SimpleXnatBase):
         self._cached_datatypes = None
 
     def read_uri(self):
-        return ''
+        return 'data'
 
     def write_uri(self):
-        return ''
+        return 'data'
 
     def project_list(self):
         """Return array of project ids"""
@@ -146,7 +146,7 @@ class SimpleXnatServer(SimpleXnatBase):
         if not self._cached_datatypes:
             self._cached_datatypes = \
                 [element['ELEMENT_NAME'] for element in
-                    self.rest_client.request_json_property('/search/elements')]
+                    self.rest_client.request_json_property('/data/search/elements')]
         return self._cached_datatypes
 
     def logout(self):
@@ -157,13 +157,13 @@ class SimpleXnatServer(SimpleXnatBase):
         """Return list of experiments in this project"""
 
         experiments = self.rest_client.request_json_property(
-            'projects/{}/experiments'.format(project))
+            'data/projects/{}/experiments'.format(project))
         return [exp['label'] for exp in experiments]
 
     def num_experiments(self, project):
         """Return number of experiments in this project"""
         return len(self.rest_client.request_json_property(
-            'projects/{}/experiments'.format(project)))
+            'data/projects/{}/experiments'.format(project)))
 
     def request(self, uri, method):
         """Execute a REST call on the server"""
