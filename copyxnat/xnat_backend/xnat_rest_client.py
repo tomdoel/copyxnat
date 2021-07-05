@@ -33,7 +33,7 @@ class XnatRestClient(object):
         Return list of items for this server.
         optional should be True if not mandated by the schema
         """
-        extended_uri = '{}/{}?'.format(uri, name)
+        extended_uri = '{}/{}'.format(uri, name)
         return self.request_json_property(extended_uri, optional=optional)
 
     def file_attributes(self, parent_uri, label):
