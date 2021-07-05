@@ -38,7 +38,6 @@ class XnatRestClient(object):
                 qs_params=qs_params,
                 stream=True
         ) as response:
-            response.raise_for_status()
             with open(file_path, 'wb') as out_file:
                 for chunk in response.iter_content(chunk_size=8192):
                     out_file.write(chunk)
@@ -69,12 +68,11 @@ class XnatRestClient(object):
                                            'allowDataDeletion': 'false'})
 
         with open(file_path, 'rb') as file_data:
-            response = self._session.request(
+            self._session.request(
                 method=method,
                 uri=uri,
                 qs_params=qs_params,
                 body=file_data)
-            response.raise_for_status()
 
     def meta(self, uri):
         """Return dictionary of XNAT metadata"""
@@ -95,28 +93,17 @@ class XnatRestClient(object):
 
     def _request_json(self, uri, qs_params=None):
         """Execute a REST call on the server and return result as json"""
-        response = self._session.request(
-            method='GET',
-            uri=uri,
+        return self._session.request(
+            method='GET', uri=uri,
             qs_params=Utils.combine_dicts(qs_params, {'format': 'json'})
-        )
-        response.raise_for_status()
-        return response.json()
+        ).json()
 
     def request_string(self, uri, qs_params=None):
         """Execute a REST call on the server and return string"""
-        response = self._session.request(
-            method='GET',
-            uri=uri,
-            qs_params=qs_params
-        )
-        response.raise_for_status()
-        return response.text
+        return self._session.request(
+            method='GET', uri=uri, qs_params=qs_params
+        ).text
 
     def request(self, uri, method, qs_params=None):
-        """Execute a REST call on the server"""
-        response = self._session.request(method=method,
-                                         uri=uri,
-                                         qs_params=qs_params)
-        response.raise_for_status()
-        return response
+        """Execute a REST call on the server. Does not return response"""
+        self._session.request(method=method, uri=uri, qs_params=qs_params)
