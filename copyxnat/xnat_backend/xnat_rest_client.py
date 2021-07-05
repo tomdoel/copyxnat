@@ -54,14 +54,18 @@ class XnatRestClient(object):
 
     def meta(self, uri):
         """Return dictionary of XNAT metadata"""
-        return self._request_json(uri=uri).get("items")[0].get('meta')
+        return self._session.request(
+            method='GET', uri=uri, qs_params={'format': 'json'}
+        ).json().get("items")[0].get('meta')
 
     def request_json_property(self, uri, optional=False, qs_params=None):
         """Execute a REST call on the server and return result as list
         If optional is True, then a 404 response will yield an empty list"""
         try:
-            json = self._request_json(uri=uri, qs_params=qs_params)
-            return json.get("ResultSet").get('Result')
+            return self._session.request(
+                method='GET', uri=uri,
+                qs_params=Utils.combine_dicts(qs_params, {'format': 'json'})
+            ).json().get("ResultSet").get('Result')
 
         except HTTPError as err:
             if optional and err.response.status_code == 404:
@@ -78,10 +82,3 @@ class XnatRestClient(object):
     def request(self, uri, method, qs_params=None):
         """Execute a REST call on the server. Does not return response"""
         self._session.request(method=method, uri=uri, qs_params=qs_params)
-
-    def _request_json(self, uri, qs_params=None):
-        """Execute a REST call on the server and return result as json"""
-        return self._session.request(
-            method='GET', uri=uri,
-            qs_params=Utils.combine_dicts(qs_params, {'format': 'json'})
-        ).json()
