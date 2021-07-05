@@ -33,7 +33,7 @@ class LazyList(object):
         """Fetch labels for all items including newly created items"""
 
         return self._recently_created + \
-            self._get_list(allow_repopulate=False).keys()
+            list(self._get_list(allow_repopulate=False).keys())
 
     def get_all_metadata(self):
         """Fetch metadata for all items. If items have been create since the
