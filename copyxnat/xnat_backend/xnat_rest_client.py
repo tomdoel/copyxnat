@@ -139,38 +139,6 @@ class XnatRestClient(object):
                 body=file_data)
             response.raise_for_status()
 
-    def upload_text_file(self, uri, file_path, file_format=None, tags=None,
-                         content=None, overwrite=False, is_zip=None):
-        """
-        Upload file to server from the specified location
-
-        :param uri: Relative URI on the XNAT server
-        :param file_path: path to file to be uploaded
-        :param file_format: XNAT format attribute
-        :param tags: XNAT tags attribute
-        :param content: XNAT content attribute
-        :param overwrite: True to overwrite existing data
-        :param is_zip:  True if the uploading a zip file which should be
-        extracted by the server
-        """
-        if not os.path.isfile(file_path):
-            raise ValueError('File {} does not exist'.format(file_path))
-        qs_params = self._optional_params({'format': file_format,
-                                           'content': content,
-                                           'tags': tags,
-                                           'overwrite': overwrite,
-                                           'inbody': 'true',
-                                           'extract': is_zip})
-
-        with open(file_path, 'rb') as file_data:
-            response = self._session.request(
-                method='put',
-                uri=uri,
-                qs_params=qs_params,
-                body=file_data
-            )
-            response.raise_for_status()
-
     def request_json_property(self, uri, optional=False):
         """Execute a REST call on the server and return result as list
 
