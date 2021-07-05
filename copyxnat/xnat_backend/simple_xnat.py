@@ -7,6 +7,7 @@ import os
 
 import six
 
+from copyxnat.xnat_backend.utis import Utils
 from copyxnat.xnat_backend.xnat_rest_client import XnatRestClient
 
 
@@ -428,11 +429,15 @@ class SimpleXnatResourceBase(SimpleXnatItem):
         resource_format = create_params["resource_format"]
         resource_tags = create_params["resource_tags"]
         if not self.exists():
-            self.rest_client.create_resource_folder(
+            self.rest_client.request(
                 uri=self.write_uri(),
-                content=resource_content,
-                resource_format=resource_format,
-                tags=resource_tags,
+                method='PUT',
+                qs_params=Utils.optional_params(
+                    {'format': resource_format,
+                     'tags': resource_tags,
+                     'content': resource_content
+                     }
+                )
             )
             self.add_to_parent()
 

@@ -41,22 +41,6 @@ class XnatRestClient(object):
                 for chunk in response.iter_content(chunk_size=8192):
                     out_file.write(chunk)
 
-    def create_resource_folder(self, uri, resource_format, tags, content):
-        """
-        Create a XNAT resource folder
-
-        :param uri: Relative URI
-        :param resource_format: XNAT format attribute
-        :param tags:  XNAT tags attribute
-        :param content: XNAT content attribute
-        """
-        optional_params = Utils.optional_params({'format': resource_format,
-                                                 'tags': tags,
-                                                 'content': content})
-        response = self._session.request(uri=uri, method='PUT',
-                                         qs_params=optional_params)
-        response.raise_for_status()
-
     def upload_file(self, method, uri, file_path, file_format=None, tags=None,
                     content=None, overwrite=False, is_zip=None):
         """
