@@ -279,8 +279,12 @@ class SimpleXnatItem(SimpleXnatBase):
             method='put',
             uri=self.write_uri(),
             file_path=local_file,
-            overwrite=overwrite
-            )
+            qs_params=Utils.optional_params({
+                'overwrite': overwrite,
+                'inbody': 'true',
+                'allowDataDeletion': 'false'
+            })
+        )
         self.add_to_parent()
 
     def datatype(self):
@@ -427,19 +431,15 @@ class SimpleXnatResourceBase(SimpleXnatItem):
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
 
-        resource_content = create_params["resource_content"]
-        resource_format = create_params["resource_format"]
-        resource_tags = create_params["resource_tags"]
         if not self.exists():
             self.rest_client.request(
                 uri=self.write_uri(),
-                method='PUT',
-                qs_params=Utils.optional_params(
-                    {'format': resource_format,
-                     'tags': resource_tags,
-                     'content': resource_content
-                     }
-                )
+                method='put',
+                qs_params=Utils.optional_params({
+                    'format': create_params['resource_format'] or None,
+                    'content': create_params['resource_content'] or None,
+                    'tags': create_params["resource_tags"] or None
+                })
             )
             self.add_to_parent()
 
@@ -453,11 +453,16 @@ class SimpleXnatResourceBase(SimpleXnatItem):
                 method='post',
                 uri=file_uri,
                 file_path=local_file,
-                overwrite=overwrite,
-                content=resource_content,
-                file_format=resource_format,
-                tags=resource_tags,
-                is_zip=True
+                qs_params=Utils.optional_params({
+                    'format': create_params['resource_format'] or None,
+                    'content': create_params['resource_content'] or None,
+                    'tags': create_params["resource_tags"] or None,
+                    'overwrite': overwrite,
+                    'inbody': 'true',
+                    'extract': 'true',
+                    'allowDataDeletion': 'false'
+                 })
+
             )
         else:
             reporter.debug("Resource is empty or zip download is "
@@ -529,9 +534,6 @@ class SimpleXnatFile(SimpleXnatItem):
 
     def create_on_server(self, local_file, create_params, overwrite, reporter):
         if local_file:
-            file_content = create_params["file_content"] or None
-            file_format = create_params["file_format"] or None
-            file_tags = create_params["file_tags"] or None
             file_name = os.path.basename(local_file)
             if not file_name:
                 raise ValueError('No filename component to {}'.format(
@@ -541,10 +543,14 @@ class SimpleXnatFile(SimpleXnatItem):
                 method='post',
                 uri=file_uri,
                 file_path=local_file,
-                overwrite=overwrite,
-                content=file_content,
-                file_format=file_format,
-                tags=file_tags
+                qs_params=Utils.optional_params({
+                    'format': create_params["file_format"] or None,
+                    'content': create_params["file_content"] or None,
+                    'tags': create_params["file_tags"] or None,
+                    'overwrite': overwrite,
+                    'inbody': 'true',
+                    'allowDataDeletion': 'false'
+                    })
             )
             self.add_to_parent()
 
