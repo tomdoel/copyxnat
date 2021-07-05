@@ -178,6 +178,7 @@ class SimpleXnatItem(SimpleXnatBase):
         self._read_uri = None
         self._write_uri = None
         self._id = None
+        self._datatype = None
 
     def get_id(self):
         """Return the XNAT ID of this item"""
@@ -270,17 +271,17 @@ class SimpleXnatItem(SimpleXnatBase):
         self.add_to_parent()
 
     def datatype(self):
-        """Return the XNAT datatype of this item"""
+        """Return the XNAT datatype of this item. This will be cached if
+        not empty"""
 
-        datatype = self.get_metadata().get('xsiType')
-        if not datatype:
-            response = self.rest_client.request(
-                method='GET',
-                uri=self.read_uri() + '?format=json')
-            response.raise_for_status()
-            datatype = response.json().get('items')[0].\
-                get('meta').get('xsi:type')
-        return datatype
+        if not self._datatype:
+            # Try to get datatype from parent's metadata
+            self._datatype = self.get_metadata().get('xsiType')
+            if not self._datatype:
+                # If it's not set there, get it using a REST call
+                self._datatype = self.rest_client.datatype(uri=self.read_uri())
+
+        return self._datatype
 
     def get_xml_string(self):
         """Return XML representation of this XNAT item"""
