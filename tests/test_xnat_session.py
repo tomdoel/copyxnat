@@ -126,14 +126,15 @@ class TestXnatSession(object):
         )
 
     def _mock_request(self, method, url, success, verify, response_text,
-                      headers, cookie, qs_params, body, stream):
+                      headers, cookie, qs_params, body, stream,
+                      expect_raise_for_status=True):
         headers_in = {} if not headers else headers.copy()
         headers_in['Cookie'] = 'JSESSIONID=' + cookie
         return self._mock_response(
             method=method, url=url, success=success, verify=verify,
             auth=None, response_text=response_text, headers=headers_in,
-            expect_raise_for_status=False, params=qs_params, body=body,
-            stream=stream
+            expect_raise_for_status=expect_raise_for_status,
+            params=qs_params, body=body, stream=stream
         )
 
     @staticmethod
@@ -182,7 +183,7 @@ class TestXnatSession(object):
                 verifyNoUnwantedInteractions()
 
             api1 = 'my-api/call1'
-            expected_url1 = host + '/data/' + api1
+            expected_url1 = host + '/' + api1
             self._do_request(session=session, cookie=cookie1,
                              api=api1,
                              expected_url=expected_url1,
@@ -192,7 +193,7 @@ class TestXnatSession(object):
 
         # New request. Already logged in so do not expect login REST call
         api2 = 'my-api/call2'
-        expected_url2 = host + '/data/' + api2
+        expected_url2 = host + '/' + api2
         self._do_request(session=session, cookie=cookie1,
                          api=api2,
                          expected_url=expected_url2,
@@ -211,16 +212,16 @@ class TestXnatSession(object):
         with self._mock_auth_login(expected_host=host, success=True,
                                    verify=expected_verify, cookie=cookie2):
             api3 = 'my-api2/rest/call3'
-            expected_url3 = host + '/data/' + api3
+            expected_url3 = host + '/' + api3
             self._do_request(session=session, cookie=cookie2, api=api3,
-                             expected_url=host + '/data/' + api3,
+                             expected_url=host + '/' + api3,
                              expected_verify=expected_verify
                              )
             verifyNoUnwantedInteractions()
 
         # New request. Already logged in so do not expect login REST call
         api4 = 'my-api2/rest/call4'
-        expected_url4 = host + '/data/' + api4
+        expected_url4 = host + '/' + api4
         self._do_request(session=session, cookie=cookie2, api=api4,
                          expected_url=expected_url4,
                          expected_verify=expected_verify
@@ -251,7 +252,7 @@ class TestXnatSession(object):
         with self._mock_auth_login(expected_host=host, success=True,
                                    verify=True, cookie=cookie1):
             api1 = 'my-api/call1'
-            expected_url1 = host + '/data/' + api1
+            expected_url1 = host + '/' + api1
             self._do_request(session=session, cookie=cookie1,
                              api=api1,
                              expected_url=expected_url1,
@@ -266,7 +267,7 @@ class TestXnatSession(object):
                 expected_host=host, success=True, verify=True, cookie=cookie2
         ):
             api2 = 'my-api/call2'
-            expected_url2 = host + '/data/' + api2
+            expected_url2 = host + '/' + api2
             self._do_request(session=session, cookie=cookie1, api=api2,
                              retry_cookie=cookie2,
                              expected_url=expected_url2, expected_verify=True,
@@ -291,7 +292,7 @@ class TestXnatSession(object):
         with self._mock_auth_login(expected_host=host, success=True,
                                    verify=True, cookie=cookie1):
             api1 = 'my-api/call1'
-            expected_url1 = host + '/data/' + api1
+            expected_url1 = host + '/' + api1
             self._do_request(session=session, cookie=cookie1,
                              api=api1,
                              expected_url=expected_url1,
@@ -305,7 +306,7 @@ class TestXnatSession(object):
                 expected_host=host, success=False, verify=True, cookie=cookie2
         ):
             api2 = 'my-api/call2'
-            expected_url2 = host + '/data/' + api2
+            expected_url2 = host + '/' + api2
             with pytest.raises(MockHttpError) as e_info:
                 self._do_request(session=session, cookie=cookie1, api=api2,
                                  retry_cookie=None,
@@ -332,7 +333,7 @@ class TestXnatSession(object):
         with self._mock_auth_login(expected_host=host, success=True,
                                    verify=True, cookie=cookie1):
             api1 = 'my-api/call1'
-            expected_url1 = host + '/data/' + api1
+            expected_url1 = host + '/' + api1
             self._do_request(session=session, cookie=cookie1,
                              api=api1,
                              expected_url=expected_url1,
@@ -348,8 +349,10 @@ class TestXnatSession(object):
                 cookie=cookie2
         ):
             api2 = 'my-api/call2'
-            expected_url2 = host + '/data/' + api2
-            self._do_request(session=session, cookie=cookie1, api=api2,
+            expected_url2 = host + '/' + api2
+
+            with pytest.raises(MockHttpError) as e_info:
+                self._do_request(session=session, cookie=cookie1, api=api2,
                              retry_cookie=cookie2,
                              expected_url=expected_url2,
                              expected_verify=True,
@@ -357,11 +360,11 @@ class TestXnatSession(object):
 
     @pytest.mark.parametrize(
         "host, api, expected_host, expected_url", [
-            ('http://test.server/', 'my-api/call', 'http://test.server', 'http://test.server/data/my-api/call'),
-            ('http://test.server', 'my-api/call', 'http://test.server', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', '/my-api/call', 'http://test.server', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', 'my-api/call', 'http://test.server', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', 'my-api/call/', 'http://test.server', 'http://test.server/data/my-api/call/')
+            ('http://test.server/', 'my-api/call', 'http://test.server', 'http://test.server/my-api/call'),
+            ('http://test.server', 'my-api/call', 'http://test.server', 'http://test.server/my-api/call'),
+            ('http://test.server/', '/my-api/call', 'http://test.server', 'http://test.server/my-api/call'),
+            ('http://test.server/', 'my-api/call', 'http://test.server', 'http://test.server/my-api/call'),
+            ('http://test.server/', 'my-api/call/', 'http://test.server', 'http://test.server/my-api/call/')
         ])
     @pytest.mark.parametrize("insecure, expected_verify", [(True, False), (False, True)])
     @pytest.mark.parametrize("stream", [True, False, None])
@@ -413,6 +416,7 @@ class TestXnatSession(object):
             qs_params=qs_params, body=body, headers=headers,
             response_text=dummy_response, stream=stream,
             success=success_first, cookie=cookie,
+            expect_raise_for_status=success_first
         ):
             # If the first call fails then we expect the request to
             # reauthenticate and request again with a new session ID
@@ -444,11 +448,11 @@ class TestRestWrapper(object):
 
     @pytest.mark.parametrize(
         "host, api, url", [
-            ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server', 'my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', '/my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', 'my-api/call', 'http://test.server/data/my-api/call'),
-            ('http://test.server/', 'my-api/call/', 'http://test.server/data/my-api/call/')
+            ('http://test.server/', 'my-api/call', 'http://test.server/my-api/call'),
+            ('http://test.server', 'my-api/call', 'http://test.server/my-api/call'),
+            ('http://test.server/', '/my-api/call', 'http://test.server/my-api/call'),
+            ('http://test.server/', 'my-api/call', 'http://test.server/my-api/call'),
+            ('http://test.server/', 'my-api/call/', 'http://test.server/my-api/call/')
         ])
     def test_get_url(self, host, api, url):
         server_params = XnatServerParams(host=host, user='fred', insecure=False)
