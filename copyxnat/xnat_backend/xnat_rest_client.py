@@ -17,18 +17,6 @@ class XnatRestClient(object):
     def __del__(self):
         self.logout()
 
-    def datatype(self, uri):
-        """Return the XNAT datatype of this item"""
-        return self.meta(uri).get('xsi:type')
-
-    def items(self, uri, name, optional=False):
-        """
-        Return list of items for this server.
-        optional should be True if not mandated by the schema
-        """
-        extended_uri = '{}/{}'.format(uri, name)
-        return self.request_json_property(extended_uri, optional=optional)
-
     def logout(self):
         """Return XML representation of this XNAT item"""
 

@@ -47,12 +47,13 @@ class LazyList(object):
         new items have been created since the last cached metadata request"""
 
         if self._list is None or (allow_repopulate and self._recently_created):
-            self._list = {item[self._label_key]: item
-                          for item in self._populator.items(
-                    uri=self._parent.read_uri(),
-                    name=self._wrapper_cls.rest_type,
-                    optional=self._wrapper_cls.optional,
-                )}
+            uri = '{}/{}'.format(self._parent.read_uri(),
+                                 self._wrapper_cls.rest_type)
+            self._list = {
+                item[self._label_key]: item for item in
+                self._populator.request_json_property(
+                    uri=uri, optional=self._wrapper_cls.optional)
+            }
             self._recently_created = []
         return self._list
 
@@ -288,7 +289,8 @@ class SimpleXnatItem(SimpleXnatBase):
             self._datatype = self.get_metadata().get('xsiType')
             if not self._datatype:
                 # If it's not set there, get it using a REST call
-                self._datatype = self.rest_client.datatype(uri=self.read_uri())
+                meta = self.rest_client.meta(self.read_uri())
+                self._datatype = meta.get('xsi:type')
 
         return self._datatype
 
