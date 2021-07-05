@@ -140,20 +140,18 @@ class XnatRestClient(object):
         response.raise_for_status()
         return response.json()["ResultSet"]['Result']
 
-    def request_string(self, uri):
+    def request_string(self, uri, qs_params=None):
         """Execute a REST call on the server and return string"""
 
-        response = self._session.request(method='GET', uri=uri)
+        response = self._session.request(method='GET', uri=uri,
+                                         qs_params=qs_params)
         response.raise_for_status()
         return response.text
 
     def request_xml_string(self, uri):
         """Return XML representation of this XNAT item"""
 
-        response = self._session.request(method='GET', uri=uri,
-                                         qs_params={'format': 'xml'})
-        response.raise_for_status()
-        return response.text
+        return self.request_string(uri=uri, qs_params={'format': 'xml'})
 
     def request(self, uri, method, qs_params=None):
         """Execute a REST call on the server"""
