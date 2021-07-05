@@ -39,18 +39,18 @@ class XnatRestClient(object):
     def file_attributes(self, parent_uri, label):
         """Return standard attributes for this file"""
         items = self.request_json_property(
-        return items[0]
             uri='{}/files'.format(parent_uri),
             qs_params={'Name': label}
         )
+        return next((item for item in items if item["Name"] == label), None)
 
     def resource_attributes(self, parent_uri, label):
         """Return standard attributes for this resource"""
         items = self.request_json_property(
-        return items[0]
             uri='{}/resources'.format(parent_uri),
             qs_params={'xnat_abstractresource_id': label}
         )
+        return next((item for item in items if item["Name"] == label), None)
 
     def experiment_list(self, project):
         """Return list of experiments in this project"""
