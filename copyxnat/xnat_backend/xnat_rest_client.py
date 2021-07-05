@@ -19,14 +19,7 @@ class XnatRestClient(object):
 
     def datatype(self, uri):
         """Return the XNAT datatype of this item"""
-        response = self._session.request(
-            method='GET',
-            uri=uri,
-            qs_params={'format': 'json'}
-        )
-        response.raise_for_status()
-        datatype = response.json().get('items')[0].get('meta').get('xsi:type')
-        return datatype
+        return self.meta(uri).get('xsi:type')
 
     def items(self, uri, name, optional=False):
         """
@@ -109,25 +102,37 @@ class XnatRestClient(object):
                 body=file_data)
             response.raise_for_status()
 
+    def meta(self, uri):
+        """Return dictionary of XNAT metadata"""
+        return self._request_json(uri=uri).get("items")[0].get('meta')
+
     def request_json_property(self, uri, optional=False, qs_params=None):
         """Execute a REST call on the server and return result as list
-
         If optional is True, then a 404 response will yield an empty list"""
+        json = self._request_json(uri=uri,
+                                  optional=optional,
+                                  qs_params=qs_params)
+        return json.get("ResultSet").get('Result') if json else []
+
+    def _request_json(self, uri, optional=False, qs_params=None):
+        """Execute a REST call on the server and return result as json"""
         response = self._session.request(
             method='GET',
             uri=uri,
             qs_params=Utils.combine_dicts(qs_params, {'format': 'json'})
         )
         if optional and response.status_code == 404:
-            return []
+            return None
         response.raise_for_status()
-        return response.json()["ResultSet"]['Result']
+        return response.json()
 
     def request_string(self, uri, qs_params=None):
         """Execute a REST call on the server and return string"""
-
-        response = self._session.request(method='GET', uri=uri,
-                                         qs_params=qs_params)
+        response = self._session.request(
+            method='GET',
+            uri=uri,
+            qs_params=qs_params
+        )
         response.raise_for_status()
         return response.text
 
