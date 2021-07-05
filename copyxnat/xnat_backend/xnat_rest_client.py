@@ -36,27 +36,10 @@ class XnatRestClient(object):
         extended_uri = '{}/{}'.format(uri, name)
         return self.request_json_property(extended_uri, optional=optional)
 
-    def experiment_list(self, project):
-        """Return list of experiments in this project"""
-        exps = self.request_json_property(
-            'projects/{}/experiments'.format(project))
-        return [exp['label'] for exp in exps]
-
-    def num_experiments(self, project):
-        """Return number of experiments in this project"""
-        return len(self.request_json_property(
-            'projects/{}/experiments'.format(project)))
-
     def logout(self):
         """Return XML representation of this XNAT item"""
 
         self._session.logout()
-
-    def datatypes(self):
-        """Return list of XNAT datatype names present on server"""
-
-        return [element['ELEMENT_NAME'] for element in
-                self.request_json_property('/search/elements')]
 
     def download_file(self, file_path, uri, qs_params):
         """

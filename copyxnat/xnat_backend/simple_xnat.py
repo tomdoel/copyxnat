@@ -105,6 +105,7 @@ class SimpleXnatServer(SimpleXnatBase):
         self.rest_client = XnatRestClient(params=params)
         self.cached_project_list = LazyList(parent=self,
                                             wrapper_cls=SimpleXnatProject)
+        self._cached_datatypes = None
 
     def read_uri(self):
         return ''
@@ -139,7 +140,12 @@ class SimpleXnatServer(SimpleXnatBase):
 
     def datatypes(self):
         """Return datatypes on this server"""
-        return self.rest_client.datatypes()
+
+        if not self._cached_datatypes:
+            self._cached_datatypes = \
+                [element['ELEMENT_NAME'] for element in
+                    self.rest_client.request_json_property('/search/elements')]
+        return self._cached_datatypes
 
     def logout(self):
         """Disconnect from server"""
@@ -148,11 +154,14 @@ class SimpleXnatServer(SimpleXnatBase):
     def experiment_list(self, project):
         """Return list of experiments in this project"""
 
-        return self.rest_client.experiment_list(project)
+        experiments = self.rest_client.request_json_property(
+            'projects/{}/experiments'.format(project))
+        return [exp['label'] for exp in experiments]
 
     def num_experiments(self, project):
         """Return number of experiments in this project"""
-        return self.rest_client.num_experiments(project)
+        return len(self.rest_client.request_json_property(
+            'projects/{}/experiments'.format(project)))
 
     def request(self, uri, method):
         """Execute a REST call on the server"""
