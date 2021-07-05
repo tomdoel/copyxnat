@@ -450,7 +450,7 @@ class SimpleXnatResourceBase(SimpleXnatItem):
             self.rest_client.upload_file(
                 method='post',
                 uri=file_uri,
-                file_location=local_file,
+                file_path=local_file,
                 overwrite=overwrite,
                 content=resource_content,
                 file_format=resource_format,
