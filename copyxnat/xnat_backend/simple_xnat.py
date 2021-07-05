@@ -554,7 +554,7 @@ class SimpleXnatFile(SimpleXnatItem):
             raise ValueError('Item has not yet been created')
         return {'file_content': attrs.get('file_content'),
                 'file_format': attrs.get('file_format'),
-                'file_collection': attrs.get('file_collection'),
+                'file_collection': attrs.get('collection'),
                 'file_tags': attrs.get('file_tags'),
                 'file_size': attrs.get('Size')
                 }
