@@ -23,3 +23,14 @@ class TestUtils(object):
         assert Utils.combine_dicts({}, d1) == d1
         assert Utils.combine_dicts(d1, d2) == d1_d2
         assert Utils.combine_dicts(d1, d3) == d1_d3
+
+    def test_optional_params(self):
+        assert Utils.optional_params({}) == {}
+        assert Utils.optional_params({'aa': 'blu', 'bc': 'red', 'efg': 'grn1'})\
+               == {'aa': 'blu', 'bc': 'red', 'efg': 'grn1'}
+        assert Utils.optional_params({'aa': None, 'bc': 'red', 'efg': 'grn1'})\
+               == {'bc': 'red', 'efg': 'grn1'}
+        assert Utils.optional_params({'aa': 'blu', 'bc': None, 'efg': None})\
+               == {'aa': 'blu'}
+        assert Utils.optional_params({'aa': None, 'bc': None, 'efg': None})\
+               == {}

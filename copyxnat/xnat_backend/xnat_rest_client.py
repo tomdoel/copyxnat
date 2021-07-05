@@ -50,7 +50,7 @@ class XnatRestClient(object):
         :param tags:  XNAT tags attribute
         :param content: XNAT content attribute
         """
-        optional_params = self._optional_params({'format': resource_format,
+        optional_params = Utils.optional_params({'format': resource_format,
                                                  'tags': tags,
                                                  'content': content})
         response = self._session.request(uri=uri, method='PUT',
@@ -74,7 +74,7 @@ class XnatRestClient(object):
         """
         if not os.path.isfile(file_path):
             raise ValueError('File {} does not exist'.format(file_path))
-        qs_params = self._optional_params({'format': file_format,
+        qs_params = Utils.optional_params({'format': file_format,
                                            'content': content,
                                            'tags': tags,
                                            'overwrite': overwrite,
@@ -131,11 +131,3 @@ class XnatRestClient(object):
                                          qs_params=qs_params)
         response.raise_for_status()
         return response
-
-    @staticmethod
-    def _optional_params(params):
-        optional_params = {}
-        for key, value in params.items():
-            if value is not None:
-                optional_params[key] = value
-        return optional_params

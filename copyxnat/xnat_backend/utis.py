@@ -16,3 +16,14 @@ class Utils(object):
         for key, value in (dict_2 or {}).items():
             combined[key] = value
         return combined
+
+    @staticmethod
+    def optional_params(params):
+        """Creates a new dictionary by making a shallow copy of an existing
+        dictionary, but exclude entries from the final dictionary if their
+        value is None"""
+        optional_params = {}
+        for key, value in params.items():
+            if value is not None:
+                optional_params[key] = value
+        return optional_params
