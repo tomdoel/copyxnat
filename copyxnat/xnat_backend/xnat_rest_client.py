@@ -36,22 +36,6 @@ class XnatRestClient(object):
         extended_uri = '{}/{}'.format(uri, name)
         return self.request_json_property(extended_uri, optional=optional)
 
-    def file_attributes(self, parent_uri, label):
-        """Return standard attributes for this file"""
-        items = self.request_json_property(
-            uri='{}/files'.format(parent_uri),
-            qs_params={'Name': label}
-        )
-        return next((item for item in items if item["Name"] == label), None)
-
-    def resource_attributes(self, parent_uri, label):
-        """Return standard attributes for this resource"""
-        items = self.request_json_property(
-            uri='{}/resources'.format(parent_uri),
-            qs_params={'label': label}
-        )
-        return next((item for item in items if item["label"] == label), None)
-
     def experiment_list(self, project):
         """Return list of experiments in this project"""
         exps = self.request_json_property(
