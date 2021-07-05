@@ -285,7 +285,8 @@ class SimpleXnatItem(SimpleXnatBase):
 
     def get_xml_string(self):
         """Return XML representation of this XNAT item"""
-        return self.rest_client.request_xml_string(self.read_uri())
+        return self.rest_client.request_string(uri=self.read_uri(),
+                                               qs_params={'format': 'xml'})
 
     def exists(self):
         """Return True if the item already exists on the server"""
