@@ -534,7 +534,7 @@ class SimpleXnatFile(SimpleXnatItem):
             if not file_name:
                 raise ValueError('No filename component to {}'.format(
                     local_file))
-            file_uri = '{}/{}'.format(self.write_uri(), file_name)
+            file_uri = self.write_uri()
             self.rest_client.upload_file(
                 method='post',
                 uri=file_uri,
