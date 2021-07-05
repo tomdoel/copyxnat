@@ -48,9 +48,9 @@ class XnatRestClient(object):
         """Return standard attributes for this resource"""
         items = self.request_json_property(
             uri='{}/resources'.format(parent_uri),
-            qs_params={'xnat_abstractresource_id': label}
+            qs_params={'label': label}
         )
-        return next((item for item in items if item["Name"] == label), None)
+        return next((item for item in items if item["label"] == label), None)
 
     def experiment_list(self, project):
         """Return list of experiments in this project"""
