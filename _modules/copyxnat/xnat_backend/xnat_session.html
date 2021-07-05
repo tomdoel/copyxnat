@@ -102,6 +102,7 @@
                 <span class="c1"># so invalidate and retry to trigger a new session</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="XnatSession.login"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.xnat_session.html#copyxnat.xnat_backend.xnat_session.XnatSession.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -110,7 +111,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
-                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;JSESSION&#39;</span><span class="p">,</span>
+                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;data/JSESSION&#39;</span><span class="p">,</span>
                 <span class="n">auth</span><span class="o">=</span><span class="n">HTTPBasicAuth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">pwd</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
@@ -122,7 +123,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;delete&#39;</span><span class="p">,</span>
-                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;JSESSION&#39;</span><span class="p">,</span>
+                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;data/JSESSION&#39;</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">session_header</span><span class="p">()</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
@@ -179,7 +180,7 @@
 
 <div class="viewcode-block" id="RestWrapper.get_url"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.xnat_session.html#copyxnat.xnat_backend.xnat_session.RestWrapper.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return full REST URL for the given URI&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/data/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">uri</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">uri</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -221,7 +222,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
     </div>
   </body>
 </html>

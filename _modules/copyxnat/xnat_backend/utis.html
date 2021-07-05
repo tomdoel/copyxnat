@@ -55,7 +55,18 @@
             <span class="n">combined</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="n">dict_2</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">combined</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">return</span> <span class="n">combined</span></div></div>
+        <span class="k">return</span> <span class="n">combined</span></div>
+
+<div class="viewcode-block" id="Utils.optional_params"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.utis.html#copyxnat.xnat_backend.utis.Utils.optional_params">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">optional_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new dictionary by making a shallow copy of an existing</span>
+<span class="sd">        dictionary, but exclude entries from the final dictionary if their</span>
+<span class="sd">        value is None&quot;&quot;&quot;</span>
+        <span class="n">optional_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">optional_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">optional_params</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -97,7 +108,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
     </div>
   </body>
 </html>

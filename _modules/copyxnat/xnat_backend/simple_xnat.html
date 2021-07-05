@@ -47,6 +47,7 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">copyxnat.xnat_backend.utis</span> <span class="kn">import</span> <span class="n">Utils</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat_backend.xnat_rest_client</span> <span class="kn">import</span> <span class="n">XnatRestClient</span>
 
 
@@ -73,7 +74,7 @@
         <span class="sd">&quot;&quot;&quot;Fetch labels for all items including newly created items&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span> <span class="o">+</span> \
-            <span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="LazyList.get_all_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.LazyList.get_all_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch metadata for all items. If items have been create since the</span>
@@ -87,12 +88,13 @@
 <span class="sd">        new items have been created since the last cached metadata request&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">allow_repopulate</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_key</span><span class="p">]:</span> <span class="n">item</span>
-                          <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populator</span><span class="o">.</span><span class="n">items</span><span class="p">(</span>
-                    <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">read_uri</span><span class="p">(),</span>
-                    <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrapper_cls</span><span class="o">.</span><span class="n">rest_type</span><span class="p">,</span>
-                    <span class="n">optional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrapper_cls</span><span class="o">.</span><span class="n">optional</span><span class="p">,</span>
-                <span class="p">)}</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">read_uri</span><span class="p">(),</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">_wrapper_cls</span><span class="o">.</span><span class="n">rest_type</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">item</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_key</span><span class="p">]:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populator</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span>
+                    <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrapper_cls</span><span class="o">.</span><span class="n">optional</span><span class="p">)</span>
+            <span class="p">}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
 
@@ -145,12 +147,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span> <span class="o">=</span> <span class="n">XnatRestClient</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cached_project_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                                             <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatProject</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_datatypes</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SimpleXnatServer.read_uri"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.read_uri">[docs]</a>    <span class="k">def</span> <span class="nf">read_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+        <span class="k">return</span> <span class="s1">&#39;data&#39;</span></div>
 
 <div class="viewcode-block" id="SimpleXnatServer.write_uri"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.write_uri">[docs]</a>    <span class="k">def</span> <span class="nf">write_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+        <span class="k">return</span> <span class="s1">&#39;data&#39;</span></div>
 
 <div class="viewcode-block" id="SimpleXnatServer.project_list"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project_list">[docs]</a>    <span class="k">def</span> <span class="nf">project_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of project ids&quot;&quot;&quot;</span>
@@ -179,7 +182,13 @@
 
 <div class="viewcode-block" id="SimpleXnatServer.datatypes"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.datatypes">[docs]</a>    <span class="k">def</span> <span class="nf">datatypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return datatypes on this server&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">datatypes</span><span class="p">()</span></div>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_datatypes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_datatypes</span> <span class="o">=</span> \
+                <span class="p">[</span><span class="n">element</span><span class="p">[</span><span class="s1">&#39;ELEMENT_NAME&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span>
+                        <span class="s1">&#39;/data/search/elements&#39;</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_datatypes</span></div>
 
 <div class="viewcode-block" id="SimpleXnatServer.logout"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disconnect from server&quot;&quot;&quot;</span>
@@ -188,45 +197,26 @@
 <div class="viewcode-block" id="SimpleXnatServer.experiment_list"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.experiment_list">[docs]</a>    <span class="k">def</span> <span class="nf">experiment_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return list of experiments in this project&quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">experiment_list</span><span class="p">(</span><span class="n">project</span><span class="p">)</span></div>
+        <span class="n">experiments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span>
+            <span class="s1">&#39;data/projects/</span><span class="si">{}</span><span class="s1">/experiments&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">exp</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="SimpleXnatServer.num_experiments"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.num_experiments">[docs]</a>    <span class="k">def</span> <span class="nf">num_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return number of experiments in this project&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">num_experiments</span><span class="p">(</span><span class="n">project</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span>
+            <span class="s1">&#39;data/projects/</span><span class="si">{}</span><span class="s1">/experiments&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">)))</span></div>
 
-<div class="viewcode-block" id="SimpleXnatServer.does_request_succeed"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.does_request_succeed">[docs]</a>    <span class="k">def</span> <span class="nf">does_request_succeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return True if it succeeds&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
-            <span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Success executing </span><span class="si">{}</span><span class="s1"> call </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">))</span>
-            <span class="k">return</span> <span class="kc">True</span>
+<div class="viewcode-block" id="SimpleXnatServer.request"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span></div>
 
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
-            <span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Failure executing </span><span class="si">{}</span><span class="s1"> call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span> <span class="nb">format</span><span class="p">(</span>
-                <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
-
-<div class="viewcode-block" id="SimpleXnatServer.request_string"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string">[docs]</a>    <span class="k">def</span> <span class="nf">request_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">reporter</span><span class="p">,</span> <span class="n">error_on_failure</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleXnatServer.request_string"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string">[docs]</a>    <span class="k">def</span> <span class="nf">request_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return string&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_string</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_string</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span></div>
 
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failure executing GET call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">error_on_failure</span><span class="p">:</span>
-                <span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">exc</span></div>
-
-<div class="viewcode-block" id="SimpleXnatServer.request_json_property"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property">[docs]</a>    <span class="k">def</span> <span class="nf">request_json_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return string&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failure executing GET call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">exc</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="n">exc</span></div></div>
+<div class="viewcode-block" id="SimpleXnatServer.request_json_property"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property">[docs]</a>    <span class="k">def</span> <span class="nf">request_json_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return JSON response&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="SimpleXnatItem"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem">[docs]</a><span class="nd">@six</span><span class="o">.</span><span class="n">add_metaclass</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">)</span>
@@ -241,6 +231,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_uri</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_uri</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SimpleXnatItem.get_id"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the XNAT ID of this item&quot;&quot;&quot;</span>
@@ -328,26 +319,32 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;put&#39;</span><span class="p">,</span>
             <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">write_uri</span><span class="p">(),</span>
             <span class="n">file_path</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
-            <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span>
-            <span class="p">)</span>
+            <span class="n">qs_params</span><span class="o">=</span><span class="n">Utils</span><span class="o">.</span><span class="n">optional_params</span><span class="p">({</span>
+                <span class="s1">&#39;overwrite&#39;</span><span class="p">:</span> <span class="n">overwrite</span><span class="p">,</span>
+                <span class="s1">&#39;inbody&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;allowDataDeletion&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span>
+            <span class="p">})</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_to_parent</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SimpleXnatItem.datatype"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.datatype">[docs]</a>    <span class="k">def</span> <span class="nf">datatype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the XNAT datatype of this item&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the XNAT datatype of this item. This will be cached if</span>
+<span class="sd">        not empty&quot;&quot;&quot;</span>
 
-        <span class="n">datatype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xsiType&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">datatype</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_uri</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;?format=json&#39;</span><span class="p">)</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-            <span class="n">datatype</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span>\
-                <span class="n">get</span><span class="p">(</span><span class="s1">&#39;meta&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xsi:type&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">datatype</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span><span class="p">:</span>
+            <span class="c1"># Try to get datatype from parent&#39;s metadata</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xsiType&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span><span class="p">:</span>
+                <span class="c1"># If it&#39;s not set there, get it using a REST call</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">meta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_uri</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xsi:type&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datatype</span></div>
 
 <div class="viewcode-block" id="SimpleXnatItem.get_xml_string"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_xml_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_xml_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return XML representation of this XNAT item&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_xml_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_uri</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request_string</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_uri</span><span class="p">(),</span>
+                                               <span class="n">qs_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;xml&#39;</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="SimpleXnatItem.exists"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if the item already exists on the server&quot;&quot;&quot;</span>
@@ -474,15 +471,15 @@
 
 <div class="viewcode-block" id="SimpleXnatResourceBase.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
 
-        <span class="n">resource_content</span> <span class="o">=</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_content&quot;</span><span class="p">]</span>
-        <span class="n">resource_format</span> <span class="o">=</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_format&quot;</span><span class="p">]</span>
-        <span class="n">resource_tags</span> <span class="o">=</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_tags&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">create_resource_folder</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
                 <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">write_uri</span><span class="p">(),</span>
-                <span class="n">content</span><span class="o">=</span><span class="n">resource_content</span><span class="p">,</span>
-                <span class="n">resource_format</span><span class="o">=</span><span class="n">resource_format</span><span class="p">,</span>
-                <span class="n">tags</span><span class="o">=</span><span class="n">resource_tags</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;put&#39;</span><span class="p">,</span>
+                <span class="n">qs_params</span><span class="o">=</span><span class="n">Utils</span><span class="o">.</span><span class="n">optional_params</span><span class="p">({</span>
+                    <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s1">&#39;resource_format&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s1">&#39;resource_content&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_tags&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
+                <span class="p">})</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_parent</span><span class="p">()</span>
 
@@ -495,12 +492,17 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
                 <span class="n">uri</span><span class="o">=</span><span class="n">file_uri</span><span class="p">,</span>
-                <span class="n">file_location</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
-                <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
-                <span class="n">content</span><span class="o">=</span><span class="n">resource_content</span><span class="p">,</span>
-                <span class="n">file_format</span><span class="o">=</span><span class="n">resource_format</span><span class="p">,</span>
-                <span class="n">tags</span><span class="o">=</span><span class="n">resource_tags</span><span class="p">,</span>
-                <span class="n">is_zip</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">file_path</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
+                <span class="n">qs_params</span><span class="o">=</span><span class="n">Utils</span><span class="o">.</span><span class="n">optional_params</span><span class="p">({</span>
+                    <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s1">&#39;resource_format&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s1">&#39;resource_content&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;resource_tags&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;overwrite&#39;</span><span class="p">:</span> <span class="n">overwrite</span><span class="p">,</span>
+                    <span class="s1">&#39;inbody&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;extract&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;allowDataDeletion&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span>
+                 <span class="p">})</span>
+
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Resource is empty or zip download is &quot;</span>
@@ -518,7 +520,8 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: experimental ZIP file save - includes nested folders&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
             <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-            <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_uri</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/files&#39;</span><span class="p">,</span> <span class="n">qs_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;zip&#39;</span><span class="p">})</span>
+            <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_uri</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/files&#39;</span><span class="p">,</span>
+            <span class="n">qs_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;zip&#39;</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">file_path</span></div>
 
 <div class="viewcode-block" id="SimpleXnatResourceBase.resource_attributes"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.resource_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">resource_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -571,22 +574,23 @@
 
 <div class="viewcode-block" id="SimpleXnatFile.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_file</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">reporter</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">local_file</span><span class="p">:</span>
-            <span class="n">file_content</span> <span class="o">=</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_content&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
-            <span class="n">file_format</span> <span class="o">=</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_format&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
-            <span class="n">file_tags</span> <span class="o">=</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_tags&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
             <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">file_name</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No filename component to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">local_file</span><span class="p">))</span>
-            <span class="n">file_uri</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_uri</span><span class="p">(),</span> <span class="n">file_name</span><span class="p">)</span>
+            <span class="n">file_uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uri</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
                 <span class="n">uri</span><span class="o">=</span><span class="n">file_uri</span><span class="p">,</span>
                 <span class="n">file_path</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
-                <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
-                <span class="n">content</span><span class="o">=</span><span class="n">file_content</span><span class="p">,</span>
-                <span class="n">file_format</span><span class="o">=</span><span class="n">file_format</span><span class="p">,</span>
-                <span class="n">tags</span><span class="o">=</span><span class="n">file_tags</span>
+                <span class="n">qs_params</span><span class="o">=</span><span class="n">Utils</span><span class="o">.</span><span class="n">optional_params</span><span class="p">({</span>
+                    <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_format&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_content&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">create_params</span><span class="p">[</span><span class="s2">&quot;file_tags&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;overwrite&#39;</span><span class="p">:</span> <span class="n">overwrite</span><span class="p">,</span>
+                    <span class="s1">&#39;inbody&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;allowDataDeletion&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span>
+                    <span class="p">})</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_parent</span><span class="p">()</span>
 
@@ -616,7 +620,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Item has not yet been created&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;file_content&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_content&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;file_format&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_format&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;file_collection&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_collection&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;file_collection&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;collection&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;file_tags&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_tags&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;file_size&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Size&#39;</span><span class="p">)</span>
                 <span class="p">}</span></div></div>
@@ -771,7 +775,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
     </div>
   </body>
 </html>

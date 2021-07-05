@@ -304,7 +304,8 @@ used for write operations</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.datatype">
 <span class="sig-name descname"><span class="pre">datatype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.datatype" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the XNAT datatype of this item</p>
+<dd><p>Return the XNAT datatype of this item. This will be cached if
+not empty</p>
 </dd></dl>
 
 <dl class="py method">
@@ -655,12 +656,6 @@ used for write operations</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.does_request_succeed">
-<span class="sig-name descname"><span class="pre">does_request_succeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.does_request_succeed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.does_request_succeed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a REST call on the server and return True if it succeeds</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.experiment_list">
 <span class="sig-name descname"><span class="pre">experiment_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.experiment_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.experiment_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of experiments in this project</p>
@@ -710,14 +705,20 @@ used for read operations</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property">
-<span class="sig-name descname"><span class="pre">request_json_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request_json_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a REST call on the server and return string</p>
+<span class="sig-name descname"><span class="pre">request_json_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request_json_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_json_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return JSON response</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string">
-<span class="sig-name descname"><span class="pre">request_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reporter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_on_failure</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">request_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatServer.request_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.request_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a REST call on the server and return string</p>
 </dd></dl>
 
@@ -831,7 +832,7 @@ used for write operations</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Tom Doel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
     </div>
   </body>
 </html>
