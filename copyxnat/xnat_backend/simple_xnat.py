@@ -473,7 +473,8 @@ class SimpleXnatResourceBase(SimpleXnatItem):
         print("WARNING: experimental ZIP file save - includes nested folders")
         self.rest_client.download_file(
             file_path=file_path,
-            uri=self.read_uri() + '/files', qs_params={'format': 'zip'})
+            uri=self.read_uri() + '/files',
+            qs_params={'format': 'zip'})
         return file_path
 
     def resource_attributes(self):
