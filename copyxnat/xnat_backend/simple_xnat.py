@@ -146,7 +146,8 @@ class SimpleXnatServer(SimpleXnatBase):
         if not self._cached_datatypes:
             self._cached_datatypes = \
                 [element['ELEMENT_NAME'] for element in
-                    self.rest_client.request_json_property('/data/search/elements')]
+                    self.rest_client.request_json_property(
+                        '/data/search/elements')]
         return self._cached_datatypes
 
     def logout(self):
@@ -174,6 +175,7 @@ class SimpleXnatServer(SimpleXnatBase):
         return self.rest_client.request_string(uri)
 
     def request_json_property(self, uri):
+        """Execute a REST call on the server and return JSON response"""
         return self.rest_client.request_json_property(uri)
 
 

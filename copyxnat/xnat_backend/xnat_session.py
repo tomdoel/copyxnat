@@ -62,6 +62,7 @@ class XnatSession(object):
                 # so invalidate and retry to trigger a new session
                 self._session_id.reset()
             else:
+                response.raise_for_status()
                 return response
 
     def login(self):

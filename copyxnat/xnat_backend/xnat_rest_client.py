@@ -4,6 +4,8 @@
 
 import os
 
+from requests import HTTPError
+
 from copyxnat.xnat_backend.utis import Utils
 from copyxnat.xnat_backend.xnat_session import XnatSession
 
@@ -81,20 +83,23 @@ class XnatRestClient(object):
     def request_json_property(self, uri, optional=False, qs_params=None):
         """Execute a REST call on the server and return result as list
         If optional is True, then a 404 response will yield an empty list"""
-        json = self._request_json(uri=uri,
-                                  optional=optional,
-                                  qs_params=qs_params)
-        return json.get("ResultSet").get('Result') if json else []
+        try:
+            json = self._request_json(uri=uri, qs_params=qs_params)
+            return json.get("ResultSet").get('Result') if json else []
 
-    def _request_json(self, uri, optional=False, qs_params=None):
+        except HTTPError as err:
+            if optional and err.response.status_code == 404:
+                return []
+            else:
+                raise err
+
+    def _request_json(self, uri, qs_params=None):
         """Execute a REST call on the server and return result as json"""
         response = self._session.request(
             method='GET',
             uri=uri,
             qs_params=Utils.combine_dicts(qs_params, {'format': 'json'})
         )
-        if optional and response.status_code == 404:
-            return None
         response.raise_for_status()
         return response.json()
 
