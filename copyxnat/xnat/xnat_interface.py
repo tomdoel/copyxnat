@@ -638,7 +638,8 @@ class XnatProject(XnatParentItem):
         super(XnatProject, self).__init__(interface, label, parent, exists)
 
     def project_server_path(self):
-        return "{}/{}".format(self.parent.get_archive_path(), self.label)
+        return "{}/{}".format(self.parent.get_archive_path().rstrip('/'),
+                              self.label)
 
     def progress_update(self, reporter):
         self.reporter.log('Completed {} {}'.format(self.visible_name,
