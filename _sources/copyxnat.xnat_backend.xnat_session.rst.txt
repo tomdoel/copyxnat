@@ -1,7 +1,0 @@
-copyxnat.xnat\_backend.xnat\_session module
-===========================================
-
-.. automodule:: copyxnat.xnat_backend.xnat_session
-   :members:
-   :undoc-members:
-   :show-inheritance:
