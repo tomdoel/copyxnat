@@ -1,0 +1,7 @@
+copyxnat.xnat\_backend.simple\_xnat module
+==========================================
+
+.. automodule:: copyxnat.xnat_backend.simple_xnat
+   :members:
+   :undoc-members:
+   :show-inheritance:
