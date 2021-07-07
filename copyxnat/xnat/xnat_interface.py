@@ -439,8 +439,7 @@ class XnatFile(XnatItem):
                 tags = pydicom.dcmread(
                     local_file,
                     stop_before_pixels=True,
-                    specific_tags=[
-                        pydicom.datadict.tag_for_keyword('SeriesInstanceUID')]
+                    specific_tags=['SeriesInstanceUID']
                 )
                 if 'SeriesInstanceUID' in tags:
                     metadata['series_instance_uid'] = \
