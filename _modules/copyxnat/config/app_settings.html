@@ -69,7 +69,8 @@
                  <span class="n">skip_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">subject_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">ohif_rebuild</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">clear_caches</span><span class="o">=</span><span class="kc">False</span>
+                 <span class="n">clear_caches</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">add_missing_metadata</span><span class="o">=</span><span class="kc">True</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create global application settings</span>
@@ -93,6 +94,9 @@
 <span class="sd">        XNAT monitoring service after each experiment upload, requesting a</span>
 <span class="sd">        reset of the Java data caches.</span>
 <span class="sd">        @param verbose: True to show debugging output</span>
+<span class="sd">        @param add_missing_metadata: if True and a session does not have a UID</span>
+<span class="sd">        attribute set, then attempt to determine this from one of the DICOM</span>
+<span class="sd">        files. Does not work in zip upload mode</span>
 <span class="sd">        XNAT server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_existing</span> <span class="o">=</span> <span class="n">skip_existing</span>
@@ -105,7 +109,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subject_limit</span> <span class="o">=</span> <span class="n">subject_limit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ohif_rebuild</span> <span class="o">=</span> <span class="n">ohif_rebuild</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_caches</span> <span class="o">=</span> <span class="n">clear_caches</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_caches</span> <span class="o">=</span> <span class="n">clear_caches</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_missing_metadata</span> <span class="o">=</span> <span class="n">add_missing_metadata</span></div>
 </pre></div>
 
             <div class="clearer"></div>
