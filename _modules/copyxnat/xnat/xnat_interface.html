@@ -622,6 +622,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">ohif_rebuild</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ohif_generate_session</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">clear_caches</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_data_caches</span><span class="p">()</span>
+
         <span class="c1"># Give XNAT a little buffer time to process the session</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span></div>
 
@@ -634,6 +637,14 @@
                                                           <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                     <span class="s1">&#39;Failure executing OHIF reset POST </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="XnatExperiment.clear_data_caches"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.clear_data_caches">[docs]</a>    <span class="k">def</span> <span class="nf">clear_data_caches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;monitoring?action=clear_caches&amp;cacheId=nrg&#39;</span>
+
+        <span class="c1"># Ignore return value because this call returns HTML which some</span>
+        <span class="c1"># XNAT backends interpret as an error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">does_request_succeed</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="XnatExperiment.rebuild_catalog"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatExperiment.rebuild_catalog">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;data/services/refresh/catalog?&#39;</span> \
@@ -650,7 +661,6 @@
         <span class="n">reporter</span><span class="o">.</span><span class="n">next_progress</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Completed </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_name</span><span class="p">,</span>
                                                    <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span></div></div>
-
 
 <div class="viewcode-block" id="XnatSubject"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatSubject">[docs]</a><span class="k">class</span> <span class="nc">XnatSubject</span><span class="p">(</span><span class="n">XnatParentItem</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper for access to an XNAT subject&quot;&quot;&quot;</span>

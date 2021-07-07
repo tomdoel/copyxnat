@@ -68,7 +68,8 @@
                  <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">skip_existing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">subject_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ohif_rebuild</span><span class="o">=</span><span class="kc">False</span>
+                 <span class="n">ohif_rebuild</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">clear_caches</span><span class="o">=</span><span class="kc">False</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create global application settings</span>
@@ -85,9 +86,12 @@
 <span class="sd">        @param transfer_mode: See TransferMode enum</span>
 <span class="sd">        @param data_dir: Local directory for logs, downloads, cache files</span>
 <span class="sd">        @param subject_limit: Maximum number of new subjects to process</span>
-<span class="sd">        @param ohif_rebuild: if True then the an API call willbe made to the</span>
+<span class="sd">        @param ohif_rebuild: if True then the an API call will be made to the</span>
 <span class="sd">        OHIF viewer after an experiment modification to request rebuild of the</span>
 <span class="sd">        experiment metadata</span>
+<span class="sd">        @param clear_caches: if True then the an API call will be made to the</span>
+<span class="sd">        XNAT monitoring service after each experiment upload, requesting a</span>
+<span class="sd">        reset of the Java data caches.</span>
 <span class="sd">        @param verbose: True to show debugging output</span>
 <span class="sd">        XNAT server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -100,7 +104,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="ow">or</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">(</span><span class="s1">&#39;copyxnat&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subject_limit</span> <span class="o">=</span> <span class="n">subject_limit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ohif_rebuild</span> <span class="o">=</span> <span class="n">ohif_rebuild</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ohif_rebuild</span> <span class="o">=</span> <span class="n">ohif_rebuild</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_caches</span> <span class="o">=</span> <span class="n">clear_caches</span></div>
 </pre></div>
 
             <div class="clearer"></div>
