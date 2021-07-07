@@ -28,7 +28,8 @@ class AppSettings:
                  verbose=False,
                  skip_existing=False,
                  subject_limit=None,
-                 ohif_rebuild=False
+                 ohif_rebuild=False,
+                 clear_caches=False
                  ):
         """
         Create global application settings
@@ -45,9 +46,12 @@ class AppSettings:
         @param transfer_mode: See TransferMode enum
         @param data_dir: Local directory for logs, downloads, cache files
         @param subject_limit: Maximum number of new subjects to process
-        @param ohif_rebuild: if True then the an API call willbe made to the
+        @param ohif_rebuild: if True then the an API call will be made to the
         OHIF viewer after an experiment modification to request rebuild of the
         experiment metadata
+        @param clear_caches: if True then the an API call will be made to the
+        XNAT monitoring service after each experiment upload, requesting a
+        reset of the Java data caches.
         @param verbose: True to show debugging output
         XNAT server
         """
@@ -61,3 +65,4 @@ class AppSettings:
         self.verbose = verbose
         self.subject_limit = subject_limit
         self.ohif_rebuild = ohif_rebuild
+        self.clear_caches = clear_caches

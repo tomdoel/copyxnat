@@ -74,7 +74,7 @@ class PyXnatServer(object):
     def does_request_succeed(self, uri, reporter, method):
         """Execute a REST call on the server and return True if it succeeds"""
         try:
-            self.fetch_interface()._exec(uri, method)  # pylint: disable=protected-access
+            self.fetch_interface()._exec(uri, method.upper())  # pylint: disable=protected-access
             reporter.debug('Success executing {} call {}'.format(method, uri))
             return True
 

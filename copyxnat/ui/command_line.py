@@ -176,6 +176,14 @@ def _parse_command_line(args):
                                          "experiment metadata "
                                          "after an experiment modification."
                                     )
+
+            sub_parser.add_argument("-r", "--clear-caches",
+                                    action="store_true",
+                                    help="Ask the monitoring service to clear"
+                                         "Java caches after each session upload"
+                                    )
+
+
     args = parser.parse_args(args)
 
     # Command class
@@ -215,7 +223,8 @@ def _parse_command_line(args):
         verbose=args.verbose,
         skip_existing=_optional(args, 'skip_existing', None),
         subject_limit=args.limit_subjects,
-        ohif_rebuild=args.ohif_rebuild
+        ohif_rebuild=args.ohif_rebuild,
+        clear_caches=args.clear_caches
     )
 
     return command, src_params, dst_params, project_list, app_settings
