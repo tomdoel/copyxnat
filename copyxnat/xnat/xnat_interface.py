@@ -415,21 +415,22 @@ class XnatFile(XnatItem):
 
     def add_missing_metadata(self, local_file=None):
         """Update parent items using metadata from this file"""
-        tmp_local_file = None
-        if not local_file:
-            folder_path = self.cache.make_output_path()
-            tmp_local_file = self.interface.download_file(folder_path,
-                                                          self.label)
-            local_file = tmp_local_file
 
-        if self.metadata_missing():
+        if self.app_settings.add_missing_metadata and self.metadata_missing():
+            tmp_local_file = None
+            if not local_file:
+                folder_path = self.cache.make_output_path()
+                tmp_local_file = self.interface.download_file(folder_path,
+                                                              self.label)
+                local_file = tmp_local_file
+
             metadata = self._parse_metadata(local_file)
 
             if metadata:
                 self.provide_metadata(metadata)
 
-        if tmp_local_file:
-            os.remove(tmp_local_file)
+            if tmp_local_file:
+                os.remove(tmp_local_file)
 
     def _parse_metadata(self, local_file):
         metadata = {}
