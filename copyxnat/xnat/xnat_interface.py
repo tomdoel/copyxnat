@@ -252,9 +252,6 @@ class XnatItem(XnatBase):
         :xml_cleaner: XmlCleaner to modify the XML as required
         """
 
-    def ohif_generate_session(self):
-        """Trigger regeneration of OHIF session data"""
-
     def get_server(self):
         """Return the parent XnatServer object"""
         return self.parent.get_server()
@@ -415,11 +412,6 @@ class XnatFile(XnatItem):
         )
 
         return base_string + attr_string
-
-    def ohif_generate_session(self):
-
-        # Use files to supply missing metadata
-        self.add_missing_metadata()
 
     def add_missing_metadata(self, local_file=None):
         """Update parent items using metadata from this file"""
@@ -589,6 +581,8 @@ class XnatExperiment(XnatParentItem):
         time.sleep(30)
 
     def ohif_generate_session(self):
+        """Trigger regeneration of OHIF session data"""
+
         if self.get_server().ohif_present():
             uri = 'xapi/viewer/projects/{}/experiments/{}'.format(
                 self.label_map[XnatProject.xnat_type],

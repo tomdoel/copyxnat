@@ -3,6 +3,7 @@
 """Command which exports XNAT project data onto local disk"""
 
 from copyxnat.xnat.commands import Command
+from copyxnat.xnat.xnat_interface import XnatExperiment, XnatFile
 
 
 class OhifCommand(Command):
@@ -19,5 +20,10 @@ class OhifCommand(Command):
 
     def _run(self, xnat_item, from_parent):
         self._recurse(xnat_item=xnat_item)
-        xnat_item.ohif_generate_session()
+
+        if isinstance(xnat_item, XnatExperiment):
+            xnat_item.ohif_generate_session()
+        if isinstance(xnat_item, XnatFile):
+            xnat_item.add_missing_metadata()
+
         return True
