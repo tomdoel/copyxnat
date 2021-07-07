@@ -583,7 +583,7 @@ class XnatExperiment(XnatParentItem):
             self.ohif_generate_session()
 
         if self.app_settings.clear_caches:
-            self.clear_data_caches()
+            self.get_server().clear_data_caches()
 
         # Give XNAT a little buffer time to process the session
         time.sleep(30)
@@ -597,14 +597,6 @@ class XnatExperiment(XnatParentItem):
                                                           method='POST'):
                 self.reporter.warning(
                     'Failure executing OHIF reset POST {}'.format(uri))
-
-    def clear_data_caches(self):
-        uri = 'monitoring?action=clear_caches&cacheId=nrg'
-
-        # Ignore return value because this call returns HTML which some
-        # XNAT backends interpret as an error
-        self.get_server().does_request_succeed(uri=uri, method='GET')
-
 
     def rebuild_catalog(self):
         uri = 'data/services/refresh/catalog?' \
@@ -770,6 +762,15 @@ class XnatServer(XnatBase):
                     self.full_name))
 
         return self.ohif
+
+    def clear_data_caches(self):
+        """Sends request to monitoring service to clear the nrg data caches"""
+
+        uri = 'monitoring?action=clear_caches&cacheId=nrg'
+
+        # Ignore return value because this call returns HTML which some
+        # XNAT backends interpret as an error
+        self.get_server().does_request_succeed(uri=uri, method='GET')
 
     def get_disallowed_project_ids(self, label):
         """
