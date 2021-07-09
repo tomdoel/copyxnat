@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat_backend.xnat_rest_client module &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="copyxnat.xnat_backend.xnat_session module" href="copyxnat.xnat_backend.xnat_session.html" />
+    <link rel="prev" title="copyxnat.xnat_backend.utis module" href="copyxnat.xnat_backend.utis.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.xnat_session.html" title="copyxnat.xnat_backend.xnat_session module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.utis.html" title="copyxnat.xnat_backend.utis module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat_backend.html" accesskey="U">copyxnat.xnat_backend package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat_backend.xnat_rest_client module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-copyxnat.xnat_backend.xnat_rest_client">
+<span id="copyxnat-xnat-backend-xnat-rest-client-module"></span><h1>copyxnat.xnat_backend.xnat_rest_client module<a class="headerlink" href="#module-copyxnat.xnat_backend.xnat_rest_client" title="Permalink to this headline">¶</a></h1>
+<p>Wrappers for communicating between copyxnat items and pyXNAT backend items</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.xnat_rest_client.</span></span><span class="sig-name descname"><span class="pre">XnatRestClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper around XNAT REST API</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.download_file">
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download file from server to specified file location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – full local destination path for file</p></li>
+<li><p><strong>uri</strong> – Relative URI of resource to download</p></li>
+<li><p><strong>qs_params</strong> – Additional query string parameters</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>End this XNAT session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.meta">
+<span class="sig-name descname"><span class="pre">meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return dictionary of XNAT metadata</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server. Does not return response</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.request_json_property">
+<span class="sig-name descname"><span class="pre">request_json_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.request_json_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.request_json_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return result as list
+If optional is True, then a 404 response will yield an empty list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.request_string">
+<span class="sig-name descname"><span class="pre">request_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.request_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.request_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a REST call on the server and return string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.upload_file">
+<span class="sig-name descname"><span class="pre">upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qs_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/xnat_rest_client.html#XnatRestClient.upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload file to server from the specified location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – request method (post or put)</p></li>
+<li><p><strong>uri</strong> – Relative URI on the XNAT server</p></li>
+<li><p><strong>file_path</strong> – full local source path for file</p></li>
+<li><p><strong>qs_params</strong> – dictionary of querystring parameters</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/project-icon.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyxnat.xnat_backend.utis.html"
+                        title="previous chapter">copyxnat.xnat_backend.utis module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyxnat.xnat_backend.xnat_session.html"
+                        title="next chapter">copyxnat.xnat_backend.xnat_session module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/copyxnat.xnat_backend.xnat_rest_client.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.xnat_session.html" title="copyxnat.xnat_backend.xnat_session module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="copyxnat.xnat_backend.utis.html" title="copyxnat.xnat_backend.utis module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="copyxnat.xnat_backend.html" >copyxnat.xnat_backend package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat_backend.xnat_rest_client module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+copyxnat.xnat\_backend.xnat\_rest\_client module
+================================================
+
+.. automodule:: copyxnat.xnat_backend.xnat_rest_client
+   :members:
+   :undoc-members:
+   :show-inheritance:
