@@ -1,7 +1,0 @@
-copyxnat.xnat\_backend.utis module
-==================================
-
-.. automodule:: copyxnat.xnat_backend.utis
-   :members:
-   :undoc-members:
-   :show-inheritance:
