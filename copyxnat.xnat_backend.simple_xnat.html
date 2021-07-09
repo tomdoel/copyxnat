@@ -51,59 +51,6 @@
 <span id="copyxnat-xnat-backend-simple-xnat-module"></span><h1>copyxnat.xnat_backend.simple_xnat module<a class="headerlink" href="#module-copyxnat.xnat_backend.simple_xnat" title="Permalink to this headline">¶</a></h1>
 <p>SimpleXnat wrappers for the XNAT REST API</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">LazyList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrapper_cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Smart list of SimpleXnat items which will auto-populate when required</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.add_new">
-<span class="sig-name descname"><span class="pre">add_new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.add_new"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.add_new" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a label to the list of recently created labels.
-The added label will be included in label key lists and item counts.
-If the metadata are requested for the new item then a refetch will be
-triggered when that happens</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.contains">
-<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.contains" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if item exists with label</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.count" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return number of items, including cached and newly created items</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.get_all_metadata">
-<span class="sig-name descname"><span class="pre">get_all_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.get_all_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.get_all_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch metadata for all items. If items have been create since the
-previous cache of metadata, a new fetch will be triggered</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.get_labels">
-<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.get_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.get_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch labels for all items including newly created items</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.get_metadata">
-<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.get_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.get_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return metadata for item with label, or None if it does not exist</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.LazyList.yield_items">
-<span class="sig-name descname"><span class="pre">yield_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#LazyList.yield_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.LazyList.yield_items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lazily populate the dictionary and yield in wrapper objects</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.xnat_backend.simple_xnat.</span></span><span class="sig-name descname"><span class="pre">SimpleXnatAssessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatAssessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources</span></code></a></p>

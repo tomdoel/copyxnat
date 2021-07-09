@@ -1,0 +1,7 @@
+copyxnat.xnat\_backend.lazy\_list module
+========================================
+
+.. automodule:: copyxnat.xnat_backend.lazy_list
+   :members:
+   :undoc-members:
+   :show-inheritance:

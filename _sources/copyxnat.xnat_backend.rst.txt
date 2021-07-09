@@ -7,6 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   copyxnat.xnat_backend.lazy_list
    copyxnat.xnat_backend.pyxnat_server
    copyxnat.xnat_backend.server_factory
    copyxnat.xnat_backend.simple_xnat

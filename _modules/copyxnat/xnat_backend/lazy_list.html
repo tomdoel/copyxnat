@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>copyxnat.xnat_backend.lazy_list &#8212; CopyXnat  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat_backend.lazy_list</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for copyxnat.xnat_backend.lazy_list</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;Smart list of SimpleXnat items which will auto-populate when required&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="LazyList"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList">[docs]</a><span class="k">class</span> <span class="nc">LazyList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Smart list of SimpleXnat items which will auto-populate when required&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wrapper_cls</span> <span class="o">=</span> <span class="n">wrapper_cls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rest_client</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">rest_client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label_key</span> <span class="o">=</span> <span class="n">wrapper_cls</span><span class="o">.</span><span class="n">label_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rest_type</span> <span class="o">=</span> <span class="n">wrapper_cls</span><span class="o">.</span><span class="n">rest_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optional</span> <span class="o">=</span> <span class="n">wrapper_cls</span><span class="o">.</span><span class="n">optional</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="LazyList.yield_items"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.yield_items">[docs]</a>    <span class="k">def</span> <span class="nf">yield_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Lazily populate the dictionary and yield in wrapper objects&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapper_cls</span><span class="o">.</span><span class="n">get_existing</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">item</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LazyList.get_labels"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch labels for all items including newly created items&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span> <span class="o">+</span> \
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="LazyList.get_all_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.get_all_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch metadata for all items. If items have been create since the</span>
+<span class="sd">        previous cache of metadata, a new fetch will be triggered&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="LazyList.contains"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if item exists with label&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span> <span class="ow">or</span> <span class="n">label</span> <span class="ow">in</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LazyList.get_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.get_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return metadata for item with label, or None if it does not exist&quot;&quot;&quot;</span>
+
+        <span class="c1"># If this is a new item, we will need the metadata to be repopulated</span>
+        <span class="n">repopulate</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="n">repopulate</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LazyList.count"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return number of items, including cached and newly created items&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_list</span><span class="p">(</span><span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="LazyList.add_new"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.lazy_list.html#copyxnat.xnat_backend.lazy_list.LazyList.add_new">[docs]</a>    <span class="k">def</span> <span class="nf">add_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a label to the list of recently created labels.</span>
+<span class="sd">        The added label will be included in label key lists and item counts.</span>
+<span class="sd">        If the metadata are requested for the new item then a refetch will be</span>
+<span class="sd">        triggered when that happens&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allow_repopulate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch dict of metadata.</span>
+<span class="sd">        If allow_repopulate is True then metadata will be re-fetched if any</span>
+<span class="sd">        new items have been created since the last cached metadata request&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">allow_repopulate</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">item</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_key</span><span class="p">]:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rest_client</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span>
+                    <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_uri</span><span class="p">(),</span> <span class="n">optional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_optional</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recently_created</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+
+    <span class="k">def</span> <span class="nf">_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">read_uri</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rest_type</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/project-icon.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CopyXnat  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">copyxnat.xnat_backend.lazy_list</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tom Doel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
+    </div>
+  </body>
+</html>
