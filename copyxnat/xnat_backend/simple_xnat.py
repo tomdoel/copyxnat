@@ -14,11 +14,13 @@ from copyxnat.xnat_backend.xnat_rest_client import XnatRestClient
 class LazyList(object):
     """Smart list of SimpleXnat items which will auto-populate when required"""
     def __init__(self, parent, wrapper_cls):
-        self._populator = parent.rest_client
         self._list = None
         self._parent = parent
         self._wrapper_cls = wrapper_cls
+        self._rest_client = parent.rest_client
         self._label_key = wrapper_cls.label_key
+        self._rest_type = wrapper_cls.rest_type
+        self._optional = wrapper_cls.optional
         self._recently_created = []
 
     def yield_items(self):
@@ -41,22 +43,6 @@ class LazyList(object):
         previous cache of metadata, a new fetch will be triggered"""
 
         return self._get_list(allow_repopulate=True).values()
-
-    def _get_list(self, allow_repopulate=True):
-        """Fetch dict of metadata.
-        If allow_repopulate is True then metadata will be re-fetched if any
-        new items have been created since the last cached metadata request"""
-
-        if self._list is None or (allow_repopulate and self._recently_created):
-            uri = '{}/{}'.format(self._parent.read_uri(),
-                                 self._wrapper_cls.rest_type)
-            self._list = {
-                item[self._label_key]: item for item in
-                self._populator.request_json_property(
-                    uri=uri, optional=self._wrapper_cls.optional)
-            }
-            self._recently_created = []
-        return self._list
 
     def contains(self, label):
         """Return True if item exists with label"""
@@ -83,6 +69,23 @@ class LazyList(object):
         If the metadata are requested for the new item then a refetch will be
         triggered when that happens"""
         self._recently_created.append(label)
+
+    def _get_list(self, allow_repopulate=True):
+        """Fetch dict of metadata.
+        If allow_repopulate is True then metadata will be re-fetched if any
+        new items have been created since the last cached metadata request"""
+
+        if self._list is None or (allow_repopulate and self._recently_created):
+            self._list = {
+                item[self._label_key]: item for item in
+                self._rest_client.request_json_property(
+                    uri=self._uri(), optional=self._optional)
+            }
+            self._recently_created = []
+        return self._list
+
+    def _uri(self):
+        return '{}/{}'.format(self._parent.read_uri(), self._rest_type)
 
 
 @six.add_metaclass(abc.ABCMeta)
