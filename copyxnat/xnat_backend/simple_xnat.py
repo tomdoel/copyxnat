@@ -62,10 +62,7 @@ class SimpleXnatServer(SimpleXnatBase):
 
     def project(self, label):
         """Return SimpleXnatProject project"""
-        return SimpleXnatProject.create(
-            parent=self,
-            label=label
-        )
+        return SimpleXnatProject.create(parent=self, label=label)
 
     def datatypes(self):
         """Return datatypes on this server"""
@@ -111,6 +108,10 @@ class SimpleXnatItem(SimpleXnatBase):
     """Abstraction of wrappers around XNAT REST API interfaces"""
 
     def __init__(self, parent, label, metadata):
+
+        if not label:
+            raise ValueError('Label has not been set')
+
         self._parent = parent
         self.rest_client = parent.rest_client
         self._label = label
@@ -164,14 +165,10 @@ class SimpleXnatItem(SimpleXnatBase):
     def get_metadata(self):
         """Return XNAT metadata for this item"""
         if not self._metadata:
-            self._metadata = self.metadata_from_parent(parent=self._parent,
-                                                       label=self._label)
+            property_name = self.parent_container_list
+            self._metadata = getattr(self._parent, property_name).\
+                get_metadata(self._label)
         return self._metadata
-
-    @classmethod
-    def metadata_from_parent(cls, parent, label):
-        """Return metadata for existing item or None if it does not exist"""
-        return getattr(parent, cls.parent_container_list).get_metadata(label)
 
     def add_to_parent(self):
         """Update parent's metadata to show existance of new item"""
