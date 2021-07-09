@@ -26,14 +26,16 @@ class SimpleXnatBase(object):
         """Return URI of this XNAT item relative to the XNAT REST interface as
         used for write operations"""
 
+    def _lazy_list(self, cls_type):
+        return LazyList(parent=self, wrapper_cls=cls_type)
+
 
 class SimpleXnatServer(SimpleXnatBase):
     """Interface to XNAT REST API"""
 
     def __init__(self, params):
         self.rest_client = XnatRestClient(params=params)
-        self.cached_project_list = LazyList(parent=self,
-                                            wrapper_cls=SimpleXnatProject)
+        self.cached_project_list = self._lazy_list(SimpleXnatProject)
         self._cached_datatypes = None
 
     def read_uri(self):
@@ -297,12 +299,8 @@ class SimpleXnatItemWithResources(SimpleXnatItem):
 
     def __init__(self, parent, label, metadata):
         super(SimpleXnatItemWithResources, self).__init__(
-            parent=parent,
-            label=label,
-            metadata=metadata
-        )
-        self.resource_list = LazyList(parent=self,
-                                      wrapper_cls=SimpleXnatResource)
+            parent=parent, label=label, metadata=metadata)
+        self.resource_list = self._lazy_list(SimpleXnatResource)
 
     def resources(self):
         """Return item's resources as an array of SimpleXnatResources"""
@@ -315,14 +313,9 @@ class SimpleXnatItemWithInOutResources(SimpleXnatItem):
 
     def __init__(self, parent, label, metadata):
         super(SimpleXnatItemWithInOutResources, self).__init__(
-            parent=parent,
-            label=label,
-            metadata=metadata,
-        )
-        self.in_resource_list = LazyList(parent=self,
-                                         wrapper_cls=SimpleXnatInResource)
-        self.out_resource_list = LazyList(parent=self,
-                                          wrapper_cls=SimpleXnatOutResource)
+            parent=parent, label=label, metadata=metadata)
+        self.in_resource_list = self._lazy_list(SimpleXnatInResource)
+        self.out_resource_list = self._lazy_list(SimpleXnatOutResource)
 
     def in_resources(self):
         """Return array of SimpleXnatInResources for this item"""
@@ -343,11 +336,8 @@ class SimpleXnatResourceBase(SimpleXnatItem):
 
     def __init__(self, parent, label, metadata):
         super(SimpleXnatResourceBase, self).__init__(
-            parent=parent,
-            metadata=metadata,
-            label=label
-        )
-        self.file_list = LazyList(parent=self, wrapper_cls=SimpleXnatFile)
+            parent=parent, label=label, metadata=metadata)
+        self.file_list = self._lazy_list(SimpleXnatFile)
 
     def files(self):
         """Return array of SimpleXnatFiles for this resource container"""
@@ -521,12 +511,8 @@ class SimpleXnatProject(SimpleXnatItemWithResources):
 
     def __init__(self, parent, label, metadata):
         super(SimpleXnatProject, self).__init__(
-            parent=parent,
-            label=label,
-            metadata=metadata
-        )
-        self.subject_list = LazyList(
-            parent=self, wrapper_cls=SimpleXnatSubject)
+            parent=parent, label=label, metadata=metadata)
+        self.subject_list = self._lazy_list(SimpleXnatSubject)
 
     def subjects(self):
         """Return array of SimpleXnatSubjects for this project"""
@@ -544,12 +530,8 @@ class SimpleXnatSubject(SimpleXnatItemWithResources):
 
     def __init__(self, parent, label, metadata):
         super(SimpleXnatSubject, self).__init__(
-            parent=parent,
-            label=label,
-            metadata=metadata
-        )
-        self.experiment_list = LazyList(
-            parent=self, wrapper_cls=SimpleXnatExperiment)
+            parent=parent, label=label, metadata=metadata)
+        self.experiment_list = self._lazy_list(SimpleXnatExperiment)
 
     def experiments(self):
         """Return array of SimpleXnatExperiments for this subject"""
@@ -567,15 +549,10 @@ class SimpleXnatExperiment(SimpleXnatItemWithResources):
 
     def __init__(self, parent, label, metadata):
         super(SimpleXnatExperiment, self).__init__(
-            parent=parent,
-            label=label,
-            metadata=metadata
-        )
-        self.scan_list = LazyList(parent=self, wrapper_cls=SimpleXnatScan)
-        self.assessor_list = LazyList(
-            parent=self, wrapper_cls=SimpleXnatAssessor)
-        self.reconstruction_list = LazyList(
-            parent=self, wrapper_cls=SimpleXnatReconstruction)
+            parent=parent, label=label, metadata=metadata)
+        self.scan_list = self._lazy_list(SimpleXnatScan)
+        self.assessor_list = self._lazy_list(SimpleXnatAssessor)
+        self.reconstruction_list = self._lazy_list(SimpleXnatReconstruction)
 
     def scans(self):
         """Return array of SimpleXnatScans for this experiment"""
