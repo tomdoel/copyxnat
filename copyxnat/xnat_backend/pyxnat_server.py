@@ -71,41 +71,19 @@ class PyXnatServer(object):
                 format(project))
         return [exp['label'] for exp in exps]
 
-    def does_request_succeed(self, uri, reporter, method):
-        """Execute a REST call on the server and return True if it succeeds"""
-        try:
-            self.fetch_interface()._exec(uri, method.upper())  # pylint: disable=protected-access
-            reporter.debug('Success executing {} call {}'.format(method, uri))
-            return True
+    def request(self, uri, method):
+        """Execute a REST call on the server"""
+        self.fetch_interface()._exec(uri=uri, method=method)  # pylint: disable=protected-access
 
-        except Exception as exc:  # pylint: disable=broad-except
-            reporter.debug('Failure executing {} call {}: {}'. format(
-                method, uri, str(exc)))
-            return False
-
-    def request_string(self, uri, reporter, error_on_failure):
+    def request_string(self, uri):
         """Execute a REST call on the server and return string"""
-        try:
-            result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
-            return result.decode("utf-8")
+        result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
+        return result.decode("utf-8")
 
-        except Exception as exc:
-            message = 'Failure executing GET call {}: {}'.format(uri, exc)
-            if error_on_failure:
-                reporter.error(message)
-            else:
-                reporter.log(message)
-            raise exc
-
-    def request_json_property(self, uri, reporter):
+    def request_json_property(self, uri):
         """Execute a REST call on the server and return string"""
-        try:
-            result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
-            return json.loads(result.decode("utf-8"))["ResultSet"]['Result']
-
-        except Exception as exc:
-            reporter.error('Failure executing GET call {}: {}'.format(uri, exc))
-            raise exc
+        result = self.fetch_interface()._exec(uri, 'GET')  # pylint: disable=protected-access
+        return json.loads(result.decode("utf-8"))["ResultSet"]['Result']
 
 
 @six.add_metaclass(abc.ABCMeta)

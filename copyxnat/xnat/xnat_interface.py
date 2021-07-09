@@ -733,13 +733,39 @@ class XnatServer(XnatBase):
                                'read-only mode to server {}'.
                                format(method, uri, self.full_name))
 
-        return self.interface.does_request_succeed(
-            uri=uri, reporter=self.reporter, method=method)
+        try:
+            self.interface.request(uri=uri, method=method)
+            self.reporter.debug('Success executing {} call {}'.format(method,
+                                                                      uri))
+            return True
+
+        except Exception as exc:  # pylint: disable=broad-except
+            self.reporter.debug('Failure executing {} call {}: {}'. format(
+                method, uri, str(exc)))
+            return False
 
     def request_string(self, uri, error_on_failure=True):
         """Execute a REST call on the server and return string"""
-        return self.interface.request_string(
-            uri=uri, reporter=self.reporter, error_on_failure=error_on_failure)
+        try:
+            return self.interface.request_string(uri)
+
+        except Exception as exc:
+            message = 'Failure executing GET call {}: {}'.format(uri, exc)
+            if error_on_failure:
+                self.reporter.error(message)
+            else:
+                self.reporter.log(message)
+            raise exc
+
+    def request_json_property(self, uri):
+        """Execute a REST call on the server and return string"""
+        try:
+            return self.interface.request_json_property(uri)
+
+        except Exception as exc:
+            self.reporter.error('Failure executing GET call {}: {}'.format(uri,
+                                                                           exc))
+            raise exc
 
     def ohif_present(self):
         """Return True if the OHIF viewer plugin is installed on server"""
@@ -800,9 +826,8 @@ class XnatServer(XnatBase):
                                   'Will try using a legacy API. Error: {}'.
                                   format(str(exc)))
                 self._archive_path = \
-                    self.interface.request_json_property(
-                        uri='REST/services/settings/archivePath',
-                        reporter=self.reporter)
+                    self.request_json_property(
+                        'REST/services/settings/archivePath')
         return self._archive_path
 
     def metadata_missing(self):
