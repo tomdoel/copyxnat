@@ -64,7 +64,10 @@
 <div class="viewcode-block" id="SimpleXnatBase.write_uri"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatBase.write_uri">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">write_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return URI of this XNAT item relative to the XNAT REST interface as</span>
-<span class="sd">        used for write operations&quot;&quot;&quot;</span></div></div>
+<span class="sd">        used for write operations&quot;&quot;&quot;</span></div>
+
+    <span class="k">def</span> <span class="nf">_lazy_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls_type</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">cls_type</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SimpleXnatServer"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer">[docs]</a><span class="k">class</span> <span class="nc">SimpleXnatServer</span><span class="p">(</span><span class="n">SimpleXnatBase</span><span class="p">):</span>
@@ -72,8 +75,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span> <span class="o">=</span> <span class="n">XnatRestClient</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cached_project_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                                            <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatProject</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_project_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatProject</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_datatypes</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SimpleXnatServer.read_uri"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.read_uri">[docs]</a>    <span class="k">def</span> <span class="nf">read_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -102,10 +104,7 @@
 
 <div class="viewcode-block" id="SimpleXnatServer.project"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.project">[docs]</a>    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return SimpleXnatProject project&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">SimpleXnatProject</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">SimpleXnatProject</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SimpleXnatServer.datatypes"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer.datatypes">[docs]</a>    <span class="k">def</span> <span class="nf">datatypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return datatypes on this server&quot;&quot;&quot;</span>
@@ -151,6 +150,10 @@
     <span class="sd">&quot;&quot;&quot;Abstraction of wrappers around XNAT REST API interfaces&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Label has not been set&#39;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">rest_client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">label</span>
@@ -204,14 +207,10 @@
 <div class="viewcode-block" id="SimpleXnatItem.get_metadata"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return XNAT metadata for this item&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_from_parent</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
-                                                       <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span>
+            <span class="n">property_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_container_list</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span></div>
-
-<div class="viewcode-block" id="SimpleXnatItem.metadata_from_parent"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.metadata_from_parent">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">metadata_from_parent</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return metadata for existing item or None if it does not exist&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parent_container_list</span><span class="p">)</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SimpleXnatItem.add_to_parent"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.add_to_parent">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update parent&#39;s metadata to show existance of new item&quot;&quot;&quot;</span>
@@ -340,12 +339,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SimpleXnatItemWithResources</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resource_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                                      <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatResource</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatResource</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleXnatItemWithResources.resources"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources.resources">[docs]</a>    <span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return item&#39;s resources as an array of SimpleXnatResources&quot;&quot;&quot;</span>
@@ -358,14 +353,9 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SimpleXnatItemWithInOutResources</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">in_resource_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                                         <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatInResource</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">out_resource_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                                          <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatOutResource</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_resource_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatInResource</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_resource_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatOutResource</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleXnatItemWithInOutResources.in_resources"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources.in_resources">[docs]</a>    <span class="k">def</span> <span class="nf">in_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of SimpleXnatInResources for this item&quot;&quot;&quot;</span>
@@ -386,11 +376,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SimpleXnatResourceBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatFile</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatFile</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleXnatResourceBase.files"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.files">[docs]</a>    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of SimpleXnatFiles for this resource container&quot;&quot;&quot;</span>
@@ -564,12 +551,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SimpleXnatProject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subject_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatSubject</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatSubject</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleXnatProject.subjects"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.subjects">[docs]</a>    <span class="k">def</span> <span class="nf">subjects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of SimpleXnatSubjects for this project&quot;&quot;&quot;</span>
@@ -587,12 +570,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SimpleXnatSubject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatExperiment</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatExperiment</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleXnatSubject.experiments"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.experiments">[docs]</a>    <span class="k">def</span> <span class="nf">experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of SimpleXnatExperiments for this subject&quot;&quot;&quot;</span>
@@ -610,15 +589,10 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SimpleXnatExperiment</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scan_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatScan</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assessor_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatAssessor</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reconstruction_list</span> <span class="o">=</span> <span class="n">LazyList</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper_cls</span><span class="o">=</span><span class="n">SimpleXnatReconstruction</span><span class="p">)</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scan_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatScan</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assessor_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatAssessor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reconstruction_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatReconstruction</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SimpleXnatExperiment.scans"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.scans">[docs]</a>    <span class="k">def</span> <span class="nf">scans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return array of SimpleXnatScans for this experiment&quot;&quot;&quot;</span>
