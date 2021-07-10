@@ -228,8 +228,8 @@ def _parse_command_line(args):
         verbose=args.verbose,
         skip_existing=_optional(args, 'skip_existing', None),
         subject_limit=args.limit_subjects,
-        ohif_rebuild=args.ohif_rebuild,
-        clear_caches=args.clear_caches
+        ohif_rebuild=_optional(args, 'ohif_rebuild', None),
+        clear_caches=_optional(args, 'clear_caches', None),
         backend=args.backend
     )
 
