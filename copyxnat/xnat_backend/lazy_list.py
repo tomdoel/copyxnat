@@ -10,7 +10,6 @@ class LazyList(object):
         self._parent = parent
         self._wrapper_cls = wrapper_cls
         self._rest_client = parent.rest_client
-        self._label_key = wrapper_cls.label_key
         self._rest_type = wrapper_cls.rest_type
         self._optional = wrapper_cls.optional
         self._recently_created = []
@@ -69,7 +68,7 @@ class LazyList(object):
 
         if self._list is None or (allow_repopulate and self._recently_created):
             self._list = {
-                item[self._label_key]: item for item in
+                self._wrapper_cls.find_label(item): item for item in
                 self._rest_client.request_json_property(
                     uri=self._uri(), optional=self._optional)
             }

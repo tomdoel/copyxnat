@@ -179,6 +179,18 @@ class SimpleXnatItem(SimpleXnatBase):
             (self._label)
 
     @classmethod
+    def find_label(cls, metadata):
+        """Find a valid label from the given metadata dictionary"""
+        label = None
+        for next_label in cls.label_keys:
+            if (not label) and metadata[next_label]:
+                label = metadata[next_label]
+        if not label:
+            raise ValueError('Could not find a suitable label key in the '
+                             'metadata to identify this item')
+        return label
+
+    @classmethod
     def get_existing(cls, parent, label, metadata):
         """Create a new child item of this class type from given parent"""
         return cls(
@@ -253,7 +265,7 @@ class SimpleXnatItem(SimpleXnatBase):
 
     @property
     @abc.abstractmethod
-    def label_key(self):
+    def label_keys(self):
         """Name of the dictionary key in the item's metadata dict which will be
         used to match items between servers. In most cases `label` is
         appropriate if it exists for this item's metadata"""
@@ -331,8 +343,7 @@ class SimpleXnatItemWithInOutResources(SimpleXnatItem):
 class SimpleXnatResourceBase(SimpleXnatItem):
     """Wrapper around an XNAT resource interface"""
 
-    label_key = 'label'
-    # label_key = 'xnat_abstractresource_id'
+    label_keys = ['label', 'xnat_abstractresource_id']
     rest_id_keys = ['label', 'xnat_abstractresource_id']
 
     def __init__(self, parent, label, metadata):
@@ -473,7 +484,7 @@ class SimpleXnatFile(SimpleXnatItem):
     """Wrapper around an XNAT file interface"""
 
     rest_type = 'files'
-    label_key = 'Name'
+    label_keys = ['Name']
     rest_id_keys = ['Name']
     parent_container_list = 'file_list'
     optional = False
@@ -536,7 +547,7 @@ class SimpleXnatProject(SimpleXnatItemWithResources):
     """Wrapper around an XNAT project interface"""
 
     rest_type = 'projects'
-    label_key = 'ID'
+    label_keys = ['ID']
     rest_id_keys = ['ID']
     parent_container_list = 'cached_project_list'
     optional = False
@@ -555,7 +566,7 @@ class SimpleXnatSubject(SimpleXnatItemWithResources):
     """Wrapper around an XNAT subject interface"""
 
     rest_type = 'subjects'
-    label_key = 'label'
+    label_keys = ['label']
     rest_id_keys = ['ID']
     parent_container_list = 'subject_list'
     optional = False
@@ -574,7 +585,7 @@ class SimpleXnatExperiment(SimpleXnatItemWithResources):
     """Wrapper around an XNAT experiment interface"""
 
     rest_type = 'experiments'
-    label_key = 'label'
+    label_keys = ['label']
     rest_id_keys = ['ID']
     parent_container_list = 'experiment_list'
     optional = False
@@ -603,7 +614,7 @@ class SimpleXnatScan(SimpleXnatItemWithResources):
     """Wrapper around an XNAT interface for items which can contain resources"""
 
     rest_type = 'scans'
-    label_key = 'ID'
+    label_keys = ['ID']
     rest_id_keys = ['ID']
     parent_container_list = 'scan_list'
     optional = True  # not necessarily present in a derived subjectAssessorData
@@ -613,7 +624,7 @@ class SimpleXnatAssessor(SimpleXnatItemWithInOutResources):
     """Wrapper around a pyxnat assessor interface"""
 
     rest_type = 'assessors'
-    label_key = 'label'
+    label_keys = ['label']
     rest_id_keys = ['ID']
     parent_container_list = 'assessor_list'
     optional = True  # not necessarily present in a derived subjectAssessorData
@@ -623,7 +634,7 @@ class SimpleXnatReconstruction(SimpleXnatItemWithInOutResources):
     """Wrapper around an XNAT reconstruction"""
 
     rest_type = 'reconstructions'
-    label_key = 'ID'
+    label_keys = ['ID']
     rest_id_keys = ['ID']
     parent_container_list = 'reconstruction_list'
     optional = True  # not necessarily present in a derived subjectAssessorData
