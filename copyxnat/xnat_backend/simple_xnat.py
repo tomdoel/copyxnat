@@ -4,6 +4,7 @@
 
 import abc
 import os
+import zipfile
 
 import six
 
@@ -390,13 +391,44 @@ class SimpleXnatResourceBase(SimpleXnatItem):
         if not files:
             return None
 
-        file_path = os.path.join(save_dir, self.get_label() + '.zip')
-        print("WARNING: experimental ZIP file save - includes nested folders")
+        # Download the zip file from XNAT
+        orig_zip_path = os.path.join(save_dir, self.get_label() + '_orig.zip')
         self.rest_client.download_file(
-            file_path=file_path,
+            file_path=orig_zip_path,
             uri=self.read_uri() + '/files',
             qs_params={'format': 'zip'})
-        return file_path
+
+        # Remove the hierarchical folder structure from the downloaded zip file
+        # by repackiging into a new zip file
+        new_zip_path = os.path.join(save_dir, self.get_label() + '.zip')
+        with zipfile.ZipFile(orig_zip_path, 'r') as orig_zip:
+            with zipfile.ZipFile(new_zip_path, 'w') as new_zip:
+
+                # Iterate through all files in the zip
+                for zip_info in orig_zip.infolist():
+
+                    # Get the filename relative to the resource root
+                    new_path = zip_info.filename.split('/files/', 1)[1]
+
+                    # Modify the destination filename to remove the path prefix
+                    zip_info.filename = new_path
+
+                    # Extract out the file to the new destination
+                    orig_zip.extract(member=zip_info, path=save_dir)
+                    extracted_file = os.path.join(save_dir, new_path)
+
+                    # Add the extracted file to the new archive with the
+                    new_zip.write(filename=extracted_file,
+                                  arcname=new_path)
+
+                    # Delete the extracted file
+                    os.remove(extracted_file)
+
+        # Delete the original zip file
+        os.remove(orig_zip_path)
+
+        # Return path to the new zip file
+        return new_zip_path
 
     def resource_attributes(self):
         """Get dict or resource attributes"""
