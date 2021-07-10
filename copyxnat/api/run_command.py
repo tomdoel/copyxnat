@@ -16,8 +16,7 @@ from copyxnat.xnat.xnat_interface import XnatServer
 
 
 def run_command(command, src_params, dst_params=None, project_filter=None,
-                app_settings=None, backend='pyxnat',
-                reporter=None):
+                app_settings=None, reporter=None):
     """Runs the command on the specified XNAT servers
 
     @param command: the command class to run
@@ -28,8 +27,6 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
     on the source and destination servers, the string should be of the form
     src_project_name:dst_project_name
     @param app_settings: Global settings; if None then defaults will be used
-    @param backend: the Python library used to interact with the XNAT
-    servers. Defaults to `pyxnat`
     @param reporter: PyReporter object for user input/output and logging
     """
 
@@ -52,7 +49,7 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
 
         base_cache = cache_box.new_cache(cache_type=cache_type)
 
-        factory = ServerFactory(backend)
+        factory = ServerFactory(app_settings.backend)
 
         src_xnat = XnatServer(factory=factory,
                               params=src_params,

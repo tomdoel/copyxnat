@@ -30,7 +30,8 @@ class AppSettings:
                  subject_limit=None,
                  ohif_rebuild=False,
                  clear_caches=False,
-                 add_missing_metadata=True
+                 add_missing_metadata=True,
+                 backend='pyxnat'
                  ):
         """
         Create global application settings
@@ -57,6 +58,8 @@ class AppSettings:
         @param add_missing_metadata: if True and a session does not have a UID
         attribute set, then attempt to determine this from one of the DICOM
         files. Does not work in zip upload mode
+        @param backend: Select the backend library to use for communicating with
+        XNAT
         XNAT server
         """
         self.skip_existing = skip_existing
@@ -71,3 +74,4 @@ class AppSettings:
         self.ohif_rebuild = ohif_rebuild
         self.clear_caches = clear_caches
         self.add_missing_metadata = add_missing_metadata
+        self.backend = backend
