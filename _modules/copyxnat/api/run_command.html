@@ -56,8 +56,7 @@
 
 
 <div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../../copyxnat.api.run_command.html#copyxnat.api.run_command.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">app_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span>
-                <span class="n">reporter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                <span class="n">app_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reporter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs the command on the specified XNAT servers</span>
 
 <span class="sd">    @param command: the command class to run</span>
@@ -68,8 +67,6 @@
 <span class="sd">    on the source and destination servers, the string should be of the form</span>
 <span class="sd">    src_project_name:dst_project_name</span>
 <span class="sd">    @param app_settings: Global settings; if None then defaults will be used</span>
-<span class="sd">    @param backend: the Python library used to interact with the XNAT</span>
-<span class="sd">    servers. Defaults to `pyxnat`</span>
 <span class="sd">    @param reporter: PyReporter object for user input/output and logging</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -92,7 +89,7 @@
 
         <span class="n">base_cache</span> <span class="o">=</span> <span class="n">cache_box</span><span class="o">.</span><span class="n">new_cache</span><span class="p">(</span><span class="n">cache_type</span><span class="o">=</span><span class="n">cache_type</span><span class="p">)</span>
 
-        <span class="n">factory</span> <span class="o">=</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="n">factory</span> <span class="o">=</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="n">app_settings</span><span class="o">.</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="n">src_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
                               <span class="n">params</span><span class="o">=</span><span class="n">src_params</span><span class="p">,</span>

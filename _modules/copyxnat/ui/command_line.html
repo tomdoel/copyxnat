@@ -169,6 +169,11 @@
             <span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--limit-subjects&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Limit number of new subjects to transfer&quot;</span>
         <span class="p">)</span>
+        <span class="n">sub_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--backend&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pyxnat&#39;</span><span class="p">,</span> <span class="s1">&#39;simplexnat&#39;</span><span class="p">],</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Select the XNAT backend&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">find_commands</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
         <span class="n">command_key</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">COMMAND_LINE</span>
@@ -263,8 +268,9 @@
         <span class="n">verbose</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
         <span class="n">skip_existing</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;skip_existing&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="n">subject_limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">limit_subjects</span><span class="p">,</span>
-        <span class="n">ohif_rebuild</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ohif_rebuild</span><span class="p">,</span>
-        <span class="n">clear_caches</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">clear_caches</span>
+        <span class="n">ohif_rebuild</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;ohif_rebuild&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">clear_caches</span><span class="o">=</span><span class="n">_optional</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;clear_caches&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">backend</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">backend</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">command</span><span class="p">,</span> <span class="n">src_params</span><span class="p">,</span> <span class="n">dst_params</span><span class="p">,</span> <span class="n">project_list</span><span class="p">,</span> <span class="n">app_settings</span>

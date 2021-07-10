@@ -56,8 +56,8 @@
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources</span></code></a></p>
 <p>Wrapper around a pyxnat assessor interface</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['label']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatAssessor.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -115,8 +115,8 @@ used for write operations</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['label']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatExperiment.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -177,8 +177,8 @@ used for write operations</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Name'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['Name']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatFile.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -262,6 +262,12 @@ not empty</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.find_label">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">find_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.find_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.find_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a valid label from the given metadata dictionary</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_attribute">
 <span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/simple_xnat.html#SimpleXnatItem.get_attribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.get_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the specified attribute from this item</p>
@@ -304,8 +310,8 @@ not empty</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label_key">
-<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">label_key</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label_keys">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">label_keys</span></span><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItem.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the dictionary key in the item’s metadata dict which will be
 used to match items between servers. In most cases <cite>label</cite> is
 appropriate if it exists for this item’s metadata</p>
@@ -426,8 +432,8 @@ used for write operations</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources</span></code></a></p>
 <p>Wrapper around an XNAT project interface</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'ID'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatProject.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -464,8 +470,8 @@ used for write operations</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithInOutResources</span></code></a></p>
 <p>Wrapper around an XNAT reconstruction</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'ID'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatReconstruction.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -536,8 +542,8 @@ used for write operations</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['label',</span> <span class="pre">'xnat_abstractresource_id']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatResourceBase.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -559,8 +565,8 @@ used for write operations</p>
 <dd><p>Bases: <a class="reference internal" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources" title="copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources"><code class="xref py py-class docutils literal notranslate"><span class="pre">copyxnat.xnat_backend.simple_xnat.SimpleXnatItemWithResources</span></code></a></p>
 <p>Wrapper around an XNAT interface for items which can contain resources</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'ID'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['ID']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatScan.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -684,8 +690,8 @@ used for write operations</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.label_key">
-<span class="sig-name descname"><span class="pre">label_key</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'label'</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.label_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.label_keys">
+<span class="sig-name descname"><span class="pre">label_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['label']</span></em><a class="headerlink" href="#copyxnat.xnat_backend.simple_xnat.SimpleXnatSubject.label_keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
