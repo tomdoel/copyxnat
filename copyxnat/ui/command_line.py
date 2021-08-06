@@ -129,6 +129,11 @@ def _parse_command_line(args):
             "-l", "--limit-subjects", type=int, default=None,
             help="Limit number of new subjects to transfer"
         )
+        sub_parser.add_argument(
+            "-b", "--backend", default='pyxnat',
+            choices=['pyxnat', 'simplexnat'],
+            help="Select the XNAT backend"
+        )
 
     for command in find_commands.commands():
         command_key = command.COMMAND_LINE
@@ -223,8 +228,9 @@ def _parse_command_line(args):
         verbose=args.verbose,
         skip_existing=_optional(args, 'skip_existing', None),
         subject_limit=args.limit_subjects,
-        ohif_rebuild=args.ohif_rebuild,
-        clear_caches=args.clear_caches
+        ohif_rebuild=_optional(args, 'ohif_rebuild', None),
+        clear_caches=_optional(args, 'clear_caches', None),
+        backend=args.backend
     )
 
     return command, src_params, dst_params, project_list, app_settings
