@@ -163,6 +163,7 @@ CopyXnat can process the following XNAT data hierarchies.
 
  - Reconstructions can be downloaded but cannot be copied to another server
  - Assessor In-Resources can be downloaded but cannot be copied to another server
+ - Support for eCat files is limited and untested
 
 
 
