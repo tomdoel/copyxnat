@@ -224,13 +224,12 @@ class XnatItem(XnatBase):
                     'with file {} in read-only mode on server {}'.
                     format(local_file, self.full_name))
 
-            else:
-                self.interface.create_on_server(
-                    local_file=local_file,
-                    create_params=create_params,
-                    overwrite=self.app_settings.overwrite_existing,
-                    reporter=self.reporter
-                )
+            self.interface.create_on_server(
+                local_file=local_file,
+                create_params=create_params,
+                overwrite=self.app_settings.overwrite_existing,
+                reporter=self.reporter
+            )
 
     def exists_on_server(self):
         """Return True if item already exists on the XNAT server"""

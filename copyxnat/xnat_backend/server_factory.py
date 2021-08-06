@@ -20,7 +20,7 @@ class ServerFactory(object):
         @return: a server backend for communicating with XnatInterface
         """
         if self._backend.lower() == 'pyxnat':
-            return PyXnatServer(params=params, read_only=read_only)
+            return PyXnatServer(params=params)
         elif self._backend.lower() == 'simplexnat':
             return SimpleXnatServer(params=params, read_only=read_only)
         else:
