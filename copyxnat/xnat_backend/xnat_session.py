@@ -13,7 +13,7 @@ class XnatSession(object):
     authentication and tokens using the provided credentials
     """
 
-    def __init__(self, params, read_only):
+    def __init__(self, params, read_only=False):
         self._params = params
         self._rest = RestWrapper(params=params)
         self._session_id = SessionId()
