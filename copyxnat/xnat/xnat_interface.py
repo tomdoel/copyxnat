@@ -210,23 +210,27 @@ class XnatItem(XnatBase):
 
     def create_on_server(self, create_params, local_file):
         """Create this item on the XNAT server"""
-        if self.read_only:
-            raise RuntimeError('Programming error: attempting to create item '
-                               'with file {} in read-only mode on server {}'.
-                               format(local_file, self.full_name))
 
         if self.app_settings.dry_run:
             self.reporter.warning('DRY RUN: did not create {} {} with file {}'.
                                   format(self.visible_name,
                                          self.label,
                                          local_file))
+
         else:
-            self.interface.create_on_server(
-                local_file=local_file,
-                create_params=create_params,
-                overwrite=self.app_settings.overwrite_existing,
-                reporter=self.reporter
-            )
+            if self.read_only:
+                raise RuntimeError(
+                    'Programming error: attempting to create item '
+                    'with file {} in read-only mode on server {}'.
+                    format(local_file, self.full_name))
+
+            else:
+                self.interface.create_on_server(
+                    local_file=local_file,
+                    create_params=create_params,
+                    overwrite=self.app_settings.overwrite_existing,
+                    reporter=self.reporter
+                )
 
     def exists_on_server(self):
         """Return True if item already exists on the XNAT server"""
