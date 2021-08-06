@@ -13,7 +13,7 @@ from pyxnat import Interface
 class PyXnatServer(object):
     """Wrapper around pyXNAT server interface"""
 
-    def __init__(self, params):
+    def __init__(self, params, read_only):
         self._interface = Interface(server=params.host,
                                     user=params.user,
                                     password=params.pwd,

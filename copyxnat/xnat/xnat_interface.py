@@ -681,7 +681,7 @@ class XnatServer(XnatBase):
                 "Please enter the password for {}@{}:".format(params.user,
                                                               params.host))
 
-        interface = factory.create(params=params)
+        interface = factory.create(params=params, read_only=read_only)
 
         self.ohif = None
         self._project_name_metadata = None

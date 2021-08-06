@@ -13,11 +13,12 @@ class XnatSession(object):
     authentication and tokens using the provided credentials
     """
 
-    def __init__(self, params):
+    def __init__(self, params, read_only):
         self._params = params
         self._rest = RestWrapper(params=params)
         self._session_id = SessionId()
         self._verify = not params.insecure
+        self._read_only = read_only
 
     def __del__(self):
         self.logout()
@@ -38,6 +39,11 @@ class XnatSession(object):
         :param stream: True if content is streamed
         :return: requests.Response
         """
+
+        if self._read_only and method.lower() in ('delete', 'post', 'put'):
+            msg = 'Programming error: {} request not permitted in read-only ' \
+                  'mode: {}'.format(method.upper(), uri)
+            raise RuntimeError(msg)
 
         while True:
             # If using an existing session, reauthentication is permitted

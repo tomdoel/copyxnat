@@ -13,8 +13,8 @@ from copyxnat.xnat_backend.xnat_session import XnatSession
 class XnatRestClient(object):
     """Wrapper around XNAT REST API"""
 
-    def __init__(self, params):
-        self._session = XnatSession(params)
+    def __init__(self, params, read_only):
+        self._session = XnatSession(params, read_only)
 
     def __del__(self):
         self.logout()

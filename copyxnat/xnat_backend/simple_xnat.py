@@ -34,8 +34,8 @@ class SimpleXnatBase(object):
 class SimpleXnatServer(SimpleXnatBase):
     """Interface to XNAT REST API"""
 
-    def __init__(self, params):
-        self.rest_client = XnatRestClient(params=params)
+    def __init__(self, params, read_only):
+        self.rest_client = XnatRestClient(params=params, read_only=read_only)
         self.cached_project_list = self._lazy_list(SimpleXnatProject)
         self._cached_datatypes = None
 
