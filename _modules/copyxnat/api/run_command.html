@@ -96,14 +96,16 @@
                               <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
                               <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                               <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">,</span>
-                              <span class="n">read_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_SRC_SERVER</span><span class="p">)</span>
+                              <span class="n">read_only</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">dry_run</span> <span class="ow">or</span>
+                                        <span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_SRC_SERVER</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dst_params</span> <span class="ow">and</span> <span class="n">command</span><span class="o">.</span><span class="n">USE_DST_SERVER</span><span class="p">:</span>
             <span class="n">dst_xnat</span> <span class="o">=</span> <span class="n">XnatServer</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span>
                                   <span class="n">params</span><span class="o">=</span><span class="n">dst_params</span><span class="p">,</span>
                                   <span class="n">base_cache</span><span class="o">=</span><span class="n">base_cache</span><span class="p">,</span>
                                   <span class="n">app_settings</span><span class="o">=</span><span class="n">app_settings</span><span class="p">,</span>
                                   <span class="n">reporter</span><span class="o">=</span><span class="n">reporter</span><span class="p">,</span>
-                                  <span class="n">read_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_DST_SERVER</span><span class="p">)</span>
+                                  <span class="n">read_only</span><span class="o">=</span><span class="n">app_settings</span><span class="o">.</span><span class="n">dry_run</span> <span class="ow">or</span>
+                                            <span class="ow">not</span> <span class="n">command</span><span class="o">.</span><span class="n">MODIFY_DST_SERVER</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dst_xnat</span> <span class="o">=</span> <span class="kc">None</span>
 

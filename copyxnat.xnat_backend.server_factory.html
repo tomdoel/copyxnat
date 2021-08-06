@@ -57,9 +57,10 @@
 <p>Factory for creating XNAT backend objects</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="copyxnat.xnat_backend.server_factory.ServerFactory.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/server_factory.html#ServerFactory.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.server_factory.ServerFactory.create" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/xnat_backend/server_factory.html#ServerFactory.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.xnat_backend.server_factory.ServerFactory.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an XNAT server backend object
 &#64;param params: XnatServerParams for the XNAT server
+&#64;param read_only: if True then the server may prevent write requests
 &#64;return: a server backend for communicating with XnatInterface</p>
 </dd></dl>
 

@@ -74,8 +74,8 @@
 <div class="viewcode-block" id="SimpleXnatServer"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.simple_xnat.html#copyxnat.xnat_backend.simple_xnat.SimpleXnatServer">[docs]</a><span class="k">class</span> <span class="nc">SimpleXnatServer</span><span class="p">(</span><span class="n">SimpleXnatBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Interface to XNAT REST API&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span> <span class="o">=</span> <span class="n">XnatRestClient</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">read_only</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rest_client</span> <span class="o">=</span> <span class="n">XnatRestClient</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="n">read_only</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cached_project_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_list</span><span class="p">(</span><span class="n">SimpleXnatProject</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_datatypes</span> <span class="o">=</span> <span class="kc">None</span>
 

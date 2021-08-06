@@ -250,17 +250,20 @@
 
 <div class="viewcode-block" id="XnatItem.create_on_server"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatItem.create_on_server">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_params</span><span class="p">,</span> <span class="n">local_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create this item on the XNAT server&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Programming error: attempting to create item &#39;</span>
-                               <span class="s1">&#39;with file </span><span class="si">{}</span><span class="s1"> in read-only mode on server </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
-                               <span class="nb">format</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;DRY RUN: did not create </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> with file </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
                                   <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_name</span><span class="p">,</span>
                                          <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
                                          <span class="n">local_file</span><span class="p">))</span>
+
         <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s1">&#39;Programming error: attempting to create item &#39;</span>
+                    <span class="s1">&#39;with file </span><span class="si">{}</span><span class="s1"> in read-only mode on server </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
+                    <span class="nb">format</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">))</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">create_on_server</span><span class="p">(</span>
                 <span class="n">local_file</span><span class="o">=</span><span class="n">local_file</span><span class="p">,</span>
                 <span class="n">create_params</span><span class="o">=</span><span class="n">create_params</span><span class="p">,</span>
@@ -721,7 +724,7 @@
                 <span class="s2">&quot;Please enter the password for </span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
                                                               <span class="n">params</span><span class="o">.</span><span class="n">host</span><span class="p">))</span>
 
-        <span class="n">interface</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">interface</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="n">read_only</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ohif</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project_name_metadata</span> <span class="o">=</span> <span class="kc">None</span>
@@ -767,6 +770,11 @@
 
 <div class="viewcode-block" id="XnatServer.does_request_succeed"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.does_request_succeed">[docs]</a>    <span class="k">def</span> <span class="nf">does_request_succeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a REST call on the server and return True if it succeeds&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_settings</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;DRY RUN: will not execute call </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span>
+                                  <span class="nb">format</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span> <span class="ow">and</span> <span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Programming error: attempting </span><span class="si">{}</span><span class="s1"> request </span><span class="si">{}</span><span class="s1"> in &#39;</span>

@@ -53,8 +53,8 @@
 <div class="viewcode-block" id="XnatRestClient"><a class="viewcode-back" href="../../../copyxnat.xnat_backend.xnat_rest_client.html#copyxnat.xnat_backend.xnat_rest_client.XnatRestClient">[docs]</a><span class="k">class</span> <span class="nc">XnatRestClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper around XNAT REST API&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">XnatSession</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">read_only</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">XnatSession</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">read_only</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
