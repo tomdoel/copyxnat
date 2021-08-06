@@ -731,6 +731,11 @@ class XnatServer(XnatBase):
     def does_request_succeed(self, uri, method='GET'):
         """Execute a REST call on the server and return True if it succeeds"""
 
+        if self.app_settings.dry_run:
+            self.reporter.warning('DRY RUN: will not execute call {} {}'.
+                                  format(method, uri))
+            return False
+
         if self.read_only and method != 'GET':
             raise RuntimeError('Programming error: attempting {} request {} in '
                                'read-only mode to server {}'.
