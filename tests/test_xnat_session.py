@@ -8,6 +8,7 @@ from mockito import mock, ANY, expect, verifyNoUnwantedInteractions
 from requests.auth import HTTPBasicAuth
 
 from copyxnat.config.server_params import XnatServerParams
+from copyxnat.utils.error_utils import UserError
 
 from copyxnat.xnat_backend.xnat_session import SessionId, RestWrapper, \
     XnatSession
@@ -114,7 +115,7 @@ class TestXnatSession(object):
         return self._mock_response(
             method='post', url=url, success=success, verify=verify,
             auth=ANY(HTTPBasicAuth), response_text=cookie,
-            expect_raise_for_status=True
+            expect_raise_for_status=success
         )
 
     def _mock_auth_logout(self, expected_host, success, verify, cookie):
@@ -307,7 +308,7 @@ class TestXnatSession(object):
         ):
             api2 = 'my-api/call2'
             expected_url2 = host + '/' + api2
-            with pytest.raises(MockHttpError) as e_info:
+            with pytest.raises(UserError) as e_info:
                 self._do_request(session=session, cookie=cookie1, api=api2,
                                  retry_cookie=None,
                                  expected_url=expected_url2, expected_verify=True,
