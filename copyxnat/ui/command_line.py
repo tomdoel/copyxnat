@@ -11,23 +11,34 @@ import six
 from copyxnat.commands.find_commands import find_command
 from copyxnat.commands import find_commands
 from copyxnat.api.run_command import run_command
+from copyxnat.pyreporter.console import AnsiCodes
+from copyxnat.utils.error_utils import message_from_exception, UserError
 from copyxnat.utils.versioning import get_version_string
 from copyxnat.config.server_params import XnatServerParams
 from copyxnat.config.app_settings import AppSettings
 
 
 def run_command_line(args):
-    """Run the copyxnat with the specified command-line arguments"""
+    """Run the copyxnat with the specified command-line arguments
+
+    :returns: status code 0=success, 1=failure
+    """
 
     command, src_params, dst_params, project_list, app_settings = \
         _parse_command_line(args)
 
-    return run_command(command=command,
-                       src_params=src_params,
-                       dst_params=dst_params,
-                       project_filter=project_list,
-                       app_settings=app_settings
-                       )
+    try:
+        run_command(command=command,
+                    src_params=src_params,
+                    dst_params=dst_params,
+                    project_filter=project_list,
+                    app_settings=app_settings
+                    )
+        return 0
+
+    except Exception as exc:  # pylint: disable=broad-except
+        _show_exception_to_user(exc)
+        return 1
 
 
 def run_entry_point():
@@ -37,18 +48,20 @@ def run_entry_point():
     :returns: status code 0=success, 1=failure
     """
 
-    try:
-        run_command_line(sys.argv[1:])
-        return 0
+    return run_command_line(sys.argv[1:])
 
-    except Exception as exc:  # pylint: disable=broad-except
-        six.print_("CopyXnat failed with error {}".format(str(exc)),
-                   file=sys.stderr)
+
+def _show_exception_to_user(exc):
+    message = AnsiCodes.RED + "CopyXnat could not complete due to the " \
+                              "following error: {}" + AnsiCodes.END
+    if isinstance(exc, UserError):
+        six.print_(message.format(exc.user_friendly_message), file=sys.stderr)
+    else:
+        six.print_(message.format(message_from_exception(exc)), file=sys.stderr)
         six.print_("If you think this may be a bug, please create an issue at "
-              "https://github.com/tomdoel/copyxnat/issues and include "
-              "the following error details:", file=sys.stderr)
+                   "https://github.com/tomdoel/copyxnat/issues and include "
+                   "the following error details:", file=sys.stderr)
         traceback.print_exc()
-        return 1
 
 
 def _parse_command_line(args):
@@ -187,7 +200,6 @@ def _parse_command_line(args):
                                     help="Ask the monitoring service to clear"
                                          "Java caches after each session upload"
                                     )
-
 
     args = parser.parse_args(args)
 
