@@ -15,6 +15,7 @@ import pydicom
 import urllib3
 
 from copyxnat.pyreporter.pyreporter import ProjectFailure
+from copyxnat.utils.error_utils import message_from_exception
 from copyxnat.utils.network_utils import get_host
 from copyxnat.config.app_settings import TransferMode
 from copyxnat.xnat.xnat_xml import xml_from_string
@@ -450,7 +451,9 @@ class XnatFile(XnatItem):
 
         except Exception as exc:  # pylint: disable=broad-except
             self.reporter.warning('Error when attempting to parse file {}: '
-                                  'Error: {}'.format(local_file, str(exc)))
+                                  'Error: {}'.format(
+                                      local_file,
+                                      message_from_exception(exc)))
         return metadata
 
 
@@ -749,7 +752,7 @@ class XnatServer(XnatBase):
 
         except Exception as exc:  # pylint: disable=broad-except
             self.reporter.debug('Failure executing {} call {}: {}'. format(
-                method, uri, str(exc)))
+                method, uri, message_from_exception(exc)))
             return False
 
     def request_string(self, uri, error_on_failure=True):
@@ -758,7 +761,8 @@ class XnatServer(XnatBase):
             return self.interface.request_string(uri)
 
         except Exception as exc:
-            message = 'Failure executing GET call {}: {}'.format(uri, exc)
+            message = 'Failure executing GET call {}: {}'.format(
+                uri, message_from_exception(exc))
             if error_on_failure:
                 self.reporter.error(message)
             else:
@@ -771,8 +775,8 @@ class XnatServer(XnatBase):
             return self.interface.request_json_property(uri)
 
         except Exception as exc:
-            self.reporter.error('Failure executing GET call {}: {}'.format(uri,
-                                                                           exc))
+            self.reporter.error('Failure executing GET call {}: {}'.format(
+                uri, message_from_exception(exc)))
             raise exc
 
     def ohif_present(self):

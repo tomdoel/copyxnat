@@ -6,6 +6,7 @@ import sys
 import six
 
 from copyxnat.pyreporter.pyreporter import PyReporter, ProjectFailure
+from copyxnat.utils.error_utils import message_from_exception
 from copyxnat.utils.rsync import ProjectRsync
 from copyxnat.utils.versioning import get_version_string
 from copyxnat.xnat.commands import CommandInputs
@@ -85,8 +86,9 @@ def run_command(command, src_params, dst_params=None, project_filter=None,
         reporter.output('Completed running {} command'.format(command.NAME))
 
     except Exception as exc:  # pylint: disable=broad-except
-        reporter.error('Command {} failed due to error {}'.format(command.NAME,
-                                                                  str(exc)))
+        message = message_from_exception(exc)
+        reporter.log('Command {} failed due to error {}'.format(command.NAME,
+                                                                message))
         six.reraise(*sys.exc_info())
     finally:
         if src_xnat:
