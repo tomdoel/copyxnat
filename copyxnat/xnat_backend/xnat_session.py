@@ -1,9 +1,12 @@
 # coding=utf-8
 
 """Wrappers for communicating between copyxnat items and pyXNAT backend items"""
+
 import requests
 from requests.auth import HTTPBasicAuth
+from six import raise_from
 
+from copyxnat.utils.error_utils import UserError
 from copyxnat.xnat_backend.utis import Utils
 
 
@@ -75,11 +78,29 @@ class XnatSession(object):
         """Create this XNAT session if it does not already exist"""
 
         if not self._session_id.exists():
-            response = self._request(
-                method='post',
-                uri='data/JSESSION',
-                auth=HTTPBasicAuth(self._params.user, self._params.pwd)
-            )
+            try:
+                response = self._request(
+                    method='post',
+                    uri='data/JSESSION',
+                    auth=HTTPBasicAuth(self._params.user, self._params.pwd)
+                )
+            except requests.exceptions.SSLError as exc:
+                raise_from(UserError(
+                    'SSL error on server {}. This can occur if the server '
+                    'certificate has expired or is self-signed. For testing '
+                    'you can use insecure mode -k to bypass SSL verification.'.
+                        format(self._params.host), cause=exc), exc)
+
+            except requests.exceptions.ConnectionError as exc:
+                raise_from(UserError(
+                    'Cannot connect to server {}. Please check the URL is '
+                    'correct and the server is running.'.format(
+                        self._params.host), cause=exc), exc)
+
+            if response.status_code == 401:
+                raise UserError('Incorrect password for {}@{}'.format(
+                    self._params.user, self._params.host
+                ))
             response.raise_for_status()
             self._session_id.set(response.text)
 
