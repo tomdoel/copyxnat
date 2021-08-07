@@ -41,9 +41,12 @@
 <span></span><span class="c1"># coding=utf-8</span>
 
 <span class="sd">&quot;&quot;&quot;Wrappers for communicating between copyxnat items and pyXNAT backend items&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">requests.auth</span> <span class="kn">import</span> <span class="n">HTTPBasicAuth</span>
+<span class="kn">from</span> <span class="nn">six</span> <span class="kn">import</span> <span class="n">raise_from</span>
 
+<span class="kn">from</span> <span class="nn">copyxnat.utils.error_utils</span> <span class="kn">import</span> <span class="n">UserError</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat_backend.utis</span> <span class="kn">import</span> <span class="n">Utils</span>
 
 
@@ -115,11 +118,29 @@
         <span class="sd">&quot;&quot;&quot;Create this XNAT session if it does not already exist&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
-                <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;data/JSESSION&#39;</span><span class="p">,</span>
-                <span class="n">auth</span><span class="o">=</span><span class="n">HTTPBasicAuth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">pwd</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span>
+                    <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
+                    <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;data/JSESSION&#39;</span><span class="p">,</span>
+                    <span class="n">auth</span><span class="o">=</span><span class="n">HTTPBasicAuth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">pwd</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">SSLError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">raise_from</span><span class="p">(</span><span class="n">UserError</span><span class="p">(</span>
+                    <span class="s1">&#39;SSL error on server </span><span class="si">{}</span><span class="s1">. This can occur if the server &#39;</span>
+                    <span class="s1">&#39;certificate has expired or is self-signed. For testing &#39;</span>
+                    <span class="s1">&#39;you can use insecure mode -k to bypass SSL verification.&#39;</span><span class="o">.</span>
+                        <span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">host</span><span class="p">),</span> <span class="n">cause</span><span class="o">=</span><span class="n">exc</span><span class="p">),</span> <span class="n">exc</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">raise_from</span><span class="p">(</span><span class="n">UserError</span><span class="p">(</span>
+                    <span class="s1">&#39;Cannot connect to server </span><span class="si">{}</span><span class="s1">. Please check the URL is &#39;</span>
+                    <span class="s1">&#39;correct and the server is running.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">host</span><span class="p">),</span> <span class="n">cause</span><span class="o">=</span><span class="n">exc</span><span class="p">),</span> <span class="n">exc</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s1">&#39;Incorrect password for </span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">host</span>
+                <span class="p">))</span>
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
 

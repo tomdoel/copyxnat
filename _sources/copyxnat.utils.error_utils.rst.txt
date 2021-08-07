@@ -1,0 +1,7 @@
+copyxnat.utils.error\_utils module
+==================================
+
+.. automodule:: copyxnat.utils.error_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

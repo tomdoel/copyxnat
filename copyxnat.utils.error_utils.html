@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>copyxnat.utils.network_utils module &#8212; CopyXnat  documentation</title>
+    <title>copyxnat.utils.error_utils module &#8212; CopyXnat  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
@@ -16,8 +16,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="copyxnat.utils.rsync module" href="copyxnat.utils.rsync.html" />
-    <link rel="prev" title="copyxnat.utils.error_utils module" href="copyxnat.utils.error_utils.html" /> 
+    <link rel="next" title="copyxnat.utils.network_utils module" href="copyxnat.utils.network_utils.html" />
+    <link rel="prev" title="copyxnat.utils package" href="copyxnat.utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,16 +29,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.utils.rsync.html" title="copyxnat.utils.rsync module"
+          <a href="copyxnat.utils.network_utils.html" title="copyxnat.utils.network_utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.utils.error_utils.html" title="copyxnat.utils.error_utils module"
+          <a href="copyxnat.utils.html" title="copyxnat.utils package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="copyxnat.utils.html" accesskey="U">copyxnat.utils package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.network_utils module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.error_utils module</a></li> 
       </ul>
     </div>  
 
@@ -47,13 +47,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-copyxnat.utils.network_utils">
-<span id="copyxnat-utils-network-utils-module"></span><h1>copyxnat.utils.network_utils module<a class="headerlink" href="#module-copyxnat.utils.network_utils" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-copyxnat.utils.error_utils">
+<span id="copyxnat-utils-error-utils-module"></span><h1>copyxnat.utils.error_utils module<a class="headerlink" href="#module-copyxnat.utils.error_utils" title="Permalink to this headline">¶</a></h1>
 <p>Utilities</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="copyxnat.utils.error_utils.UserError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">copyxnat.utils.error_utils.</span></span><span class="sig-name descname"><span class="pre">UserError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_friendly_message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/utils/error_utils.html#UserError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.utils.error_utils.UserError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception that is within the user’s control</p>
+</dd></dl>
+
 <dl class="py function">
-<dt class="sig sig-object py" id="copyxnat.utils.network_utils.get_host">
-<span class="sig-prename descclassname"><span class="pre">copyxnat.utils.network_utils.</span></span><span class="sig-name descname"><span class="pre">get_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/utils/network_utils.html#get_host"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.utils.network_utils.get_host" title="Permalink to this definition">¶</a></dt>
-<dd><p>Strip the host prefix</p>
+<dt class="sig sig-object py" id="copyxnat.utils.error_utils.message_from_exception">
+<span class="sig-prename descclassname"><span class="pre">copyxnat.utils.error_utils.</span></span><span class="sig-name descname"><span class="pre">message_from_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/copyxnat/utils/error_utils.html#message_from_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#copyxnat.utils.error_utils.message_from_exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return exception name and content as a string</p>
 </dd></dl>
 
 </div>
@@ -69,15 +76,15 @@
               <img class="logo" src="_static/project-icon.png" alt="Logo"/>
             </a></p>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="copyxnat.utils.error_utils.html"
-                        title="previous chapter">copyxnat.utils.error_utils module</a></p>
+  <p class="topless"><a href="copyxnat.utils.html"
+                        title="previous chapter">copyxnat.utils package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="copyxnat.utils.rsync.html"
-                        title="next chapter">copyxnat.utils.rsync module</a></p>
+  <p class="topless"><a href="copyxnat.utils.network_utils.html"
+                        title="next chapter">copyxnat.utils.network_utils module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/copyxnat.utils.network_utils.rst.txt"
+      <li><a href="_sources/copyxnat.utils.error_utils.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -105,16 +112,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="copyxnat.utils.rsync.html" title="copyxnat.utils.rsync module"
+          <a href="copyxnat.utils.network_utils.html" title="copyxnat.utils.network_utils module"
              >next</a> |</li>
         <li class="right" >
-          <a href="copyxnat.utils.error_utils.html" title="copyxnat.utils.error_utils module"
+          <a href="copyxnat.utils.html" title="copyxnat.utils package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CopyXnat  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >copyxnat</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="copyxnat.html" >copyxnat package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="copyxnat.utils.html" >copyxnat.utils package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.network_utils module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">copyxnat.utils.error_utils module</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

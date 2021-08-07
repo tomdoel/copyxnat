@@ -55,6 +55,7 @@
 <span class="kn">import</span> <span class="nn">urllib3</span>
 
 <span class="kn">from</span> <span class="nn">copyxnat.pyreporter.pyreporter</span> <span class="kn">import</span> <span class="n">ProjectFailure</span>
+<span class="kn">from</span> <span class="nn">copyxnat.utils.error_utils</span> <span class="kn">import</span> <span class="n">message_from_exception</span>
 <span class="kn">from</span> <span class="nn">copyxnat.utils.network_utils</span> <span class="kn">import</span> <span class="n">get_host</span>
 <span class="kn">from</span> <span class="nn">copyxnat.config.app_settings</span> <span class="kn">import</span> <span class="n">TransferMode</span>
 <span class="kn">from</span> <span class="nn">copyxnat.xnat.xnat_xml</span> <span class="kn">import</span> <span class="n">xml_from_string</span>
@@ -490,7 +491,9 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Error when attempting to parse file </span><span class="si">{}</span><span class="s1">: &#39;</span>
-                                  <span class="s1">&#39;Error: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
+                                  <span class="s1">&#39;Error: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                      <span class="n">local_file</span><span class="p">,</span>
+                                      <span class="n">message_from_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">metadata</span></div>
 
 
@@ -789,7 +792,7 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Failure executing </span><span class="si">{}</span><span class="s1"> call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span> <span class="nb">format</span><span class="p">(</span>
-                <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
+                <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">message_from_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="XnatServer.request_string"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.request_string">[docs]</a>    <span class="k">def</span> <span class="nf">request_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">error_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -798,7 +801,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">request_string</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failure executing GET call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failure executing GET call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">uri</span><span class="p">,</span> <span class="n">message_from_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">error_on_failure</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -811,8 +815,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">request_json_property</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failure executing GET call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span>
-                                                                           <span class="n">exc</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failure executing GET call </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">uri</span><span class="p">,</span> <span class="n">message_from_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)))</span>
             <span class="k">raise</span> <span class="n">exc</span></div>
 
 <div class="viewcode-block" id="XnatServer.ohif_present"><a class="viewcode-back" href="../../../copyxnat.xnat.xnat_interface.html#copyxnat.xnat.xnat_interface.XnatServer.ohif_present">[docs]</a>    <span class="k">def</span> <span class="nf">ohif_present</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
