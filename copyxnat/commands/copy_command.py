@@ -67,11 +67,11 @@ class CopyCommand(Command):
             return False
 
         already_exists = dst_copy.exists_on_server()
-        processed = not already_exists
 
         # Create the item on the destination server
         should_create = self._should_create(
             already_exists=already_exists, xnat_item=xnat_item, label=label)
+        processed = should_create
 
         if should_create:
             dst_copy.create_from_source(src_item=xnat_item,
