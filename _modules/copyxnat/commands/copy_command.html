@@ -107,11 +107,11 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">already_exists</span> <span class="o">=</span> <span class="n">dst_copy</span><span class="o">.</span><span class="n">exists_on_server</span><span class="p">()</span>
-        <span class="n">processed</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">already_exists</span>
 
         <span class="c1"># Create the item on the destination server</span>
         <span class="n">should_create</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_create</span><span class="p">(</span>
             <span class="n">already_exists</span><span class="o">=</span><span class="n">already_exists</span><span class="p">,</span> <span class="n">xnat_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">processed</span> <span class="o">=</span> <span class="n">should_create</span>
 
         <span class="k">if</span> <span class="n">should_create</span><span class="p">:</span>
             <span class="n">dst_copy</span><span class="o">.</span><span class="n">create_from_source</span><span class="p">(</span><span class="n">src_item</span><span class="o">=</span><span class="n">xnat_item</span><span class="p">,</span>
